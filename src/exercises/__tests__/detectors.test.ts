@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import { bicepsCurlDetector } from '../bicepsCurlDetector'
 import { squatDetector } from '../squatDetector'
 import { armyPressDetector } from '../armyPressDetector'
+import { headSideTiltDetector } from '../headSideTiltDetector'
 import { exerciseRegistry } from '../registry'
 import type { PoseLandmarks } from '../../pose/types'
 
@@ -21,6 +22,7 @@ describe('exercise detectors', () => {
     expect(exerciseRegistry.some((detector) => detector.id === bicepsCurlDetector.id)).toBe(true)
     expect(exerciseRegistry.some((detector) => detector.id === squatDetector.id)).toBe(true)
     expect(exerciseRegistry.some((detector) => detector.id === armyPressDetector.id)).toBe(true)
+    expect(exerciseRegistry.some((detector) => detector.id === headSideTiltDetector.id)).toBe(true)
     expect(exerciseRegistry.every((detector) => detector.isActive !== false)).toBe(true)
   })
 
@@ -122,5 +124,29 @@ describe('exercise detectors', () => {
     const result = armyPressDetector.update(down, state)
 
     expect(result.repDelta).toBe(0)
+  })
+
+  test('counts one head side tilt rep after right-left sequence', () => {
+    const center = createEmptyLandmarks()
+    center[0] = { x: 0.5, y: 0.2, z: 0, visibility: 1, presence: 1 }
+    center[11] = { x: 0.45, y: 0.4, z: 0, visibility: 1, presence: 1 }
+    center[12] = { x: 0.55, y: 0.4, z: 0, visibility: 1, presence: 1 }
+
+    const right = createEmptyLandmarks()
+    right[0] = { x: 0.56, y: 0.2, z: 0, visibility: 1, presence: 1 }
+    right[11] = { x: 0.45, y: 0.4, z: 0, visibility: 1, presence: 1 }
+    right[12] = { x: 0.55, y: 0.4, z: 0, visibility: 1, presence: 1 }
+
+    const left = createEmptyLandmarks()
+    left[0] = { x: 0.44, y: 0.2, z: 0, visibility: 1, presence: 1 }
+    left[11] = { x: 0.45, y: 0.4, z: 0, visibility: 1, presence: 1 }
+    left[12] = { x: 0.55, y: 0.4, z: 0, visibility: 1, presence: 1 }
+
+    let state = headSideTiltDetector.createState()
+    state = headSideTiltDetector.update(center, state).nextState
+    state = headSideTiltDetector.update(right, state).nextState
+    const result = headSideTiltDetector.update(left, state)
+
+    expect(result.repDelta).toBe(1)
   })
 })
