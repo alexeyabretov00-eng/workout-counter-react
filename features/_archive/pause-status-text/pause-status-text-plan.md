@@ -26,6 +26,6 @@
 
 ## 5. Связанные файлы
 
-- [src/app/useWorkoutSession.ts](../../../src/app/useWorkoutSession.ts)
-- [src/App.tsx](../../../src/App.tsx)
-- [src/App.css](../../../src/App.css)
+- [src/app/useWorkoutSession.ts](../../../../src/app/useWorkoutSession.ts)
+- [src/App.tsx](../../../../src/App.tsx)
+- [src/App.css](../../../../src/App.css)
