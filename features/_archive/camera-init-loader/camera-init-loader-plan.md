@@ -4,7 +4,7 @@
 
 ## 1. Контекст и проблема
 
-При первом вызове `getUserMedia` и запуске видеопотока браузер и ОС могут долго запрашивать разрешение и поднимать драйвер. Пока `start()` в [useWorkoutSession.ts](../../src/app/useWorkoutSession.ts) ждёт [useCameraStream.ts](../../src/camera/useCameraStream.ts), флаг `isRunning` ещё не выставлен, но пользователь не видит явной обратной связи на области превью — создаётся ощущение «зависания».
+При первом вызове `getUserMedia` и запуске видеопотока браузер и ОС могут долго запрашивать разрешение и поднимать драйвер. Пока `start()` в [useWorkoutSession.ts](../../../src/app/useWorkoutSession.ts) ждёт [useCameraStream.ts](../../../src/camera/useCameraStream.ts), флаг `isRunning` ещё не выставлен, но пользователь не видит явной обратной связи на области превью — создаётся ощущение «зависания».
 
 ## 2. Цель
 
@@ -13,8 +13,8 @@
 ## 3. Подход
 
 - Ввести явное состояние «камера инициализируется» в слое доступа к камере: `true` с начала `startCamera` до завершения (успех или ошибка) в `finally`.
-- Пробросить флаг в хук сессии и в [App.tsx](../../src/App.tsx).
-- UI: полупрозрачный оверлей поверх [`.stage`](../../src/App.css) с коротким текстом и простой CSS-анимацией (без новых зависимостей).
+- Пробросить флаг в хук сессии и в [App.tsx](../../../src/App.tsx).
+- UI: полупрозрачный оверлей поверх [`.stage`](../../../src/App.css) с коротким текстом и простой CSS-анимацией (без новых зависимостей).
 - Блокировать повторное нажатие «Старт» и голосовую команду «старт» на время инициализации.
 
 ## 4. Критерии готовности
@@ -25,7 +25,7 @@
 
 ## 5. Связанные файлы
 
-- [src/camera/useCameraStream.ts](../../src/camera/useCameraStream.ts)
-- [src/app/useWorkoutSession.ts](../../src/app/useWorkoutSession.ts)
-- [src/App.tsx](../../src/App.tsx)
-- [src/App.css](../../src/App.css)
+- [src/camera/useCameraStream.ts](../../../src/camera/useCameraStream.ts)
+- [src/app/useWorkoutSession.ts](../../../src/app/useWorkoutSession.ts)
+- [src/App.tsx](../../../src/App.tsx)
+- [src/App.css](../../../src/App.css)
