@@ -1,6 +1,7 @@
 import type { PoseLandmarks, PosePoint } from './types'
 
 export const POSE_INDEX = {
+  nose: 0,
   leftShoulder: 11,
   rightShoulder: 12,
   leftElbow: 13,

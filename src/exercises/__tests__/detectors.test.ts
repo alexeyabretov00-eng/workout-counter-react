@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import { bicepsCurlDetector } from '../bicepsCurlDetector'
 import { squatDetector } from '../squatDetector'
+import { armyPressDetector } from '../armyPressDetector'
 import type { PoseLandmarks } from '../../pose/types'
 
 function createEmptyLandmarks(): PoseLandmarks {
@@ -62,5 +63,55 @@ describe('exercise detectors', () => {
     const result = squatDetector.update(standing, state)
 
     expect(result.repDelta).toBe(1)
+  })
+
+  test('counts one army press rep after down-up-down', () => {
+    const down = createEmptyLandmarks()
+    down[11] = { x: 0.4, y: 0.3, z: 0, visibility: 1, presence: 1 }
+    down[13] = { x: 0.4, y: 0.45, z: 0, visibility: 1, presence: 1 }
+    down[15] = { x: 0.52, y: 0.36, z: 0, visibility: 1, presence: 1 }
+    down[12] = { x: 0.6, y: 0.3, z: 0, visibility: 1, presence: 1 }
+    down[14] = { x: 0.6, y: 0.45, z: 0, visibility: 1, presence: 1 }
+    down[16] = { x: 0.72, y: 0.36, z: 0, visibility: 1, presence: 1 }
+
+    const up = createEmptyLandmarks()
+    up[11] = { x: 0.4, y: 0.3, z: 0, visibility: 1, presence: 1 }
+    up[13] = { x: 0.4, y: 0.15, z: 0, visibility: 1, presence: 1 }
+    up[15] = { x: 0.4, y: 0.03, z: 0, visibility: 1, presence: 1 }
+    up[12] = { x: 0.6, y: 0.3, z: 0, visibility: 1, presence: 1 }
+    up[14] = { x: 0.6, y: 0.15, z: 0, visibility: 1, presence: 1 }
+    up[16] = { x: 0.6, y: 0.03, z: 0, visibility: 1, presence: 1 }
+
+    let state = armyPressDetector.createState()
+    state = armyPressDetector.update(down, state).nextState
+    state = armyPressDetector.update(up, state).nextState
+    const result = armyPressDetector.update(down, state)
+
+    expect(result.repDelta).toBe(1)
+  })
+
+  test('does not treat horizontal arms as army press top phase', () => {
+    const down = createEmptyLandmarks()
+    down[11] = { x: 0.4, y: 0.3, z: 0, visibility: 1, presence: 1 }
+    down[13] = { x: 0.4, y: 0.45, z: 0, visibility: 1, presence: 1 }
+    down[15] = { x: 0.52, y: 0.36, z: 0, visibility: 1, presence: 1 }
+    down[12] = { x: 0.6, y: 0.3, z: 0, visibility: 1, presence: 1 }
+    down[14] = { x: 0.6, y: 0.45, z: 0, visibility: 1, presence: 1 }
+    down[16] = { x: 0.72, y: 0.36, z: 0, visibility: 1, presence: 1 }
+
+    const horizontal = createEmptyLandmarks()
+    horizontal[11] = { x: 0.4, y: 0.3, z: 0, visibility: 1, presence: 1 }
+    horizontal[13] = { x: 0.4, y: 0.3, z: 0, visibility: 1, presence: 1 }
+    horizontal[15] = { x: 0.4, y: 0.3, z: 0, visibility: 1, presence: 1 }
+    horizontal[12] = { x: 0.6, y: 0.3, z: 0, visibility: 1, presence: 1 }
+    horizontal[14] = { x: 0.6, y: 0.3, z: 0, visibility: 1, presence: 1 }
+    horizontal[16] = { x: 0.6, y: 0.3, z: 0, visibility: 1, presence: 1 }
+
+    let state = armyPressDetector.createState()
+    state = armyPressDetector.update(down, state).nextState
+    state = armyPressDetector.update(horizontal, state).nextState
+    const result = armyPressDetector.update(down, state)
+
+    expect(result.repDelta).toBe(0)
   })
 })
