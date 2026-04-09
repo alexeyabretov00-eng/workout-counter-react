@@ -40,7 +40,11 @@ npm run dev
 1. **План** — контекст, цели, этапы и критерии готовности (markdown).
 2. **Задачи реализации** — чеклист конкретных шагов со ссылкой на план.
 
-Кладите их в каталог `features/<краткое-имя-фичи>/` (латиница, дефисы). Имена файлов и структура — по аналогии с примером для документации: [features/documentation/documentation-update-plan.md](features/documentation/documentation-update-plan.md) и [features/documentation/documentation-implementation-tasks.md](features/documentation/documentation-implementation-tasks.md).
+Кладите их в каталог `features/<краткое-имя-фичи>/` (латиница, дефисы). Подробности и правило архива — в [features/README.md](features/README.md).
+
+**После реализации** фичи (чеклист закрыт, результат в коде и документации согласован) **перенесите** каталог фичи в `features/_archive/<то же имя>/`, поправив относительные ссылки в markdown на один уровень вверх к корню репозитория. В архиве план остаётся для истории; активная работа ведётся только в `features/<имя>/` вне `_archive`.
+
+Пример оформления завершённой фичи: [documentation-update-plan.md (архив)](features/_archive/documentation/documentation-update-plan.md), [documentation-implementation-tasks.md (архив)](features/_archive/documentation/documentation-implementation-tasks.md).
 
 ## Стек
 
