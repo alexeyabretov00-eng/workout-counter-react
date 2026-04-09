@@ -248,13 +248,20 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
       restRafRef.current = null
     }
     restCountdownVersionRef.current += 1
+
+    if (isPaused) {
+      setIsPaused(false)
+      setIsRunning(true)
+      return
+    }
+
     await startCamera(memoryVideoRef.current)
     detectorStateRef.current = detector.createState()
     runtimeRef.current = DEFAULT_RUNTIME
     poseServiceRef.current.stop()
     setIsPaused(false)
     setIsRunning(true)
-  }, [detector, startCamera])
+  }, [detector, isPaused, startCamera])
 
   const pause = useCallback(() => {
     setIsPaused(true)
