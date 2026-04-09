@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import { bicepsCurlDetector } from '../bicepsCurlDetector'
 import { squatDetector } from '../squatDetector'
 import { armyPressDetector } from '../armyPressDetector'
+import { exerciseRegistry } from '../registry'
 import type { PoseLandmarks } from '../../pose/types'
 
 function createEmptyLandmarks(): PoseLandmarks {
@@ -15,6 +16,14 @@ function createEmptyLandmarks(): PoseLandmarks {
 }
 
 describe('exercise detectors', () => {
+  test('builds registry from active detectors', () => {
+    expect(exerciseRegistry.length).toBeGreaterThan(0)
+    expect(exerciseRegistry.some((detector) => detector.id === bicepsCurlDetector.id)).toBe(true)
+    expect(exerciseRegistry.some((detector) => detector.id === squatDetector.id)).toBe(true)
+    expect(exerciseRegistry.some((detector) => detector.id === armyPressDetector.id)).toBe(true)
+    expect(exerciseRegistry.every((detector) => detector.isActive !== false)).toBe(true)
+  })
+
   test('counts one biceps curl rep after down-up-down', () => {
     const down = createEmptyLandmarks()
     down[11] = { x: 0.4, y: 0.3, z: 0, visibility: 1, presence: 1 }

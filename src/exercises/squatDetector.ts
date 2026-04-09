@@ -14,6 +14,7 @@ export const squatDetector: ExerciseDetector<SquatState> = {
   id: 'squat',
   name: 'Приседания',
   description: 'Счет повторений приседаний по углу колена.',
+  isActive: true,
   voiceAliases: ['присед', 'приседания', 'приседание'],
   createState: () => ({ phase: 'standing' }),
   update: (landmarks, state) => {

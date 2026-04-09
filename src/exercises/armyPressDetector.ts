@@ -17,6 +17,7 @@ export const armyPressDetector: ExerciseDetector<ArmyPressState> = {
   id: 'army-press',
   name: 'Армейский жим',
   description: 'Счет повторений жима над головой по углу локтя.',
+  isActive: true,
   voiceAliases: [
     'армейский жим',
     'жим стоя',

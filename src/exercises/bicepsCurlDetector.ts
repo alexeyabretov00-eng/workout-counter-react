@@ -14,6 +14,7 @@ export const bicepsCurlDetector: ExerciseDetector<CurlState> = {
   id: 'biceps-curl',
   name: 'Подъем на бицепс',
   description: 'Счет повторений сгибаний рук в локтях.',
+  isActive: true,
   voiceAliases: [
     'бицепс',
     'подъем на бицепс',
