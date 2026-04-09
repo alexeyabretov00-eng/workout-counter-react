@@ -152,7 +152,8 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
 
   const [isModelReady, setIsModelReady] = useState(false)
   const [isRunning, setIsRunning] = useState(false)
-  const { startCamera, stopCamera, cameraError, isCameraReady } = useCameraStream()
+  const { startCamera, stopCamera, cameraError, isCameraReady, isCameraInitializing } =
+    useCameraStream()
 
   const detector = useMemo(() => getExerciseById(selectedExerciseId), [selectedExerciseId])
 
@@ -327,6 +328,7 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
     isRunning,
     isModelReady,
     isCameraReady,
+    isCameraInitializing,
     cameraError,
     start,
     pause,

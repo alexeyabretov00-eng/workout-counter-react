@@ -87,6 +87,7 @@ function App() {
     isRunning,
     isModelReady,
     isCameraReady,
+    isCameraInitializing,
     cameraError,
     start,
     pause,
@@ -112,6 +113,7 @@ function App() {
 
   const isRunningRef = useRef(isRunning)
   const isCameraReadyRef = useRef(isCameraReady)
+  const isCameraInitializingRef = useRef(isCameraInitializing)
   const isModelReadyRef = useRef(isModelReady)
   const startRef = useRef(start)
   const pauseRef = useRef(pause)
@@ -124,12 +126,13 @@ function App() {
   useEffect(() => {
     isRunningRef.current = isRunning
     isCameraReadyRef.current = isCameraReady
+    isCameraInitializingRef.current = isCameraInitializing
     isModelReadyRef.current = isModelReady
     startRef.current = start
     pauseRef.current = pause
     resetRef.current = reset
     shutdownRef.current = shutdown
-  }, [isCameraReady, isModelReady, isRunning, pause, reset, shutdown, start])
+  }, [isCameraInitializing, isCameraReady, isModelReady, isRunning, pause, reset, shutdown, start])
 
   useEffect(() => {
     const recognitionApi = window as Window & {
@@ -184,7 +187,12 @@ function App() {
         matchesCommand(transcript, command),
       )
 
-      if (isStartCommand && !isRunningRef.current && isModelReadyRef.current) {
+      if (
+        isStartCommand &&
+        !isRunningRef.current &&
+        !isCameraInitializingRef.current &&
+        isModelReadyRef.current
+      ) {
         runCommand('start', () => {
           void startRef.current()
         })
@@ -305,7 +313,10 @@ function App() {
             </option>
           ))}
         </select>
-        <button onClick={() => void start()} disabled={!isModelReady || isRunning}>
+        <button
+          onClick={() => void start()}
+          disabled={!isModelReady || isRunning || isCameraInitializing}
+        >
           Старт
         </button>
         <button onClick={pause} disabled={!isRunning}>
@@ -338,7 +349,13 @@ function App() {
         {cameraError && <span className="camera-error">Ошибка камеры: {cameraError}</span>}
       </section>
 
-      <section className="stage">
+      <section className="stage" aria-busy={isCameraInitializing}>
+        {isCameraInitializing ? (
+          <div className="stage-camera-loader" role="status" aria-live="polite">
+            <span className="stage-camera-loader__spinner" aria-hidden />
+            <p className="stage-camera-loader__text">Подключение камеры…</p>
+          </div>
+        ) : null}
         <canvas ref={canvasRef} className="stage-canvas" />
       </section>
     </main>

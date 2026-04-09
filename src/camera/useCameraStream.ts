@@ -4,6 +4,7 @@ export function useCameraStream() {
   const streamRef = useRef<MediaStream | null>(null)
   const [cameraError, setCameraError] = useState<string | null>(null)
   const [isCameraReady, setIsCameraReady] = useState(false)
+  const [isCameraInitializing, setIsCameraInitializing] = useState(false)
 
   const stopCamera = useCallback(() => {
     if (streamRef.current) {
@@ -18,6 +19,7 @@ export function useCameraStream() {
       return
     }
 
+    setIsCameraInitializing(true)
     stopCamera()
     setCameraError(null)
 
@@ -38,6 +40,8 @@ export function useCameraStream() {
     } catch (error) {
       setIsCameraReady(false)
       setCameraError(error instanceof Error ? error.message : 'Не удалось открыть камеру')
+    } finally {
+      setIsCameraInitializing(false)
     }
   }, [stopCamera])
 
@@ -46,5 +50,6 @@ export function useCameraStream() {
     stopCamera,
     cameraError,
     isCameraReady,
+    isCameraInitializing,
   }
 }
