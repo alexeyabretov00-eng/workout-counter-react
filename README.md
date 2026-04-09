@@ -33,6 +33,15 @@ npm run dev
 
 Перед PR имеет смысл выполнить `npm run lint` и `npm run test`.
 
+## Планирование фич
+
+Для **каждой значимой фичи** (не для мелких правок) заводите в репозитории пару артефактов:
+
+1. **План** — контекст, цели, этапы и критерии готовности (markdown).
+2. **Задачи реализации** — чеклист конкретных шагов со ссылкой на план.
+
+Кладите их в каталог `features/<краткое-имя-фичи>/` (латиница, дефисы). Имена файлов и структура — по аналогии с примером для документации: [features/documentation/documentation-update-plan.md](features/documentation/documentation-update-plan.md) и [features/documentation/documentation-implementation-tasks.md](features/documentation/documentation-implementation-tasks.md).
+
 ## Стек
 
 React 19, TypeScript, Vite 8, MediaPipe Tasks Vision (`pose_landmarker_lite`), Vitest.
