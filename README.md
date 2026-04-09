@@ -12,7 +12,7 @@
 
 Подробный справочник фраз: [docs/voice-commands.md](docs/voice-commands.md). Требования к браузеру, камере и микрофону: [docs/browser-requirements.md](docs/browser-requirements.md).
 
-Идеи и бэклог развития продукта — в [todo.md](todo.md) (разделы по темам; полный список не дублируется в README).
+Идеи и бэклог развития продукта — в [todo.md](todo.md) (таблица: направления, признак готовности; полный список не дублируется в README).
 
 ## Запуск
 
