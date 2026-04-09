@@ -1,6 +1,6 @@
 # План фичи: динамическая регистрация упражнений
 
-Ссылка на правила процесса: [README.md](../../README.md), [features/README.md](../../features/README.md).
+Ссылка на правила процесса: [README.md](../../../README.md), [features/README.md](../../../features/README.md).
 
 ## Контекст
 
