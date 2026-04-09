@@ -152,6 +152,7 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
 
   const [isModelReady, setIsModelReady] = useState(false)
   const [isRunning, setIsRunning] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
   const { startCamera, stopCamera, cameraError, isCameraReady, isCameraInitializing } =
     useCameraStream()
 
@@ -251,10 +252,12 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
     detectorStateRef.current = detector.createState()
     runtimeRef.current = DEFAULT_RUNTIME
     poseServiceRef.current.stop()
+    setIsPaused(false)
     setIsRunning(true)
   }, [detector, startCamera])
 
   const pause = useCallback(() => {
+    setIsPaused(true)
     setIsRunning(false)
   }, [])
 
@@ -274,6 +277,7 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
       restRafRef.current = null
     }
     restCountdownVersionRef.current += 1
+    setIsPaused(false)
     setIsRunning(false)
     stopCamera()
     clearCanvas(canvasRef.current)
@@ -326,6 +330,7 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
   return {
     canvasRef,
     isRunning,
+    isPaused,
     isModelReady,
     isCameraReady,
     isCameraInitializing,

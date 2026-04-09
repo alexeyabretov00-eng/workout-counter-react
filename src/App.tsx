@@ -85,6 +85,7 @@ function App() {
   const {
     canvasRef,
     isRunning,
+    isPaused,
     isModelReady,
     isCameraReady,
     isCameraInitializing,
@@ -346,6 +347,7 @@ function App() {
           Camera: {isCameraReady ? 'ready' : 'off'}
         </span>
         <span className={`voice-state ${voiceStatus}`}>{voiceStatusLabel[voiceStatus]}</span>
+        {isPaused && <span className="session-state">Упражнение приостановлено</span>}
         {cameraError && <span className="camera-error">Ошибка камеры: {cameraError}</span>}
       </section>
 
@@ -356,7 +358,13 @@ function App() {
             <p className="stage-camera-loader__text">Подключение камеры…</p>
           </div>
         ) : null}
-        <canvas ref={canvasRef} className="stage-canvas" />
+        {isPaused ? (
+          <div className="stage-paused-state" role="status" aria-live="polite">
+            <p className="stage-paused-state__text">Упражнение приостановлено</p>
+          </div>
+        ) : (
+          <canvas ref={canvasRef} className="stage-canvas" />
+        )}
       </section>
     </main>
   )
