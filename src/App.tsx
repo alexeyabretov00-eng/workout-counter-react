@@ -315,13 +315,18 @@ function App() {
           ))}
         </select>
         <button
-          onClick={() => void start()}
-          disabled={!isModelReady || isRunning || isCameraInitializing}
+          type="button"
+          onClick={() => {
+            if (isRunning) {
+              pause()
+            } else {
+              void start()
+            }
+          }}
+          disabled={isRunning ? false : !isModelReady || isCameraInitializing}
+          aria-label={isRunning ? 'Пауза' : 'Старт'}
         >
-          Старт
-        </button>
-        <button onClick={pause} disabled={!isRunning}>
-          Пауза
+          {isRunning ? 'Пауза' : 'Старт'}
         </button>
         <button onClick={reset}>Сброс</button>
         <button onClick={() => shutdown()}>Стоп камера</button>
