@@ -5,6 +5,8 @@ import type { ExerciseRuntimeState, ExerciseState } from '../exercises/types'
 import { PoseLandmarkerService } from '../pose/poseLandmarkerService'
 import { drawFrame, drawRestCountdown } from '../render/canvasRenderer'
 
+export type ModelStatus = 'loading' | 'ready' | 'error'
+
 const DEFAULT_RUNTIME: ExerciseRuntimeState = {
   reps: 0,
   phase: '-',
@@ -150,7 +152,8 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
   const runtimeRef = useRef<ExerciseRuntimeState>(DEFAULT_RUNTIME)
   const restDurationMsRef = useRef(restDurationMs)
 
-  const [isModelReady, setIsModelReady] = useState(false)
+  const [modelStatus, setModelStatus] = useState<ModelStatus>('loading')
+  const isModelReady = modelStatus === 'ready'
   const [isRunning, setIsRunning] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const [isRestCountdownActive, setIsRestCountdownActive] = useState(false)
@@ -177,9 +180,16 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
     const poseService = poseServiceRef.current
 
     const initModel = async () => {
-      await poseService.init()
-      if (isMounted) {
-        setIsModelReady(true)
+      try {
+        await poseService.init()
+        if (isMounted) {
+          setModelStatus('ready')
+        }
+      } catch (error) {
+        console.error('Failed to initialize pose model', error)
+        if (isMounted) {
+          setModelStatus('error')
+        }
       }
     }
 
@@ -344,6 +354,7 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
     isRunning,
     isPaused,
     isRestCountdownActive,
+    modelStatus,
     isModelReady,
     isCameraReady,
     isCameraInitializing,

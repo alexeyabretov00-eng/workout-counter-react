@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useWorkoutSession } from './app/useWorkoutSession'
+import { useWorkoutSession, type ModelStatus } from './app/useWorkoutSession'
 import { exerciseRegistry } from './exercises/registry'
 import './App.css'
 
@@ -87,6 +87,7 @@ function App() {
     isRunning,
     isPaused,
     isRestCountdownActive,
+    modelStatus,
     isModelReady,
     isCameraReady,
     isCameraInitializing,
@@ -313,6 +314,11 @@ function App() {
     blocked: 'Голос: доступ к микрофону запрещен',
     error: 'Голос: ошибка распознавания',
   }
+  const modelStatusLabel: Record<ModelStatus, string> = {
+    loading: 'загружается',
+    ready: 'загружена',
+    error: 'не загружена',
+  }
 
   return (
     <main className="app">
@@ -374,8 +380,8 @@ function App() {
       </section>
 
       <section className="status-bar">
-        <span className={`model-state ${isModelReady ? 'ready' : 'loading'}`}>
-          Модель: {isModelReady ? 'загружена' : 'загружается'}
+        <span className={`model-state ${modelStatus}`}>
+          Модель: {modelStatusLabel[modelStatus]}
         </span>
         <span className={`camera-state ${isCameraReady ? 'ready' : 'off'}`}>
           Camera: {isCameraReady ? 'ready' : 'off'}

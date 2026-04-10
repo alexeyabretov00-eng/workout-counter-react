@@ -73,6 +73,31 @@
   font-size: 14px;
 }
 
+.model-state {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+}
+
+.model-state.ready {
+  color: #065f46;
+  border-color: #34d399;
+  background: #ecfdf5;
+}
+
+.model-state.loading {
+  color: #075985;
+  border-color: #38bdf8;
+  background: #f0f9ff;
+}
+
+.model-state.error {
+  color: #b91c1c;
+  border-color: #fca5a5;
+  background: #fef2f2;
+}
+
 .camera-state {
   padding: 4px 10px;
   border-radius: 999px;
