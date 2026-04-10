@@ -46,7 +46,7 @@ type VoiceStatus = 'unsupported' | 'starting' | 'listening' | 'blocked' | 'error
 const START_COMMANDS = ['старт', 'начинаем упражнение', 'начать упражнение']
 const PAUSE_COMMANDS = ['пауза', 'поставь на паузу', 'остановись']
 const RESET_COMMANDS = ['сброс', 'сбросить', 'обнулить', 'сбрось']
-const SHUTDOWN_COMMANDS = ['стоп', 'стоп камера', 'выключи камеру']
+const SHUTDOWN_COMMANDS = ['стоп', 'стоп упражнение', 'закончи упражнение']
 const REST_DURATION_OPTIONS = [1, 2, 3, 5] as const
 const REST_MINUTE_COMMANDS: Array<{ minutes: number; phrases: string[] }> = [
   { minutes: 1, phrases: ['отдых 1', 'отдых 1 минута', 'отдых 1 минуту', 'отдых одна минута'] },
@@ -344,8 +344,13 @@ function App() {
         <button type="button" onClick={reset} disabled={isRestCountdownActive}>
           Сброс
         </button>
-        <button type="button" onClick={() => shutdown()} disabled={isRestCountdownActive}>
-          Стоп камера
+        <button
+          type="button"
+          onClick={() => shutdown()}
+          disabled={isRestCountdownActive}
+          aria-label="Стоп"
+        >
+          Стоп
         </button>
         <label htmlFor="rest-duration-select">Отдых</label>
         <select
