@@ -86,6 +86,7 @@ function App() {
     canvasRef,
     isRunning,
     isPaused,
+    isRestCountdownActive,
     isModelReady,
     isCameraReady,
     isCameraInitializing,
@@ -113,6 +114,7 @@ function App() {
   }, [])
 
   const isRunningRef = useRef(isRunning)
+  const isRestCountdownActiveRef = useRef(isRestCountdownActive)
   const isCameraReadyRef = useRef(isCameraReady)
   const isCameraInitializingRef = useRef(isCameraInitializing)
   const isModelReadyRef = useRef(isModelReady)
@@ -126,6 +128,7 @@ function App() {
 
   useEffect(() => {
     isRunningRef.current = isRunning
+    isRestCountdownActiveRef.current = isRestCountdownActive
     isCameraReadyRef.current = isCameraReady
     isCameraInitializingRef.current = isCameraInitializing
     isModelReadyRef.current = isModelReady
@@ -133,7 +136,17 @@ function App() {
     pauseRef.current = pause
     resetRef.current = reset
     shutdownRef.current = shutdown
-  }, [isCameraInitializing, isCameraReady, isModelReady, isRunning, pause, reset, shutdown, start])
+  }, [
+    isCameraInitializing,
+    isCameraReady,
+    isModelReady,
+    isRestCountdownActive,
+    isRunning,
+    pause,
+    reset,
+    shutdown,
+    start,
+  ])
 
   useEffect(() => {
     const recognitionApi = window as Window & {
@@ -211,7 +224,7 @@ function App() {
       const isResetCommand = RESET_COMMANDS.some((command) =>
         matchesCommand(transcript, command),
       )
-      if (isResetCommand) {
+      if (isResetCommand && !isRestCountdownActiveRef.current) {
         runCommand('reset', () => resetRef.current())
         return
       }
@@ -328,8 +341,12 @@ function App() {
         >
           {isRunning ? 'Пауза' : 'Старт'}
         </button>
-        <button onClick={reset}>Сброс</button>
-        <button onClick={() => shutdown()}>Стоп камера</button>
+        <button type="button" onClick={reset} disabled={isRestCountdownActive}>
+          Сброс
+        </button>
+        <button type="button" onClick={() => shutdown()} disabled={isRestCountdownActive}>
+          Стоп камера
+        </button>
         <label htmlFor="rest-duration-select">Отдых</label>
         <select
           id="rest-duration-select"

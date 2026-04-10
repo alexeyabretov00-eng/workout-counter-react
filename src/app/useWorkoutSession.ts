@@ -153,6 +153,7 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
   const [isModelReady, setIsModelReady] = useState(false)
   const [isRunning, setIsRunning] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
+  const [isRestCountdownActive, setIsRestCountdownActive] = useState(false)
   const { startCamera, stopCamera, cameraError, isCameraReady, isCameraInitializing } =
     useCameraStream()
 
@@ -248,6 +249,7 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
       restRafRef.current = null
     }
     restCountdownVersionRef.current += 1
+    setIsRestCountdownActive(false)
 
     if (isPaused) {
       setIsPaused(false)
@@ -275,53 +277,56 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
 
   const stopSession = useCallback(
     (withRestCountdown: boolean, restDurationOverrideMs?: number) => {
-    if (rafRef.current) {
-      cancelAnimationFrame(rafRef.current)
-      rafRef.current = null
-    }
-    if (restRafRef.current) {
-      cancelAnimationFrame(restRafRef.current)
-      restRafRef.current = null
-    }
-    restCountdownVersionRef.current += 1
-    setIsPaused(false)
-    setIsRunning(false)
-    stopCamera()
-    clearCanvas(canvasRef.current)
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current)
+        rafRef.current = null
+      }
+      if (restRafRef.current) {
+        cancelAnimationFrame(restRafRef.current)
+        restRafRef.current = null
+      }
+      restCountdownVersionRef.current += 1
+      setIsPaused(false)
+      setIsRunning(false)
+      stopCamera()
+      clearCanvas(canvasRef.current)
 
-    if (!withRestCountdown) {
-      return
-    }
-
-    const countdownDurationMs = restDurationOverrideMs ?? restDurationMsRef.current
-    const durationMinutes = Math.max(1, Math.round(countdownDurationMs / 60000))
-    speakRussianText(`Отдыхаем ${numberToRussianWords(durationMinutes)} минут`)
-    const countdownVersion = restCountdownVersionRef.current
-    const restStartedAt = performance.now()
-    let isFinishAnnounced = false
-    const restTick = (now: number) => {
-      if (countdownVersion !== restCountdownVersionRef.current) {
+      if (!withRestCountdown) {
+        setIsRestCountdownActive(false)
         return
       }
 
-      const elapsed = now - restStartedAt
-      const remaining = Math.max(0, countdownDurationMs - elapsed)
-      const canvas = canvasRef.current
-      if (canvas) {
-        drawRestCountdown(canvas, remaining, countdownDurationMs)
-      }
-
-      if (remaining > 0) {
-        restRafRef.current = requestAnimationFrame(restTick)
-      } else {
-        if (!isFinishAnnounced) {
-          speakRussianText('Ебашим')
-          isFinishAnnounced = true
+      const countdownDurationMs = restDurationOverrideMs ?? restDurationMsRef.current
+      const durationMinutes = Math.max(1, Math.round(countdownDurationMs / 60000))
+      speakRussianText(`Отдыхаем ${numberToRussianWords(durationMinutes)} минут`)
+      const countdownVersion = restCountdownVersionRef.current
+      const restStartedAt = performance.now()
+      let isFinishAnnounced = false
+      setIsRestCountdownActive(true)
+      const restTick = (now: number) => {
+        if (countdownVersion !== restCountdownVersionRef.current) {
+          return
         }
-        restRafRef.current = null
+
+        const elapsed = now - restStartedAt
+        const remaining = Math.max(0, countdownDurationMs - elapsed)
+        const canvas = canvasRef.current
+        if (canvas) {
+          drawRestCountdown(canvas, remaining, countdownDurationMs)
+        }
+
+        if (remaining > 0) {
+          restRafRef.current = requestAnimationFrame(restTick)
+        } else {
+          if (!isFinishAnnounced) {
+            speakRussianText('Ебашим')
+            isFinishAnnounced = true
+          }
+          restRafRef.current = null
+          setIsRestCountdownActive(false)
+        }
       }
-    }
-    restRafRef.current = requestAnimationFrame(restTick)
+      restRafRef.current = requestAnimationFrame(restTick)
     },
     [stopCamera],
   )
@@ -338,6 +343,7 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
     canvasRef,
     isRunning,
     isPaused,
+    isRestCountdownActive,
     isModelReady,
     isCameraReady,
     isCameraInitializing,
