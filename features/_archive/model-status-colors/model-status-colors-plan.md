@@ -29,7 +29,7 @@
 
 ## 5. Связанные файлы
 
-- [src/app/useWorkoutSession.ts](../../src/app/useWorkoutSession.ts)
-- [src/App.tsx](../../src/App.tsx)
-- [src/App.css](../../src/App.css)
-- [docs/browser-requirements.md](../../docs/browser-requirements.md)
+- [src/app/useWorkoutSession.ts](../../../src/app/useWorkoutSession.ts)
+- [src/App.tsx](../../../src/App.tsx)
+- [src/App.css](../../../src/App.css)
+- [docs/browser-requirements.md](../../../docs/browser-requirements.md)
