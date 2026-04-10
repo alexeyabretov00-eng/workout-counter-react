@@ -115,7 +115,6 @@ function App() {
 
   const isRunningRef = useRef(isRunning)
   const isRestCountdownActiveRef = useRef(isRestCountdownActive)
-  const isCameraReadyRef = useRef(isCameraReady)
   const isCameraInitializingRef = useRef(isCameraInitializing)
   const isModelReadyRef = useRef(isModelReady)
   const startRef = useRef(start)
@@ -129,7 +128,6 @@ function App() {
   useEffect(() => {
     isRunningRef.current = isRunning
     isRestCountdownActiveRef.current = isRestCountdownActive
-    isCameraReadyRef.current = isCameraReady
     isCameraInitializingRef.current = isCameraInitializing
     isModelReadyRef.current = isModelReady
     startRef.current = start
@@ -138,7 +136,6 @@ function App() {
     shutdownRef.current = shutdown
   }, [
     isCameraInitializing,
-    isCameraReady,
     isModelReady,
     isRestCountdownActive,
     isRunning,
@@ -224,7 +221,11 @@ function App() {
       const isResetCommand = RESET_COMMANDS.some((command) =>
         matchesCommand(transcript, command),
       )
-      if (isResetCommand && !isRestCountdownActiveRef.current) {
+      if (
+        isResetCommand &&
+        isRunningRef.current &&
+        !isRestCountdownActiveRef.current
+      ) {
         runCommand('reset', () => resetRef.current())
         return
       }
@@ -232,7 +233,11 @@ function App() {
       const isShutdownCommand = SHUTDOWN_COMMANDS.some((command) =>
         matchesCommand(transcript, command),
       )
-      if (isShutdownCommand && (isRunningRef.current || isCameraReadyRef.current)) {
+      if (
+        isShutdownCommand &&
+        isRunningRef.current &&
+        !isRestCountdownActiveRef.current
+      ) {
         runCommand('shutdown', () => shutdownRef.current())
         return
       }
@@ -299,6 +304,8 @@ function App() {
     }
   }, [commandExerciseLookup])
 
+  const resetStopEnabled = isRunning && !isRestCountdownActive
+
   const voiceStatusLabel: Record<VoiceStatus, string> = {
     unsupported: 'Голос: не поддерживается',
     starting: 'Голос: запуск',
@@ -341,13 +348,13 @@ function App() {
         >
           {isRunning ? 'Пауза' : 'Старт'}
         </button>
-        <button type="button" onClick={reset} disabled={isRestCountdownActive}>
+        <button type="button" onClick={reset} disabled={!resetStopEnabled}>
           Сброс
         </button>
         <button
           type="button"
           onClick={() => shutdown()}
-          disabled={isRestCountdownActive}
+          disabled={!resetStopEnabled}
           aria-label="Стоп"
         >
           Стоп
