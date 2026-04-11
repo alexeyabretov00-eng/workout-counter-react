@@ -2,7 +2,7 @@ import { POSE_INDEX, calculateAngle, getPoint } from '../pose'
 import type { ExerciseDetector } from '.'
 
 type CurlPhase = 'down' | 'up'
-interface CurlState {
+type CurlState = {
   phase: CurlPhase
 }
 

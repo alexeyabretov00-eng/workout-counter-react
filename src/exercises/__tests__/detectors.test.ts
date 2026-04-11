@@ -8,7 +8,7 @@ import {
 } from '..'
 import type { PoseLandmarks } from '../../pose'
 
-function createEmptyLandmarks(): PoseLandmarks {
+const createEmptyLandmarks = (): PoseLandmarks => {
   return Array.from({ length: 33 }, () => ({
     x: 0,
     y: 0,

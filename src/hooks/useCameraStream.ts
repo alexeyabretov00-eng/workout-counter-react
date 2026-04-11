@@ -1,14 +1,12 @@
 import { useCallback, useRef, useState } from 'react'
 import type { EntityStatus } from '../types'
 
-interface CameraState {
-  status: EntityStatus
-  cameraError: string | null
-}
-
-export function useCameraStream() {
+export const useCameraStream = () => {
   const streamRef = useRef<MediaStream | null>(null)
-  const [cameraState, setCameraState] = useState<CameraState>({
+  const [cameraState, setCameraState] = useState<{
+    status: EntityStatus
+    cameraError: string | null
+  }>({
     status: 'idle',
     cameraError: null,
   })
@@ -18,6 +16,7 @@ export function useCameraStream() {
       streamRef.current.getTracks().forEach((track) => track.stop())
       streamRef.current = null
     }
+    
     setCameraState((prev) => ({
       ...prev,
       status: 'idle',
@@ -47,7 +46,9 @@ export function useCameraStream() {
 
       streamRef.current = stream
       videoEl.srcObject = stream
+
       await videoEl.play()
+
       setCameraState({
         status: 'ready',
         cameraError: null,

@@ -1,145 +1,31 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useCameraStream } from './useCameraStream'
-import { getExerciseById, type ExerciseRuntimeState, type ExerciseState } from '../exercises'
+import {
+  getExerciseDetectorByIdOrDefault,
+  type ExerciseRuntimeState,
+  type ExerciseState,
+} from '../exercises'
 import { PoseLandmarkerService } from '../pose'
 import { drawFrame, drawRestCountdown } from '../render'
 import type { EntityStatus } from '../types'
+import {
+  clearCanvas,
+  numberToRussianWords,
+  speakRussianCount,
+  speakRussianText,
+} from '../utils'
 
-const DEFAULT_RUNTIME: ExerciseRuntimeState = {
+const WorkoutSessionRuntimeDefaultState: ExerciseRuntimeState = {
   reps: 0,
   phase: '-',
   confidence: 0,
   metrics: {},
   isBodyDetected: false,
 }
-const RU_UNITS = [
-  'ноль',
-  'один',
-  'два',
-  'три',
-  'четыре',
-  'пять',
-  'шесть',
-  'семь',
-  'восемь',
-  'девять',
-  'десять',
-  'одиннадцать',
-  'двенадцать',
-  'тринадцать',
-  'четырнадцать',
-  'пятнадцать',
-  'шестнадцать',
-  'семнадцать',
-  'восемнадцать',
-  'девятнадцать',
-]
 
-const RU_TENS = [
-  '',
-  '',
-  'двадцать',
-  'тридцать',
-  'сорок',
-  'пятьдесят',
-  'шестьдесят',
-  'семьдесят',
-  'восемьдесят',
-  'девяносто',
-]
+type SessionStatus = 'idle' | 'running' | 'paused' | 'rest'
 
-const RU_HUNDREDS = [
-  '',
-  'сто',
-  'двести',
-  'триста',
-  'четыреста',
-  'пятьсот',
-  'шестьсот',
-  'семьсот',
-  'восемьсот',
-  'девятьсот',
-]
-
-function numberToRussianWords(value: number): string {
-  const safeValue = Math.max(0, Math.trunc(value))
-  if (safeValue < 20) {
-    return RU_UNITS[safeValue]
-  }
-
-  if (safeValue < 100) {
-    const tens = Math.floor(safeValue / 10)
-    const units = safeValue % 10
-    return units > 0 ? `${RU_TENS[tens]} ${RU_UNITS[units]}` : RU_TENS[tens]
-  }
-
-  if (safeValue < 1000) {
-    const hundreds = Math.floor(safeValue / 100)
-    const rest = safeValue % 100
-    return rest > 0 ? `${RU_HUNDREDS[hundreds]} ${numberToRussianWords(rest)}` : RU_HUNDREDS[hundreds]
-  }
-
-  return String(safeValue)
-}
-
-function speakRussianCount(value: number): void {
-  if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
-    return
-  }
-
-  const utterance = new SpeechSynthesisUtterance(numberToRussianWords(value))
-  utterance.lang = 'ru-RU'
-  utterance.rate = 1
-  utterance.pitch = 1
-
-  window.speechSynthesis.cancel()
-  window.speechSynthesis.speak(utterance)
-}
-
-function speakRussianText(text: string): void {
-  if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
-    return
-  }
-
-  const synth = window.speechSynthesis
-  const utterance = new SpeechSynthesisUtterance(text)
-  utterance.lang = 'ru-RU'
-  utterance.rate = 1
-  utterance.pitch = 1
-
-  // Some browsers drop utterances fired in media/recognition callbacks.
-  setTimeout(() => {
-    synth.cancel()
-    synth.resume()
-    synth.speak(utterance)
-  }, 10)
-}
-
-function clearCanvas(canvas: HTMLCanvasElement | null): void {
-  if (!canvas) {
-    return
-  }
-
-  const ctx = canvas.getContext('2d')
-  if (!ctx) {
-    return
-  }
-
-  const dpr = window.devicePixelRatio || 1
-  const cssWidth = canvas.clientWidth
-  const cssHeight = canvas.clientHeight
-  const nextWidth = Math.round(cssWidth * dpr)
-  const nextHeight = Math.round(cssHeight * dpr)
-
-  if (nextWidth > 0 && nextHeight > 0 && (canvas.width !== nextWidth || canvas.height !== nextHeight)) {
-    canvas.width = nextWidth
-    canvas.height = nextHeight
-  }
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-}
-
-export function useWorkoutSession(selectedExerciseId: string, restDurationMs: number) {
+export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: number) => {
   const memoryVideoRef = useRef<HTMLVideoElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const rafRef = useRef<number | null>(null)
@@ -147,19 +33,21 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
   const restCountdownVersionRef = useRef(0)
   const poseServiceRef = useRef(new PoseLandmarkerService())
   const detectorStateRef = useRef<ExerciseState>({})
-  const runtimeRef = useRef<ExerciseRuntimeState>(DEFAULT_RUNTIME)
+  const runtimeRef = useRef<ExerciseRuntimeState>(WorkoutSessionRuntimeDefaultState)
   const restDurationMsRef = useRef(restDurationMs)
 
   const [modelStatus, setModelStatus] = useState<EntityStatus>('loading')
-  const isModelReady = modelStatus === 'ready'
-  const [isRunning, setIsRunning] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
-  const [isRestCountdownActive, setIsRestCountdownActive] = useState(false)
+  const [sessionStatus, setSessionStatus] = useState<SessionStatus>('idle')
   const { startCamera, stopCamera, cameraError, cameraStatus } = useCameraStream()
-  const isCameraReady = cameraStatus === 'ready'
-  const isCameraInitializing = cameraStatus === 'initializing'
+  
+  const isRunning = sessionStatus === 'running'
+  const isPaused = sessionStatus === 'paused'
+  const isRestCountdownActive = sessionStatus === 'rest'
 
-  const detector = useMemo(() => getExerciseById(selectedExerciseId), [selectedExerciseId])
+  const detector = useMemo(
+    () => getExerciseDetectorByIdOrDefault(selectedExerciseId),
+    [selectedExerciseId],
+  )
 
   useEffect(() => {
     restDurationMsRef.current = restDurationMs
@@ -169,6 +57,7 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
     memoryVideoRef.current = document.createElement('video')
     memoryVideoRef.current.playsInline = true
     memoryVideoRef.current.muted = true
+    
     return () => {
       memoryVideoRef.current = null
     }
@@ -258,30 +147,29 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
       restRafRef.current = null
     }
     restCountdownVersionRef.current += 1
-    setIsRestCountdownActive(false)
+    if (sessionStatus === 'rest') {
+      setSessionStatus('idle')
+    }
 
-    if (isPaused) {
-      setIsPaused(false)
-      setIsRunning(true)
+    if (sessionStatus === 'paused') {
+      setSessionStatus('running')
       return
     }
 
     await startCamera(memoryVideoRef.current)
     detectorStateRef.current = detector.createState()
-    runtimeRef.current = DEFAULT_RUNTIME
+    runtimeRef.current = WorkoutSessionRuntimeDefaultState
     poseServiceRef.current.stop()
-    setIsPaused(false)
-    setIsRunning(true)
-  }, [detector, isPaused, startCamera])
+    setSessionStatus('running')
+  }, [detector, sessionStatus, startCamera])
 
   const pause = useCallback(() => {
-    setIsPaused(true)
-    setIsRunning(false)
+    setSessionStatus('paused')
   }, [])
 
   const reset = useCallback(() => {
     detectorStateRef.current = detector.createState()
-    runtimeRef.current = DEFAULT_RUNTIME
+    runtimeRef.current = WorkoutSessionRuntimeDefaultState
   }, [detector])
 
   const stopSession = useCallback(
@@ -295,13 +183,11 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
         restRafRef.current = null
       }
       restCountdownVersionRef.current += 1
-      setIsPaused(false)
-      setIsRunning(false)
+      setSessionStatus('idle')
       stopCamera()
       clearCanvas(canvasRef.current)
 
       if (!withRestCountdown) {
-        setIsRestCountdownActive(false)
         return
       }
 
@@ -311,7 +197,7 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
       const countdownVersion = restCountdownVersionRef.current
       const restStartedAt = performance.now()
       let isFinishAnnounced = false
-      setIsRestCountdownActive(true)
+      setSessionStatus('rest')
       const restTick = (now: number) => {
         if (countdownVersion !== restCountdownVersionRef.current) {
           return
@@ -332,7 +218,7 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
             isFinishAnnounced = true
           }
           restRafRef.current = null
-          setIsRestCountdownActive(false)
+          setSessionStatus('idle')
         }
       }
       restRafRef.current = requestAnimationFrame(restTick)
@@ -354,9 +240,9 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
     isPaused,
     isRestCountdownActive,
     modelStatus,
-    isModelReady,
-    isCameraReady,
-    isCameraInitializing,
+    isModelReady: modelStatus === 'ready',
+    isCameraReady: cameraStatus === 'ready',
+    isCameraInitializing: cameraStatus === 'initializing',
     cameraError,
     start,
     pause,

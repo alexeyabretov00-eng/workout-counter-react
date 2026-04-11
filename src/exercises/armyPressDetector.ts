@@ -3,7 +3,7 @@ import type { ExerciseDetector } from '.'
 
 type ArmyPressPhase = 'down' | 'up'
 
-interface ArmyPressState {
+type ArmyPressState = {
   phase: ArmyPressPhase
 }
 

@@ -1,6 +1,8 @@
 import type { PoseLandmarks } from '../pose'
 
-export interface DetectorResult<TState extends ExerciseState = ExerciseState> {
+export type ExerciseState = Record<string, unknown>
+
+export type DetectorResult<TState extends ExerciseState = ExerciseState> = {
   nextState: TState
   repDelta: number
   phase: string
@@ -8,9 +10,7 @@ export interface DetectorResult<TState extends ExerciseState = ExerciseState> {
   confidence: number
 }
 
-export type ExerciseState = object
-
-export interface ExerciseDetector<TState extends object = ExerciseState> {
+export type ExerciseDetector<TState extends ExerciseState = ExerciseState> = {
   id: string
   name: string
   description: string
@@ -20,7 +20,7 @@ export interface ExerciseDetector<TState extends object = ExerciseState> {
   update(landmarks: PoseLandmarks | null, state: TState): DetectorResult<TState>
 }
 
-export interface ExerciseRuntimeState {
+export type ExerciseRuntimeState = {  
   reps: number
   phase: string
   confidence: number

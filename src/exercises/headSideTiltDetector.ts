@@ -1,10 +1,10 @@
 import { POSE_INDEX, getPoint } from '../pose'
-import type { ExerciseDetector } from '.'
+import type { ExerciseDetector } from './types'
 
 type HeadTiltPhase = 'center' | 'right' | 'left'
 type HeadTiltSide = 'right' | 'left'
 
-interface HeadSideTiltState {
+type HeadSideTiltState = {
   phase: HeadTiltPhase
   lastExtremeSide: HeadTiltSide | null
 }
