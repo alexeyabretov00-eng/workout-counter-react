@@ -1,1 +1,1 @@
-export type { AppStatus } from './status'
+export type { EntityStatus } from './status'

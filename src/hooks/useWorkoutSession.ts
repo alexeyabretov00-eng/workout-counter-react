@@ -3,7 +3,7 @@ import { useCameraStream } from './useCameraStream'
 import { getExerciseById, type ExerciseRuntimeState, type ExerciseState } from '../exercises'
 import { PoseLandmarkerService } from '../pose'
 import { drawFrame, drawRestCountdown } from '../render'
-import type { AppStatus } from '../types'
+import type { EntityStatus } from '../types'
 
 const DEFAULT_RUNTIME: ExerciseRuntimeState = {
   reps: 0,
@@ -150,7 +150,7 @@ export function useWorkoutSession(selectedExerciseId: string, restDurationMs: nu
   const runtimeRef = useRef<ExerciseRuntimeState>(DEFAULT_RUNTIME)
   const restDurationMsRef = useRef(restDurationMs)
 
-  const [modelStatus, setModelStatus] = useState<AppStatus>('loading')
+  const [modelStatus, setModelStatus] = useState<EntityStatus>('loading')
   const isModelReady = modelStatus === 'ready'
   const [isRunning, setIsRunning] = useState(false)
   const [isPaused, setIsPaused] = useState(false)

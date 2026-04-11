@@ -1,1 +1,1 @@
-export type AppStatus = 'idle' | 'initializing' | 'loading' | 'ready' | 'error'
+export type EntityStatus = 'idle' | 'initializing' | 'loading' | 'ready' | 'error'

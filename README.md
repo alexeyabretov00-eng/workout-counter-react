@@ -85,7 +85,7 @@ React 19, TypeScript, Vite 8, MediaPipe Tasks Vision (`pose_landmarker_lite`), V
 - `src/pose` — MediaPipe Pose landmarker, нормализация и сглаживание landmarks.
 - `src/exercises` — детекторы упражнений (`ExerciseDetector`), реестр `registry.ts`, типы.
 - `src/render` — отрисовка кадра на canvas: видео, скелет, HUD; отдельно — экран отдыха (`drawRestCountdown`).
-- `src/types` — общие типы приложения (в том числе единый тип статусов `AppStatus`).
+- `src/types` — общие типы приложения (в том числе единый тип статусов `EntityStatus`).
 - `src/hooks/useWorkoutSession.ts` — **ядро сессии**: связывает камеру, landmarker, выбранный детектор и рендер; управляет циклом `requestAnimationFrame`, паузой, сбросом, остановкой с таймером отдыха и озвучкой повторений.
 
 ## Соглашение по импортам

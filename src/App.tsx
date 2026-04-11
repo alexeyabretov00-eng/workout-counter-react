@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useWorkoutSession } from './hooks'
 import { exerciseRegistry } from './exercises'
-import type { AppStatus } from './types'
+import type { EntityStatus } from './types'
 import './App.css'
 
 type SpeechRecognitionConstructor = new () => SpeechRecognition
@@ -315,7 +315,7 @@ function App() {
     blocked: 'Голос: доступ к микрофону запрещен',
     error: 'Голос: ошибка распознавания',
   }
-  const modelStatusLabel: Record<AppStatus, string> = {
+  const modelStatusLabel: Record<EntityStatus, string> = {
     idle: 'ожидание',
     initializing: 'инициализация',
     loading: 'загружается',

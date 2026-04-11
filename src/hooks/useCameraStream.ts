@@ -1,8 +1,8 @@
 import { useCallback, useRef, useState } from 'react'
-import type { AppStatus } from '../types'
+import type { EntityStatus } from '../types'
 
 interface CameraState {
-  status: AppStatus
+  status: EntityStatus
   cameraError: string | null
 }
 
