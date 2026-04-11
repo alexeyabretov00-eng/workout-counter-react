@@ -1,4 +1,4 @@
-import { POSE_INDEX, calculateAngle, getPoint } from '../pose'
+import { POSE_INDEX, calculateAngle, getPoint } from '../utils'
 import type { ExerciseDetector } from '.'
 
 type CurlPhase = 'down' | 'up'

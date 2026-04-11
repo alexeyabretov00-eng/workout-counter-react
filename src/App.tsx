@@ -46,6 +46,7 @@ function App() {
     blocked: 'Голос: доступ к микрофону запрещен',
     error: 'Голос: ошибка распознавания',
   }
+  
   const modelStatusLabel: Record<EntityStatus, string> = {
     idle: 'ожидание',
     initializing: 'инициализация',

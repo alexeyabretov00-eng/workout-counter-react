@@ -28,7 +28,7 @@
 
 ## 5. Связанные файлы
 
-- [src/exercises/armyPressDetector.ts](../../../../src/exercises/armyPressDetector.ts)
-- [src/pose/poseMath.ts](../../../../src/pose/poseMath.ts)
-- [src/exercises/registry.ts](../../../../src/exercises/registry.ts)
-- [src/exercises/__tests__/detectors.test.ts](../../../../src/exercises/__tests__/detectors.test.ts)
+- `src/exercises/armyPressDetector.ts`
+- `src/utils/pose.ts` (типы позы, `POSE_INDEX`, `getPoint`, `calculateAngle`)
+- `src/exercises/registry.ts`
+- `src/exercises/__tests__/detectors.test.ts`

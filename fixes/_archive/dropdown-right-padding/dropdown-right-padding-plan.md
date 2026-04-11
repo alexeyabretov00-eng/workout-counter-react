@@ -1,6 +1,6 @@
 # План исправления: правый отступ в dropdown
 
-Ссылка на общие правила: [README.md](../../../README.md), [fixes/README.md](../../README.md).
+Ссылка на общие правила: корневой `README.md`, `fixes/README.md`.
 
 ## Контекст
 

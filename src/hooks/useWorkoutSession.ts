@@ -5,11 +5,12 @@ import {
   type ExerciseRuntimeState,
   type ExerciseState,
 } from '../exercises'
-import { PoseLandmarkerService } from '../pose'
-import { drawFrame, drawRestCountdown } from '../render'
+import { PoseLandmarkerService } from '../services'
 import type { EntityStatus } from '../types'
 import {
   clearCanvas,
+  drawFrame,
+  drawRestCountdown,
   numberToRussianWords,
   speakRussianCount,
   speakRussianText,

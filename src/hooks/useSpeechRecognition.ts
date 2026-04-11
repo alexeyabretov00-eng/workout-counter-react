@@ -106,7 +106,13 @@ export const useSpeechRecognition = ({
   ])
 
   useEffect(() => {
-    const recognition = new (window.SpeechRecognition ?? window.webkitSpeechRecognition)()
+    const SpeechRecognitionCtor =
+      window.SpeechRecognition ?? window.webkitSpeechRecognition
+    if (!SpeechRecognitionCtor) {
+      return
+    }
+
+    const recognition = new SpeechRecognitionCtor()
     recognition.lang = 'ru-RU'
     recognition.continuous = true
     recognition.interimResults = true

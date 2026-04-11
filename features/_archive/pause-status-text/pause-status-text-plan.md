@@ -26,6 +26,6 @@
 
 ## 5. Связанные файлы
 
-- [src/hooks/useWorkoutSession.ts](../../../../src/hooks/useWorkoutSession.ts)
-- [src/App.tsx](../../../../src/App.tsx)
-- [src/App.css](../../../../src/App.css)
+- `src/hooks/useWorkoutSession.ts`
+- `src/App.tsx`
+- `src/App.css`

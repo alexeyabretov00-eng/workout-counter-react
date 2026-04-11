@@ -1,3 +1,5 @@
-export { clearCanvas } from './canvas'
+export { clearCanvas, computeCoverLayout, drawRestCountdown, resizeCanvas } from './canvas'
 export { numberToRussianWords } from './russianWords'
+export { POSE_INDEX, calculateAngle, drawFrame, getPoint } from './pose'
+export type { PoseFrame, PoseLandmarks, PosePoint } from './pose'
 export { matchesCommand, normalizeSpeechText, speakRussianCount, speakRussianText } from './speech'

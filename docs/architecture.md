@@ -10,11 +10,13 @@
 
 - `src/App.tsx`
   - UI верхнего уровня: селекты, **одна кнопка «Старт / Пауза»** (переключение подписи и действия по `isRunning`), остальные кнопки сессии, строка состояния, canvas-сцена.
-  - Интеграция голосового управления (`SpeechRecognition`): нормализация текста, матчинг команд, антидребезг.
-  - Передача команд в хук сессии (`start`, `pause`, `reset`, `shutdown`).
+  - Подключает `useSpeechRecognition` (непрерывное распознавание, команды, антидребезг) и передаёт в него API сессии и выбор упражнения/отдыха.
+
+- `src/hooks/useSpeechRecognition.ts`
+  - Web Speech API: запуск распознавания, разбор транскрипта, вызов `start` / `pause` / `reset` / `shutdown`, смена упражнения и длительности отдыха по фразам.
 
 - `src/hooks/useWorkoutSession.ts`
-  - Оркестратор тренировки: связывает камеру, позу, детектор и рендер.
+  - Оркестратор тренировки: связывает камеру, `PoseLandmarkerService`, детектор и отрисовку (`drawFrame`, `drawRestCountdown` из `src/utils`).
   - Управляет состоянием сессии: запуск, пауза, возобновление, сброс, остановка камеры.
   - Запускает цикл `requestAnimationFrame`, считает `repDelta`, озвучивает повторы.
   - Запускает и рендерит таймер отдыха после остановки.
@@ -22,17 +24,18 @@
 - `src/hooks/useCameraStream.ts`
   - Работа с `getUserMedia`: старт/стоп потока и диагностика ошибок камеры.
 
-- `src/pose/*`
-  - `poseLandmarkerService`: инициализация и использование MediaPipe Tasks Vision.
-  - `poseMath`: утилиты по landmarks (индексы точек, углы, выбор точек по visibility).
+- `src/services/*`
+  - `PoseLandmarkerService`: инициализация MediaPipe Tasks Vision (модель heavy, при сбое — lite на CPU), `detectForVideo`, нормализация landmarks в типы из `src/utils/pose.ts`.
+
+- `src/utils/pose.ts`
+  - Типы `PosePoint`, `PoseLandmarks`, `PoseFrame`; константа индексов `POSE_INDEX`; `getPoint`, `calculateAngle` для детекторов; отрисовка кадра `drawFrame` (видео «cover», скелет, HUD).
+
+- `src/utils/canvas.ts`
+  - Подгонка размера canvas под DPR, очистка, `computeCoverLayout`, экран отдыха `drawRestCountdown`.
 
 - `src/exercises/*`
-  - Детекторы упражнений (`*Detector.ts`) реализуют общий интерфейс.
+  - Детекторы упражнений (`*Detector.ts`) реализуют общий интерфейс; математика по точкам импортируется из `src/utils` (`POSE_INDEX`, `getPoint`, `calculateAngle`).
   - `registry.ts`: динамически находит детекторы, фильтрует `isActive !== false`, убирает дубликаты `id`, сортирует.
-
-- `src/render/*`
-  - `drawFrame`: отрисовка видео, скелета и HUD в `canvas`.
-  - `drawRestCountdown`: отдельный рендер экрана отдыха.
 
 - `src/types/*`
   - Общие типы приложения, включая единый тип статусов `EntityStatus`, который используется в модели и камере.
@@ -42,13 +45,15 @@
 ```mermaid
 flowchart LR
   UI[UI / App.tsx] --> Session[useWorkoutSession]
+  UI --> Speech[useSpeechRecognition]
+  Speech --> Session
   Session --> Camera[Camera stream]
   Camera --> Video[In-memory video]
   Video --> Pose[PoseLandmarkerService.detect]
   Pose --> Detector[ExerciseDetector.update]
   Detector --> Runtime[Runtime state]
-  Runtime --> Render[drawFrame]
-  Render --> Canvas[Canvas output]
+  Runtime --> Draw[drawFrame / drawRestCountdown]
+  Draw --> Canvas[Canvas output]
 ```
 
 Ключевой цикл: кадр с камеры -> landmarks -> детектор упражнения -> обновление runtime -> рендер в canvas.
@@ -69,8 +74,8 @@ flowchart LR
 
 ## Голосовое управление в архитектуре
 
-- Слой распознавания находится в `App.tsx`, чтобы быть максимально близко к UI-командам.
-- Команды транслируются в API сессии (`start/pause/reset/shutdown`) и выбор упражнения.
+- Слой распознавания инкапсулирован в `useSpeechRecognition`; `App.tsx` только передаёт состояние сессии и коллбеки.
+- Команды транслируются в API сессии (`start/pause/reset/shutdown`) и в выбор упражнения / длительности отдыха.
 - Для предотвращения ложных многократных срабатываний применяется cooldown по ключу команды.
 
 ## Контракты расширения

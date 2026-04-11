@@ -1,4 +1,4 @@
-import type { PoseLandmarks } from '../pose'
+import type { PoseLandmarks } from '../services'
 
 export type ExerciseState = Record<string, unknown>
 

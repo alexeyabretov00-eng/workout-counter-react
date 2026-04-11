@@ -3,8 +3,7 @@ import {
   PoseLandmarker,
   type NormalizedLandmark,
 } from '@mediapipe/tasks-vision'
-import { LandmarkSmoother } from './landmarkSmoothing'
-import type { PoseFrame, PoseLandmarks } from '.'
+import type { PoseFrame, PoseLandmarks } from '../utils/pose'
 
 const MODEL_ASSET_PATH =
   'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/1/pose_landmarker_heavy.task'
@@ -14,7 +13,6 @@ const WASM_PATH = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/wasm'
 
 export class PoseLandmarkerService {
   private landmarker: PoseLandmarker | null = null
-  private smoother = new LandmarkSmoother()
 
   async init(): Promise<void> {
     if (this.landmarker) {
@@ -56,9 +54,7 @@ export class PoseLandmarkerService {
     }
 
     const result = this.landmarker.detectForVideo(video, timestampMs)
-    const raw = result.landmarks[0] ? this.normalize(result.landmarks[0]) : null
-    // const landmarks = this.smoother.smooth(raw)
-    const landmarks = raw
+    const landmarks = result.landmarks[0] ? this.normalize(result.landmarks[0]) : null
 
     return {
       landmarks,
@@ -66,14 +62,11 @@ export class PoseLandmarkerService {
     }
   }
 
-  stop(): void {
-    this.smoother.reset()
-  }
+  stop(): void {}
 
   dispose(): void {
     this.landmarker?.close()
     this.landmarker = null
-    this.smoother.reset()
   }
 
   private normalize(landmarks: NormalizedLandmark[]): PoseLandmarks {
