@@ -1,17 +1,27 @@
 import { useCallback, useRef, useState } from 'react'
+import type { AppStatus } from '../types'
+
+interface CameraState {
+  status: AppStatus
+  cameraError: string | null
+}
 
 export function useCameraStream() {
   const streamRef = useRef<MediaStream | null>(null)
-  const [cameraError, setCameraError] = useState<string | null>(null)
-  const [isCameraReady, setIsCameraReady] = useState(false)
-  const [isCameraInitializing, setIsCameraInitializing] = useState(false)
+  const [cameraState, setCameraState] = useState<CameraState>({
+    status: 'idle',
+    cameraError: null,
+  })
 
   const stopCamera = useCallback(() => {
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((track) => track.stop())
       streamRef.current = null
     }
-    setIsCameraReady(false)
+    setCameraState((prev) => ({
+      ...prev,
+      status: 'idle',
+    }))
   }, [])
 
   const startCamera = useCallback(async (videoEl: HTMLVideoElement | null): Promise<void> => {
@@ -19,9 +29,11 @@ export function useCameraStream() {
       return
     }
 
-    setIsCameraInitializing(true)
     stopCamera()
-    setCameraError(null)
+    setCameraState({
+      status: 'initializing',
+      cameraError: null,
+    })
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -36,20 +48,22 @@ export function useCameraStream() {
       streamRef.current = stream
       videoEl.srcObject = stream
       await videoEl.play()
-      setIsCameraReady(true)
+      setCameraState({
+        status: 'ready',
+        cameraError: null,
+      })
     } catch (error) {
-      setIsCameraReady(false)
-      setCameraError(error instanceof Error ? error.message : 'Не удалось открыть камеру')
-    } finally {
-      setIsCameraInitializing(false)
+      setCameraState({
+        status: 'error',
+        cameraError: error instanceof Error ? error.message : 'Не удалось открыть камеру',
+      })
     }
   }, [stopCamera])
 
   return {
     startCamera,
     stopCamera,
-    cameraError,
-    isCameraReady,
-    isCameraInitializing,
+    cameraStatus: cameraState.status,
+    cameraError: cameraState.cameraError,
   }
 }
