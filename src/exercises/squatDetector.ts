@@ -1,5 +1,5 @@
-import { POSE_INDEX, calculateAngle, getPoint } from '../pose/poseMath'
-import type { ExerciseDetector } from './types'
+import { POSE_INDEX, calculateAngle, getPoint } from '../pose'
+import type { ExerciseDetector } from '.'
 
 type SquatPhase = 'standing' | 'squat'
 interface SquatState {

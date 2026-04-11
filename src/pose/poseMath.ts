@@ -1,4 +1,4 @@
-import type { PoseLandmarks, PosePoint } from './types'
+import type { PoseLandmarks, PosePoint } from '.'
 
 export const POSE_INDEX = {
   nose: 0,

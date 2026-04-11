@@ -1,4 +1,4 @@
-import type { PoseLandmarks } from '../pose/types'
+import type { PoseLandmarks } from '../pose'
 
 export interface DetectorResult<TState extends ExerciseState = ExerciseState> {
   nextState: TState

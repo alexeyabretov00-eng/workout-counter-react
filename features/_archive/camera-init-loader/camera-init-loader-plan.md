@@ -4,7 +4,7 @@
 
 ## 1. Контекст и проблема
 
-При первом вызове `getUserMedia` и запуске видеопотока браузер и ОС могут долго запрашивать разрешение и поднимать драйвер. Пока `start()` в [useWorkoutSession.ts](../../../src/app/useWorkoutSession.ts) ждёт [useCameraStream.ts](../../../src/camera/useCameraStream.ts), флаг `isRunning` ещё не выставлен, но пользователь не видит явной обратной связи на области превью — создаётся ощущение «зависания».
+При первом вызове `getUserMedia` и запуске видеопотока браузер и ОС могут долго запрашивать разрешение и поднимать драйвер. Пока `start()` в [useWorkoutSession.ts](../../../src/hooks/useWorkoutSession.ts) ждёт [useCameraStream.ts](../../../src/hooks/useCameraStream.ts), флаг `isRunning` ещё не выставлен, но пользователь не видит явной обратной связи на области превью — создаётся ощущение «зависания».
 
 ## 2. Цель
 
@@ -25,7 +25,7 @@
 
 ## 5. Связанные файлы
 
-- [src/camera/useCameraStream.ts](../../../src/camera/useCameraStream.ts)
-- [src/app/useWorkoutSession.ts](../../../src/app/useWorkoutSession.ts)
+- [src/hooks/useCameraStream.ts](../../../src/hooks/useCameraStream.ts)
+- [src/hooks/useWorkoutSession.ts](../../../src/hooks/useWorkoutSession.ts)
 - [src/App.tsx](../../../src/App.tsx)
 - [src/App.css](../../../src/App.css)

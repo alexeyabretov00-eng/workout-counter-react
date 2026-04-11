@@ -1,5 +1,5 @@
-import { POSE_INDEX, getPoint } from '../pose/poseMath'
-import type { ExerciseDetector } from './types'
+import { POSE_INDEX, getPoint } from '../pose'
+import type { ExerciseDetector } from '.'
 
 type HeadTiltPhase = 'center' | 'right' | 'left'
 type HeadTiltSide = 'right' | 'left'

@@ -1,4 +1,4 @@
-import type { PoseLandmarks } from './types'
+import type { PoseLandmarks } from '.'
 
 export class LandmarkSmoother {
   private previous: PoseLandmarks | null = null

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useWorkoutSession, type ModelStatus } from './app/useWorkoutSession'
-import { exerciseRegistry } from './exercises/registry'
+import { useWorkoutSession, type ModelStatus } from './hooks'
+import { exerciseRegistry } from './exercises'
 import './App.css'
 
 type SpeechRecognitionConstructor = new () => SpeechRecognition

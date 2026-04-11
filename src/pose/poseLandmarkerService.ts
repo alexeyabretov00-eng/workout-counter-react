@@ -4,7 +4,7 @@ import {
   type NormalizedLandmark,
 } from '@mediapipe/tasks-vision'
 import { LandmarkSmoother } from './landmarkSmoothing'
-import type { PoseFrame, PoseLandmarks } from './types'
+import type { PoseFrame, PoseLandmarks } from '.'
 
 const MODEL_ASSET_PATH =
   'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/1/pose_landmarker_heavy.task'

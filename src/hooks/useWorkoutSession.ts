@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useCameraStream } from '../camera/useCameraStream'
-import { getExerciseById } from '../exercises/registry'
-import type { ExerciseRuntimeState, ExerciseState } from '../exercises/types'
-import { PoseLandmarkerService } from '../pose/poseLandmarkerService'
-import { drawFrame, drawRestCountdown } from '../render/canvasRenderer'
+import { useCameraStream } from './useCameraStream'
+import { getExerciseById, type ExerciseRuntimeState, type ExerciseState } from '../exercises'
+import { PoseLandmarkerService } from '../pose'
+import { drawFrame, drawRestCountdown } from '../render'
 
 export type ModelStatus = 'loading' | 'ready' | 'error'
 

@@ -1,5 +1,5 @@
-import type { ExerciseRuntimeState } from '../exercises/types'
-import type { PoseLandmarks } from '../pose/types'
+import type { ExerciseRuntimeState } from '../exercises'
+import type { PoseLandmarks } from '../pose'
 
 const CONNECTIONS: Array<[number, number]> = [
   [11, 12],

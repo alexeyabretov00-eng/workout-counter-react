@@ -23,7 +23,7 @@
 
 ## Этап C — README: разработка
 
-- [x] **C1.** Актуализировать «Архитектура»: роль `src/app/useWorkoutSession.ts`, связь `camera` → `pose` → `exercises` → `render`.
+- [x] **C1.** Актуализировать «Архитектура»: роль `src/hooks/useWorkoutSession.ts`, связь `camera` → `pose` → `exercises` → `render`.
 - [x] **C2.** Добавить краткую схему потока данных (текстом или mermaid в README — по желанию команды).
 - [x] **C3.** Расширить «Как добавить новое упражнение»: ссылка на тесты `src/exercises/__tests__/`, напоминание зарегистрировать детектор в `registry.ts`.
 

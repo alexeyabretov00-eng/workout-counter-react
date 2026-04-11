@@ -1,10 +1,12 @@
 import { describe, expect, test } from 'vitest'
-import { bicepsCurlDetector } from '../bicepsCurlDetector'
-import { squatDetector } from '../squatDetector'
-import { armyPressDetector } from '../armyPressDetector'
-import { headSideTiltDetector } from '../headSideTiltDetector'
-import { exerciseRegistry } from '../registry'
-import type { PoseLandmarks } from '../../pose/types'
+import {
+  armyPressDetector,
+  bicepsCurlDetector,
+  exerciseRegistry,
+  headSideTiltDetector,
+  squatDetector,
+} from '..'
+import type { PoseLandmarks } from '../../pose'
 
 function createEmptyLandmarks(): PoseLandmarks {
   return Array.from({ length: 33 }, () => ({

@@ -1,4 +1,4 @@
-import type { ExerciseDetector } from './types'
+import type { ExerciseDetector } from '.'
 
 interface DetectorModuleShape {
   [key: string]: unknown
