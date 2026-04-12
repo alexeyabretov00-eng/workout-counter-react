@@ -3,12 +3,11 @@ import { Select } from '../Select'
 import type { SelectOption } from '../Select'
 import './ExerciseControlBar.css'
 
-const REST_DURATION_OPTIONS = [1, 2, 3, 5] as const
-
 export type ExerciseControlBarProps = {
   exerciseId: string
   exerciseOptions: SelectOption[]
   restDurationMinutes: number
+  restDurationOptions: SelectOption[]
   isRunning: boolean
   isModelReady: boolean
   isCameraInitializing: boolean
@@ -24,6 +23,7 @@ export const ExerciseControlBar = ({
   exerciseId,
   exerciseOptions,
   restDurationMinutes,
+  restDurationOptions,
   isRunning,
   isModelReady,
   isCameraInitializing,
@@ -34,11 +34,6 @@ export const ExerciseControlBar = ({
   onShutdown,
   onRestDurationChange,
 }: ExerciseControlBarProps) => {
-  const restOptions: SelectOption[] = REST_DURATION_OPTIONS.map((minutes) => ({
-    value: String(minutes),
-    label: `${minutes} мин`,
-  }))
-
   return (
     <div className="exercise-control-bar">
       <Select
@@ -66,7 +61,7 @@ export const ExerciseControlBar = ({
         id="rest-duration-select"
         label="Отдых"
         value={String(restDurationMinutes)}
-        options={restOptions}
+        options={restDurationOptions}
         onChange={(value) => onRestDurationChange(Number(value))}
       />
     </div>

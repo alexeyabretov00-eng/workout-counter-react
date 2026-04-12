@@ -6,6 +6,7 @@ export const ExerciseControlBarContainer = () => {
   const {
     exerciseId,
     restDurationMinutes,
+    restDurationOptions,
     isRunning,
     isModelReady,
     isCameraInitializing,
@@ -23,6 +24,7 @@ export const ExerciseControlBarContainer = () => {
       exerciseId={exerciseId}
       exerciseOptions={exerciseOptions}
       restDurationMinutes={restDurationMinutes}
+      restDurationOptions={restDurationOptions}
       isRunning={isRunning}
       isModelReady={isModelReady}
       isCameraInitializing={isCameraInitializing}
