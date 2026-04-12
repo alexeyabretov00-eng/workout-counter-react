@@ -19,6 +19,12 @@
 
 Примеры в репозитории: `src/components/Select/`, `src/components/Button/`.
 
+## Объявление компонента (функция)
+
+- Пишите компонент как **именованный** `const` со стрелочной функцией: `export const MyWidget = (props: MyWidgetProps) => { … }`. Так имя попадает в стек и React DevTools без лишнего кода.
+- **`displayName`** добавляйте **только** там, где обёртка скрывает имя: например `memo((props) => …)`, `forwardRef((props, ref) => …)`, HOC. После объявления: `MyWidget.displayName = 'MyWidget'` (строка совпадает с именем экспорта).
+- То же соглашение (именованный `const`, `displayName` по необходимости) разумно держать и для функциональных компонентов в `containers` и `logic` — см. [docs/src-layout.md](src-layout.md).
+
 ## Баррель `src/components`
 
 - Файл `src/components/index.ts` собирает публичный API **всего** каталога `components`.

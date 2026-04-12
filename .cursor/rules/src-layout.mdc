@@ -15,4 +15,6 @@ alwaysApply: true
 
 - Новую публичную сущность добавляй в соответствующий **`index.ts`** барреля **в той же задаче**. Между верхнеуровневыми папками `src` — импорты из баррелей; **`export *`** в `index.ts` не использовать (см. `imports-via-index.mdc`).
 
+- Компоненты в `logic` и `containers`, хуки в `contexts` и `selectors`: **именованный** `const` со стрелочной функцией; **`displayName`** — только если из‑за `memo`, `forwardRef` или HOC имя в DevTools теряется (подробнее в `docs/components.md`, раздел про объявление компонента).
+
 Подробнее для людей: `docs/src-layout.md`.
