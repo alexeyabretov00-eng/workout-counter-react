@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Select } from './components'
+import { AppLayout, Button, Select } from './components'
 import { useSpeechRecognition, useWorkoutSession } from './hooks'
 import { exerciseRegistry } from './exercises'
 import type { EntityStatus } from './types'
@@ -57,82 +57,84 @@ function App() {
   }
 
   return (
-    <main className="app">
-      <section className="header">
-        <h1>Счетчик повторений</h1>
-      </section>
-
-      <section className="controls">
-        <Select
-          id="exercise-select"
-          label="Упражнение"
-          value={exerciseId}
-          options={exerciseRegistry.map((exercise) => ({
-            value: exercise.id,
-            label: exercise.name,
-          }))}
-          disabled={isRunning}
-          onChange={setExerciseId}
-        />
-        <Button
-          onClick={() => {
-            if (isRunning) {
-              pause()
-            } else {
-              void start()
-            }
-          }}
-          disabled={isRunning ? false : !isModelReady || isCameraInitializing}
-          ariaLabel={isRunning ? 'Пауза' : 'Старт'}
-        >
-          {isRunning ? 'Пауза' : 'Старт'}
-        </Button>
-        <Button onClick={reset} disabled={!resetStopEnabled}>
-          Сброс
-        </Button>
-        <Button onClick={() => shutdown()} disabled={!resetStopEnabled} ariaLabel="Стоп">
-          Стоп
-        </Button>
-        <Select
-          id="rest-duration-select"
-          label="Отдых"
-          value={String(restDurationMinutes)}
-          options={REST_DURATION_OPTIONS.map((minutes) => ({
-            value: String(minutes),
-            label: `${minutes} мин`,
-          }))}
-          onChange={(value) => setRestDurationMinutes(Number(value))}
-        />
-      </section>
-
-      <section className="status-bar">
-        <span className={`model-state ${modelStatus}`}>
-          Модель: {modelStatusLabel[modelStatus]}
-        </span>
-        <span className={`camera-state ${isCameraReady ? 'ready' : 'off'}`}>
-          Camera: {isCameraReady ? 'ready' : 'off'}
-        </span>
-        <span className={`voice-state ${voiceStatus}`}>{voiceStatusLabel[voiceStatus]}</span>
-        {isPaused && <span className="session-state">Упражнение приостановлено</span>}
-        {cameraError && <span className="camera-error">Ошибка камеры: {cameraError}</span>}
-      </section>
-
-      <section className="stage" aria-busy={isCameraInitializing}>
-        {isCameraInitializing ? (
-          <div className="stage-camera-loader" role="status" aria-live="polite">
-            <span className="stage-camera-loader__spinner" aria-hidden />
-            <p className="stage-camera-loader__text">Подключение камеры…</p>
-          </div>
-        ) : null}
-        {isPaused ? (
-          <div className="stage-paused-state" role="status" aria-live="polite">
-            <p className="stage-paused-state__text">Упражнение приостановлено</p>
-          </div>
-        ) : (
-          <canvas ref={canvasRef} className="stage-canvas" />
-        )}
-      </section>
-    </main>
+    <AppLayout
+      stageAriaBusy={isCameraInitializing}
+      header={<h1>Счетчик повторений</h1>}
+      controls={
+        <>
+          <Select
+            id="exercise-select"
+            label="Упражнение"
+            value={exerciseId}
+            options={exerciseRegistry.map((exercise) => ({
+              value: exercise.id,
+              label: exercise.name,
+            }))}
+            disabled={isRunning}
+            onChange={setExerciseId}
+          />
+          <Button
+            onClick={() => {
+              if (isRunning) {
+                pause()
+              } else {
+                void start()
+              }
+            }}
+            disabled={isRunning ? false : !isModelReady || isCameraInitializing}
+            ariaLabel={isRunning ? 'Пауза' : 'Старт'}
+          >
+            {isRunning ? 'Пауза' : 'Старт'}
+          </Button>
+          <Button onClick={reset} disabled={!resetStopEnabled}>
+            Сброс
+          </Button>
+          <Button onClick={() => shutdown()} disabled={!resetStopEnabled} ariaLabel="Стоп">
+            Стоп
+          </Button>
+          <Select
+            id="rest-duration-select"
+            label="Отдых"
+            value={String(restDurationMinutes)}
+            options={REST_DURATION_OPTIONS.map((minutes) => ({
+              value: String(minutes),
+              label: `${minutes} мин`,
+            }))}
+            onChange={(value) => setRestDurationMinutes(Number(value))}
+          />
+        </>
+      }
+      statusBar={
+        <>
+          <span className={`model-state ${modelStatus}`}>
+            Модель: {modelStatusLabel[modelStatus]}
+          </span>
+          <span className={`camera-state ${isCameraReady ? 'ready' : 'off'}`}>
+            Camera: {isCameraReady ? 'ready' : 'off'}
+          </span>
+          <span className={`voice-state ${voiceStatus}`}>{voiceStatusLabel[voiceStatus]}</span>
+          {isPaused && <span className="session-state">Упражнение приостановлено</span>}
+          {cameraError && <span className="camera-error">Ошибка камеры: {cameraError}</span>}
+        </>
+      }
+      stage={
+        <>
+          {isCameraInitializing ? (
+            <div className="stage-camera-loader" role="status" aria-live="polite">
+              <span className="stage-camera-loader__spinner" aria-hidden />
+              <p className="stage-camera-loader__text">Подключение камеры…</p>
+            </div>
+          ) : null}
+          {isPaused ? (
+            <div className="stage-paused-state" role="status" aria-live="polite">
+              <p className="stage-paused-state__text">Упражнение приостановлено</p>
+            </div>
+          ) : (
+            <canvas ref={canvasRef} className="stage-canvas" />
+          )}
+        </>
+      }
+    />
   )
 }
 

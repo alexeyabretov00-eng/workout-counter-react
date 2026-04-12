@@ -2,14 +2,6 @@
   box-sizing: border-box;
 }
 
-.app {
-  margin: 0 auto;
-  max-width: 1100px;
-  padding: 20px;
-  display: grid;
-  gap: 16px;
-}
-
 .header h1 {
   margin: 0;
 }
