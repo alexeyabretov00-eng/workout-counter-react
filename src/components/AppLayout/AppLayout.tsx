@@ -12,9 +12,9 @@ const AppLayoutComponent = ({ header, controls, statusBar, stage }: AppLayoutPro
   return (
     <main className="app-layout">
       <section className="app-layout__section header">{header}</section>
-      <section className="app-layout__section controls">{controls}</section>
-      <section className="app-layout__section status-bar">{statusBar}</section>
-      <section className="app-layout__section stage">{stage}</section>
+      <section className="app-layout__section">{controls}</section>
+      <section className="app-layout__section">{statusBar}</section>
+      <section className="app-layout__section app-layout__section--stage">{stage}</section>
     </main>
   )
 }
