@@ -4,11 +4,11 @@
 
 ## Чеклист
 
-- [ ] Проанализировать `src/hooks/useWorkoutSession.ts` (и при необходимости `useSpeechRecognition`): высокочастотные обновления; граница chrome / stage — см. комментарии в `workoutSessionStageContext.ts` или план.
-- [ ] Два **`React.Context`** (chrome и stage), селекторы на `useContext` + `useMemo`; без сторонних npm-пакетов.
-- [ ] Перенести каждый контейнер в **`src/WorkoutLogicLayout/containers/<PascalCaseName>/`**: `<Name>.tsx` + **`index.ts`** с явным экспортом; **`containers/index.ts`** — явные реэкспорты; **`WorkoutLogicLayout/index.ts`** — реэкспорт `WorkoutLogicLayout` и контейнеров (без `export *`).
-- [ ] **`WorkoutLogicLayout`**: хуки, провайдеры, проп **`children`** (ожидается `AppLayout`); проброс **`stageAriaBusy`** через **`cloneElement`** или render-prop — см. план §1 и §5.
-- [ ] **`App.tsx`**: `import './App.css'`; дерево **`<WorkoutLogicLayout><AppLayout` `header={…}` `controls={<ExerciseControlBarContainer />}` `statusBar={…}` `stage={…}` `/></WorkoutLogicLayout>`**; импорт **`AppLayout`** из `./components`, **`WorkoutLogicLayout`** и контейнеры из `./WorkoutLogicLayout`.
+- [ ] Проанализировать `src/hooks/useWorkoutSession.ts` (и при необходимости `useSpeechRecognition`): высокочастотные обновления; граница chrome / stage — см. комментарии в `src/logic/workoutSessionStageContext.ts` или план.
+- [ ] Два **`React.Context`** (chrome и stage) в **`src/logic/`**, селекторы на `useContext` + `useMemo`; без сторонних npm-пакетов.
+- [ ] Каждый контейнер в **`src/containers/<PascalCaseName>/`**: `<Name>.tsx` + **`index.ts`**; баррель **`src/containers/index.ts`**; в **`src/logic/index.ts`** — **`WorkoutLogicLayout`** и явные реэкспорты хуков-селекторов для импорта контейнерами из **`../logic`** (без `export *`).
+- [ ] **`WorkoutLogicLayout`** в **`src/logic/WorkoutLogicLayout.tsx`**: хуки, провайдеры, проп **`children`** (ожидается `AppLayout`); проброс **`stageAriaBusy`** через **`cloneElement`** или render-prop — см. план §1 и §5.
+- [ ] **`App.tsx`**: `import './App.css'`; **`<WorkoutLogicLayout><AppLayout` … `/></WorkoutLogicLayout>`**; **`AppLayout`** из `./components`, контейнеры из **`./containers`**, **`WorkoutLogicLayout`** из **`./logic`**.
 - [ ] Баррели и импорты между папками `src` по правилам репозитория.
 - [ ] `npm run lint`, `npm test`, `npm run build`; ручная проверка сценариев.
 

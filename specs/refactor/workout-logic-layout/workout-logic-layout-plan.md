@@ -58,25 +58,27 @@
 
 Компоненты с хуками сессии и контейнеры **не** в `src/components/` (там презентация без ядра сессии; см. `docs/components.md`).
 
-**Контейнеры** живут в отдельном подкаталоге **`src/WorkoutLogicLayout/containers/`**, **каждый контейнер — в своей папке** (как у UI в `src/components/`: одна папка на сущность, внутри компонент и **`index.ts`** с явным реэкспортом, **без** `export *`). Баррель **`src/WorkoutLogicLayout/containers/index.ts`** собирает публичные контейнеры для импорта снаружи (например из `App.tsx`) через **`src/WorkoutLogicLayout/index.ts`** — явные реэкспорты контейнеров рядом с `WorkoutLogicLayout`, чтобы `App` мог писать `import { WorkoutLogicLayout, ExerciseControlBarContainer, … } from './WorkoutLogicLayout'`.
+**Контейнеры** живут в **отдельном каталоге верхнего уровня `src/containers/`** (не внутри `src/logic`), **каждый контейнер — в своей папке** (как у UI в `src/components/`: одна папка на сущность в **PascalCase**, внутри `<Name>.tsx` и **`index.ts`** с явным реэкспортом, **без** `export *`). Баррель **`src/containers/index.ts`** — явные реэкспорты всех контейнеров; **`App.tsx`** импортирует контейнеры из **`./containers`**, **`WorkoutLogicLayout`** — из **`./logic`**.
+
+**`WorkoutLogicLayout`**, контексты и селекторы сессии размещаются в **`src/logic/`**: один каталог логики экрана тренировки (не путать с `src/components/`). Контейнеры подписаны на контексты через хуки-селекторы из **`src/logic/workoutSessionContextSelectors.ts`**. По правилу импортов между папками `src` — из барреля: в **`src/logic/index.ts`** — **явные реэкспорты** `WorkoutLogicLayout` и тех хуков-селекторов (и при необходимости типов контекста), которые нужны контейнерам; контейнеры импортируют их как **`from '../logic'`** (не из внутреннего файла по пути к `.ts`).
 
 Предлагаемая структура:
 
 | Путь | Назначение |
 |------|------------|
-| `src/App.tsx` | `import './App.css'`; **`return (`**`<WorkoutLogicLayout>`**`<AppLayout` `header={…}` `controls={<ExerciseControlBarContainer />}` `statusBar={<StatusBarContainer />}` `stage={<StageContainer />}` `/>`**`</WorkoutLogicLayout>`**`)`**; импорты `AppLayout` из `./components`, контейнеры и `WorkoutLogicLayout` из `./WorkoutLogicLayout` |
-| `src/WorkoutLogicLayout/WorkoutLogicLayout.tsx` | Хуки, провайдеры контекста, **дочерний элемент** — `AppLayout` из пропа `children` (с доп. пропом `stageAriaBusy` — см. вводный абзац) |
-| `src/WorkoutLogicLayout/workoutSessionChromeContext.ts` | Контекст и тип chrome-среза |
-| `src/WorkoutLogicLayout/workoutSessionStageContext.ts` | Контекст и тип stage-среза |
-| `src/WorkoutLogicLayout/workoutSessionContextSelectors.ts` | Хуки доступа к контексту и селекторы-срезы |
-| `src/WorkoutLogicLayout/containers/ExerciseControlBarContainer/ExerciseControlBarContainer.tsx` | Слот controls |
-| `src/WorkoutLogicLayout/containers/ExerciseControlBarContainer/index.ts` | `export { ExerciseControlBarContainer } …` |
-| `src/WorkoutLogicLayout/containers/StatusBarContainer/…` | Слот statusBar |
-| `src/WorkoutLogicLayout/containers/StageContainer/…` | Слот stage |
-| `src/WorkoutLogicLayout/containers/index.ts` | Явные реэкспорты из подпапок |
-| `src/WorkoutLogicLayout/index.ts` | Реэкспорт **`WorkoutLogicLayout`** и контейнеров из `./containers` |
+| `src/App.tsx` | `import './App.css'`; **`return (`**`<WorkoutLogicLayout>`**`<AppLayout` `header={…}` `controls={<ExerciseControlBarContainer />}` `statusBar={<StatusBarContainer />}` `stage={<StageContainer />}` `/>`**`</WorkoutLogicLayout>`**`)`**; **`AppLayout`** — из `./components`, контейнеры — из **`./containers`**, **`WorkoutLogicLayout`** — из **`./logic`** |
+| `src/logic/WorkoutLogicLayout.tsx` | Хуки, провайдеры контекста, **дочерний элемент** — `AppLayout` из пропа `children` (с доп. пропом `stageAriaBusy` — см. вводный абзац) |
+| `src/logic/workoutSessionChromeContext.ts` | Контекст и тип chrome-среза |
+| `src/logic/workoutSessionStageContext.ts` | Контекст и тип stage-среза |
+| `src/logic/workoutSessionContextSelectors.ts` | Хуки доступа к контексту и селекторы-срезы |
+| `src/logic/index.ts` | Реэкспорт **`WorkoutLogicLayout`** и **именованных** селекторов (и при необходимости типов), используемых из `src/containers/` |
+| `src/containers/ExerciseControlBarContainer/ExerciseControlBarContainer.tsx` | Слот controls |
+| `src/containers/ExerciseControlBarContainer/index.ts` | `export { ExerciseControlBarContainer } …` |
+| `src/containers/StatusBarContainer/…` | Слот statusBar |
+| `src/containers/StageContainer/…` | Слот stage |
+| `src/containers/index.ts` | Явные реэкспорты из подпапок контейнеров |
 
-Константа `REST_DURATION_OPTIONS` — в папке контрольной панели или вынесена в модуль констант рядом с контейнером.
+Константа `REST_DURATION_OPTIONS` — в папке контрольной панели под `src/containers/` или вынесена в модуль констант рядом с контейнером.
 
 Импорты между папками `src` — через баррели и явные реэкспорты.
 
@@ -87,14 +89,14 @@
 
 ## 6. Стили
 
-- **`src/App.css`** — стили секций экрана. Импорт в `App.tsx` или в `WorkoutLogicLayout.tsx` — один вариант, зафиксировать в чеклисте; регрессии внешнего вида нет.
+- **`src/App.css`** — стили секций экрана. Импорт в `App.tsx` или в `src/logic/WorkoutLogicLayout.tsx` — один вариант, зафиксировать в чеклисте; регрессии внешнего вида нет.
 
 ## 7. Этапы реализации (логический порядок)
 
-1. Проанализировать `useWorkoutSession` (и при необходимости `useSpeechRecognition`): какие обновления состояния высокочастотные; зафиксировать границу срезов в комментарии или коротком `README` внутри `WorkoutLogicLayout/` при необходимости.
+1. Проанализировать `useWorkoutSession` (и при необходимости `useSpeechRecognition`): какие обновления состояния высокочастотные; зафиксировать границу срезов в комментарии или коротком `README` внутри `src/logic/` при необходимости.
 2. Ввести **низкочастотный** и **сценический** контексты на `React.createContext`; собрать `value` с мемоизацией так, чтобы панель не зависела от частых обновлений сцены.
 3. Реализовать хуки-селекторы для контейнеров (`useContext` + `useMemo`, без npm-зависимостей).
-4. Перенести контейнеры в `containers/<Имя>/` с `index.ts`; баррель `containers/index.ts` и реэкспорт из `WorkoutLogicLayout/index.ts`.
+4. Создать **`src/containers/<Имя>/`** для каждого контейнера с `index.ts`; баррель **`src/containers/index.ts`**; в **`src/logic/index.ts`** реэкспорт селекторов для импорта контейнерами из **`../logic`**.
 5. Реализовать `WorkoutLogicLayout` с `children`: провайдеры и вложенный `AppLayout` из `App.tsx` со слотами-контейнерами; проброс `stageAriaBusy` (см. п. 1).
 6. Собрать дерево в **`App.tsx`**: `WorkoutLogicLayout` → `AppLayout` с пропами слотов; проверить `main.tsx` и default export.
 7. `npm run lint`, `npm test`, `npm run build`; ручная проверка сценариев и отсутствия заметных лишних ререндеров (при возможности — React DevTools Profiler).
@@ -107,10 +109,10 @@
 ## 9. Критерии готовности
 
 - `App.tsx` не содержит хуков сессии и голоса и локального состояния экрана тренировки; в нём явно видно **`WorkoutLogicLayout`** и **`AppLayout`** с контейнерами в пропах слотов.
-- Контейнеры лежат в **`src/WorkoutLogicLayout/containers/<Имя>/`** с **`index.ts`** на контейнер; снаружи импорт через баррель (например из `./WorkoutLogicLayout`).
+- Контейнеры лежат в **`src/containers/<Имя>/`** с **`index.ts`** на контейнер; публичный импорт контейнеров в приложении — из барреля **`./containers`**; селекторы контейнеры импортируют из **`./logic`** (баррель `src/logic/index.ts` с явными реэкспортами).
 - Контейнеры слотов **без пропсов** данных сессии; данные — через контекст(ы) React и собственные хуки-селекторы без сторонних пакетов.
 - Высокочастотные обновления **не** проходят через общий контекст панели управления (или обоснован выбранный механизм, эквивалентный по перформансу).
-- `WorkoutLogicLayout` и контейнеры не в `src/components/`; баррели и импорты по правилам репозитория.
+- `WorkoutLogicLayout` и модули контекста лежат в **`src/logic/`**, не в `src/components/`; контейнеры — в **`src/containers/`**; баррели и импорты по правилам репозитория.
 - Поведение и UI совпадают с состоянием до рефакторинга.
 
 ## 10. Git
