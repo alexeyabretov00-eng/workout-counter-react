@@ -6,7 +6,7 @@
 
 Имя **`WorkoutLogicLayout`** — **родительский компонент с хуками**: он вызывает `useWorkoutSession` и `useSpeechRecognition`, собирает значения и **публикует их через контекст(ы)**. **В `App.tsx`** дерево явно такое: **`WorkoutLogicLayout`** оборачивает **`AppLayout`**, а слоты `AppLayout` (`header`, `controls`, `statusBar`, `stage`) задаются **пропами**, в которые передаются **контейнеры** (`<ExerciseControlBarContainer />` и т.д.). Сами контейнеры **без пропсов** кроме контекста; данные — через **хуки-селекторы контейнера** (`use…ContainerSelector`) на базе **`useContext` + `useMemo`** (без сторонних пакетов — см. п. 3). Презентационный `AppLayout` остаётся без логики сессии; атомарный UI — в `src/components/`.
 
-**Проброс `stageAriaBusy`:** в `App.tsx` нет хуков сессии, поэтому `isCameraInitializing` недоступен на месте. Варианты зафиксировать в реализации (выбрать один): **`WorkoutLogicLayout`** после провайдеров рендерит **`React.cloneElement`** для единственного `child` типа `AppLayout` и **дописывает** `stageAriaBusy={isCameraInitializing}`; либо **`children` как render-prop** `(layoutProps) => <AppLayout {...layoutProps} />`, где `WorkoutLogicLayout` передаёт `stageAriaBusy` из хуков. Первый вариант сохраняет JSX в `App.tsx` в виде `<WorkoutLogicLayout><AppLayout … /></WorkoutLogicLayout>`.
+**Доступность «занятости» сцены (`aria-busy`):** `isCameraInitializing` живёт в данных сессии, до **`AppLayout`** в чистом виде не пробрасываем. **Реализовано:** корневой **`div`** в **`StageContainer`** с **`aria-busy={isCameraInitializing}`** (значение уже есть в stage-срезе / селекторе). У **`AppLayout`** отдельного пропа **`stageAriaBusy`** нет; **`WorkoutLogicLayout`** не использует **`cloneElement`**. Для вёрстки в **`src/App.css`** добавлено правило **`.stage .stage-container`** (`position`, `width`/`height` **100%**), чтобы обёртка заполняла **`section.stage`** и сохранилось позиционирование лоадера и canvas.
 
 Цель **разделения по частоте обновлений** — не смешивать в одном `Context.Provider` «value» то, что может меняться **почти каждый кадр / очень часто**, с панелью кнопок и строкой статусов, чтобы избежать лишних перерисовок всего экрана.
 
@@ -69,7 +69,7 @@
 | Путь | Назначение |
 |------|------------|
 | `src/App.tsx` | `import './App.css'`; **`return (`**`<WorkoutLogicLayout>`**`<AppLayout` `header={…}` `controls={<ExerciseControlBarContainer />}` `statusBar={<StatusBarContainer />}` `stage={<StageContainer />}` `/>`**`</WorkoutLogicLayout>`**`)`**; **`AppLayout`** — из `./components`, контейнеры — из **`./containers`**, **`WorkoutLogicLayout`** — из **`./logic`** |
-| `src/logic/WorkoutLogicLayout/WorkoutLogicLayout.tsx` | Хуки, провайдеры контекста, **дочерний элемент** — `AppLayout` из пропа `children` (с доп. пропом `stageAriaBusy` — см. вводный абзац); импорт контекстов из **`../../contexts`** |
+| `src/logic/WorkoutLogicLayout/WorkoutLogicLayout.tsx` | Хуки, провайдеры контекста, **`children`** (обычно дерево с `AppLayout`); импорт контекстов из **`../../contexts`**; без **`cloneElement`** |
 | `src/logic/WorkoutLogicLayout/index.ts` | `export { WorkoutLogicLayout } from './WorkoutLogicLayout'` |
 | `src/contexts/index.ts` | Баррель: реэкспорт контекстов, типов и хуков `useWorkoutSessionChromeContext` / `useWorkoutSessionStageContext` |
 | `src/contexts/WorkoutSessionChrome/…` | `WorkoutSessionChromeContext`, типы chrome-среза, `useWorkoutSessionChromeContext` |
@@ -82,7 +82,7 @@
 | `src/containers/ExerciseControlBarContainer/ExerciseControlBarContainer.tsx` | Слот controls |
 | `src/containers/ExerciseControlBarContainer/index.ts` | `export { ExerciseControlBarContainer } …` |
 | `src/containers/StatusBarContainer/…` | Слот statusBar |
-| `src/containers/StageContainer/…` | Слот stage |
+| `src/containers/StageContainer/…` | Слот stage; корень — **`div.stage-container`** с **`aria-busy={isCameraInitializing}`** |
 | `src/containers/index.ts` | Явные реэкспорты из подпапок контейнеров |
 
 Константа `REST_DURATION_OPTIONS` — в папке контрольной панели под `src/containers/` или вынесена в модуль констант рядом с контейнером.
@@ -91,12 +91,12 @@
 
 ## 5. Контракт `WorkoutLogicLayout`
 
-- Публичный компонент: **`WorkoutLogicLayout`**, проп **`children`**: ожидается **один** ребёнок — **`AppLayout`** (или совместимый элемент), чтобы можно было применить **`cloneElement`** для `stageAriaBusy`; при выборе render-prop API договориться о типе `children` в типах.
+- Публичный компонент: **`WorkoutLogicLayout`**, проп **`children`**: **`ReactNode`** (на практике — обёртка вокруг **`AppLayout`** со слотами-контейнерами). **`cloneElement`** и проброс **`stageAriaBusy`** в **`AppLayout`** **не** используются.
 - Внутри: прежний порядок и зависимости хуков `useWorkoutSession` / `useSpeechRecognition`; при разбиении на контексты **не** менять наблюдаемое поведение API хуков без необходимости.
 
 ## 6. Стили
 
-- **`src/App.css`** — стили секций экрана. Импорт в `App.tsx` или в `src/logic/WorkoutLogicLayout/WorkoutLogicLayout.tsx` — один вариант, зафиксировать в чеклисте; регрессии внешнего вида нет.
+- **`src/App.css`** — стили секций экрана, в т.ч. **`.stage`** и **`.stage .stage-container`** (обёртка сцены в **`StageContainer`**). Импорт в **`App.tsx`**; регрессии внешнего вида нет.
 
 ## 7. Этапы реализации (логический порядок)
 
@@ -104,7 +104,7 @@
 2. Ввести **низкочастотный** и **сценический** контексты на `React.createContext` в **`src/contexts/<ИмяКонтекста>/`**; собрать `value` с мемоизацией так, чтобы панель не зависела от частых обновлений сцены.
 3. Реализовать в **`src/selectors/<ИмяКонтейнера>Selector/`** хуки **`use<ИмяКонтейнера>ContainerSelector`** (`useContext` + `useMemo`, без npm-зависимостей); баррель **`src/selectors/index.ts`**.
 4. Создать **`src/containers/<Имя>/`** для каждого контейнера с `index.ts`; баррель **`src/containers/index.ts`**; в **`src/logic/index.ts`** реэкспорт селекторов для импорта контейнерами из **`../logic`**.
-5. Реализовать `WorkoutLogicLayout` с `children`: провайдеры и вложенный `AppLayout` из `App.tsx` со слотами-контейнерами; проброс `stageAriaBusy` (см. п. 1).
+5. Реализовать `WorkoutLogicLayout` с `children`: провайдеры и дерево из `App.tsx` (обычно `AppLayout` со слотами-контейнерами); **`aria-busy`** на сцене — в **`StageContainer`** (см. п. 1).
 6. Собрать дерево в **`App.tsx`**: `WorkoutLogicLayout` → `AppLayout` с пропами слотов; проверить `main.tsx` и default export.
 7. `npm run lint`, `npm test`, `npm run build`; ручная проверка сценариев и отсутствия заметных лишних ререндеров (при возможности — React DevTools Profiler).
 
@@ -121,7 +121,7 @@
 - Контейнеры слотов **без пропсов** данных сессии; данные — через контекст(ы) React и собственные хуки **`use…ContainerSelector`** без сторонних пакетов.
 - Высокочастотные обновления **не** проходят через общий контекст панели управления (или обоснован выбранный механизм, эквивалентный по перформансу).
 - **`WorkoutLogicLayout`** в **`src/logic/WorkoutLogicLayout/`** (`WorkoutLogicLayout.tsx` + `index.ts`); **контексты** в **`src/contexts/`**; **селекторы** в **`src/selectors/`**; ни один из этих каталогов не смешивается с `src/components/`; контейнеры — в **`src/containers/`**; баррели и импорты по правилам репозитория.
-- Поведение и UI совпадают с состоянием до рефакторинга.
+- Поведение и UI совпадают с состоянием до рефакторинга; **`aria-busy`** для инициализации камеры — на обёртке **`StageContainer`**, не через проп **`AppLayout`**.
 
 ## 10. Git
 

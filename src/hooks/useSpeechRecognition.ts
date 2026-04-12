@@ -1,14 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { ExerciseDetector } from '../exercises'
+import type { VoiceStatus } from '../types'
 import { matchesCommand, normalizeSpeechText } from '../utils'
-
-type VoiceStatus =
-  | 'unsupported'
-  | 'starting'
-  | 'listening'
-  | 'inactive-tab'
-  | 'blocked'
-  | 'error'
 
 const TRANSIENT_SPEECH_ERRORS = new Set(['aborted', 'no-speech'])
 
