@@ -1,6 +1,6 @@
 # Структура папок в `src`: логика экрана, контексты, селекторы, контейнеры
 
-Соглашения для каталогов **`src/logic`**, **`src/contexts`**, **`src/selectors`**, **`src/containers`** — оркестрация экрана тренировки, React-контексты, хуки-селекторы для слотов layout и компоненты-слоты без пропсов данных сессии. Для агента ИИ краткие обязательные пункты продублированы в [.cursor/rules/src-layout.mdc](../.cursor/rules/src-layout.mdc) (как у UI — `components.mdc`); контекст рефакторинга — [specs/refactor/workout-logic-layout/workout-logic-layout-plan.md](../specs/refactor/workout-logic-layout/workout-logic-layout-plan.md).
+Соглашения для каталогов **`src/logic`**, **`src/contexts`**, **`src/selectors`**, **`src/containers`** — оркестрация экрана тренировки, React-контексты, хуки-селекторы для слотов layout и компоненты-слоты без пропсов данных сессии. Для агента ИИ краткие обязательные пункты продублированы в [.cursor/rules/src-layout.mdc](../.cursor/rules/src-layout.mdc) (как у UI — `components.mdc`); контекст рефакторинга — [specs/refactor/_archive/workout-logic-layout/workout-logic-layout-plan.md](../specs/refactor/_archive/workout-logic-layout/workout-logic-layout-plan.md).
 
 Общее правило импортов: **между папками верхнего уровня `src/*`** — только из **барреля** (`index.ts`) соответствующей папки, **без** `export *`, только явные `export { … }` и `export type { … }`. См. также раздел **«Соглашение по импортам»** в [README.md](../README.md).
 

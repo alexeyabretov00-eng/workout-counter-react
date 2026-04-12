@@ -125,7 +125,7 @@
 
 ## 10. Git
 
-По [.cursor/rules/work-in-branch.mdc](.cursor/rules/work-in-branch.mdc) — отдельная ветка (например `refactor/workout-logic-layout`).
+По `.cursor/rules/work-in-branch.mdc` — отдельная ветка (например `refactor/workout-logic-layout`).
 
 ## 11. Вне скоупа
 
