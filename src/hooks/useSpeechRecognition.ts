@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import type { WorkoutSessionChromeControlAction } from '../contexts'
 import type { ExerciseDetector } from '../exercises'
 import type { VoiceStatus } from '../types'
 import { matchesCommand, normalizeSpeechText } from '../utils'
@@ -11,10 +12,7 @@ type UseSpeechRecognitionParams = {
   isRestCountdownActive: boolean
   isCameraInitializing: boolean
   isModelReady: boolean
-  start: () => Promise<void>
-  pause: () => void
-  reset: () => void
-  shutdown: (restDurationOverrideMs?: number) => void
+  dispatchChromeControl: (action: WorkoutSessionChromeControlAction) => void
   onExerciseSelect: (exerciseId: string) => void
   onRestDurationSelect: (minutes: number) => void
 }
@@ -44,10 +42,7 @@ export const useSpeechRecognition = ({
   isRestCountdownActive,
   isCameraInitializing,
   isModelReady,
-  start,
-  pause,
-  reset,
-  shutdown,
+  dispatchChromeControl,
   onExerciseSelect,
   onRestDurationSelect,
 }: UseSpeechRecognitionParams) => {
@@ -72,10 +67,7 @@ export const useSpeechRecognition = ({
   const isRestCountdownActiveRef = useRef(isRestCountdownActive)
   const isCameraInitializingRef = useRef(isCameraInitializing)
   const isModelReadyRef = useRef(isModelReady)
-  const startRef = useRef(start)
-  const pauseRef = useRef(pause)
-  const resetRef = useRef(reset)
-  const shutdownRef = useRef(shutdown)
+  const dispatchChromeControlRef = useRef(dispatchChromeControl)
   const onExerciseSelectRef = useRef(onExerciseSelect)
   const onRestDurationSelectRef = useRef(onRestDurationSelect)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
@@ -87,23 +79,17 @@ export const useSpeechRecognition = ({
     isRestCountdownActiveRef.current = isRestCountdownActive
     isCameraInitializingRef.current = isCameraInitializing
     isModelReadyRef.current = isModelReady
-    startRef.current = start
-    pauseRef.current = pause
-    resetRef.current = reset
-    shutdownRef.current = shutdown
+    dispatchChromeControlRef.current = dispatchChromeControl
     onExerciseSelectRef.current = onExerciseSelect
     onRestDurationSelectRef.current = onRestDurationSelect
   }, [
+    dispatchChromeControl,
     isCameraInitializing,
     isModelReady,
     isRestCountdownActive,
     isRunning,
     onExerciseSelect,
     onRestDurationSelect,
-    pause,
-    reset,
-    shutdown,
-    start,
   ])
 
   useEffect(() => {
@@ -161,7 +147,7 @@ export const useSpeechRecognition = ({
         isModelReadyRef.current
       ) {
         runCommand('start', () => {
-          void startRef.current()
+          dispatchChromeControlRef.current({ type: 'start' })
         })
         return
       }
@@ -170,7 +156,7 @@ export const useSpeechRecognition = ({
         matchesCommand(transcript, command),
       )
       if (isPauseCommand && isRunningRef.current) {
-        runCommand('pause', () => pauseRef.current())
+        runCommand('pause', () => dispatchChromeControlRef.current({ type: 'pause' }))
         return
       }
 
@@ -178,7 +164,7 @@ export const useSpeechRecognition = ({
         matchesCommand(transcript, command),
       )
       if (isResetCommand && isRunningRef.current && !isRestCountdownActiveRef.current) {
-        runCommand('reset', () => resetRef.current())
+        runCommand('reset', () => dispatchChromeControlRef.current({ type: 'reset' }))
         return
       }
 
@@ -190,7 +176,7 @@ export const useSpeechRecognition = ({
         isRunningRef.current &&
         !isRestCountdownActiveRef.current
       ) {
-        runCommand('shutdown', () => shutdownRef.current())
+        runCommand('shutdown', () => dispatchChromeControlRef.current({ type: 'shutdown' }))
         return
       }
 
@@ -200,7 +186,10 @@ export const useSpeechRecognition = ({
             `rest-${option.minutes}`,
             () => {
               onRestDurationSelectRef.current(option.minutes)
-              shutdownRef.current(option.minutes * 60_000)
+              dispatchChromeControlRef.current({
+                type: 'shutdown',
+                restDurationOverrideMs: option.minutes * 60_000,
+              })
             },
             REST_COMMAND_COOLDOWN_MS,
           )

@@ -14,10 +14,7 @@ export const ExerciseControlBarContainer = () => {
     isModelReady,
     isCameraInitializing,
     resetStopEnabled,
-    start,
-    pause,
-    reset,
-    shutdown,
+    dispatchChromeControl,
   } = useExerciseControlBarContainerSelector()
 
   return (
@@ -36,9 +33,9 @@ export const ExerciseControlBarContainer = () => {
       <Button
         onClick={() => {
           if (isRunning) {
-            pause()
+            dispatchChromeControl({ type: 'pause' })
           } else {
-            void start()
+            dispatchChromeControl({ type: 'start' })
           }
         }}
         disabled={isRunning ? false : !isModelReady || isCameraInitializing}
@@ -46,10 +43,17 @@ export const ExerciseControlBarContainer = () => {
       >
         {isRunning ? 'Пауза' : 'Старт'}
       </Button>
-      <Button onClick={reset} disabled={!resetStopEnabled}>
+      <Button
+        onClick={() => dispatchChromeControl({ type: 'reset' })}
+        disabled={!resetStopEnabled}
+      >
         Сброс
       </Button>
-      <Button onClick={() => shutdown()} disabled={!resetStopEnabled} ariaLabel="Стоп">
+      <Button
+        onClick={() => dispatchChromeControl({ type: 'shutdown' })}
+        disabled={!resetStopEnabled}
+        ariaLabel="Стоп"
+      >
         Стоп
       </Button>
       <Select

@@ -1,4 +1,5 @@
 export type {
+  WorkoutSessionChromeControlAction,
   WorkoutSessionChromeControlsValue,
   WorkoutSessionChromeStatusValue,
   WorkoutSessionStageValue,

@@ -13,10 +13,7 @@ export const useExerciseControlBarContainerSelector = () => {
       isModelReady: ctx.isModelReady,
       isCameraInitializing: ctx.isCameraInitializing,
       resetStopEnabled: ctx.resetStopEnabled,
-      start: ctx.start,
-      pause: ctx.pause,
-      reset: ctx.reset,
-      shutdown: ctx.shutdown,
+      dispatchChromeControl: ctx.dispatchChromeControl,
     }),
     [
       ctx.exerciseId,
@@ -27,10 +24,7 @@ export const useExerciseControlBarContainerSelector = () => {
       ctx.isModelReady,
       ctx.isCameraInitializing,
       ctx.resetStopEnabled,
-      ctx.start,
-      ctx.pause,
-      ctx.reset,
-      ctx.shutdown,
+      ctx.dispatchChromeControl,
     ],
   )
 }
