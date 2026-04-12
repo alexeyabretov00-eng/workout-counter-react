@@ -1,7 +1,7 @@
 import { Button } from '../Button'
 import { Select } from '../Select'
 import type { SelectOption } from '../Select'
-import './ExerciseControlBar.css'
+import { ExerciseControlBarRoot } from './ExerciseControlBar.styled'
 
 export type ExerciseControlBarProps = {
   exerciseId: string
@@ -35,7 +35,7 @@ export const ExerciseControlBar = ({
   onRestDurationChange,
 }: ExerciseControlBarProps) => {
   return (
-    <div className="exercise-control-bar">
+    <ExerciseControlBarRoot>
       <Select
         id="exercise-select"
         label="Упражнение"
@@ -64,6 +64,6 @@ export const ExerciseControlBar = ({
         options={restDurationOptions}
         onChange={(value) => onRestDurationChange(Number(value))}
       />
-    </div>
+    </ExerciseControlBarRoot>
   )
 }

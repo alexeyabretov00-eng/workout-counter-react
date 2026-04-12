@@ -106,11 +106,12 @@ npm install
 
 ## Стек
 
-React 19, TypeScript, Vite 8, MediaPipe Tasks Vision (pose landmarker heavy с откатом на lite при недоступности GPU), Vitest.
+React 19, TypeScript, Vite 8, styled-components, MediaPipe Tasks Vision (pose landmarker heavy с откатом на lite при недоступности GPU), Vitest.
 
 ## Архитектура
 
 - `src/App.tsx` — корень UI: `WorkoutLogicLayout` оборачивает `AppLayout`; слоты (`header`, `controls`, `statusBar`, `stage`) заполняются контейнерами из `src/containers`. Подробнее о папках: [docs/src-layout.md](docs/src-layout.md).
+- `src/theme` — объект темы (палитра, отступы, радиусы, типографика), `ThemeProvider` и `GlobalStyle` подключаются в `src/main.tsx`.
 - `src/logic` — оркестрация экрана тренировки (например `WorkoutLogicLayout`: локальное состояние упражнения/отдыха, `useWorkoutSession`, `useSpeechRecognition`, провайдеры контекстов). Один публичный модуль — одна подпапка в PascalCase и баррель `src/logic/index.ts`.
 - `src/contexts` — React-контексты сессии (chrome / stage и др.): каждый контекст в своей подпапке, баррель `src/contexts/index.ts`.
 - `src/selectors` — хуки `use…ContainerSelector` для контейнеров; каждый селектор в своей подпапке, баррель `src/selectors/index.ts`; реэкспорт в `src/logic/index.ts` для импорта контейнерами из `../logic`.
@@ -132,7 +133,7 @@ React 19, TypeScript, Vite 8, MediaPipe Tasks Vision (pose landmarker heavy с �
 
 ### UI-компоненты (`src/components`)
 
-Переиспользуемые блоки интерфейса оформляются по соглашению: одна папка на компонент (PascalCase), рядом `*.css`, баррели `index.ts` в папке и в `src/components/index.ts`, импорт в приложении из `./components`. Подробности: [docs/components.md](docs/components.md).
+Переиспользуемые блоки интерфейса оформляются по соглашению: одна папка на компонент (PascalCase), стили в **`<Name>.styled.tsx`** (**styled-components**, токены из темы), баррели `index.ts` в папке и в `src/components/index.ts`, импорт в приложении из `./components`. Подробности: [docs/components.md](docs/components.md).
 
 ### Логика экрана, контексты, селекторы, контейнеры
 

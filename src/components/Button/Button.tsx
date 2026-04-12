@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import './Button.css'
+import { ButtonRoot } from './Button.styled'
 
 export type ButtonProps = {
   children: ReactNode
@@ -10,8 +10,8 @@ export type ButtonProps = {
 
 export const Button = ({ children, onClick, disabled, ariaLabel }: ButtonProps) => {
   return (
-    <button type="button" className="button__root" onClick={onClick} disabled={disabled} aria-label={ariaLabel}>
+    <ButtonRoot type="button" onClick={onClick} disabled={disabled} aria-label={ariaLabel}>
       {children}
-    </button>
+    </ButtonRoot>
   )
 }
