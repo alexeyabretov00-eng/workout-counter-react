@@ -12,4 +12,4 @@
 - [x] Удалить из `src/components/WorkoutStatusBar/WorkoutStatusBar.styled.tsx` styled-компоненты пилюль, перенесённые в `Badge`; сохранить `WorkoutStatusBarRoot` и `WorkoutStatusBarCameraError` (или эквивалент без смены вида).
 - [x] Запустить `npm test` и `npm run build`; при необходимости ручная проверка статус-бара.
 
-После завершения цикла: третий коммит — перенос каталога `specs/refactor/badge/` в `specs/refactor/_archive/badge/` и правка относительных ссылок в markdown при необходимости.
+Архив: каталог задачи перенесён в `specs/refactor/_archive/badge/` (третий коммит цикла).
