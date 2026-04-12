@@ -27,7 +27,7 @@
   - Переиспользуемые UI-блоки (например выбор значения, кнопки панели управления): одна папка на компонент, стили рядом с кодом, импорт из барреля `./components`. Соглашения — в [docs/components.md](components.md).
 
 - `src/hooks/useSpeechRecognition.ts`
-  - Web Speech API: запуск распознавания, разбор транскрипта, вызов `start` / `pause` / `reset` / `shutdown`, смена упражнения и длительности отдыха по фразам.
+  - Web Speech API: запуск распознавания, разбор транскрипта; команды и смена упражнения / длительности отдыха сводятся к вызовам **`dispatchChromeControl`** с объектами действий (тот же контракт, что у панели управления через контекст).
 
 - `src/hooks/useWorkoutSession.ts`
   - Оркестратор тренировки: связывает камеру, `PoseLandmarkerService`, детектор и отрисовку (`drawFrame`, `drawRestCountdown` из `src/utils`).
@@ -75,6 +75,21 @@ flowchart LR
 
 Ключевой цикл: кадр с камеры -> landmarks -> детектор упражнения -> обновление runtime -> рендер в canvas. Контексты публикуются из `WorkoutLogicLayout`; контейнеры читают срезы через `use…ContainerSelector`.
 
+### Chrome-контролы: `dispatchChromeControl`
+
+Срез **`WorkoutSessionChromeControls`** отдаёт UI данные для панели (например `exerciseId`, `restDurationMinutes`, `isRunning`, флаги готовности) и **одну** функцию **`dispatchChromeControl(action)`**. Тип действия — дискриминирующий union **`WorkoutSessionChromeControlAction`** (`src/contexts/WorkoutSessionChromeControls/types.ts`), реэкспортируется из `src/contexts/index.ts` и при необходимости из `src/logic/index.ts`:
+
+| `action.type` | Назначение |
+|----------------|------------|
+| `start` | старт / возобновление сессии (асинхронная часть внутри `useWorkoutSession`) |
+| `pause` | пауза |
+| `reset` | сброс счётчика и фазы |
+| `shutdown` | стоп + при необходимости таймер отдыха; опционально `restDurationOverrideMs` |
+| `setExerciseId` | поле `exerciseId: string` |
+| `setRestDurationMinutes` | поле `minutes: number` |
+
+Реализация **`dispatchChromeControl`** собирается в **`WorkoutLogicLayout`** через **`useCallback`**: в **`switch`** по `action.type` вызываются методы **`useWorkoutSession`** и сеттеры локального состояния упражнения/отдыха. Потребители контекста (контейнер панели, голос) **не** получают отдельные колбэки `start` / `setExerciseId` и т.д. — только **`dispatchChromeControl`** и поля для отображения.
+
 ## Жизненный цикл сессии
 
 - `Старт` (в UI — подпись на общей кнопке, когда сессия не в активном выполнении):
@@ -91,8 +106,8 @@ flowchart LR
 
 ## Голосовое управление в архитектуре
 
-- Слой распознавания инкапсулирован в `useSpeechRecognition`; вызывается из `WorkoutLogicLayout`, который передаёт состояние сессии и коллбеки.
-- Команды транслируются в API сессии (`start/pause/reset/shutdown`) и в выбор упражнения / длительности отдыха.
+- Слой распознавания инкапсулирован в `useSpeechRecognition`; вызывается из `WorkoutLogicLayout`, который передаёт состояние сессии и **`dispatchChromeControl`** (ссылка синхронизируется через `ref` внутри хука).
+- Распознанные команды превращаются в те же **`WorkoutSessionChromeControlAction`**, что и клики по панели (в т.ч. связка «отдых N минут»: `setRestDurationMinutes`, затем `shutdown` с `restDurationOverrideMs`).
 - Для предотвращения ложных многократных срабатываний применяется cooldown по ключу команды.
 
 ## Контракты расширения
