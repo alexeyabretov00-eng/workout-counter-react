@@ -15,4 +15,4 @@
 - [x] Обновить `docs/src-layout.md` (при необходимости `docs/components.md`) в соответствии с новой схемой.
 - [x] Прогнать `npm test` и `npm run build`; ручная проверка UI по плану.
 
-После выполнения в рамках цикла рефакторинга: перенос каталога в `specs/refactor/_archive/containers-single-view-and-local-styles/` третьим коммитом и правка относительных ссылок в markdown при необходимости.
+**Архив:** цикл завершён; каталог перенесён из `specs/refactor/containers-single-view-and-local-styles/`.
