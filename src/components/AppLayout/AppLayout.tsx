@@ -8,7 +8,7 @@ export type AppLayoutProps = {
   stage: ReactNode
 }
 
-function AppLayoutComponent({ header, controls, statusBar, stage }: AppLayoutProps) {
+const AppLayoutComponent = ({ header, controls, statusBar, stage }: AppLayoutProps) => {
   return (
     <main className="app-layout">
       <section className="app-layout__section header">{header}</section>

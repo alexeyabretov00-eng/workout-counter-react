@@ -1,6 +1,6 @@
 import { useStatusBarContainerSelector } from '../../logic'
 
-export function StatusBarContainer() {
+export const StatusBarContainer = () => {
   const {
     modelStatus,
     modelStatusLabel,

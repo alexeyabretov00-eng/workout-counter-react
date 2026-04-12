@@ -12,4 +12,4 @@
 - [x] Баррели и импорты между папками `src` по правилам репозитория.
 - [x] `npm run lint`, `npm test`, `npm run build`; ручная проверка сценариев.
 
-Архив: после завершения перенести каталог в `specs/refactor/_archive/workout-logic-layout/` третьим коммитом цикла (см. корневой `README.md`).
+Архив: каталог задачи перенесён в `specs/refactor/_archive/workout-logic-layout/` (третий коммит цикла).

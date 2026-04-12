@@ -11,7 +11,7 @@ export type SelectProps = {
   disabled?: boolean
 }
 
-export function Select({ id, label, value, options, onChange, disabled }: SelectProps) {
+export const Select = ({ id, label, value, options, onChange, disabled }: SelectProps) => {
   return (
     <>
       <label htmlFor={id} className="select__label">

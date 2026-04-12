@@ -31,7 +31,7 @@ export type WorkoutLogicLayoutProps = {
   children: ReactNode
 }
 
-export function WorkoutLogicLayout({ children }: WorkoutLogicLayoutProps) {
+export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
   const [exerciseId, setExerciseId] = useState(exerciseRegistry[0].id)
   const [restDurationMinutes, setRestDurationMinutes] = useState<number>(3)
   const {
