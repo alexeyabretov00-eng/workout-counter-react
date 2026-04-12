@@ -1,4 +1,4 @@
-import type { ExerciseDetector } from '.'
+import type { ExerciseDetector } from './types'
 
 type DetectorModuleShape = {
   [key: string]: unknown
@@ -21,7 +21,7 @@ const isExerciseDetector = (value: unknown): value is ExerciseDetector => {
 }
 
 const collectFromViteGlob = (): ExerciseDetector[] => {
-  const modules = import.meta.glob<DetectorModuleShape>('./*Detector.ts', { eager: true })
+  const modules = import.meta.glob<DetectorModuleShape>('./**/*Detector.ts', { eager: true })
   const detectors: ExerciseDetector[] = []
 
   for (const moduleExports of Object.values(modules)) {

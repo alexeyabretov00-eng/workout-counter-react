@@ -1,0 +1,1 @@
+export { squatDetector } from './squatDetector'
