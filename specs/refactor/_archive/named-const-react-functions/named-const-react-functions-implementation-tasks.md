@@ -12,4 +12,4 @@
 - [x] Убедиться, что баррели и импорты между папками `src` не ломаются (имена экспортов прежние).
 - [x] `npm run lint`, `npm test`, `npm run build`; краткая ручная проверка UI (см. план §5).
 
-Архив: после завершения перенести каталог в `specs/refactor/_archive/named-const-react-functions/` третьим коммитом цикла (см. корневой `README.md`).
+Архив: каталог задачи перенесён в `specs/refactor/_archive/named-const-react-functions/` (третий коммит цикла).

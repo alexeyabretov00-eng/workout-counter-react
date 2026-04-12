@@ -52,4 +52,4 @@
 
 ## 6. Архивирование
 
-После закрытия чеклиста — третий коммит цикла: перенос каталога в `specs/refactor/_archive/named-const-react-functions/` и правки относительных ссылок в markdown при необходимости (см. `docs/markdown-paths.md`).
+Каталог задачи перенесён в `specs/refactor/_archive/named-const-react-functions/` (третий коммит цикла). Ссылки в markdown вне каталога — по `docs/markdown-paths.md`.
