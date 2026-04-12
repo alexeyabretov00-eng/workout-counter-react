@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useWorkoutSessionChromeStatusContext } from '../../contexts'
 
-export function useStatusBarContainerSelector() {
+export const useStatusBarContainerSelector = () => {
   const ctx = useWorkoutSessionChromeStatusContext()
   return useMemo(
     () => ({

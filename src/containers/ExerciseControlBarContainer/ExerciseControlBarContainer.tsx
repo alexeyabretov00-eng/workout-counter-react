@@ -4,7 +4,7 @@ import { useExerciseControlBarContainerSelector } from '../../logic'
 
 const REST_DURATION_OPTIONS = [1, 2, 3, 5] as const
 
-export function ExerciseControlBarContainer() {
+export const ExerciseControlBarContainer = () => {
   const {
     exerciseId,
     setExerciseId,

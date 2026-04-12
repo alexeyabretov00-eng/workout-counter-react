@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useWorkoutSessionStageContext } from '../../contexts'
 
-export function useStageContainerSelector() {
+export const useStageContainerSelector = () => {
   const ctx = useWorkoutSessionStageContext()
   return useMemo(
     () => ({

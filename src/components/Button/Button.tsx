@@ -8,7 +8,7 @@ export type ButtonProps = {
   ariaLabel?: string
 }
 
-export function Button({ children, onClick, disabled, ariaLabel }: ButtonProps) {
+export const Button = ({ children, onClick, disabled, ariaLabel }: ButtonProps) => {
   return (
     <button type="button" className="button__root" onClick={onClick} disabled={disabled} aria-label={ariaLabel}>
       {children}

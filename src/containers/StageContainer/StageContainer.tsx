@@ -1,6 +1,6 @@
 import { useStageContainerSelector } from '../../logic'
 
-export function StageContainer() {
+export const StageContainer = () => {
   const { canvasRef, isCameraInitializing, isPaused } = useStageContainerSelector()
 
   return (
