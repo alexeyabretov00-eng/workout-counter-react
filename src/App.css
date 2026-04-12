@@ -85,6 +85,12 @@
   background: #f0f9ff;
 }
 
+.voice-state.inactive-tab {
+  color: #92400e;
+  border-color: #fcd34d;
+  background: #fffbeb;
+}
+
 .voice-state.blocked,
 .voice-state.error {
   color: #b91c1c;
@@ -103,6 +109,13 @@
   overflow: hidden;
   background: #111827;
   aspect-ratio: 16 / 9;
+}
+
+.stage .stage-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
 }
 
 .stage-camera-loader {

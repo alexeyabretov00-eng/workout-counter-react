@@ -10,7 +10,7 @@
 - **Таймер отдыха** после остановки сессии (кнопка «Стоп»): длительность задаётся выпадающим списком «Отдых» (1, 2, 3 или 5 минут, по умолчанию 3). На `canvas` отображается кольцевой прогресс и оставшееся время; в начале и в конце отдыха — короткие голосовые подсказки.
 - **Голосовое управление** (Web Speech API, русский язык; логика в `useSpeechRecognition`): старт (после паузы возобновляет текущую сессию), пауза, сброс счётчика, завершение сессии голосом (`стоп`, `стоп упражнение`, `закончи упражнение`) с переходом к отдыху, выбор длительности отдыха голосом, переключение упражнения по имени и синонимам. Статус микрофона и распознавания отображается в строке состояния.
 
-Подробный справочник фраз: [docs/voice-commands.md](docs/voice-commands.md). Требования к браузеру, камере и микрофону: [docs/browser-requirements.md](docs/browser-requirements.md). Архитектурная документация: [docs/architecture.md](docs/architecture.md). Конституция проекта: [CONSTITUTION.md](CONSTITUTION.md).
+Подробный справочник фраз: [docs/voice-commands.md](docs/voice-commands.md). Требования к браузеру, камере и микрофону: [docs/browser-requirements.md](docs/browser-requirements.md). Архитектурная документация: [docs/architecture.md](docs/architecture.md). Структура папок `logic` / `contexts` / `selectors` / `containers`: [docs/src-layout.md](docs/src-layout.md). Конституция проекта: [CONSTITUTION.md](CONSTITUTION.md).
 
 Идеи и бэклог развития продукта — в [todo.md](todo.md) (таблица: направления, признак готовности; полный список не дублируется в README).
 
@@ -88,11 +88,16 @@ React 19, TypeScript, Vite 8, MediaPipe Tasks Vision (pose landmarker heavy с �
 
 ## Архитектура
 
+- `src/App.tsx` — корень UI: `WorkoutLogicLayout` оборачивает `AppLayout`; слоты (`header`, `controls`, `statusBar`, `stage`) заполняются контейнерами из `src/containers`. Подробнее о папках: [docs/src-layout.md](docs/src-layout.md).
+- `src/logic` — оркестрация экрана тренировки (например `WorkoutLogicLayout`: локальное состояние упражнения/отдыха, `useWorkoutSession`, `useSpeechRecognition`, провайдеры контекстов). Один публичный модуль — одна подпапка в PascalCase и баррель `src/logic/index.ts`.
+- `src/contexts` — React-контексты сессии (chrome / stage и др.): каждый контекст в своей подпапке, баррель `src/contexts/index.ts`.
+- `src/selectors` — хуки `use…ContainerSelector` для контейнеров; каждый селектор в своей подпапке, баррель `src/selectors/index.ts`; реэкспорт в `src/logic/index.ts` для импорта контейнерами из `../logic`.
+- `src/containers` — компоненты слотов layout без пропсов данных сессии; данные через селекторы. Одна папка на контейнер, баррель `src/containers/index.ts`.
 - `src/hooks/useCameraStream.ts` — запуск и остановка потока с камеры.
 - `src/services` — MediaPipe Pose landmarker (`PoseLandmarkerService`): загрузка модели, `detect` / нормализация landmarks в общие типы из `src/utils/pose.ts`.
 - `src/exercises` — детекторы упражнений (`ExerciseDetector`), реестр `registry.ts`, типы.
 - `src/utils` — утилиты: в частности `pose.ts` (типы позы, индексы точек, углы, `drawFrame` — видео, скелет, HUD на canvas), `canvas.ts` (`resizeCanvas`, экран отдыха `drawRestCountdown`), `speech.ts` (синтез и нормализация текста для команд).
-- `src/hooks/useSpeechRecognition.ts` — непрерывное распознавание речи и маршрутизация голосовых команд в API сессии.
+- `src/hooks/useSpeechRecognition.ts` — непрерывное распознавание речи и маршрутизация голосовых команд в API сессии (вызывается из `WorkoutLogicLayout`, не из `App.tsx`).
 - `src/types` — общие типы приложения (в том числе единый тип статусов `EntityStatus`).
 - `src/hooks/useWorkoutSession.ts` — **ядро сессии**: связывает камеру, landmarker, выбранный детектор и отрисовку; управляет циклом `requestAnimationFrame`, паузой, сбросом, остановкой с таймером отдыха и озвучкой повторений.
 
@@ -106,6 +111,10 @@ React 19, TypeScript, Vite 8, MediaPipe Tasks Vision (pose landmarker heavy с �
 ### UI-компоненты (`src/components`)
 
 Переиспользуемые блоки интерфейса оформляются по соглашению: одна папка на компонент (PascalCase), рядом `*.css`, баррели `index.ts` в папке и в `src/components/index.ts`, импорт в приложении из `./components`. Подробности: [docs/components.md](docs/components.md).
+
+### Логика экрана, контексты, селекторы, контейнеры
+
+Каталоги **`src/logic`**, **`src/contexts`**, **`src/selectors`**, **`src/containers`**: подпапки в PascalCase, в каждой подсистеме свой баррель `index.ts`, импорты между верхнеуровневыми папками `src/*` — только из баррелей, без `export *`. Подробности и таблица «куда класть новое»: [docs/src-layout.md](docs/src-layout.md).
 
 ### Поток данных
 
