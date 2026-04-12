@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Select } from './components'
+import { Button, Select } from './components'
 import { useSpeechRecognition, useWorkoutSession } from './hooks'
 import { exerciseRegistry } from './exercises'
 import type { EntityStatus } from './types'
@@ -74,8 +74,7 @@ function App() {
           disabled={isRunning}
           onChange={setExerciseId}
         />
-        <button
-          type="button"
+        <Button
           onClick={() => {
             if (isRunning) {
               pause()
@@ -84,21 +83,16 @@ function App() {
             }
           }}
           disabled={isRunning ? false : !isModelReady || isCameraInitializing}
-          aria-label={isRunning ? 'Пауза' : 'Старт'}
+          ariaLabel={isRunning ? 'Пауза' : 'Старт'}
         >
           {isRunning ? 'Пауза' : 'Старт'}
-        </button>
-        <button type="button" onClick={reset} disabled={!resetStopEnabled}>
+        </Button>
+        <Button onClick={reset} disabled={!resetStopEnabled}>
           Сброс
-        </button>
-        <button
-          type="button"
-          onClick={() => shutdown()}
-          disabled={!resetStopEnabled}
-          aria-label="Стоп"
-        >
+        </Button>
+        <Button onClick={() => shutdown()} disabled={!resetStopEnabled} ariaLabel="Стоп">
           Стоп
-        </button>
+        </Button>
         <Select
           id="rest-duration-select"
           label="Отдых"

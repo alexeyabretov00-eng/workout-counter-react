@@ -26,24 +26,6 @@
   align-items: center;
 }
 
-.controls button {
-  height: 38px;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-  padding: 0 12px;
-  background: #fff;
-  cursor: pointer;
-}
-
-.controls button:hover {
-  background: #f3f4f6;
-}
-
-.controls button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
 .status-bar {
   display: flex;
   flex-wrap: wrap;
