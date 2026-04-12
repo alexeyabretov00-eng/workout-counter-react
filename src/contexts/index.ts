@@ -2,7 +2,10 @@ export {
   WorkoutSessionChromeControlsContext,
   useWorkoutSessionChromeControlsContext,
 } from './WorkoutSessionChromeControls'
-export type { WorkoutSessionChromeControlsValue } from './WorkoutSessionChromeControls'
+export type {
+  WorkoutSessionChromeControlAction,
+  WorkoutSessionChromeControlsValue,
+} from './WorkoutSessionChromeControls'
 export {
   WorkoutSessionChromeStatusContext,
   useWorkoutSessionChromeStatusContext,

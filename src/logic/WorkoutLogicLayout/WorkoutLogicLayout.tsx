@@ -1,8 +1,9 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useCallback, useMemo, useState, type ReactNode } from 'react'
 import {
   WorkoutSessionChromeControlsContext,
   WorkoutSessionChromeStatusContext,
   WorkoutSessionStageContext,
+  type WorkoutSessionChromeControlAction,
   type WorkoutSessionChromeControlsValue,
   type WorkoutSessionChromeStatusValue,
 } from '../../contexts'
@@ -32,16 +33,37 @@ export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
     shutdown,
   } = useWorkoutSession(exerciseId, restDurationMinutes * 60_000)
 
+  const dispatchChromeControl = useCallback(
+    (action: WorkoutSessionChromeControlAction) => {
+      switch (action.type) {
+        case 'start':
+          void start()
+          return
+        case 'pause':
+          pause()
+          return
+        case 'reset':
+          reset()
+          return
+        case 'shutdown':
+          shutdown(action.restDurationOverrideMs)
+          return
+        default: {
+          const _never: never = action
+          return _never
+        }
+      }
+    },
+    [pause, reset, shutdown, start],
+  )
+
   const { voiceStatus } = useSpeechRecognition({
     exercises: exerciseRegistry,
     isRunning,
     isRestCountdownActive,
     isCameraInitializing,
     isModelReady,
-    start,
-    pause,
-    reset,
-    shutdown,
+    dispatchChromeControl,
     onExerciseSelect: setExerciseId,
     onRestDurationSelect: setRestDurationMinutes,
   })
@@ -58,10 +80,7 @@ export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
       resetStopEnabled,
       isModelReady,
       isCameraInitializing,
-      start,
-      pause,
-      reset,
-      shutdown,
+      dispatchChromeControl,
     }),
     [
       exerciseId,
@@ -70,10 +89,7 @@ export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
       resetStopEnabled,
       isModelReady,
       isCameraInitializing,
-      start,
-      pause,
-      reset,
-      shutdown,
+      dispatchChromeControl,
     ],
   )
 
