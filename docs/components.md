@@ -47,3 +47,5 @@ import { Button, Select } from './components'
 ## Согласование с импортами
 
 Правило «между папками `src` — из барреля» распространяется и на `components`: из `App.tsx` импорт только из `./components`, не из `./components/Select/Select`.
+
+Оркестрация экрана тренировки, контексты, селекторы и контейнеры слотов — в других каталогах `src`; см. [docs/src-layout.md](src-layout.md).

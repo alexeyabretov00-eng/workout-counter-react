@@ -9,11 +9,22 @@
 ## Слои и зоны ответственности
 
 - `src/App.tsx`
-  - UI верхнего уровня: общие контролы (через компоненты из `src/components`, см. [docs/components.md](components.md)), строка состояния, canvas-сцена.
-  - Подключает `useSpeechRecognition` (непрерывное распознавание, команды, антидребезг) и передаёт в него API сессии и выбор упражнения/отдыха.
+  - Корень UI: оборачивает разметку в `WorkoutLogicLayout`, внутри — `AppLayout` со слотами; в слоты передаются контейнеры из `src/containers`. Без хуков сессии и голоса.
+
+- `src/logic/*`
+  - Оркестрация экрана тренировки: `WorkoutLogicLayout` (состояние упражнения/отдыха, `useWorkoutSession`, `useSpeechRecognition`, провайдеры контекстов). Один публичный модуль — подпапка PascalCase + `src/logic/index.ts`. Соглашения — в [docs/src-layout.md](src-layout.md).
+
+- `src/contexts/*`
+  - React-контексты значений сессии (разделение chrome / stage и т.д.): подпапка на контекст, баррель `src/contexts/index.ts`.
+
+- `src/selectors/*`
+  - Хуки `use…ContainerSelector` для контейнеров (`useContext` + `useMemo`); подпапка на селектор, баррель `src/selectors/index.ts`; для контейнеров реэкспорт через `src/logic/index.ts`.
+
+- `src/containers/*`
+  - Компоненты слотов `AppLayout` без пропсов данных сессии; данные через селекторы. Одна папка на контейнер, баррель `src/containers/index.ts`. Соглашения — в [docs/src-layout.md](src-layout.md).
 
 - `src/components/*`
-  - Переиспользуемые UI-блоки (например выбор значения, кнопки панели управления): одна папка на компонент, стили рядом с кодом, импорт в `App` из барреля `./components`. Соглашения — в [docs/components.md](components.md).
+  - Переиспользуемые UI-блоки (например выбор значения, кнопки панели управления): одна папка на компонент, стили рядом с кодом, импорт из барреля `./components`. Соглашения — в [docs/components.md](components.md).
 
 - `src/hooks/useSpeechRecognition.ts`
   - Web Speech API: запуск распознавания, разбор транскрипта, вызов `start` / `pause` / `reset` / `shutdown`, смена упражнения и длительности отдыха по фразам.
@@ -47,8 +58,11 @@
 
 ```mermaid
 flowchart LR
-  UI[UI / App.tsx] --> Session[useWorkoutSession]
-  UI --> Speech[useSpeechRecognition]
+  App[App.tsx] --> WLL[WorkoutLogicLayout]
+  WLL --> Session[useWorkoutSession]
+  WLL --> Speech[useSpeechRecognition]
+  WLL --> Ctx[Context providers]
+  Ctx --> Cont[Containers / selectors]
   Speech --> Session
   Session --> Camera[Camera stream]
   Camera --> Video[In-memory video]
@@ -59,7 +73,7 @@ flowchart LR
   Draw --> Canvas[Canvas output]
 ```
 
-Ключевой цикл: кадр с камеры -> landmarks -> детектор упражнения -> обновление runtime -> рендер в canvas.
+Ключевой цикл: кадр с камеры -> landmarks -> детектор упражнения -> обновление runtime -> рендер в canvas. Контексты публикуются из `WorkoutLogicLayout`; контейнеры читают срезы через `use…ContainerSelector`.
 
 ## Жизненный цикл сессии
 
@@ -77,7 +91,7 @@ flowchart LR
 
 ## Голосовое управление в архитектуре
 
-- Слой распознавания инкапсулирован в `useSpeechRecognition`; `App.tsx` только передаёт состояние сессии и коллбеки.
+- Слой распознавания инкапсулирован в `useSpeechRecognition`; вызывается из `WorkoutLogicLayout`, который передаёт состояние сессии и коллбеки.
 - Команды транслируются в API сессии (`start/pause/reset/shutdown`) и в выбор упражнения / длительности отдыха.
 - Для предотвращения ложных многократных срабатываний применяется cooldown по ключу команды.
 
