@@ -5,3 +5,7 @@
   display: grid;
   gap: 16px;
 }
+
+.app-layout__section--stage {
+  min-width: 0;
+}

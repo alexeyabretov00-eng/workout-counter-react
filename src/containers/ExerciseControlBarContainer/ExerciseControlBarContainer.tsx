@@ -1,13 +1,12 @@
-import { Button, Select } from '../../components'
+import { ExerciseControlBar } from '../../components'
 import { exerciseRegistry } from '../../exercises'
 import { useExerciseControlBarContainerSelector } from '../../logic'
-
-const REST_DURATION_OPTIONS = [1, 2, 3, 5] as const
 
 export const ExerciseControlBarContainer = () => {
   const {
     exerciseId,
     restDurationMinutes,
+    restDurationOptions,
     isRunning,
     isModelReady,
     isCameraInitializing,
@@ -15,57 +14,34 @@ export const ExerciseControlBarContainer = () => {
     dispatchChromeControl,
   } = useExerciseControlBarContainerSelector()
 
+  const exerciseOptions = exerciseRegistry.map((exercise) => ({
+    value: exercise.id,
+    label: exercise.name,
+  }))
+
   return (
-    <>
-      <Select
-        id="exercise-select"
-        label="Упражнение"
-        value={exerciseId}
-        options={exerciseRegistry.map((exercise) => ({
-          value: exercise.id,
-          label: exercise.name,
-        }))}
-        disabled={isRunning}
-        onChange={(id) => dispatchChromeControl({ type: 'setExerciseId', exerciseId: id })}
-      />
-      <Button
-        onClick={() => {
-          if (isRunning) {
-            dispatchChromeControl({ type: 'pause' })
-          } else {
-            dispatchChromeControl({ type: 'start' })
-          }
-        }}
-        disabled={isRunning ? false : !isModelReady || isCameraInitializing}
-        ariaLabel={isRunning ? 'Пауза' : 'Старт'}
-      >
-        {isRunning ? 'Пауза' : 'Старт'}
-      </Button>
-      <Button
-        onClick={() => dispatchChromeControl({ type: 'reset' })}
-        disabled={!resetStopEnabled}
-      >
-        Сброс
-      </Button>
-      <Button
-        onClick={() => dispatchChromeControl({ type: 'shutdown' })}
-        disabled={!resetStopEnabled}
-        ariaLabel="Стоп"
-      >
-        Стоп
-      </Button>
-      <Select
-        id="rest-duration-select"
-        label="Отдых"
-        value={String(restDurationMinutes)}
-        options={REST_DURATION_OPTIONS.map((minutes) => ({
-          value: String(minutes),
-          label: `${minutes} мин`,
-        }))}
-        onChange={(value) =>
-          dispatchChromeControl({ type: 'setRestDurationMinutes', minutes: Number(value) })
+    <ExerciseControlBar
+      exerciseId={exerciseId}
+      exerciseOptions={exerciseOptions}
+      restDurationMinutes={restDurationMinutes}
+      restDurationOptions={restDurationOptions}
+      isRunning={isRunning}
+      isModelReady={isModelReady}
+      isCameraInitializing={isCameraInitializing}
+      resetStopEnabled={resetStopEnabled}
+      onExerciseChange={(id) => dispatchChromeControl({ type: 'setExerciseId', exerciseId: id })}
+      onStartPause={() => {
+        if (isRunning) {
+          dispatchChromeControl({ type: 'pause' })
+        } else {
+          dispatchChromeControl({ type: 'start' })
         }
-      />
-    </>
+      }}
+      onReset={() => dispatchChromeControl({ type: 'reset' })}
+      onShutdown={() => dispatchChromeControl({ type: 'shutdown' })}
+      onRestDurationChange={(minutes) =>
+        dispatchChromeControl({ type: 'setRestDurationMinutes', minutes })
+      }
+    />
   )
 }
