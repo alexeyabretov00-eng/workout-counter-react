@@ -2,7 +2,15 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import type { ExerciseDetector } from '../exercises'
 import { matchesCommand, normalizeSpeechText } from '../utils'
 
-type VoiceStatus = 'unsupported' | 'starting' | 'listening' | 'blocked' | 'error'
+type VoiceStatus =
+  | 'unsupported'
+  | 'starting'
+  | 'listening'
+  | 'inactive-tab'
+  | 'blocked'
+  | 'error'
+
+const TRANSIENT_SPEECH_ERRORS = new Set(['aborted', 'no-speech'])
 
 type UseSpeechRecognitionParams = {
   exercises: ExerciseDetector[]
@@ -226,6 +234,10 @@ export const useSpeechRecognition = ({
         return
       }
 
+      if (TRANSIENT_SPEECH_ERRORS.has(event.error)) {
+        return
+      }
+
       setVoiceStatus('error')
     }
 
@@ -242,13 +254,32 @@ export const useSpeechRecognition = ({
       }
     }
 
-    try {
-      recognition.start()
-    } catch {
-      queueMicrotask(() => setVoiceStatus('error'))
+    const syncRecognitionToVisibility = () => {
+      if (document.hidden) {
+        shouldRestartRef.current = false
+        try {
+          recognition.stop()
+        } catch {
+          // ignore
+        }
+        setVoiceStatus('inactive-tab')
+        return
+      }
+
+      shouldRestartRef.current = true
+      setVoiceStatus('starting')
+      try {
+        recognition.start()
+      } catch {
+        setVoiceStatus('listening')
+      }
     }
 
+    document.addEventListener('visibilitychange', syncRecognitionToVisibility)
+    syncRecognitionToVisibility()
+
     return () => {
+      document.removeEventListener('visibilitychange', syncRecognitionToVisibility)
       shouldRestartRef.current = false
       recognition.onstart = null
       recognition.onresult = null

@@ -85,6 +85,12 @@
   background: #f0f9ff;
 }
 
+.voice-state.inactive-tab {
+  color: #92400e;
+  border-color: #fcd34d;
+  background: #fffbeb;
+}
+
 .voice-state.blocked,
 .voice-state.error {
   color: #b91c1c;
