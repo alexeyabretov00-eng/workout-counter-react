@@ -4,6 +4,7 @@
 
 | Каталог | Суть |
 |---------|------|
+| [commitlint-adoption](./commitlint-adoption/) | Внедрение commitlint и Husky (`commit-msg`) для Conventional Commits |
 | [documentation](./documentation/) | Обновление README и сопутствующей документации |
 | [todo-roadmap-format](./todo-roadmap-format/) | Формат бэклога в `todo.md` |
 

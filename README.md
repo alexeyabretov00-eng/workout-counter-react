@@ -38,8 +38,30 @@ npm run dev
 - `npm run preview` — локальный просмотр уже собранного приложения (после `npm run build`).
 - `npm run lint` — ESLint.
 - `npm run test` — unit-тесты детекторов (Vitest).
+- `npm run commitlint` — проверка текста коммита через [commitlint](https://commitlint.js.org/) (сообщение передаётся в **stdin**).
 
 Перед PR имеет смысл выполнить `npm run lint` и `npm run test`.
+
+## Сообщения коммитов (Conventional Commits)
+
+Формат заголовка коммита: **`type(scope): subject`**. Поле **`scope`** необязательно: допустимы, например, `feat: добавить таймер` и `fix(ui): поправить отступ`.
+
+**Часто используемые `type`:** `feat`, `fix`, `docs`, `refactor`, `test`, `chore` (а также, при необходимости, `build`, `ci`, `perf`, `style` и др. — см. [Conventional Commits](https://www.conventionalcommits.org/)).
+
+После `npm install` [Husky](https://github.com/typicode/husky) подключает git hook **`commit-msg`**: несоответствующее сообщение коммит не пропустит. Обойти проверку для разового коммита можно только осознанно (`git commit --no-verify` — не злоупотребляйте).
+
+**Примеры для этого репозитория**
+
+- `feat: озвучивать число повторов после каждого засчитанного подхода`
+- `fix: не сбрасывать фазу при паузе сессии`
+- `docs: описать голосовые команды в voice-commands`
+- `refactor: вынести селектор панели упражнения в отдельный модуль`
+- `test: покрыть детектор приседаний граничными углами`
+- `chore: обновить зависимости Vite`
+
+**Некорректно:** `wip`, `fixed stuff`, `Update App.tsx` (нет типа и двоеточия в нужном месте).
+
+**Ручная проверка без коммита:** передайте одну строку заголовка в stdin, например в PowerShell: `"feat: проверка" | npm run commitlint`. Для проверки содержимого файла (как делает git): `.\node_modules\.bin\commitlint.cmd --edit путь\к\файлу` (в Git Bash: `npx commitlint --edit путь/к/файлу`).
 
 ## Политика зависимостей
 
