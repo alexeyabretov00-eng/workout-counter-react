@@ -12,4 +12,4 @@
 - [x] Проверить баррели **`src/contexts/WorkoutSessionChromeControls/index.ts`**, **`src/contexts/index.ts`**, при необходимости **`src/logic/index.ts`**.
 - [x] **`npm run lint`**, **`npm test`**, **`npm run build`**; ручная проверка сценариев из плана §4.
 
-После завершения цикла: третий коммит — перенос каталога в `specs/refactor/_archive/session-chrome-controls-dispatch/` и правки относительных ссылок в markdown при необходимости.
+Каталог перенесён в `specs/refactor/_archive/session-chrome-controls-dispatch/` (третий коммит цикла).
