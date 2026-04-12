@@ -1,3 +1,5 @@
+export { Badge } from './Badge'
+export type { BadgeProps, BadgeVariant } from './Badge'
 export { AppLayout } from './AppLayout'
 export type { AppLayoutProps } from './AppLayout'
 export { ExerciseControlBar } from './ExerciseControlBar'

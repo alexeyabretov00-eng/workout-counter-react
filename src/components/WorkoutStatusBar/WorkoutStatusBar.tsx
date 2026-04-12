@@ -1,11 +1,37 @@
-import {
-  WorkoutStatusBarCameraBadge,
-  WorkoutStatusBarCameraError,
-  WorkoutStatusBarModelBadge,
-  WorkoutStatusBarRoot,
-  WorkoutStatusBarSessionNote,
-  WorkoutStatusBarVoiceBadge,
-} from './WorkoutStatusBar.styled'
+import { Badge, type BadgeVariant } from '../Badge'
+import { WorkoutStatusBarCameraError, WorkoutStatusBarRoot } from './WorkoutStatusBar.styled'
+
+const modelStatusToBadgeVariant = (modelStatus: string): BadgeVariant => {
+  switch (modelStatus) {
+    case 'ready':
+      return 'success'
+    case 'loading':
+      return 'info'
+    case 'error':
+      return 'error'
+    default:
+      return 'neutral'
+  }
+}
+
+const cameraToBadgeVariant = (isCameraReady: boolean): BadgeVariant =>
+  isCameraReady ? 'success' : 'muted'
+
+const voiceStatusToBadgeVariant = (voiceStatus: string): BadgeVariant => {
+  switch (voiceStatus) {
+    case 'listening':
+      return 'info'
+    case 'inactive-tab':
+      return 'warning'
+    case 'blocked':
+    case 'error':
+      return 'error'
+    case 'unsupported':
+      return 'muted'
+    default:
+      return 'neutral'
+  }
+}
 
 export type WorkoutStatusBarProps = {
   modelStatus: string
@@ -28,16 +54,14 @@ export const WorkoutStatusBar = ({
 }: WorkoutStatusBarProps) => {
   return (
     <WorkoutStatusBarRoot>
-      <WorkoutStatusBarModelBadge $status={modelStatus}>
+      <Badge variant={modelStatusToBadgeVariant(modelStatus)}>
         Модель: {modelStatusLabel}
-      </WorkoutStatusBarModelBadge>
-      <WorkoutStatusBarCameraBadge $ready={isCameraReady}>
+      </Badge>
+      <Badge variant={cameraToBadgeVariant(isCameraReady)}>
         Camera: {isCameraReady ? 'ready' : 'off'}
-      </WorkoutStatusBarCameraBadge>
-      <WorkoutStatusBarVoiceBadge $status={voiceStatus}>{voiceStatusLabel}</WorkoutStatusBarVoiceBadge>
-      {isPaused ? (
-        <WorkoutStatusBarSessionNote>Упражнение приостановлено</WorkoutStatusBarSessionNote>
-      ) : null}
+      </Badge>
+      <Badge variant={voiceStatusToBadgeVariant(voiceStatus)}>{voiceStatusLabel}</Badge>
+      {isPaused ? <Badge variant="note">Упражнение приостановлено</Badge> : null}
       {cameraError ? (
         <WorkoutStatusBarCameraError>Ошибка камеры: {cameraError}</WorkoutStatusBarCameraError>
       ) : null}
