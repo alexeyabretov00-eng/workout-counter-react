@@ -101,6 +101,10 @@ React 19, TypeScript, Vite 8, MediaPipe Tasks Vision (pose landmarker heavy с �
 - Если сущность должна использоваться извне папки, добавляйте её явный именованный реэкспорт в `index.ts` этой папки.
 - В `index.ts` не используйте `export *`; перечисляйте публичный API явно (`export { ... }`, `export type { ... }`).
 
+### UI-компоненты (`src/components`)
+
+Переиспользуемые блоки интерфейса оформляются по соглашению: одна папка на компонент (PascalCase), рядом `*.css`, баррели `index.ts` в папке и в `src/components/index.ts`, импорт в приложении из `./components`. Подробности: [docs/components.md](docs/components.md).
+
 ### Поток данных
 
 ```mermaid

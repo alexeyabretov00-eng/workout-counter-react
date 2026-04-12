@@ -7,3 +7,4 @@
 3. **Зависимости:** в `package.json` только точные версии; после любого изменения зависимостей — удалить `node_modules` и `package-lock.json`, затем `npm install`. [.cursor/rules/dependency-install-clean-reinstall.mdc](.cursor/rules/dependency-install-clean-reinstall.mdc).
 4. **todo.md:** выполнил задачу из бэклога — обнови соответствующие строки в `todo.md` в том же цикле. [.cursor/rules/todo-update-on-request.mdc](.cursor/rules/todo-update-on-request.mdc).
 5. **Импорты в `src`:** между папками — из барреля (`index.ts`), явные реэкспорты, без `export *`. [.cursor/rules/imports-via-index.mdc](.cursor/rules/imports-via-index.mdc).
+6. **UI-компоненты:** папка на компонент, стили в `<Name>.css` рядом с `<Name>.tsx`, публичный API через `index.ts` и `src/components/index.ts`. [.cursor/rules/components.mdc](.cursor/rules/components.mdc), [docs/components.md](docs/components.md).
