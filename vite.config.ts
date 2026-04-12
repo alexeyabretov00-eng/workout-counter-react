@@ -8,7 +8,9 @@ const styledComponentsDevPlugin = (): Plugin => {
   let babelOptions: babel.TransformOptions | null = null
 
   const getBabelOptions = (): babel.TransformOptions => {
-    if (babelOptions) return babelOptions
+    if (babelOptions) {
+      return babelOptions
+    }
     const partial = babel.loadPartialConfig({
       cwd: root,
       root,
@@ -35,10 +37,14 @@ const styledComponentsDevPlugin = (): Plugin => {
       root = config.root
     },
     async transform(code, id) {
-      if (!/\.styled\.tsx(?:\?|$)/.test(id)) return
+      if (!/\.styled\.tsx(?:\?|$)/.test(id)) {
+        return
+      }
       const opts = getBabelOptions()
       const result = await babel.transformAsync(code, { ...opts, filename: id })
-      if (!result) return
+      if (!result) {
+        return
+      }
       return { code: result.code ?? '', map: result.map }
     },
   }

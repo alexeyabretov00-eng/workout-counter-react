@@ -153,7 +153,9 @@ export const drawFrame = (
   runtime: ExerciseRuntimeState,
 ): void => {
   const ctx = canvas.getContext('2d')
-  if (!ctx || video.videoWidth === 0 || video.videoHeight === 0) return
+  if (!ctx || !video.videoWidth || !video.videoHeight) {
+    return
+  }
 
   resizeCanvas(canvas)
 
