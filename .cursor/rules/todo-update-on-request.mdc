@@ -1,5 +1,5 @@
 ---
-description: Обновляй todo.md при выполнении задач из него
+description: Только синхронизация todo.md после выполнения пунктов из этого бэклога
 alwaysApply: true
 ---
 

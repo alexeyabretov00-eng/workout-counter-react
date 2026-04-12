@@ -7,4 +7,4 @@
 | [documentation](./documentation/) | Обновление README и сопутствующей документации |
 | [todo-roadmap-format](./todo-roadmap-format/) | Формат бэклога в `todo.md` |
 
-Правило переноса и расположение активных планов — в `features/README.md` и в разделе «Планирование фич» корневого `README.md`.
+Правило переноса и расположение активных планов — в `specs/features/README.md` и в разделе «Планирование фич и исправлений» корневого `README.md`.

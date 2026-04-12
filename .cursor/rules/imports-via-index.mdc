@@ -1,3 +1,8 @@
+---
+description: Только импорты между папками src через index.ts-баррели; без export *
+alwaysApply: true
+---
+
 # Импорты через index.ts
 
 Для кода в `src` придерживайся соглашения:

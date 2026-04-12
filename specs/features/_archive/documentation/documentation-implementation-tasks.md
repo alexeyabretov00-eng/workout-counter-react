@@ -1,6 +1,6 @@
 # Задачи реализации плана обновления документации
 
-> **Архив:** материалы в `features/_archive/documentation/`. См. `features/README.md`.
+> **Архив:** материалы в `specs/features/_archive/documentation/`. См. `specs/features/README.md`.
 
 Связанный план: [documentation-update-plan.md](./documentation-update-plan.md).
 
