@@ -4,12 +4,12 @@
 
 ## Чеклист
 
-- [ ] Проанализировать `src/hooks/useWorkoutSession.ts` (и при необходимости `useSpeechRecognition`): высокочастотные обновления; граница chrome / stage — см. комментарии в `src/logic/workoutSessionStageContext.ts` или план.
-- [ ] Два **`React.Context`** (chrome и stage) в **`src/logic/`**, селекторы на `useContext` + `useMemo`; без сторонних npm-пакетов.
-- [ ] Каждый контейнер в **`src/containers/<PascalCaseName>/`**: `<Name>.tsx` + **`index.ts`**; баррель **`src/containers/index.ts`**; в **`src/logic/index.ts`** — **`WorkoutLogicLayout`** и явные реэкспорты хуков-селекторов для импорта контейнерами из **`../logic`** (без `export *`).
-- [ ] **`WorkoutLogicLayout`** в **`src/logic/WorkoutLogicLayout.tsx`**: хуки, провайдеры, проп **`children`** (ожидается `AppLayout`); проброс **`stageAriaBusy`** через **`cloneElement`** или render-prop — см. план §1 и §5.
-- [ ] **`App.tsx`**: `import './App.css'`; **`<WorkoutLogicLayout><AppLayout` … `/></WorkoutLogicLayout>`**; **`AppLayout`** из `./components`, контейнеры из **`./containers`**, **`WorkoutLogicLayout`** из **`./logic`**.
-- [ ] Баррели и импорты между папками `src` по правилам репозитория.
-- [ ] `npm run lint`, `npm test`, `npm run build`; ручная проверка сценариев.
+- [x] Проанализировать `src/hooks/useWorkoutSession.ts` (и при необходимости `useSpeechRecognition`): высокочастотные обновления; граница chrome / stage — см. комментарии в `src/contexts/WorkoutSessionStage/` или план.
+- [x] Два **`React.Context`** в **`src/contexts/<Имя>/`** (chrome и stage), баррель **`src/contexts/index.ts`**; селекторы — хуки **`use…ContainerSelector`** в **`src/selectors/<Имя>Selector/`**, баррель **`src/selectors/index.ts`**; без сторонних npm-пакетов.
+- [x] Каждый контейнер в **`src/containers/<PascalCaseName>/`**: `<Name>.tsx` + **`index.ts`**; баррель **`src/containers/index.ts`**; в **`src/logic/index.ts`** — **`WorkoutLogicLayout`** и явные реэкспорты **`useExerciseControlBarContainerSelector`**, **`useStatusBarContainerSelector`**, **`useStageContainerSelector`** (и при необходимости типов) для импорта контейнерами из **`../logic`** (без `export *`).
+- [x] **`WorkoutLogicLayout`** в **`src/logic/WorkoutLogicLayout/`** (`WorkoutLogicLayout.tsx` + **`index.ts`**): хуки, провайдеры, проп **`children`** (ожидается `AppLayout`); проброс **`stageAriaBusy`** через **`cloneElement`** или render-prop — см. план §1 и §5.
+- [x] **`App.tsx`**: `import './App.css'`; **`<WorkoutLogicLayout><AppLayout` … `/></WorkoutLogicLayout>`**; **`AppLayout`** из `./components`, контейнеры из **`./containers`**, **`WorkoutLogicLayout`** из **`./logic`**.
+- [x] Баррели и импорты между папками `src` по правилам репозитория.
+- [x] `npm run lint`, `npm test`, `npm run build`; ручная проверка сценариев.
 
 Архив: после завершения перенести каталог в `specs/refactor/_archive/workout-logic-layout/` третьим коммитом цикла (см. корневой `README.md`).
