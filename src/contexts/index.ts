@@ -1,18 +1,16 @@
 export {
   WorkoutSessionChromeControlsContext,
   useWorkoutSessionChromeControlsContext,
-} from './WorkoutSessionChromeControls'
-export type {
-  WorkoutSessionChromeControlAction,
-  WorkoutSessionChromeControlsValue,
+  type WorkoutSessionChromeControlAction,
+  type WorkoutSessionChromeControlsValue,
 } from './WorkoutSessionChromeControls'
 export {
   WorkoutSessionChromeStatusContext,
   useWorkoutSessionChromeStatusContext,
+  type WorkoutSessionChromeStatusValue,
 } from './WorkoutSessionChromeStatus'
-export type { WorkoutSessionChromeStatusValue } from './WorkoutSessionChromeStatus'
 export {
   WorkoutSessionStageContext,
   useWorkoutSessionStageContext,
+  type WorkoutSessionStageValue,
 } from './WorkoutSessionStage'
-export type { WorkoutSessionStageValue } from './WorkoutSessionStage'

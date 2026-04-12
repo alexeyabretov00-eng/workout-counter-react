@@ -9,5 +9,4 @@ export {
   useStageContainerSelector,
   useStatusBarContainerSelector,
 } from '../selectors'
-export { WorkoutLogicLayout } from './WorkoutLogicLayout'
-export type { WorkoutLogicLayoutProps } from './WorkoutLogicLayout'
+export { WorkoutLogicLayout, type WorkoutLogicLayoutProps } from './WorkoutLogicLayout'

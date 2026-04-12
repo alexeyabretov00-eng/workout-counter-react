@@ -1,2 +1,1 @@
-export { Badge } from './Badge'
-export type { BadgeProps, BadgeVariant } from './Badge'
+export { Badge, type BadgeProps, type BadgeVariant } from './Badge'

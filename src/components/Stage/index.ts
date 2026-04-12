@@ -1,2 +1,1 @@
-export { Stage } from './Stage'
-export type { StageProps } from './Stage'
+export { Stage, type StageProps } from './Stage'
