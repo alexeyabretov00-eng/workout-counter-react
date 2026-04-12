@@ -25,7 +25,7 @@ describe('exercise detectors', () => {
     expect(exerciseRegistry.some((detector) => detector.id === squatDetector.id)).toBe(true)
     expect(exerciseRegistry.some((detector) => detector.id === armyPressDetector.id)).toBe(true)
     expect(exerciseRegistry.some((detector) => detector.id === headSideTiltDetector.id)).toBe(true)
-    expect(exerciseRegistry.every((detector) => detector.isActive !== false)).toBe(true)
+    expect(exerciseRegistry.every((detector) => Boolean(detector.isActive))).toBe(true)
   })
 
   test('counts one biceps curl rep after down-up-down', () => {

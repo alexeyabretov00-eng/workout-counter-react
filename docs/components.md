@@ -17,7 +17,7 @@
 | `<Name>/<Name>.css` | Стили **только этого** компонента (импорт из `<Name>.tsx`) |
 | `<Name>/index.ts` | Публичный API папки: явные `export { ... }` и `export type { ... }` |
 
-Примеры в репозитории: `src/components/Select/`, `src/components/Button/`.
+Примеры в репозитории: `src/components/Select/`, `src/components/Button/`, `src/components/AppLayout/`.
 
 ## Объявление компонента (функция)
 
