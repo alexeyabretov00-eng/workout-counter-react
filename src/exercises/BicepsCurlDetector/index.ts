@@ -1,0 +1,1 @@
+export { bicepsCurlDetector } from './bicepsCurlDetector'

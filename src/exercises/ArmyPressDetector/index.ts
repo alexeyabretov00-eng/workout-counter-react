@@ -1,0 +1,1 @@
+export { armyPressDetector } from './armyPressDetector'

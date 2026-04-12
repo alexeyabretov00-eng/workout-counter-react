@@ -1,0 +1,1 @@
+export { headSideTiltDetector } from './headSideTiltDetector'

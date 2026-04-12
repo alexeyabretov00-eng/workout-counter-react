@@ -1,8 +1,8 @@
-export { armyPressDetector } from './armyPressDetector'
-export { bicepsCurlDetector } from './bicepsCurlDetector'
-export { headSideTiltDetector } from './headSideTiltDetector'
+export { armyPressDetector } from './ArmyPressDetector'
+export { bicepsCurlDetector } from './BicepsCurlDetector'
+export { headSideTiltDetector } from './HeadSideTiltDetector'
 export { exerciseRegistry, getExerciseDetectorByIdOrDefault } from './registry'
-export { squatDetector } from './squatDetector'
+export { squatDetector } from './SquatDetector'
 export type {
   DetectorResult,
   ExerciseDetector,
