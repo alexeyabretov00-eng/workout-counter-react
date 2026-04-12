@@ -4,14 +4,12 @@
 
 ## Чеклист
 
-- [ ] Проанализировать `src/hooks/useWorkoutSession.ts` (и при необходимости `useSpeechRecognition`): какие обновления состояния высокочастотные; задокументировать границу «низкочастотный срез / срез сцены» для провайдеров.
-- [ ] Ввести раздельную публикацию данных **только средствами React**: два (или более) **`React.Context`** — **низкочастотный** (панель, статусы, действия, ошибки, голос) и **контекст сцены** (`canvasRef` и минимум для оверлеев), без смешивания частых обновлений сцены с `value`, от которого зависит панель. Сторонние npm-пакеты не добавлять.
-- [ ] Добавить хуки-селекторы на базе `useContext` + `useMemo` (стабильные `value`/`useCallback` в провайдере); учитывать ограничения «чистого» контекста (см. план п. 3).
-- [ ] Реализовать `ExerciseControlBarContainer`, `StatusBarContainer`, `StageContainer` **без пропсов**, подключённые к соответствующим селекторам; использовать `Button` / `Select` из `src/components`.
-- [ ] Реализовать `src/WorkoutLogicLayout/WorkoutLogicLayout.tsx`: хуки сессии и голоса, провайдеры, `AppLayout` со слотами из контейнеров; перенести `REST_DURATION_OPTIONS` и словари подписей (или их входные данные) в зону ответственности layout.
-- [ ] Добавить `src/WorkoutLogicLayout/index.ts` с явным реэкспортом `WorkoutLogicLayout`.
-- [ ] Упростить `src/App.tsx` до оболочки; зафиксировать место импорта `App.css` (план п. 6).
-- [ ] Проверить баррели и импорты между папками `src` (без `export *` в новых `index.ts`).
-- [ ] `npm run lint`, `npm test`, `npm run build`; ручная проверка сценариев; при возможности — Profiler на предмет лишних ререндеров панели при работе камеры.
+- [ ] Проанализировать `src/hooks/useWorkoutSession.ts` (и при необходимости `useSpeechRecognition`): высокочастотные обновления; граница chrome / stage — см. комментарии в `workoutSessionStageContext.ts` или план.
+- [ ] Два **`React.Context`** (chrome и stage), селекторы на `useContext` + `useMemo`; без сторонних npm-пакетов.
+- [ ] Перенести каждый контейнер в **`src/WorkoutLogicLayout/containers/<PascalCaseName>/`**: `<Name>.tsx` + **`index.ts`** с явным экспортом; **`containers/index.ts`** — явные реэкспорты; **`WorkoutLogicLayout/index.ts`** — реэкспорт `WorkoutLogicLayout` и контейнеров (без `export *`).
+- [ ] **`WorkoutLogicLayout`**: хуки, провайдеры, проп **`children`** (ожидается `AppLayout`); проброс **`stageAriaBusy`** через **`cloneElement`** или render-prop — см. план §1 и §5.
+- [ ] **`App.tsx`**: `import './App.css'`; дерево **`<WorkoutLogicLayout><AppLayout` `header={…}` `controls={<ExerciseControlBarContainer />}` `statusBar={…}` `stage={…}` `/></WorkoutLogicLayout>`**; импорт **`AppLayout`** из `./components`, **`WorkoutLogicLayout`** и контейнеры из `./WorkoutLogicLayout`.
+- [ ] Баррели и импорты между папками `src` по правилам репозитория.
+- [ ] `npm run lint`, `npm test`, `npm run build`; ручная проверка сценариев.
 
 Архив: после завершения перенести каталог в `specs/refactor/_archive/workout-logic-layout/` третьим коммитом цикла (см. корневой `README.md`).
