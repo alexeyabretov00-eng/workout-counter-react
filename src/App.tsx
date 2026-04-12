@@ -1,7 +1,6 @@
 import { AppLayout } from './components'
 import { ExerciseControlBarContainer, StageContainer, StatusBarContainer } from './containers'
 import { WorkoutLogicLayout } from './logic'
-import './App.css'
 
 function App() {
   return (

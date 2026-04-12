@@ -1,5 +1,14 @@
 import type { RefObject } from 'react'
-import './Stage.css'
+import {
+  StageCanvas,
+  StageLoader,
+  StageLoaderSpinner,
+  StageLoaderText,
+  StagePaused,
+  StagePausedText,
+  StageRoot,
+  StageViewport,
+} from './Stage.styled'
 
 export type StageProps = {
   canvasRef: RefObject<HTMLCanvasElement | null>
@@ -9,22 +18,22 @@ export type StageProps = {
 
 export const Stage = ({ canvasRef, isCameraInitializing, isPaused }: StageProps) => {
   return (
-    <div className="workout-stage">
-      <div className="workout-stage__viewport" aria-busy={isCameraInitializing}>
+    <StageRoot>
+      <StageViewport aria-busy={isCameraInitializing}>
         {isCameraInitializing ? (
-          <div className="workout-stage__loader" role="status" aria-live="polite">
-            <span className="workout-stage__loader-spinner" aria-hidden />
-            <p className="workout-stage__loader-text">Подключение камеры…</p>
-          </div>
+          <StageLoader role="status" aria-live="polite">
+            <StageLoaderSpinner aria-hidden />
+            <StageLoaderText>Подключение камеры…</StageLoaderText>
+          </StageLoader>
         ) : null}
         {isPaused ? (
-          <div className="workout-stage__paused" role="status" aria-live="polite">
-            <p className="workout-stage__paused-text">Упражнение приостановлено</p>
-          </div>
+          <StagePaused role="status" aria-live="polite">
+            <StagePausedText>Упражнение приостановлено</StagePausedText>
+          </StagePaused>
         ) : (
-          <canvas ref={canvasRef} className="workout-stage__canvas" />
+          <StageCanvas ref={canvasRef} />
         )}
-      </div>
-    </div>
+      </StageViewport>
+    </StageRoot>
   )
 }

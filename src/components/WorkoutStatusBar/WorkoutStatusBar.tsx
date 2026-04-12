@@ -1,4 +1,11 @@
-import './WorkoutStatusBar.css'
+import {
+  WorkoutStatusBarCameraBadge,
+  WorkoutStatusBarCameraError,
+  WorkoutStatusBarModelBadge,
+  WorkoutStatusBarRoot,
+  WorkoutStatusBarSessionNote,
+  WorkoutStatusBarVoiceBadge,
+} from './WorkoutStatusBar.styled'
 
 export type WorkoutStatusBarProps = {
   modelStatus: string
@@ -19,27 +26,21 @@ export const WorkoutStatusBar = ({
   isPaused,
   cameraError,
 }: WorkoutStatusBarProps) => {
-  const cameraModifier = isCameraReady ? 'ready' : 'off'
-
   return (
-    <div className="workout-status-bar">
-      <span className={`workout-status-bar__model workout-status-bar__model--${modelStatus}`}>
+    <WorkoutStatusBarRoot>
+      <WorkoutStatusBarModelBadge $status={modelStatus}>
         Модель: {modelStatusLabel}
-      </span>
-      <span
-        className={`workout-status-bar__camera workout-status-bar__camera--${cameraModifier}`}
-      >
+      </WorkoutStatusBarModelBadge>
+      <WorkoutStatusBarCameraBadge $ready={isCameraReady}>
         Camera: {isCameraReady ? 'ready' : 'off'}
-      </span>
-      <span className={`workout-status-bar__voice workout-status-bar__voice--${voiceStatus}`}>
-        {voiceStatusLabel}
-      </span>
+      </WorkoutStatusBarCameraBadge>
+      <WorkoutStatusBarVoiceBadge $status={voiceStatus}>{voiceStatusLabel}</WorkoutStatusBarVoiceBadge>
       {isPaused ? (
-        <span className="workout-status-bar__session">Упражнение приостановлено</span>
+        <WorkoutStatusBarSessionNote>Упражнение приостановлено</WorkoutStatusBarSessionNote>
       ) : null}
       {cameraError ? (
-        <span className="workout-status-bar__camera-error">Ошибка камеры: {cameraError}</span>
+        <WorkoutStatusBarCameraError>Ошибка камеры: {cameraError}</WorkoutStatusBarCameraError>
       ) : null}
-    </div>
+    </WorkoutStatusBarRoot>
   )
 }

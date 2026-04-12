@@ -1,5 +1,10 @@
 import { memo, type ReactNode } from 'react'
-import './AppLayout.css'
+import {
+  AppLayoutHeaderSection,
+  AppLayoutRoot,
+  AppLayoutSection,
+  AppLayoutStageSection,
+} from './AppLayout.styled'
 
 export type AppLayoutProps = {
   header: ReactNode
@@ -10,12 +15,12 @@ export type AppLayoutProps = {
 
 const AppLayoutComponent = ({ header, controls, statusBar, stage }: AppLayoutProps) => {
   return (
-    <main className="app-layout">
-      <section className="app-layout__section header">{header}</section>
-      <section className="app-layout__section">{controls}</section>
-      <section className="app-layout__section">{statusBar}</section>
-      <section className="app-layout__section app-layout__section--stage">{stage}</section>
-    </main>
+    <AppLayoutRoot>
+      <AppLayoutHeaderSection>{header}</AppLayoutHeaderSection>
+      <AppLayoutSection>{controls}</AppLayoutSection>
+      <AppLayoutSection>{statusBar}</AppLayoutSection>
+      <AppLayoutStageSection>{stage}</AppLayoutStageSection>
+    </AppLayoutRoot>
   )
 }
 

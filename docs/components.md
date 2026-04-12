@@ -13,8 +13,8 @@
 
 | Файл | Назначение |
 |------|------------|
-| `<Name>/<Name>.tsx` | Реализация компонента |
-| `<Name>/<Name>.css` | Стили **только этого** компонента (импорт из `<Name>.tsx`) |
+| `<Name>/<Name>.tsx` | Разметка и логика отображения; импорт styled-обёрток из `<Name>.styled.tsx` |
+| `<Name>/<Name>.styled.tsx` | **styled-components** виджета: токены через `${({ theme }) => theme.…}` |
 | `<Name>/index.ts` | Публичный API папки: явные `export { ... }` и `export type { ... }` |
 
 Примеры в репозитории: `src/components/Select/`, `src/components/Button/`, `src/components/AppLayout/`.
@@ -39,11 +39,17 @@ import { Button, Select } from './components'
 
 Импортировать из `./components/Button/Button` снаружи папки `components` не нужно.
 
-## Стили
+## Стили (styled-components)
 
-- Стили компонента живут **рядом с ним** в `<Name>.css`, а не в `App.css`, если они специфичны для этого блока.
-- Общая раскладка секций страницы (например `.controls` как flex-контейнер) может оставаться в `App.css`, пока это разметка уровня страницы, а не самого атомарного виджета.
-- На разметке компонента используйте **явные классы** (например BEM: `select__label`, `button__root`), чтобы не зависеть от глубоких селекторов вроде `.controls button` для кода, который уже инкапсулирован в компоненте.
+- **Файл стилей:** в той же папке, что и компонент, файл **`<Name>.styled.tsx`** — все `styled.*` и вспомогательные `keyframes` / локальные функции для CSS (например SVG data-URL). Из **`<Name>.tsx`** импортируйте только нужные именованные экспорты (`Root`, `Field`, …).
+- **Тема:** общие цвета, отступы, радиусы и типографика — в `src/theme/theme.ts`; провайдер — в `src/main.tsx`. В styled-шаблонах используйте `${({ theme }) => theme.…}`.
+- **Именование:** у каждого styled-компонента префикс совпадает с публичным компонентом папки — например `SelectField`, `ButtonRoot`, `StageLoaderSpinner`, `WorkoutStatusBarVoiceBadge`, чтобы по имени было ясно, к какому виджету относится узел (в т.ч. в React DevTools и при `babel-plugin-styled-components`). Варианты состояния — **transient props** с `$` (например `$status`).
+- **Глобально:** только базовые правила документа (`box-sizing`, `html`/`body`) — в `GlobalStyle` из `src/theme/globalStyle.tsx`.
+- При добавлении токена расширяйте `theme.ts` и при необходимости тип `AppTheme` / `styled.d.ts` останется согласованным автоматически.
+
+### Отладка в DevTools
+
+В **`npm run dev`** (только dev-сервер, не `vite build`) для **`*.styled.tsx`** подключён **`babel-plugin-styled-components`** с `displayName` и `fileName`: в инспекторе DOM классы и стили проще сопоставить с именем styled-компонента и именем файла. В production-сборке плагин не запускается — классы остаются короткими, как у styled-components по умолчанию.
 
 ## Типы и пропсы
 
