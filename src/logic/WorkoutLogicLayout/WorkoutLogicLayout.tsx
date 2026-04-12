@@ -1,8 +1,10 @@
 import { useMemo, useState, type ReactNode } from 'react'
 import {
-  WorkoutSessionChromeContext,
+  WorkoutSessionChromeControlsContext,
+  WorkoutSessionChromeStatusContext,
   WorkoutSessionStageContext,
-  type WorkoutSessionChromeValue,
+  type WorkoutSessionChromeControlsValue,
+  type WorkoutSessionChromeStatusValue,
 } from '../../contexts'
 import { exerciseRegistry } from '../../exercises'
 import { useSpeechRecognition, useWorkoutSession } from '../../hooks'
@@ -64,24 +66,16 @@ export function WorkoutLogicLayout({ children }: WorkoutLogicLayoutProps) {
 
   const resetStopEnabled = isRunning && !isRestCountdownActive
 
-  const chromeValue = useMemo<WorkoutSessionChromeValue>(
+  const controlsValue = useMemo<WorkoutSessionChromeControlsValue>(
     () => ({
       exerciseId,
       setExerciseId,
       restDurationMinutes,
       setRestDurationMinutes,
       isRunning,
-      isPaused,
-      isRestCountdownActive,
       resetStopEnabled,
-      modelStatus,
       isModelReady,
-      isCameraReady,
       isCameraInitializing,
-      cameraError,
-      voiceStatus,
-      voiceStatusLabel: VOICE_STATUS_LABEL,
-      modelStatusLabel: MODEL_STATUS_LABEL,
       start,
       pause,
       reset,
@@ -91,20 +85,27 @@ export function WorkoutLogicLayout({ children }: WorkoutLogicLayoutProps) {
       exerciseId,
       restDurationMinutes,
       isRunning,
-      isPaused,
-      isRestCountdownActive,
       resetStopEnabled,
-      modelStatus,
       isModelReady,
-      isCameraReady,
       isCameraInitializing,
-      cameraError,
-      voiceStatus,
       start,
       pause,
       reset,
       shutdown,
     ],
+  )
+
+  const statusValue = useMemo<WorkoutSessionChromeStatusValue>(
+    () => ({
+      modelStatus,
+      modelStatusLabel: MODEL_STATUS_LABEL,
+      isCameraReady,
+      voiceStatus,
+      voiceStatusLabel: VOICE_STATUS_LABEL,
+      isPaused,
+      cameraError,
+    }),
+    [modelStatus, isCameraReady, voiceStatus, isPaused, cameraError],
   )
 
   const stageValue = useMemo(
@@ -117,8 +118,10 @@ export function WorkoutLogicLayout({ children }: WorkoutLogicLayoutProps) {
   )
 
   return (
-    <WorkoutSessionChromeContext.Provider value={chromeValue}>
-      <WorkoutSessionStageContext.Provider value={stageValue}>{children}</WorkoutSessionStageContext.Provider>
-    </WorkoutSessionChromeContext.Provider>
+    <WorkoutSessionChromeControlsContext.Provider value={controlsValue}>
+      <WorkoutSessionChromeStatusContext.Provider value={statusValue}>
+        <WorkoutSessionStageContext.Provider value={stageValue}>{children}</WorkoutSessionStageContext.Provider>
+      </WorkoutSessionChromeStatusContext.Provider>
+    </WorkoutSessionChromeControlsContext.Provider>
   )
 }

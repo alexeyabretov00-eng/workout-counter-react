@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { useWorkoutSessionChromeContext } from '../../contexts'
+import { useWorkoutSessionChromeControlsContext } from '../../contexts'
 
 export function useExerciseControlBarContainerSelector() {
-  const ctx = useWorkoutSessionChromeContext()
+  const ctx = useWorkoutSessionChromeControlsContext()
   return useMemo(
     () => ({
       exerciseId: ctx.exerciseId,

@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { useWorkoutSessionChromeContext } from '../../contexts'
+import { useWorkoutSessionChromeStatusContext } from '../../contexts'
 
 export function useStatusBarContainerSelector() {
-  const ctx = useWorkoutSessionChromeContext()
+  const ctx = useWorkoutSessionChromeStatusContext()
   return useMemo(
     () => ({
       modelStatus: ctx.modelStatus,

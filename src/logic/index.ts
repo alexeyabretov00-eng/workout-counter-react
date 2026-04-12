@@ -1,4 +1,8 @@
-export type { WorkoutSessionChromeValue, WorkoutSessionStageValue } from '../contexts'
+export type {
+  WorkoutSessionChromeControlsValue,
+  WorkoutSessionChromeStatusValue,
+  WorkoutSessionStageValue,
+} from '../contexts'
 export {
   useExerciseControlBarContainerSelector,
   useStageContainerSelector,

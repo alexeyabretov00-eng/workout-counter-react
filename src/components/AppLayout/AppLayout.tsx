@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { memo, type ReactNode } from 'react'
 import './AppLayout.css'
 
 export type AppLayoutProps = {
@@ -8,7 +8,7 @@ export type AppLayoutProps = {
   stage: ReactNode
 }
 
-export function AppLayout({ header, controls, statusBar, stage }: AppLayoutProps) {
+function AppLayoutComponent({ header, controls, statusBar, stage }: AppLayoutProps) {
   return (
     <main className="app-layout">
       <section className="app-layout__section header">{header}</section>
@@ -18,3 +18,6 @@ export function AppLayout({ header, controls, statusBar, stage }: AppLayoutProps
     </main>
   )
 }
+
+export const AppLayout = memo(AppLayoutComponent)
+AppLayout.displayName = 'AppLayout'
