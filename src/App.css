@@ -26,32 +26,12 @@
   align-items: center;
 }
 
-.controls label {
-  font-weight: 600;
-}
-
-.controls select,
 .controls button {
   height: 38px;
   border-radius: 8px;
   border: 1px solid #d1d5db;
   padding: 0 12px;
   background: #fff;
-}
-
-.controls select {
-  /* Keep native-like text spacing, but add visible space after chevron. */
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  padding-right: 30px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23111827' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 8px center;
-  background-size: 14px 14px;
-}
-
-.controls button {
   cursor: pointer;
 }
 
@@ -59,8 +39,7 @@
   background: #f3f4f6;
 }
 
-.controls button:disabled,
-.controls select:disabled {
+.controls button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }

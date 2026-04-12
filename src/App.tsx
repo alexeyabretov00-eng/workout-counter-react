@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Select } from './components'
 import { useSpeechRecognition, useWorkoutSession } from './hooks'
 import { exerciseRegistry } from './exercises'
 import type { EntityStatus } from './types'
@@ -62,19 +63,17 @@ function App() {
       </section>
 
       <section className="controls">
-        <label htmlFor="exercise-select">Упражнение</label>
-        <select
+        <Select
           id="exercise-select"
+          label="Упражнение"
           value={exerciseId}
-          onChange={(event) => setExerciseId(event.target.value)}
+          options={exerciseRegistry.map((exercise) => ({
+            value: exercise.id,
+            label: exercise.name,
+          }))}
           disabled={isRunning}
-        >
-          {exerciseRegistry.map((exercise) => (
-            <option key={exercise.id} value={exercise.id}>
-              {exercise.name}
-            </option>
-          ))}
-        </select>
+          onChange={setExerciseId}
+        />
         <button
           type="button"
           onClick={() => {
@@ -100,18 +99,16 @@ function App() {
         >
           Стоп
         </button>
-        <label htmlFor="rest-duration-select">Отдых</label>
-        <select
+        <Select
           id="rest-duration-select"
-          value={restDurationMinutes}
-          onChange={(event) => setRestDurationMinutes(Number(event.target.value))}
-        >
-          {REST_DURATION_OPTIONS.map((minutes) => (
-            <option key={minutes} value={minutes}>
-              {minutes} мин
-            </option>
-          ))}
-        </select>
+          label="Отдых"
+          value={String(restDurationMinutes)}
+          options={REST_DURATION_OPTIONS.map((minutes) => ({
+            value: String(minutes),
+            label: `${minutes} мин`,
+          }))}
+          onChange={(value) => setRestDurationMinutes(Number(value))}
+        />
       </section>
 
       <section className="status-bar">
