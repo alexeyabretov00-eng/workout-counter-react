@@ -13,8 +13,6 @@ type UseSpeechRecognitionParams = {
   isCameraInitializing: boolean
   isModelReady: boolean
   dispatchChromeControl: (action: WorkoutSessionChromeControlAction) => void
-  onExerciseSelect: (exerciseId: string) => void
-  onRestDurationSelect: (minutes: number) => void
 }
 
 const START_COMMANDS = ['старт', 'начинаем упражнение', 'начать упражнение']
@@ -43,8 +41,6 @@ export const useSpeechRecognition = ({
   isCameraInitializing,
   isModelReady,
   dispatchChromeControl,
-  onExerciseSelect,
-  onRestDurationSelect,
 }: UseSpeechRecognitionParams) => {
   const [voiceStatus, setVoiceStatus] = useState<VoiceStatus>(() => getInitialVoiceStatus())
 
@@ -68,8 +64,6 @@ export const useSpeechRecognition = ({
   const isCameraInitializingRef = useRef(isCameraInitializing)
   const isModelReadyRef = useRef(isModelReady)
   const dispatchChromeControlRef = useRef(dispatchChromeControl)
-  const onExerciseSelectRef = useRef(onExerciseSelect)
-  const onRestDurationSelectRef = useRef(onRestDurationSelect)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const shouldRestartRef = useRef(false)
   const lastCommandRef = useRef<{ key: string; at: number } | null>(null)
@@ -80,17 +74,7 @@ export const useSpeechRecognition = ({
     isCameraInitializingRef.current = isCameraInitializing
     isModelReadyRef.current = isModelReady
     dispatchChromeControlRef.current = dispatchChromeControl
-    onExerciseSelectRef.current = onExerciseSelect
-    onRestDurationSelectRef.current = onRestDurationSelect
-  }, [
-    dispatchChromeControl,
-    isCameraInitializing,
-    isModelReady,
-    isRestCountdownActive,
-    isRunning,
-    onExerciseSelect,
-    onRestDurationSelect,
-  ])
+  }, [dispatchChromeControl, isCameraInitializing, isModelReady, isRestCountdownActive, isRunning])
 
   useEffect(() => {
     const SpeechRecognitionCtor =
@@ -185,7 +169,10 @@ export const useSpeechRecognition = ({
           runCommand(
             `rest-${option.minutes}`,
             () => {
-              onRestDurationSelectRef.current(option.minutes)
+              dispatchChromeControlRef.current({
+                type: 'setRestDurationMinutes',
+                minutes: option.minutes,
+              })
               dispatchChromeControlRef.current({
                 type: 'shutdown',
                 restDurationOverrideMs: option.minutes * 60_000,
@@ -203,7 +190,9 @@ export const useSpeechRecognition = ({
 
       for (const [phrase, nextExerciseId] of commandExerciseLookup) {
         if (matchesCommand(transcript, phrase)) {
-          runCommand(`exercise-${nextExerciseId}`, () => onExerciseSelectRef.current(nextExerciseId))
+          runCommand(`exercise-${nextExerciseId}`, () =>
+            dispatchChromeControlRef.current({ type: 'setExerciseId', exerciseId: nextExerciseId }),
+          )
           return
         }
       }

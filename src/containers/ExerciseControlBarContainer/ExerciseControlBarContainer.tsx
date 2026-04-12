@@ -7,9 +7,7 @@ const REST_DURATION_OPTIONS = [1, 2, 3, 5] as const
 export const ExerciseControlBarContainer = () => {
   const {
     exerciseId,
-    setExerciseId,
     restDurationMinutes,
-    setRestDurationMinutes,
     isRunning,
     isModelReady,
     isCameraInitializing,
@@ -28,7 +26,7 @@ export const ExerciseControlBarContainer = () => {
           label: exercise.name,
         }))}
         disabled={isRunning}
-        onChange={setExerciseId}
+        onChange={(id) => dispatchChromeControl({ type: 'setExerciseId', exerciseId: id })}
       />
       <Button
         onClick={() => {
@@ -64,7 +62,9 @@ export const ExerciseControlBarContainer = () => {
           value: String(minutes),
           label: `${minutes} мин`,
         }))}
-        onChange={(value) => setRestDurationMinutes(Number(value))}
+        onChange={(value) =>
+          dispatchChromeControl({ type: 'setRestDurationMinutes', minutes: Number(value) })
+        }
       />
     </>
   )

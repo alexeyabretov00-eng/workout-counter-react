@@ -48,13 +48,19 @@ export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
         case 'shutdown':
           shutdown(action.restDurationOverrideMs)
           return
+        case 'setExerciseId':
+          setExerciseId(action.exerciseId)
+          return
+        case 'setRestDurationMinutes':
+          setRestDurationMinutes(action.minutes)
+          return
         default: {
           const _never: never = action
           return _never
         }
       }
     },
-    [pause, reset, shutdown, start],
+    [pause, reset, setExerciseId, setRestDurationMinutes, shutdown, start],
   )
 
   const { voiceStatus } = useSpeechRecognition({
@@ -64,8 +70,6 @@ export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
     isCameraInitializing,
     isModelReady,
     dispatchChromeControl,
-    onExerciseSelect: setExerciseId,
-    onRestDurationSelect: setRestDurationMinutes,
   })
 
   const resetStopEnabled = isRunning && !isRestCountdownActive
@@ -73,9 +77,7 @@ export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
   const controlsValue = useMemo<WorkoutSessionChromeControlsValue>(
     () => ({
       exerciseId,
-      setExerciseId,
       restDurationMinutes,
-      setRestDurationMinutes,
       isRunning,
       resetStopEnabled,
       isModelReady,

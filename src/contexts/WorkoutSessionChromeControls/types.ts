@@ -3,12 +3,12 @@ export type WorkoutSessionChromeControlAction =
   | { type: 'pause' }
   | { type: 'reset' }
   | { type: 'shutdown'; restDurationOverrideMs?: number }
+  | { type: 'setExerciseId'; exerciseId: string }
+  | { type: 'setRestDurationMinutes'; minutes: number }
 
 export type WorkoutSessionChromeControlsValue = {
   exerciseId: string
-  setExerciseId: (id: string) => void
   restDurationMinutes: number
-  setRestDurationMinutes: (minutes: number) => void
   isRunning: boolean
   resetStopEnabled: boolean
   isModelReady: boolean

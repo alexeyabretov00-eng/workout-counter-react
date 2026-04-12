@@ -6,9 +6,7 @@ export const useExerciseControlBarContainerSelector = () => {
   return useMemo(
     () => ({
       exerciseId: ctx.exerciseId,
-      setExerciseId: ctx.setExerciseId,
       restDurationMinutes: ctx.restDurationMinutes,
-      setRestDurationMinutes: ctx.setRestDurationMinutes,
       isRunning: ctx.isRunning,
       isModelReady: ctx.isModelReady,
       isCameraInitializing: ctx.isCameraInitializing,
@@ -17,9 +15,7 @@ export const useExerciseControlBarContainerSelector = () => {
     }),
     [
       ctx.exerciseId,
-      ctx.setExerciseId,
       ctx.restDurationMinutes,
-      ctx.setRestDurationMinutes,
       ctx.isRunning,
       ctx.isModelReady,
       ctx.isCameraInitializing,
