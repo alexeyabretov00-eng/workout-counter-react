@@ -1,0 +1,23 @@
+import styled from 'styled-components'
+
+export const AdminPageRoot = styled.main`
+  box-sizing: border-box;
+  max-width: ${({ theme }) => theme.layout.maxWidth};
+  margin: 0 auto;
+  padding: ${({ theme }) => theme.spacing.xl};
+  color: ${({ theme }) => theme.palette.text.primary};
+  font-family: ${({ theme }) => theme.typography.family};
+  line-height: ${({ theme }) => theme.typography.lineHeight};
+`
+
+export const AdminPageTitle = styled.h1`
+  margin: 0 0 ${({ theme }) => theme.spacing.md};
+  font-size: 1.5rem;
+  font-weight: ${({ theme }) => theme.typography.labelWeight};
+`
+
+export const AdminPageLead = styled.p`
+  margin: 0;
+  color: ${({ theme }) => theme.palette.text.muted};
+  font-size: ${({ theme }) => theme.typography.statusBar};
+`
