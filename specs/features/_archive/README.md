@@ -6,6 +6,7 @@
 |---------|------|
 | [commitlint-adoption](./commitlint-adoption/) | Внедрение commitlint и Husky (`commit-msg`) для Conventional Commits |
 | [documentation](./documentation/) | Обновление README и сопутствующей документации |
+| [github-milestones-and-issues](./github-milestones-and-issues/) | GitHub: Milestone, Issues, шаблоны и правило агента рядом со спеками |
 | [react-router-routing](./react-router-routing/) | React Router: главная, админка и история упражнений (заглушки) |
 | [styled-components-migration](./styled-components-migration/) | Переход UI на `styled-components`, тема и `*.styled.tsx` |
 | [todo-roadmap-format](./todo-roadmap-format/) | Формат бэклога в `todo.md` |
