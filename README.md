@@ -32,6 +32,27 @@ npm run dev
 
 Откройте URL из Vite в браузере. Для камеры и (при голосовом управлении) микрофона браузер запросит разрешения. Для `getUserMedia` нужен **HTTPS** или **localhost**.
 
+## Docker (локально)
+
+Нужны [Docker Engine](https://docs.docker.com/engine/install/) и (для Compose) [Docker Compose](https://docs.docker.com/compose/).
+
+Сборка и запуск через Compose (приложение на **http://localhost:8080**):
+
+```bash
+docker compose up --build
+```
+
+Только образ и контейнер:
+
+```bash
+docker build -t workout-counter-react:local .
+docker run --rm -p 8080:80 workout-counter-react:local
+```
+
+Образ: multi-stage (Node — `npm ci` и `npm run build`, затем nginx со статикой из `dist/` и fallback на `index.html` для маршрутов React Router). Камера и микрофон проверяйте в браузере по адресу **localhost** (как при `npm run dev`); доступ по IP в локальной сети может не дать secure context для медиа.
+
+План и чеклист: `specs/features/local-docker-deploy/`.
+
 ## Скрипты
 
 - `npm run dev` — локальная разработка (Vite).
