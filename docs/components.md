@@ -4,7 +4,7 @@
 
 ## Назначение каталога
 
-- `src/components` — презентационные (или почти презентационные) блоки UI, которые имеет смысл выносить из `App.tsx` или других экранов.
+- `src/components` — презентационные (или почти презентационные) блоки UI, которые имеет смысл выносить из корневого `App`, страниц в `src/pages` или других экранов.
 - Бизнес-логику сессии, хуки и сервисы сюда не переносят: компонент получает данные и коллбеки через пропсы.
 
 ## Структура одного компонента
@@ -17,7 +17,7 @@
 | `<Name>/<Name>.styled.tsx` | **styled-components** виджета: токены через `${({ theme }) => theme.…}` |
 | `<Name>/index.ts` | Публичный API папки: явные `export { ... }` и `export type { ... }` |
 
-Примеры в репозитории: `src/components/Select/`, `src/components/Button/`, `src/components/AppLayout/`.
+Примеры в репозитории: `src/components/Select/`, `src/components/Button/`, `src/components/AppNav/`.
 
 ## Объявление компонента (функция)
 
@@ -31,18 +31,14 @@
 - Любой новый компонент, который должны импортировать извне `components`, добавляется в `src/components/index.ts` в **той же задаче**, что и сам компонент.
 - В `index.ts` запрещён `export *`; только явные именованные реэкспорты (как в остальном `src` — см. раздел «Соглашение по импортам» в `README.md`).
 
-Импорт в `App.tsx` и аналогах:
-
-```ts
-import { Button, Select } from './components'
-```
+Импорт из барреля **`src/components`** (между папками верхнего уровня `src/*` — не из файла компонента напрямую). Относительный путь зависит от места файла; например из `src/App/App.tsx`: `import { Button, Select } from '../components'`; из `src/pages/HomePage/HomePage.tsx`: `import { … } from '../../components'`.
 
 Импортировать из `./components/Button/Button` снаружи папки `components` не нужно.
 
 ## Стили (styled-components)
 
 - **Файл стилей:** в той же папке, что и компонент, файл **`<Name>.styled.tsx`** — все `styled.*` и вспомогательные `keyframes` / локальные функции для CSS (например SVG data-URL). Из **`<Name>.tsx`** импортируйте только нужные именованные экспорты (`Root`, `Field`, …).
-- **Тема:** общие цвета, отступы, радиусы и типографика — в `src/theme/theme.ts`; провайдер — в `src/main.tsx`. В styled-шаблонах используйте `${({ theme }) => theme.…}`.
+- **Тема:** общие цвета, отступы, радиусы и типографика — в `src/theme/theme.ts`; провайдер — в `src/App/App.tsx`. В styled-шаблонах используйте `${({ theme }) => theme.…}`.
 - **Именование:** у каждого styled-компонента префикс совпадает с публичным компонентом папки — например `SelectField`, `ButtonRoot`, `StageLoaderSpinner`, `WorkoutStatusBarVoiceBadge`, чтобы по имени было ясно, к какому виджету относится узел (в т.ч. в React DevTools и при `babel-plugin-styled-components`). Варианты состояния — **transient props** с `$` (например `$status`).
 - **Глобально:** только базовые правила документа (`box-sizing`, `html`/`body`) — в `GlobalStyle` из `src/theme/globalStyle.tsx`.
 - При добавлении токена расширяйте `theme.ts` и при необходимости тип `AppTheme` / `styled.d.ts` останется согласованным автоматически.
@@ -58,6 +54,6 @@ import { Button, Select } from './components'
 
 ## Согласование с импортами
 
-Правило «между папками `src` — из барреля» распространяется и на `components`: из `App.tsx` импорт только из `./components`, не из `./components/Select/Select`.
+Правило «между папками `src` — из барреля» распространяется и на `components`: из страниц и `App` импорт только из барреля `./components` (с корректным относительным путём), не из `./components/Select/Select`.
 
 Оркестрация экрана тренировки, контексты, селекторы и контейнеры слотов — в других каталогах `src`; см. [docs/src-layout.md](src-layout.md).

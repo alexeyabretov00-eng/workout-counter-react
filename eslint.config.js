@@ -23,4 +23,16 @@ export default defineConfig([
       curly: ['error', 'all'],
     },
   },
+  {
+    files: ['src/pages/*/index.tsx'],
+    rules: {
+      'react-refresh/only-export-components': [
+        'error',
+        {
+          allowConstantExport: true,
+          allowExportNames: ['routes'],
+        },
+      ],
+    },
+  },
 ])

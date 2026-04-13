@@ -1,14 +1,17 @@
-import { ROUTES } from '../../routes'
 import { AppNavLink, AppNavRoot } from './AppNav.styled'
 
-export const AppNav = () => {
+type AppNavProps = {
+  items: { path: string; label: string; end?: boolean }[]
+}
+
+export const AppNav = ({ items }: AppNavProps) => {
   return (
     <AppNavRoot>
-      <AppNavLink to={ROUTES.HOME} end>
-        Главная
-      </AppNavLink>
-      <AppNavLink to={ROUTES.ADMIN}>Админка</AppNavLink>
-      <AppNavLink to={ROUTES.HISTORY}>История</AppNavLink>
+      {items.map(({ path, label, end }) => (
+        <AppNavLink key={path} to={path} end={end}>
+          {label}
+        </AppNavLink>
+      ))}
     </AppNavRoot>
   )
 }

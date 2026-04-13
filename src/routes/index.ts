@@ -1,1 +1,1 @@
-export { ROUTES } from './paths'
+export { navItems, routes } from './routes'

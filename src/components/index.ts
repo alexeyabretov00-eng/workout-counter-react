@@ -1,4 +1,3 @@
-export { AppLayout, type AppLayoutProps } from './AppLayout'
 export { AppNav } from './AppNav'
 export { Badge, type BadgeProps, type BadgeVariant } from './Badge'
 export { ExerciseControlBar, type ExerciseControlBarProps } from './ExerciseControlBar'

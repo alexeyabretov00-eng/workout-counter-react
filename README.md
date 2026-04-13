@@ -21,6 +21,7 @@
 - **Пауза и продолжение:** при паузе обработка кадров останавливается, в сцене показывается состояние «Упражнение приостановлено», затем снова `Старт` на той же кнопке продолжает ту же сессию.
 - **Остановка сессии:** кнопка `Стоп` завершает сессию, отключает камеру и запускает таймер отдыха на выбранное время.
 - **Строка состояния:** показывает готовность модели, состояние камеры, статус голосового распознавания, паузу и ошибки камеры.
+- **Несколько страниц:** переключение через навигацию в шапке (React Router). Полная логика тренировки (камера, сессия, голос) монтируется только на главной (`HomePage`); остальные маршруты — отдельные экраны без `WorkoutLogicLayout`.
 
 ## Запуск
 
@@ -112,8 +113,11 @@ React 19, TypeScript, Vite 8, styled-components, MediaPipe Tasks Vision (pose la
 
 ## Архитектура
 
-- `src/App.tsx` — корень UI: `WorkoutLogicLayout` оборачивает `AppLayout`; слоты (`header`, `controls`, `statusBar`, `stage`) заполняются контейнерами из `src/containers`. Подробнее о папках: [docs/src-layout.md](docs/src-layout.md).
-- `src/theme` — объект темы (палитра, отступы, радиусы, типографика), `ThemeProvider` и `GlobalStyle` подключаются в `src/main.tsx`.
+- `src/main.tsx` — монтирование в `#root`: рендер `<App />` из `./App` (баррель `src/App/`).
+- `src/App/App.tsx` — `ThemeProvider`, `GlobalStyle` и `RouterProvider` с `createBrowserRouter`: общий родительский маршрут с `AppPageLayout` (навигация и вложенные страницы через `<Outlet />`), дочерние маршруты — из `src/routes`.
+- `src/routes/routes.ts` — собирает `RouteObject[]` из экспорта `routes` в каждом `src/pages/*/index.tsx` (`import.meta.glob`), строит `navItems` для `AppNav` из `route.handle.nav` (метка, порядок, `end`).
+- `src/pages/HomePage/HomePage.tsx` — экран тренировки: `WorkoutLogicLayout` оборачивает `HomeLayout`; слоты (`header`, `controls`, `statusBar`, `stage`) заполняются контейнерами из `src/containers`. Остальные страницы (`AdminPage`, `ExerciseHistoryPage` и т.д.) рендерятся тем же роутером без `WorkoutLogicLayout`. Подробнее о папках: [docs/src-layout.md](docs/src-layout.md).
+- `src/theme` — объект темы (палитра, отступы, радиусы, типографика); `ThemeProvider` и `GlobalStyle` подключаются в `src/App/App.tsx`.
 - `src/logic` — оркестрация экрана тренировки (например `WorkoutLogicLayout`: локальное состояние упражнения/отдыха, `useWorkoutSession`, `useSpeechRecognition`, провайдеры контекстов). Один публичный модуль — одна подпапка в PascalCase и баррель `src/logic/index.ts`.
 - `src/contexts` — React-контексты сессии (chrome / stage и др.): каждый контекст в своей подпапке, баррель `src/contexts/index.ts`.
 - `src/selectors` — хуки `use…ContainerSelector` для контейнеров; каждый селектор в своей подпапке, баррель `src/selectors/index.ts`; реэкспорт в `src/logic/index.ts` для импорта контейнерами из `../logic`.
@@ -122,7 +126,7 @@ React 19, TypeScript, Vite 8, styled-components, MediaPipe Tasks Vision (pose la
 - `src/services` — MediaPipe Pose landmarker (`PoseLandmarkerService`): загрузка модели, `detect` / нормализация landmarks в общие типы из `src/utils/pose.ts`.
 - `src/exercises` — детекторы упражнений (`ExerciseDetector`), реестр `registry.ts`, типы.
 - `src/utils` — утилиты: в частности `pose.ts` (типы позы, индексы точек, углы, `drawFrame` — видео, скелет, HUD на canvas), `canvas.ts` (`resizeCanvas`, экран отдыха `drawRestCountdown`), `speech.ts` (синтез и нормализация текста для команд).
-- `src/hooks/useSpeechRecognition.ts` — непрерывное распознавание речи и маршрутизация голосовых команд в API сессии (вызывается из `WorkoutLogicLayout`, не из `App.tsx`).
+- `src/hooks/useSpeechRecognition.ts` — непрерывное распознавание речи и маршрутизация голосовых команд в API сессии (вызывается из `WorkoutLogicLayout`, не из корневого `App`).
 - `src/types` — общие типы приложения (в том числе единый тип статусов `EntityStatus`).
 - `src/hooks/useWorkoutSession.ts` — **ядро сессии**: связывает камеру, landmarker, выбранный детектор и отрисовку; управляет циклом `requestAnimationFrame`, паузой, сбросом, остановкой с таймером отдыха и озвучкой повторений.
 

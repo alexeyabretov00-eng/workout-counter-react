@@ -4,6 +4,7 @@
 
 | Каталог | Суть |
 |---------|------|
+| [dynamic-routes-from-pages](./dynamic-routes-from-pages/) | Маршруты из `pages/*/index.tsx` через glob, `AppPageLayout`, `navItems` из `handle.nav` |
 | [commitlint-adoption](./commitlint-adoption/) | Внедрение commitlint и Husky (`commit-msg`) для Conventional Commits |
 | [documentation](./documentation/) | Обновление README и сопутствующей документации |
 | [github-milestones-and-issues](./github-milestones-and-issues/) | GitHub: Milestone, Issues, шаблоны и правило агента рядом со спеками |

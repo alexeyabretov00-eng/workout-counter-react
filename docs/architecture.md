@@ -8,8 +8,21 @@
 
 ## Слои и зоны ответственности
 
-- `src/App.tsx`
-  - Корень UI: оборачивает разметку в `WorkoutLogicLayout`, внутри — `AppLayout` со слотами; в слоты передаются контейнеры из `src/containers`. Без хуков сессии и голоса.
+- `src/main.tsx`
+  - Точка входа в DOM: `createRoot`, рендер публичного `<App />` из `./App` (баррель `src/App/index.ts`).
+
+- `src/App/*`
+  - **`App.tsx`:** `ThemeProvider`, `GlobalStyle`, `RouterProvider` с `createBrowserRouter` — родительский маршрут с `element: <AppPageLayout />`, дочерние маршруты из массива `routes` (`src/routes`). Без хуков сессии и голоса.
+  - **`AppPageLayout.tsx`:** оболочка вложенных маршрутов: `AppNav` (пункты из `navItems`) и `<Outlet />`.
+  - Публичный API папки: `src/App/index.ts`.
+
+- `src/routes/routes.ts`
+  - Сборка списка маршрутов: `import.meta.glob` по `../pages/*/index.tsx`, объединение экспортов `routes`; функция `buildNavItems` читает `route.handle.nav` для навигации.
+
+- `src/pages/*`
+  - Страницы приложения. Каждая подпапка страницы может экспортировать массив **`routes`** (`RouteObject[]`) из своего `index.tsx` — он попадает в общий роутер.
+  - **`HomePage`:** единственный экран с полной оркестрацией тренировки — внутри `WorkoutLogicLayout` и **`HomeLayout`** (слоты `header`, `controls`, `statusBar`, `stage`); в слоты передаются контейнеры из `src/containers`.
+  - Прочие страницы (например админка, история) — презентационный контент без `WorkoutLogicLayout`.
 
 - `src/logic/*`
   - Оркестрация экрана тренировки: `WorkoutLogicLayout` (состояние упражнения/отдыха, `useWorkoutSession`, `useSpeechRecognition`, провайдеры контекстов). Один публичный модуль — подпапка PascalCase + `src/logic/index.ts`. Соглашения — в [docs/src-layout.md](src-layout.md).
@@ -21,13 +34,13 @@
   - Хуки `use…ContainerSelector` для контейнеров (`useContext` + `useMemo`); подпапка на селектор, баррель `src/selectors/index.ts`; для контейнеров реэкспорт через `src/logic/index.ts`.
 
 - `src/containers/*`
-  - Компоненты слотов `AppLayout` без пропсов данных сессии; данные через селекторы. Одна папка на контейнер, баррель `src/containers/index.ts`. Соглашения — в [docs/src-layout.md](src-layout.md).
+  - Компоненты слотов layout главной страницы (`HomeLayout`: `controls`, `statusBar`, `stage` и т.д.) без пропсов данных сессии; данные через селекторы. Одна папка на контейнер, баррель `src/containers/index.ts`. Соглашения — в [docs/src-layout.md](src-layout.md).
 
 - `src/components/*`
   - Переиспользуемые UI-блоки (например выбор значения, кнопки панели управления): одна папка на компонент, оформление через **`<Имя>.styled.tsx`** и токены из темы (`src/theme`), импорт из барреля `./components`. Соглашения — в [docs/components.md](components.md).
 
 - `src/theme/*`
-  - Базовая тема приложения (`theme.ts`), глобальные стили (`createGlobalStyle` в `globalStyle.tsx`), расширение типа `DefaultTheme` для TypeScript (`styled.d.ts`). Провайдер темы подключается в `src/main.tsx`.
+  - Базовая тема приложения (`theme.ts`), глобальные стили (`createGlobalStyle` в `globalStyle.tsx`), расширение типа `DefaultTheme` для TypeScript (`styled.d.ts`). Провайдер темы подключается в `src/App/App.tsx`.
 
 - `src/hooks/useSpeechRecognition.ts`
   - Web Speech API: запуск распознавания, разбор транскрипта; команды и смена упражнения / длительности отдыха сводятся к вызовам **`dispatchChromeControl`** с объектами действий (тот же контракт, что у панели управления через контекст).
@@ -60,8 +73,15 @@
 ## Поток данных
 
 ```mermaid
-flowchart LR
-  App[App.tsx] --> WLL[WorkoutLogicLayout]
+flowchart TB
+  Main[main.tsx] --> AppMod[App/App.tsx]
+  AppMod --> Theme[ThemeProvider + GlobalStyle]
+  AppMod --> R[RouterProvider]
+  R --> APL[AppPageLayout]
+  APL --> Nav[AppNav]
+  APL --> Out[Outlet]
+  Out --> Home[HomePage]
+  Home --> WLL[WorkoutLogicLayout]
   WLL --> Session[useWorkoutSession]
   WLL --> Speech[useSpeechRecognition]
   WLL --> Ctx[Context providers]
@@ -76,7 +96,7 @@ flowchart LR
   Draw --> Canvas[Canvas output]
 ```
 
-Ключевой цикл: кадр с камеры -> landmarks -> детектор упражнения -> обновление runtime -> рендер в canvas. Контексты публикуются из `WorkoutLogicLayout`; контейнеры читают срезы через `use…ContainerSelector`.
+Ключевой цикл тренировки: кадр с камеры → landmarks → детектор упражнения → обновление runtime → рендер в canvas. Контексты публикуются из `WorkoutLogicLayout` на маршруте главной; контейнеры читают срезы через `use…ContainerSelector`. Корневой `App` и `AppPageLayout` к этому циклу не подключены — они задают тему, роутинг и оболочку страниц.
 
 ### Chrome-контролы: `dispatchChromeControl`
 
