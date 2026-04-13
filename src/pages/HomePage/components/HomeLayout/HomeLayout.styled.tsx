@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const AppLayoutRoot = styled.main`
+export const HomeLayoutRoot = styled.main`
   margin: 0 auto;
   max-width: ${({ theme }) => theme.layout.maxWidth};
   padding: ${({ theme }) => theme.spacing.xl};
@@ -8,9 +8,9 @@ export const AppLayoutRoot = styled.main`
   gap: ${({ theme }) => theme.spacing.lg};
 `
 
-export const AppLayoutSection = styled.section``
+export const HomeLayoutSection = styled.section``
 
-export const AppLayoutHeaderSection = styled(AppLayoutSection)`
+export const HomeLayoutHeaderSection = styled(HomeLayoutSection)`
   & h1 {
     margin: 0;
   }
@@ -21,6 +21,6 @@ export const AppLayoutHeaderSection = styled(AppLayoutSection)`
   }
 `
 
-export const AppLayoutStageSection = styled(AppLayoutSection)`
+export const HomeLayoutStageSection = styled(HomeLayoutSection)`
   min-width: 0;
 `
