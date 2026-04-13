@@ -8,4 +8,4 @@
 | [fixes](./fixes/README.md) | Исправления и хотфиксы (не новые фичи) |
 | [refactor](./refactor/README.md) | Рефакторинг без смены наблюдаемого поведения продукта (отдельный каталог плана) |
 
-Общий процесс (три коммита, архивация в `_archive`) — в корневом [README.md](../README.md), раздел «Планирование фич и исправлений». Задачи с каталогом в `features` / `fixes` / `refactor` ведите в **отдельной git-ветке** — см. `.cursor/rules/work-in-branch.mdc`. Соглашение по путям в markdown: [docs/markdown-paths.md](../docs/markdown-paths.md).
+Общий процесс (три коммита, архивация в `_archive`) — в корневом [README.md](../README.md), раздел «Планирование фич и исправлений». Задачи с каталогом в `features` / `fixes` / `refactor` ведите в **отдельной git-ветке** — см. `.cursor/rules/work-in-branch.mdc`. Соглашение по путям в markdown: [docs/markdown-paths.md](../docs/markdown-paths.md). Опционально параллельно: Milestone и Issues на GitHub — [docs/github-planning.md](../docs/github-planning.md).

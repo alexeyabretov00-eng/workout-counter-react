@@ -9,6 +9,8 @@ alwaysApply: true
 
 Репозиторий: [README.md](../../README.md) (раздел **«Планирование фич и исправлений»**), [specs/README.md](../../specs/README.md), [specs/features/README.md](../../specs/features/README.md), [specs/fixes/README.md](../../specs/fixes/README.md), [specs/refactor/README.md](../../specs/refactor/README.md).
 
+**GitHub (Milestone, Issues, Wiki):** по запросу пользователя на трекинг на GitHub — см. [.cursor/rules/github-planning-artifacts.mdc](./github-planning-artifacts.mdc) и [docs/github-planning.md](../../docs/github-planning.md).
+
 **Ветка git:** фичи, исправления и рефакторинг со спеком ведутся в **отдельной ветке** (префиксы `feature/`, `fix/`, `refactor/` и т.д.) — см. [.cursor/rules/work-in-branch.mdc](./work-in-branch.mdc).
 
 ## Любой рефакторинг: `specs/refactor/`
