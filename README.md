@@ -51,7 +51,7 @@ docker run --rm -p 8080:80 workout-counter-react:local
 
 Образ: multi-stage (Node — `npm ci` и `npm run build`, затем nginx со статикой из `dist/` и fallback на `index.html` для маршрутов React Router). Камера и микрофон проверяйте в браузере по адресу **localhost** (как при `npm run dev`); доступ по IP в локальной сети может не дать secure context для медиа.
 
-План и чеклист: `specs/features/local-docker-deploy/`.
+План и чеклист (архив): `specs/features/_archive/local-docker-deploy/`.
 
 ## Скрипты
 

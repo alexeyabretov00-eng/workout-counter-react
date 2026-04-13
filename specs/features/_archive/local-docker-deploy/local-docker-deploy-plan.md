@@ -67,4 +67,4 @@ docker compose up --build
 
 ## 8. Связь с трекингом GitHub
 
-Эпик на GitHub: milestone **«Фича: локальный Docker»** — прогресс по подзадачам (issues) и ссылка на этот каталог: `specs/features/local-docker-deploy/`.
+Эпик на GitHub: milestone **«Фича: локальный Docker»** — прогресс по подзадачам (issues). Каталог задачи после архивирования: `specs/features/_archive/local-docker-deploy/`.
