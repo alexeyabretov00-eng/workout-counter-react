@@ -1,17 +1,19 @@
-import { AppLayout } from './components'
-import { ExerciseControlBarContainer, StageContainer, StatusBarContainer } from './containers'
-import { WorkoutLogicLayout } from './logic'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { AppNav } from './components'
+import { AdminPage, ExerciseHistoryPage, HomePage } from './pages'
+import { ROUTES } from './routes'
 
-function App() {
+const App = () => {
   return (
-    <WorkoutLogicLayout>
-      <AppLayout
-        header={<h1>Счетчик повторений</h1>}
-        controls={<ExerciseControlBarContainer />}
-        statusBar={<StatusBarContainer />}
-        stage={<StageContainer />}
-      />
-    </WorkoutLogicLayout>
+    <>
+      <AppNav />
+      <Routes>
+        <Route path={ROUTES.HOME} element={<HomePage />} />
+        <Route path={ROUTES.ADMIN} element={<AdminPage />} />
+        <Route path={ROUTES.HISTORY} element={<ExerciseHistoryPage />} />
+        <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
+      </Routes>
+    </>
   )
 }
 
