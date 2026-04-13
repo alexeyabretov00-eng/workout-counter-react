@@ -38,7 +38,7 @@ const buildNavItems = (routes: RouteObject[]) => {
     }
 
     items.push({
-      path: route.path,
+      path: route.path ?? '',
       label: handle.nav.label,
       end: handle.nav.end,
       sort: handle.nav.sort ?? Number.POSITIVE_INFINITY,
