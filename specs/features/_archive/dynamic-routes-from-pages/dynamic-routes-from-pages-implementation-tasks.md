@@ -17,4 +17,4 @@
 - Порядок пунктов шапки задаётся **`handle.nav.sort`** при сборке **`navItems`** в **`routes.ts`**.
 - Catch-all **`'*'`** сейчас живёт в **`src/pages/HomePage/index.tsx`**; при расширении набора маршрутов при необходимости перенести или упорядочить в сборщике (см. §3.2 плана).
 
-После переноса спеки в **`_archive`** обновить относительные пути в markdown по [docs/markdown-paths.md](../../../docs/markdown-paths.md).
+Оформление ссылок в markdown в репозитории — см. **`docs/markdown-paths.md`**.

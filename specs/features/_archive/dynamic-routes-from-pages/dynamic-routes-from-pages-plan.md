@@ -102,4 +102,4 @@
 | [#19](https://github.com/alexeyabretov00-eng/workout-counter-react/issues/19) | `AppNav` из производных данных |
 | [#20](https://github.com/alexeyabretov00-eng/workout-counter-react/issues/20) | Проверки CI и ручной проход URL |
 
-Источник правды по тексту и чеклисту — каталог **`specs/features/dynamic-routes-from-pages/`** в git.
+**Архив:** каталог **`specs/features/_archive/dynamic-routes-from-pages/`**; актуальная разработка ведётся новыми спеками в **`specs/features/`**, не правьте этот архив как «источник правды» для текущего кода без отдельной задачи.
