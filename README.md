@@ -57,12 +57,15 @@ docker run --rm -p 8080:80 workout-counter-react:local
 
 - `npm run dev` — локальная разработка (Vite).
 - `npm run build` — проверка TypeScript и production-сборка.
+- `npm run build:analyze` — та же сборка в режиме `analyze`: дополнительно пишется отчёт **`dist/bundle-stats.html`** (дерево чанков и размеры; откройте файл в браузере после сборки).
 - `npm run preview` — локальный просмотр уже собранного приложения (после `npm run build`).
 - `npm run lint` — ESLint.
 - `npm run test` — unit-тесты детекторов (Vitest).
 - `npm run commitlint` — проверка текста коммита через [commitlint](https://commitlint.js.org/) (сообщение передаётся в **stdin**).
 
 Перед PR имеет смысл выполнить `npm run lint` и `npm run test`.
+
+Размеры сгенерированных JS-чанков удобно смотреть в логе после `npm run build` (строки вида `dist/assets/…`) и при необходимости через `npm run build:analyze` и отчёт `dist/bundle-stats.html`.
 
 ## Сообщения коммитов (Conventional Commits)
 

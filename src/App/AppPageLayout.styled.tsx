@@ -5,3 +5,12 @@ export const AppRootLayoutRoot = styled.div`
   flex-direction: column;
   min-height: 100vh;
 `
+
+export const RouteOutletFallbackRoot = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: ${({ theme }) => theme.spacing.xl};
+  color: ${({ theme }) => theme.palette.text.muted};
+`
