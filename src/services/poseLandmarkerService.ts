@@ -1,8 +1,4 @@
-import {
-  FilesetResolver,
-  PoseLandmarker,
-  type NormalizedLandmark,
-} from '@mediapipe/tasks-vision'
+import type { NormalizedLandmark, PoseLandmarker } from '@mediapipe/tasks-vision'
 import type { PoseFrame, PoseLandmarks } from '../utils/pose'
 
 const MODEL_ASSET_PATH =
@@ -19,9 +15,10 @@ export class PoseLandmarkerService {
       return
     }
 
+    const { FilesetResolver, PoseLandmarker: PoseLandmarkerCtor } = await import('@mediapipe/tasks-vision')
     const fileset = await FilesetResolver.forVisionTasks(WASM_PATH)
     try {
-      this.landmarker = await PoseLandmarker.createFromOptions(fileset, {
+      this.landmarker = await PoseLandmarkerCtor.createFromOptions(fileset, {
         baseOptions: {
           modelAssetPath: MODEL_ASSET_PATH,
           delegate: 'GPU',
@@ -34,7 +31,7 @@ export class PoseLandmarkerService {
       })
     } catch {
       // Some browsers/devices may not support GPU delegate.
-      this.landmarker = await PoseLandmarker.createFromOptions(fileset, {
+      this.landmarker = await PoseLandmarkerCtor.createFromOptions(fileset, {
         baseOptions: {
           modelAssetPath: MODEL_ASSET_PATH_LITE,
           delegate: 'CPU',

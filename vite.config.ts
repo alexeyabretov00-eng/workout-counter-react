@@ -1,7 +1,31 @@
 import babel from '@babel/core'
 import react from '@vitejs/plugin-react'
+import { visualizer } from 'rollup-plugin-visualizer'
 import type { Plugin } from 'vite'
 import { defineConfig } from 'vite'
+
+const vendorChunk = (id: string): string | undefined => {
+  if (!id.includes('node_modules')) {
+    return undefined
+  }
+  const norm = id.replace(/\\/g, '/')
+  if (norm.includes('@mediapipe')) {
+    return 'mediapipe'
+  }
+  if (norm.includes('react-router')) {
+    return 'react-router'
+  }
+  if (norm.includes('styled-components')) {
+    return 'styled-components'
+  }
+  if (norm.includes('react-dom')) {
+    return 'react-dom'
+  }
+  if (norm.includes('/react/')) {
+    return 'react'
+  }
+  return undefined
+}
 
 const styledComponentsDevPlugin = (): Plugin => {
   let root: string
@@ -51,12 +75,31 @@ const styledComponentsDevPlugin = (): Plugin => {
 }
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [styledComponentsDevPlugin(), react()],
+export default defineConfig(({ mode }) => ({
+  plugins: [
+    styledComponentsDevPlugin(),
+    react(),
+    ...(mode === 'analyze'
+      ? [
+          visualizer({
+            filename: 'dist/bundle-stats.html',
+            gzipSize: true,
+            brotliSize: true,
+          }),
+        ]
+      : []),
+  ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: vendorChunk,
+      },
+    },
+  },
   server: {
     open: true,
   },
   preview: {
     open: true,
   },
-})
+}))

@@ -1,14 +1,12 @@
 import type { RouteObject } from 'react-router'
-import { AdminPage } from './AdminPage'
+import { AdminPageLazy } from './AdminPageLazy'
 
 export const routes: RouteObject[] = [
   {
     path: '/admin',
-    element: <AdminPage />,
+    element: <AdminPageLazy />,
     handle: {
       nav: { label: 'Админка', sort: 1 },
-    }
+    },
   },
 ]
-
-export { AdminPage }
