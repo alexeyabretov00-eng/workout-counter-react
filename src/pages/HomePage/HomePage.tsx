@@ -1,6 +1,6 @@
 import { HomeLayout } from './components'
-import { ExerciseControlBarContainer, StageContainer, StatusBarContainer } from '../../containers'
-import { WorkoutLogicLayout } from '../../logic'
+import { ExerciseControlBarContainer, StageContainer, StatusBarContainer } from './containers'
+import { WorkoutLogicLayout } from './logic'
 
 export const HomePage = () => {
   return (

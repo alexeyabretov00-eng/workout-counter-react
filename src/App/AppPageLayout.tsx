@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
-import { AppNav } from '../components/AppNav'
+import { AppNav } from './components'
 import { AppRootLayoutRoot, RouteOutletFallbackRoot } from './AppPageLayout.styled'
 import { navItems } from '../routes'
 

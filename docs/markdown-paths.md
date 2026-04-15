@@ -7,7 +7,7 @@
 ## Соглашение для этого репозитория
 
 1. **Путь от корня репозитория в обратных кавычках** — основной способ указать файл или каталог:
-   - `src/hooks/useWorkoutSession.ts`
+   - `src/pages/HomePage/hooks/useWorkoutSession.ts`
    - `README.md`
    - `specs/README.md`
    - `specs/features/README.md`
@@ -16,7 +16,7 @@
    - `docs/architecture.md`
 
 2. **Кликабельная ссылка на GitHub** (если нужен переход по клику в веб-интерфейсе): полный URL вида  
-   `https://github.com/<org>/<repo>/blob/main/src/hooks/useWorkoutSession.ts`  
+   `https://github.com/<org>/<repo>/blob/main/src/pages/HomePage/hooks/useWorkoutSession.ts`  
    (ветку `main` замените при необходимости.)
 
 3. **Ссылки между соседними документами** в одном каталоге по-прежнему можно делать коротко: `./implementation-tasks.md`.

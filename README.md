@@ -140,19 +140,19 @@ React 19, TypeScript, Vite 8, styled-components, MediaPipe Tasks Vision (pose la
 - `src/main.tsx` — монтирование в `#root`: рендер `<App />` из `./App` (баррель `src/App/`).
 - `src/App/App.tsx` — `ThemeProvider`, `GlobalStyle` и `RouterProvider` с `createBrowserRouter`: общий родительский маршрут с `AppPageLayout` (навигация и вложенные страницы через `<Outlet />`), дочерние маршруты — из `src/routes`.
 - `src/routes/routes.ts` — собирает `RouteObject[]` из экспорта `routes` в каждом `src/pages/*/index.tsx` (`import.meta.glob`), строит `navItems` для `AppNav` из `route.handle.nav` (метка, порядок, `end`).
-- `src/pages/HomePage/HomePage.tsx` — экран тренировки: `WorkoutLogicLayout` оборачивает `HomeLayout`; слоты (`header`, `controls`, `statusBar`, `stage`) заполняются контейнерами из `src/containers`. Остальные страницы (`AdminPage`, `ExerciseHistoryPage` и т.д.) рендерятся тем же роутером без `WorkoutLogicLayout`. Подробнее о папках: [docs/src-layout.md](docs/src-layout.md).
+- `src/pages/HomePage/HomePage.tsx` — экран тренировки: `WorkoutLogicLayout` оборачивает `HomeLayout`; слоты (`header`, `controls`, `statusBar`, `stage`) заполняются контейнерами из `pages/HomePage/containers`. Остальные страницы (`AdminPage`, `ExerciseHistoryPage` и т.д.) рендерятся тем же роутером без `WorkoutLogicLayout`. Подробнее о папках: [docs/src-layout.md](docs/src-layout.md).
 - `src/theme` — объект темы (палитра, отступы, радиусы, типографика); `ThemeProvider` и `GlobalStyle` подключаются в `src/App/App.tsx`.
-- `src/logic` — оркестрация экрана тренировки (например `WorkoutLogicLayout`: локальное состояние упражнения/отдыха, `useWorkoutSession`, `useSpeechRecognition`, провайдеры контекстов). Один публичный модуль — одна подпапка в PascalCase и баррель `src/logic/index.ts`.
-- `src/contexts` — React-контексты сессии (chrome / stage и др.): каждый контекст в своей подпапке, баррель `src/contexts/index.ts`.
-- `src/selectors` — хуки `use…ContainerSelector` для контейнеров; каждый селектор в своей подпапке, баррель `src/selectors/index.ts`; реэкспорт в `src/logic/index.ts` для импорта контейнерами из `../logic`.
-- `src/containers` — компоненты слотов layout без пропсов данных сессии; данные через селекторы. Одна папка на контейнер, баррель `src/containers/index.ts`.
-- `src/hooks/useCameraStream.ts` — запуск и остановка потока с камеры.
-- `src/services` — MediaPipe Pose landmarker (`PoseLandmarkerService`): загрузка модели, `detect` / нормализация landmarks в общие типы из `src/utils/pose.ts`.
-- `src/exercises` — детекторы упражнений (`ExerciseDetector`), реестр `registry.ts`, типы.
+- `src/pages/HomePage/logic` — оркестрация экрана тренировки (`WorkoutLogicLayout`: локальное состояние упражнения/отдыха, `useWorkoutSession`, `useSpeechRecognition`, провайдеры контекстов). Баррель `pages/HomePage/logic/index.ts` реэкспортирует также селекторы и типы контекстов для контейнеров.
+- `src/pages/HomePage/contexts` — React-контексты сессии главной (chrome / stage и др.): каждый контекст в своей подпапке, баррель `pages/HomePage/contexts/index.ts`.
+- `src/pages/HomePage/selectors` — хуки `use…ContainerSelector` для контейнеров главной; баррель `pages/HomePage/selectors/index.ts`; реэкспорт в `pages/HomePage/logic/index.ts` для импорта контейнерами из `../logic`.
+- `src/pages/HomePage/containers` — слоты `HomeLayout` без пропсов данных сессии; данные через селекторы. Баррель `pages/HomePage/containers/index.ts`.
+- `src/pages/HomePage/hooks/useCameraStream.ts` — запуск и остановка потока с камеры.
+- `src/pages/HomePage/services` — MediaPipe Pose landmarker (`PoseLandmarkerService`): загрузка модели, `detect` / нормализация landmarks в общие типы из `src/utils/pose.ts`.
+- `src/pages/HomePage/exercises` — детекторы упражнений (`ExerciseDetector`), реестр `registry.ts`, типы.
 - `src/utils` — утилиты: в частности `pose.ts` (типы позы, индексы точек, углы, `drawFrame` — видео, скелет, HUD на canvas), `canvas.ts` (`resizeCanvas`, экран отдыха `drawRestCountdown`), `speech.ts` (синтез и нормализация текста для команд).
-- `src/hooks/useSpeechRecognition.ts` — непрерывное распознавание речи и маршрутизация голосовых команд в API сессии (вызывается из `WorkoutLogicLayout`, не из корневого `App`).
-- `src/types` — общие типы приложения (в том числе единый тип статусов `EntityStatus`).
-- `src/hooks/useWorkoutSession.ts` — **ядро сессии**: связывает камеру, landmarker, выбранный детектор и отрисовку; управляет циклом `requestAnimationFrame`, паузой, сбросом, остановкой с таймером отдыха и озвучкой повторений.
+- `src/pages/HomePage/hooks/useSpeechRecognition.ts` — непрерывное распознавание речи и маршрутизация голосовых команд в API сессии (вызывается из `WorkoutLogicLayout`, не из корневого `App`).
+- `src/types` — общие типы приложения (в том числе единый тип статусов `EntityStatus`, снимок рантайма детектора `ExerciseRuntimeState` для HUD и `utils/pose`).
+- `src/pages/HomePage/hooks/useWorkoutSession.ts` — **ядро сессии**: связывает камеру, landmarker, выбранный детектор и отрисовку; управляет циклом `requestAnimationFrame`, паузой, сбросом, остановкой с таймером отдыха и озвучкой повторений.
 
 ## Соглашение по импортам
 
@@ -165,9 +165,9 @@ React 19, TypeScript, Vite 8, styled-components, MediaPipe Tasks Vision (pose la
 
 Переиспользуемые блоки интерфейса оформляются по соглашению: одна папка на компонент (PascalCase), стили в **`<Name>.styled.tsx`** (**styled-components**, токены из темы), баррели `index.ts` в папке и в `src/components/index.ts`, импорт в приложении из `./components`. Подробности: [docs/components.md](docs/components.md).
 
-### Логика экрана, контексты, селекторы, контейнеры
+### Логика экрана, контексты, селекторы, контейнеры (главная)
 
-Каталоги **`src/logic`**, **`src/contexts`**, **`src/selectors`**, **`src/containers`**: подпапки в PascalCase, в каждой подсистеме свой баррель `index.ts`, импорты между верхнеуровневыми папками `src/*` — только из баррелей, без `export *`. Подробности и таблица «куда класть новое»: [docs/src-layout.md](docs/src-layout.md).
+Каталоги **`pages/HomePage/logic`**, **`pages/HomePage/contexts`**, **`pages/HomePage/selectors`**, **`pages/HomePage/containers`**, а также **`pages/HomePage/hooks`**, **`pages/HomePage/exercises`**, **`pages/HomePage/services`**: подпапки в PascalCase, в каждой подсистеме свой баррель `index.ts` (где применимо), импорты между верхнеуровневыми папками `src/*` — только из баррелей, без `export *`. Подробности и таблица «куда класть новое»: [docs/src-layout.md](docs/src-layout.md).
 
 ### Поток данных
 
@@ -184,7 +184,7 @@ flowchart LR
 
 ## Голосовое управление (кратко)
 
-Распознавание непрерывное; между одинаковыми командами действует короткая задержка (антидребезг). Команды смены упражнения строятся из `name` и поля `voiceAliases` каждого детектора (см. `src/exercises/types.ts`).
+Распознавание непрерывное; между одинаковыми командами действует короткая задержка (антидребезг). Команды смены упражнения строятся из `name` и поля `voiceAliases` каждого детектора (см. `src/pages/HomePage/exercises/types.ts`).
 
 Полный перечень фраз и пояснения по статусам — в [docs/voice-commands.md](docs/voice-commands.md).
 
@@ -196,14 +196,14 @@ flowchart LR
 
 ## Как добавить новое упражнение
 
-1. Создайте файл `src/exercises/<имя>.ts`.
-2. Реализуйте интерфейс `ExerciseDetector` из `src/exercises/types.ts`:
+1. Создайте файл в `src/pages/HomePage/exercises/` (например подпапка детектора с `*Detector.ts`).
+2. Реализуйте интерфейс `ExerciseDetector` из `src/pages/HomePage/exercises/types.ts`:
    - `id`, `name`, `description`;
    - `isActive: true`, чтобы детектор попал в реестр, список упражнений и голосовой выбор; `false` или отсутствие поля — детектор отфильтровывается;
    - по желанию `voiceAliases` — фразы для голосового переключения на это упражнение;
    - `createState()` и `update(landmarks, state)` с возвратом фазы, confidence, метрик и `repDelta`.
-3. Сохраните файл детектора в `src/exercises` с суффиксом `*Detector.ts` (например, `lungesDetector.ts`): реестр подхватит его автоматически.
-4. Добавьте или расширьте тесты в `src/exercises/__tests__/detectors.test.ts` (или отдельном файле рядом), чтобы зафиксировать пороги и сценарии счёта.
+3. Сохраните файл детектора с суффиксом `*Detector.ts` под `src/pages/HomePage/exercises` (в т.ч. во вложенной папке): реестр подхватит его автоматически.
+4. Добавьте или расширьте тесты в `src/pages/HomePage/exercises/__tests__/detectors.test.ts` (или отдельном файле рядом), чтобы зафиксировать пороги и сценарии счёта.
 5. При `isActive: true` новое упражнение появится в выпадающем списке и будет доступно для голосового выбора.
 
 Пороговые углы и видимость ключевых точек задаются в коде конкретного детектора.
