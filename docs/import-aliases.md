@@ -18,6 +18,7 @@
 | `@contexts` | `src/contexts`         |
 | `@pages`    | `src/pages`            |
 | `@routes`   | `src/routes`           |
+| `@test-helpers` | `src/test` (хелперы для тестов) |
 | `@theme`    | `src/theme`            |
 | `@types`    | `src/types`            |
 | `@utils`    | `src/utils`            |

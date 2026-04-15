@@ -1,0 +1,27 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Select > matches snapshot 1`] = `
+<div>
+  <label
+    class="SelectLabel-sc-13w9l2w-0 dsnSxm"
+    for="sel"
+  >
+    Pick
+  </label>
+  <select
+    class="SelectField-sc-13w9l2w-1 eQpTXU"
+    id="sel"
+  >
+    <option
+      value="a"
+    >
+      A
+    </option>
+    <option
+      value="b"
+    >
+      B
+    </option>
+  </select>
+</div>
+`;

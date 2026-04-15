@@ -1,0 +1,122 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ExerciseControlBar > matches snapshot (idle) 1`] = `
+<div
+  class="ExerciseControlBarRoot-sc-1mex8h4-0 giyCvb"
+>
+  <label
+    class="SelectLabel-sc-13w9l2w-0 dsnSxm"
+    for="exercise-select"
+  >
+    Упражнение
+  </label>
+  <select
+    class="SelectField-sc-13w9l2w-1 eQpTXU"
+    id="exercise-select"
+  >
+    <option
+      value="a"
+    >
+      A
+    </option>
+  </select>
+  <button
+    aria-label="Старт"
+    class="ButtonRoot-sc-113iyrz-0 eyWjFH"
+    type="button"
+  >
+    Старт
+  </button>
+  <button
+    class="ButtonRoot-sc-113iyrz-0 eyWjFH"
+    type="button"
+  >
+    Сброс
+  </button>
+  <button
+    aria-label="Стоп"
+    class="ButtonRoot-sc-113iyrz-0 eyWjFH"
+    type="button"
+  >
+    Стоп
+  </button>
+  <label
+    class="SelectLabel-sc-13w9l2w-0 dsnSxm"
+    for="rest-duration-select"
+  >
+    Отдых
+  </label>
+  <select
+    class="SelectField-sc-13w9l2w-1 eQpTXU"
+    id="rest-duration-select"
+  >
+    <option
+      value="1"
+    >
+      1m
+    </option>
+  </select>
+</div>
+`;
+
+exports[`ExerciseControlBar > matches snapshot (running) 1`] = `
+<div
+  class="ExerciseControlBarRoot-sc-1mex8h4-0 giyCvb"
+>
+  <label
+    class="SelectLabel-sc-13w9l2w-0 dsnSxm"
+    for="exercise-select"
+  >
+    Упражнение
+  </label>
+  <select
+    class="SelectField-sc-13w9l2w-1 eQpTXU"
+    disabled=""
+    id="exercise-select"
+  >
+    <option
+      value="a"
+    >
+      A
+    </option>
+  </select>
+  <button
+    aria-label="Пауза"
+    class="ButtonRoot-sc-113iyrz-0 eyWjFH"
+    type="button"
+  >
+    Пауза
+  </button>
+  <button
+    class="ButtonRoot-sc-113iyrz-0 eyWjFH"
+    disabled=""
+    type="button"
+  >
+    Сброс
+  </button>
+  <button
+    aria-label="Стоп"
+    class="ButtonRoot-sc-113iyrz-0 eyWjFH"
+    disabled=""
+    type="button"
+  >
+    Стоп
+  </button>
+  <label
+    class="SelectLabel-sc-13w9l2w-0 dsnSxm"
+    for="rest-duration-select"
+  >
+    Отдых
+  </label>
+  <select
+    class="SelectField-sc-13w9l2w-1 eQpTXU"
+    id="rest-duration-select"
+  >
+    <option
+      value="2"
+    >
+      2m
+    </option>
+  </select>
+</div>
+`;

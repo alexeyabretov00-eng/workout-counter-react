@@ -1,0 +1,107 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`RegisterForm > matches snapshot with error 1`] = `
+<div>
+  <form
+    class="RegisterFormRoot-sc-1okjs29-0 dLWczR"
+  >
+    <div
+      class="RegisterFormError-sc-1okjs29-4 hrVvGU"
+      role="alert"
+    >
+      fail
+    </div>
+    <label
+      class="RegisterFormLabel-sc-1okjs29-1 kEEajZ"
+    >
+      Логин
+      <input
+        autocomplete="username"
+        class="RegisterFormInput-sc-1okjs29-2 ftpIqB"
+        name="login"
+        value=""
+      />
+    </label>
+    <label
+      class="RegisterFormLabel-sc-1okjs29-1 kEEajZ"
+    >
+      Пароль
+      <input
+        autocomplete="new-password"
+        class="RegisterFormInput-sc-1okjs29-2 ftpIqB"
+        name="password"
+        type="password"
+        value=""
+      />
+    </label>
+    <button
+      class="RegisterFormSubmit-sc-1okjs29-3 cQtdtg"
+      type="submit"
+    >
+      Создать учётную запись
+    </button>
+  </form>
+  <p
+    class="RegisterFormFooter-sc-1okjs29-5 kWDGLL"
+  >
+    Уже есть аккаунт? 
+    <a
+      class="RegisterFormFooterLink-sc-1okjs29-6 fSVddC"
+      data-discover="true"
+      href="/login"
+    >
+      Войти
+    </a>
+  </p>
+</div>
+`;
+
+exports[`RegisterForm > matches snapshot without error 1`] = `
+<div>
+  <form
+    class="RegisterFormRoot-sc-1okjs29-0 dLWczR"
+  >
+    <label
+      class="RegisterFormLabel-sc-1okjs29-1 kEEajZ"
+    >
+      Логин
+      <input
+        autocomplete="username"
+        class="RegisterFormInput-sc-1okjs29-2 ftpIqB"
+        name="login"
+        value="a"
+      />
+    </label>
+    <label
+      class="RegisterFormLabel-sc-1okjs29-1 kEEajZ"
+    >
+      Пароль
+      <input
+        autocomplete="new-password"
+        class="RegisterFormInput-sc-1okjs29-2 ftpIqB"
+        name="password"
+        type="password"
+        value="b"
+      />
+    </label>
+    <button
+      class="RegisterFormSubmit-sc-1okjs29-3 cQtdtg"
+      type="submit"
+    >
+      Создать учётную запись
+    </button>
+  </form>
+  <p
+    class="RegisterFormFooter-sc-1okjs29-5 kWDGLL"
+  >
+    Уже есть аккаунт? 
+    <a
+      class="RegisterFormFooterLink-sc-1okjs29-6 fSVddC"
+      data-discover="true"
+      href="/login"
+    >
+      Войти
+    </a>
+  </p>
+</div>
+`;

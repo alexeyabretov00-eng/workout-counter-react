@@ -1,0 +1,36 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`HomeLayout > matches snapshot 1`] = `
+<main
+  class="HomeLayoutRoot-sc-1rtmiof-0 kUUhZy"
+>
+  <section
+    class="HomeLayoutSection-sc-1rtmiof-1 HomeLayoutHeaderSection-sc-1rtmiof-2 kNFCYC"
+  >
+    <span>
+      header
+    </span>
+  </section>
+  <section
+    class="HomeLayoutSection-sc-1rtmiof-1"
+  >
+    <span>
+      controls
+    </span>
+  </section>
+  <section
+    class="HomeLayoutSection-sc-1rtmiof-1"
+  >
+    <span>
+      status
+    </span>
+  </section>
+  <section
+    class="HomeLayoutSection-sc-1rtmiof-1 HomeLayoutStageSection-sc-1rtmiof-3 eGUVct"
+  >
+    <span>
+      stage
+    </span>
+  </section>
+</main>
+`;

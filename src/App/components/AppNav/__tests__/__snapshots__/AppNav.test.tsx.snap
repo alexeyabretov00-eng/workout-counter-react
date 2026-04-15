@@ -1,0 +1,83 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AppNav > matches snapshot (authenticated) 1`] = `
+<nav
+  class="AppNavRoot-sc-49dfo2-0 jUpyVm"
+>
+  <div
+    class="AppNavMain-sc-49dfo2-1 cZgbMa"
+  >
+    <a
+      class="AppNavLink-sc-49dfo2-5 gwSzsL"
+      data-discover="true"
+      href="/home"
+    >
+      Главная
+    </a>
+  </div>
+  <div
+    class="AppNavAuth-sc-49dfo2-2 hDFGYZ"
+  >
+    <span
+      class="AppNavUserLabel-sc-49dfo2-3 ihQXTR"
+    >
+      alex
+    </span>
+    <button
+      class="AppNavTextButton-sc-49dfo2-4 leQhio"
+      type="button"
+    >
+      Выйти
+    </button>
+  </div>
+</nav>
+`;
+
+exports[`AppNav > matches snapshot (guest) 1`] = `
+<nav
+  class="AppNavRoot-sc-49dfo2-0 jUpyVm"
+>
+  <div
+    class="AppNavMain-sc-49dfo2-1 cZgbMa"
+  >
+    <a
+      class="AppNavLink-sc-49dfo2-5 gwSzsL"
+      data-discover="true"
+      href="/home"
+    >
+      Главная
+    </a>
+  </div>
+  <div
+    class="AppNavAuth-sc-49dfo2-2 hDFGYZ"
+  >
+    <a
+      class="AppNavLink-sc-49dfo2-5 gwSzsL"
+      data-discover="true"
+      href="/login"
+    >
+      Вход
+    </a>
+    <a
+      class="AppNavLink-sc-49dfo2-5 gwSzsL"
+      data-discover="true"
+      href="/register"
+    >
+      Регистрация
+    </a>
+  </div>
+</nav>
+`;
+
+exports[`AppNav > matches snapshot (loading hides auth actions) 1`] = `
+<nav
+  class="AppNavRoot-sc-49dfo2-0 jUpyVm"
+>
+  <div
+    class="AppNavMain-sc-49dfo2-1 cZgbMa"
+  />
+  <div
+    class="AppNavAuth-sc-49dfo2-2 hDFGYZ"
+  />
+</nav>
+`;

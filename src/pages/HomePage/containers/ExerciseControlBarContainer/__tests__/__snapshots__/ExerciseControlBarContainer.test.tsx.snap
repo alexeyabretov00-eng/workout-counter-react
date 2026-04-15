@@ -1,0 +1,82 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ExerciseControlBarContainer > matches snapshot 1`] = `
+<div
+  class="ExerciseControlBarRoot-sc-1mex8h4-0 giyCvb"
+>
+  <label
+    class="SelectLabel-sc-13w9l2w-0 dsnSxm"
+    for="exercise-select"
+  >
+    Упражнение
+  </label>
+  <select
+    class="SelectField-sc-13w9l2w-1 eQpTXU"
+    id="exercise-select"
+  >
+    <option
+      value="army-press"
+    >
+      Армейский жим
+    </option>
+    <option
+      value="biceps-curl"
+    >
+      Подъем на бицепс
+    </option>
+    <option
+      value="head-side-tilt"
+    >
+      Наклоны головы вправо-влево
+    </option>
+    <option
+      value="squat"
+    >
+      Приседания
+    </option>
+  </select>
+  <button
+    aria-label="Старт"
+    class="ButtonRoot-sc-113iyrz-0 eyWjFH"
+    type="button"
+  >
+    Старт
+  </button>
+  <button
+    class="ButtonRoot-sc-113iyrz-0 eyWjFH"
+    disabled=""
+    type="button"
+  >
+    Сброс
+  </button>
+  <button
+    aria-label="Стоп"
+    class="ButtonRoot-sc-113iyrz-0 eyWjFH"
+    disabled=""
+    type="button"
+  >
+    Стоп
+  </button>
+  <label
+    class="SelectLabel-sc-13w9l2w-0 dsnSxm"
+    for="rest-duration-select"
+  >
+    Отдых
+  </label>
+  <select
+    class="SelectField-sc-13w9l2w-1 eQpTXU"
+    id="rest-duration-select"
+  >
+    <option
+      value="1"
+    >
+      1 мин
+    </option>
+    <option
+      value="2"
+    >
+      2 мин
+    </option>
+  </select>
+</div>
+`;

@@ -1,0 +1,55 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AppPageLayout > matches snapshot with outlet 1`] = `
+<div
+  class="AppRootLayoutRoot-sc-n4n2am-0 bZYCgH"
+>
+  <nav
+    class="AppNavRoot-sc-49dfo2-0 jUpyVm"
+  >
+    <div
+      class="AppNavMain-sc-49dfo2-1 cZgbMa"
+    >
+      <a
+        class="AppNavLink-sc-49dfo2-5 gwSzsL"
+        data-discover="true"
+        href="/home"
+      >
+        Главная
+      </a>
+      <a
+        class="AppNavLink-sc-49dfo2-5 gwSzsL"
+        data-discover="true"
+        href="/admin"
+      >
+        Админка
+      </a>
+      <a
+        class="AppNavLink-sc-49dfo2-5 gwSzsL"
+        data-discover="true"
+        href="/history"
+      >
+        История
+      </a>
+    </div>
+    <div
+      class="AppNavAuth-sc-49dfo2-2 hDFGYZ"
+    >
+      <span
+        class="AppNavUserLabel-sc-49dfo2-3 ihQXTR"
+      >
+        u
+      </span>
+      <button
+        class="AppNavTextButton-sc-49dfo2-4 leQhio"
+        type="button"
+      >
+        Выйти
+      </button>
+    </div>
+  </nav>
+  <div>
+    page
+  </div>
+</div>
+`;

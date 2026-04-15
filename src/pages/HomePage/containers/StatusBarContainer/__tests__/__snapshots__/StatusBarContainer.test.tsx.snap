@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`StatusBarContainer > matches snapshot 1`] = `
+<div
+  class="WorkoutStatusBarRoot-sc-i2f6bh-0 fBzqaN"
+>
+  <span
+    class="BadgeRoot-sc-1ky7gew-0 jPgDoj"
+  >
+    Модель: 
+    загружена
+  </span>
+  <span
+    class="BadgeRoot-sc-1ky7gew-0 jPgDoj"
+  >
+    Camera: 
+    ready
+  </span>
+  <span
+    class="BadgeRoot-sc-1ky7gew-0 jPyCrP"
+  >
+    Голос: слушаю
+  </span>
+</div>
+`;

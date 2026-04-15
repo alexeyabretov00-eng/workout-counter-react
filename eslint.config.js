@@ -17,7 +17,7 @@ const simpleImportSortImportGroups = [
   // Packages: `react` / `react-dom` first, затем остальные npm-пакеты (`styled-components`, `@mediapipe/...`, …).
   ['^react', '^@?\\w'],
   // Внутренние алиасы проекта (корни под `src/`).
-  ['^@(api|app|components|contexts|pages|routes|theme|types|utils)(/|$)'],
+  ['^@(api|app|components|contexts|pages|routes|test-helpers|theme|types|utils)(/|$)'],
   // Parent imports. Put `..` last.
   ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
   // Other relative imports. Put same-folder `.` last.
@@ -27,7 +27,7 @@ const simpleImportSortImportGroups = [
 ]
 
 export default defineConfig([
-  globalIgnores(['dist', 'server/dist']),
+  globalIgnores(['dist', 'server/dist', 'coverage']),
   {
     files: ['**/*.{ts,tsx}'],
     ignores: ['server/**'],

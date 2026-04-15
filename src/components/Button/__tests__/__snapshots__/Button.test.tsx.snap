@@ -1,0 +1,21 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Button > matches snapshot 1`] = `
+<button
+  class="ButtonRoot-sc-113iyrz-0 eyWjFH"
+  type="button"
+>
+  Click
+</button>
+`;
+
+exports[`Button > matches snapshot disabled 1`] = `
+<button
+  aria-label="x"
+  class="ButtonRoot-sc-113iyrz-0 eyWjFH"
+  disabled=""
+  type="button"
+>
+  Click
+</button>
+`;

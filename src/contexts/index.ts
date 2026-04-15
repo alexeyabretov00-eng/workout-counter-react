@@ -1,1 +1,6 @@
-export { AuthSessionProvider, useAuthSessionContext } from './AuthSessionContext';
+export type { AuthSessionStatus, AuthSessionValue, AuthUser } from './AuthSessionContext';
+export {
+  AuthSessionContext,
+  AuthSessionProvider,
+  useAuthSessionContext,
+} from './AuthSessionContext';

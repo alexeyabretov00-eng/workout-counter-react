@@ -1,0 +1,57 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Badge > matches snapshot (error) 1`] = `
+<span
+  class="BadgeRoot-sc-1ky7gew-0 cCLOKS"
+>
+  label
+</span>
+`;
+
+exports[`Badge > matches snapshot (info) 1`] = `
+<span
+  class="BadgeRoot-sc-1ky7gew-0 jPyCrP"
+>
+  label
+</span>
+`;
+
+exports[`Badge > matches snapshot (muted) 1`] = `
+<span
+  class="BadgeRoot-sc-1ky7gew-0 eWxdxU"
+>
+  label
+</span>
+`;
+
+exports[`Badge > matches snapshot (neutral) 1`] = `
+<span
+  class="BadgeRoot-sc-1ky7gew-0 fFlsOm"
+>
+  label
+</span>
+`;
+
+exports[`Badge > matches snapshot (note) 1`] = `
+<span
+  class="BadgeRoot-sc-1ky7gew-0 dcTerc"
+>
+  label
+</span>
+`;
+
+exports[`Badge > matches snapshot (success) 1`] = `
+<span
+  class="BadgeRoot-sc-1ky7gew-0 jPgDoj"
+>
+  label
+</span>
+`;
+
+exports[`Badge > matches snapshot (warning) 1`] = `
+<span
+  class="BadgeRoot-sc-1ky7gew-0 jRpRMY"
+>
+  label
+</span>
+`;

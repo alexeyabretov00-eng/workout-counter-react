@@ -1,3 +1,5 @@
+import 'vitest/config';
+
 import { join } from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
 
@@ -16,6 +18,7 @@ const srcAliases: Record<string, string> = {
   '@contexts': join(srcDir, 'contexts'),
   '@pages': join(srcDir, 'pages'),
   '@routes': join(srcDir, 'routes'),
+  '@test-helpers': join(srcDir, 'test'),
   '@theme': join(srcDir, 'theme'),
   '@types': join(srcDir, 'types'),
   '@utils': join(srcDir, 'utils'),
@@ -127,5 +130,33 @@ export default defineConfig(({ mode }) => ({
   },
   preview: {
     open: true,
+  },
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setupTests.ts'],
+    include: ['src/**/*.test.{ts,tsx}'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html'],
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: [
+        'src/**/*.d.ts',
+        'src/**/__tests__/**',
+        'src/test/**',
+        'src/main.tsx',
+        'src/vite-env.d.ts',
+        'src/types/**',
+        '**/*Lazy.tsx',
+        '**/index.ts',
+        'src/pages/HomePage/hooks/**',
+        'src/pages/HomePage/services/**',
+      ],
+      thresholds: {
+        lines: 80,
+        functions: 80,
+        branches: 80,
+        statements: 80,
+      },
+    },
   },
 }));
