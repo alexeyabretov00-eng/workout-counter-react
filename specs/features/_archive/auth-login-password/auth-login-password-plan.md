@@ -139,12 +139,12 @@ flowchart LR
 | Поле | Значение |
 |------|----------|
 | **Title** | `Фича: аутентификация (логин/пароль, API, SQLite)` |
-| **Description** | Минимальная регистрация и вход; REST API и SQLite; формы на React; локальный Docker (compose, один порт, прокси nginx). План: `specs/features/auth-login-password/auth-login-password-plan.md`, чеклист `auth-login-password-implementation-tasks.md`. |
+| **Description** | Минимальная регистрация и вход; REST API и SQLite; формы на React; локальный Docker (compose, один порт, прокси nginx). План: `specs/features/_archive/auth-login-password/auth-login-password-plan.md`, чеклист `auth-login-password-implementation-tasks.md`. |
 
 ### Подзадачи (Issues)
 
 1. **`[План] Аутентификация: эпик и критерии`**  
-   Тело: краткая сводка цели; ссылки на `specs/features/auth-login-password/`; критерии готовности из раздела 5 плана; напоминание про ветку `feature/auth-login-password`.
+   Тело: краткая сводка цели; ссылки на `specs/features/_archive/auth-login-password/`; критерии готовности из раздела 5 плана; напоминание про ветку `feature/auth-login-password`.
 
 2. **`[API] Контракт REST, SQLite-схема, каркас сервера`**  
    Тело: эндпоинты регистрации/входа/профиля (черновик); таблица пользователей; выбор стека (Node + SQLite); инициализация БД; выдача API с того же хоста, что и SPA (прокси Vite в dev или единый сервер); **без** настройки CORS.
@@ -168,13 +168,13 @@ flowchart LR
 Создать milestone:
 
 ```bash
-gh api repos/alexeyabretov00-eng/workout-counter-react/milestones -f title="Фича: аутентификация (логин/пароль, API, SQLite)" -f description="Регистрация и вход; REST API и SQLite; React; локальный Docker (compose, один порт). План: specs/features/auth-login-password/auth-login-password-plan.md"
+gh api repos/alexeyabretov00-eng/workout-counter-react/milestones -f title="Фича: аутентификация (логин/пароль, API, SQLite)" -f description="Регистрация и вход; REST API и SQLite; React; локальный Docker (compose, один порт). План: specs/features/_archive/auth-login-password/auth-login-password-plan.md"
 ```
 
 Создать issues с привязкой к milestone (повторить для каждого заголовка из списка выше):
 
 ```bash
-gh issue create --repo alexeyabretov00-eng/workout-counter-react --title "[План] Аутентификация: эпик и критерии" --body "Сводка и ссылки на specs/features/auth-login-password/. Критерии готовности — раздел 5 плана. Ветка: feature/auth-login-password." --milestone "Фича: аутентификация (логин/пароль, API, SQLite)"
+gh issue create --repo alexeyabretov00-eng/workout-counter-react --title "[План] Аутентификация: эпик и критерии" --body "Сводка и ссылки на specs/features/_archive/auth-login-password/. Критерии готовности — раздел 5 плана. Ветка: feature/auth-login-password." --milestone "Фича: аутентификация (логин/пароль, API, SQLite)"
 ```
 
 ```bash

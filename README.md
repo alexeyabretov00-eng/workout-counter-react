@@ -59,7 +59,7 @@ npm run dev
 | `JWT_SECRET` | Секрет подписи JWT; в `production` обязателен |
 | `COOKIE_SECURE` | Если `true`, cookie с флагом `Secure` (для HTTPS) |
 
-Контракт эндпоинтов: [specs/features/auth-login-password/api-contract.md](specs/features/auth-login-password/api-contract.md).
+Контракт эндпоинтов: [specs/features/_archive/auth-login-password/api-contract.md](specs/features/_archive/auth-login-password/api-contract.md).
 
 ## Docker (локально)
 
