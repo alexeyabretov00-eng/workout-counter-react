@@ -6,7 +6,7 @@ import {
   headSideTiltDetector,
   squatDetector,
 } from '..'
-import type { PoseLandmarks } from '../../../../utils/pose'
+import type { PoseLandmarks } from '@utils'
 
 const createEmptyLandmarks = (): PoseLandmarks => {
   return Array.from({ length: 33 }, () => ({

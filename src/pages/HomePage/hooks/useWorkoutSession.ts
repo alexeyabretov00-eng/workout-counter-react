@@ -6,7 +6,7 @@ import {
   type ExerciseState,
 } from '../exercises'
 import { PoseLandmarkerService } from '../services'
-import type { EntityStatus } from '../../../types'
+import type { EntityStatus } from '@types'
 import {
   clearCanvas,
   drawFrame,
@@ -14,7 +14,7 @@ import {
   numberToRussianWords,
   speakRussianCount,
   speakRussianText,
-} from '../../../utils'
+} from '@utils'
 
 const WorkoutSessionRuntimeDefaultState: ExerciseRuntimeState = {
   reps: 0,

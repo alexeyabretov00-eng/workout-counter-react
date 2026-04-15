@@ -1,4 +1,4 @@
-import { Button, Select, type SelectOption } from '../../../../components'
+import { Button, Select, type SelectOption } from '@components'
 import { ExerciseControlBarRoot } from './ExerciseControlBar.styled'
 
 export type ExerciseControlBarProps = {

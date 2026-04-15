@@ -1,4 +1,4 @@
-import type { ExerciseRuntimeState } from '../types/exerciseRuntime'
+import type { ExerciseRuntimeState } from '@types'
 import { computeCoverLayout, resizeCanvas } from './canvas'
 
 export interface PosePoint {

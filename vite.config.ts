@@ -1,8 +1,24 @@
 import babel from '@babel/core'
 import react from '@vitejs/plugin-react'
 import { visualizer } from 'rollup-plugin-visualizer'
+import { join } from 'node:path'
+import { fileURLToPath, URL } from 'node:url'
 import type { Plugin } from 'vite'
 import { defineConfig } from 'vite'
+
+const srcDir = fileURLToPath(new URL('./src', import.meta.url))
+
+const srcAliases: Record<string, string> = {
+  '@api': join(srcDir, 'api'),
+  '@app': join(srcDir, 'App'),
+  '@components': join(srcDir, 'components'),
+  '@contexts': join(srcDir, 'contexts'),
+  '@pages': join(srcDir, 'pages'),
+  '@routes': join(srcDir, 'routes'),
+  '@theme': join(srcDir, 'theme'),
+  '@types': join(srcDir, 'types'),
+  '@utils': join(srcDir, 'utils'),
+}
 
 const vendorChunk = (id: string): string | undefined => {
   if (!id.includes('node_modules')) {
@@ -76,6 +92,9 @@ const styledComponentsDevPlugin = (): Plugin => {
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
+  resolve: {
+    alias: srcAliases,
+  },
   plugins: [
     styledComponentsDevPlugin(),
     react(),

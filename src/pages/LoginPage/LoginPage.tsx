@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { AuthApiError } from '../../api'
-import { useAuthSessionContext } from '../../contexts'
-import { resolveAfterAuthPath } from '../../utils'
+import { AuthApiError } from '@api'
+import { useAuthSessionContext } from '@contexts'
+import { resolveAfterAuthPath } from '@utils'
 import { LoginForm, LoginPageShell } from './components'
 
 export const LoginPage = () => {

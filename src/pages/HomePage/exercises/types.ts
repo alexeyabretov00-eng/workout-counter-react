@@ -1,6 +1,6 @@
-import type { PoseLandmarks } from '../../../utils/pose'
+import type { PoseLandmarks } from '@utils'
 
-export type { ExerciseRuntimeState } from '../../../types/exerciseRuntime'
+export type { ExerciseRuntimeState } from '@types'
 
 export type ExerciseState = Record<string, unknown>
 

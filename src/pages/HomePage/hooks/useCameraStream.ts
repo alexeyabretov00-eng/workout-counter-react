@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
-import type { EntityStatus } from '../../../types'
+import type { EntityStatus } from '@types'
 
 export const useCameraStream = () => {
   const streamRef = useRef<MediaStream | null>(null)

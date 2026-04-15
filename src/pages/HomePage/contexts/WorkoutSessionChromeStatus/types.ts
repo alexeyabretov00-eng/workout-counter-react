@@ -1,4 +1,4 @@
-import type { EntityStatus, VoiceStatus } from '../../../../types'
+import type { EntityStatus, VoiceStatus } from '@types'
 
 export type WorkoutSessionChromeStatusValue = {
   modelStatus: EntityStatus

@@ -16,3 +16,5 @@ alwaysApply: true
 
 - Хорошо: `import { exerciseRegistry } from '../exercises'`
 - Плохо: `import { exerciseRegistry } from '../exercises/registry'`
+
+Алиасы верхнего уровня (`@api`, `@utils`, `@types`, …) и когда оставлять относительные импорты с `..`: [docs/import-aliases.md](../../docs/import-aliases.md).

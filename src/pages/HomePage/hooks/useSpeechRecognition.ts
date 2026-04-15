@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { WorkoutSessionChromeControlAction } from '../contexts'
 import type { ExerciseDetector } from '../exercises'
-import type { VoiceStatus } from '../../../types'
-import { matchesCommand, normalizeSpeechText } from '../../../utils'
+import type { VoiceStatus } from '@types'
+import { matchesCommand, normalizeSpeechText } from '@utils'
 
 const TRANSIENT_SPEECH_ERRORS = new Set(['aborted', 'no-speech'])
 

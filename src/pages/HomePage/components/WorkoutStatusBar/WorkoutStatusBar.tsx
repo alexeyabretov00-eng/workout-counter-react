@@ -1,4 +1,4 @@
-import { Badge, type BadgeVariant } from '../../../../components'
+import { Badge, type BadgeVariant } from '@components'
 import { WorkoutStatusBarCameraError, WorkoutStatusBarRoot } from './WorkoutStatusBar.styled'
 
 const modelStatusToBadgeVariant = (modelStatus: string): BadgeVariant => {

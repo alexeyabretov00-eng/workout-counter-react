@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useWorkoutSessionChromeStatusContext } from '../../contexts'
 
-import type { EntityStatus, VoiceStatus } from '../../../../types'
+import type { EntityStatus, VoiceStatus } from '@types'
 
 const VOICE_STATUS_LABEL: Record<VoiceStatus, string> = {
   unsupported: 'Голос: не поддерживается',

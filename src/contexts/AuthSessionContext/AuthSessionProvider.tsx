@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
-import { authLogin, authLogout, authMe, authRegister } from '../../api'
+import { authLogin, authLogout, authMe, authRegister } from '@api'
 import { AuthSessionContext } from './AuthSessionContext'
 import type { AuthUser } from './types'
 

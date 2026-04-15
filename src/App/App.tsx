@@ -1,8 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
-import { AuthSessionProvider } from '../contexts'
-import { protectedAppRoutes, publicAuthRoutes } from '../routes'
-import { GlobalStyle, theme } from '../theme'
+import { AuthSessionProvider } from '@contexts'
+import { protectedAppRoutes, publicAuthRoutes } from '@routes'
+import { GlobalStyle, theme } from '@theme'
 import { AppPageLayout } from './AppPageLayout'
 import { RequireAuth } from './RequireAuth'
 

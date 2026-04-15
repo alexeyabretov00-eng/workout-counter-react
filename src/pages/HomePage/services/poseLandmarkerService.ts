@@ -1,5 +1,5 @@
 import type { NormalizedLandmark, PoseLandmarker } from '@mediapipe/tasks-vision'
-import type { PoseFrame, PoseLandmarks } from '../../../utils/pose'
+import type { PoseFrame, PoseLandmarks } from '@utils'
 
 const MODEL_ASSET_PATH =
   'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/1/pose_landmarker_heavy.task'

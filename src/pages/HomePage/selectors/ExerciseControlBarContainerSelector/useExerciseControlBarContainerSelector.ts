@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import type { SelectOption } from '../../../../components'
+import type { SelectOption } from '@components'
 import { useWorkoutSessionChromeControlsContext } from '../../contexts'
 
 const REST_DURATION_MINUTES = [1, 2, 3, 5] as const

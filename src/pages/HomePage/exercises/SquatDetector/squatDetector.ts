@@ -1,4 +1,4 @@
-import { POSE_INDEX, calculateAngle, getPoint } from '../../../../utils'
+import { POSE_INDEX, calculateAngle, getPoint } from '@utils'
 import type { ExerciseDetector } from '../types'
 
 type SquatPhase = 'standing' | 'squat'

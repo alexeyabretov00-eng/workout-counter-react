@@ -1,4 +1,4 @@
-import { useAuthSessionContext } from '../../../contexts'
+import { useAuthSessionContext } from '@contexts'
 import {
   AppNavAuth,
   AppNavLink,
