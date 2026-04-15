@@ -1,4 +1,12 @@
 export {
+  AuthSessionContext,
+  AuthSessionProvider,
+  useAuthSessionContext,
+  type AuthSessionStatus,
+  type AuthSessionValue,
+  type AuthUser,
+} from './AuthSession'
+export {
   WorkoutSessionChromeControlsContext,
   useWorkoutSessionChromeControlsContext,
   type WorkoutSessionChromeControlAction,

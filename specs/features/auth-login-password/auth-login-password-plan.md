@@ -168,33 +168,33 @@ flowchart LR
 Создать milestone:
 
 ```bash
-gh api repos/OWNER/REPO/milestones -f title="Фича: аутентификация (логин/пароль, API, SQLite)" -f description="Регистрация и вход; REST API и SQLite; React; локальный Docker (compose, один порт). План: specs/features/auth-login-password/auth-login-password-plan.md"
+gh api repos/alexeyabretov00-eng/workout-counter-react/milestones -f title="Фича: аутентификация (логин/пароль, API, SQLite)" -f description="Регистрация и вход; REST API и SQLite; React; локальный Docker (compose, один порт). План: specs/features/auth-login-password/auth-login-password-plan.md"
 ```
 
 Создать issues с привязкой к milestone (повторить для каждого заголовка из списка выше):
 
 ```bash
-gh issue create --repo OWNER/REPO --title "[План] Аутентификация: эпик и критерии" --body "Сводка и ссылки на specs/features/auth-login-password/. Критерии готовности — раздел 5 плана. Ветка: feature/auth-login-password." --milestone "Фича: аутентификация (логин/пароль, API, SQLite)"
+gh issue create --repo alexeyabretov00-eng/workout-counter-react --title "[План] Аутентификация: эпик и критерии" --body "Сводка и ссылки на specs/features/auth-login-password/. Критерии готовности — раздел 5 плана. Ветка: feature/auth-login-password." --milestone "Фича: аутентификация (логин/пароль, API, SQLite)"
 ```
 
 ```bash
-gh issue create --repo OWNER/REPO --title "[API] Контракт REST, SQLite-схема, каркас сервера" --body "Черновик контракта API, схема users, каркас Node+SQLite; API на том же хосте, что SPA (прокси Vite / единый сервер), без CORS." --milestone "Фича: аутентификация (логин/пароль, API, SQLite)"
+gh issue create --repo alexeyabretov00-eng/workout-counter-react --title "[API] Контракт REST, SQLite-схема, каркас сервера" --body "Черновик контракта API, схема users, каркас Node+SQLite; API на том же хосте, что SPA (прокси Vite / единый сервер), без CORS." --milestone "Фича: аутентификация (логин/пароль, API, SQLite)"
 ```
 
 ```bash
-gh issue create --repo OWNER/REPO --title "[API] Реализация регистрации, входа, хеширование паролей" --body "Валидация, bcrypt, JWT/session, тестовый защищённый эндпоинт." --milestone "Фича: аутентификация (логин/пароль, API, SQLite)"
+gh issue create --repo alexeyabretov00-eng/workout-counter-react --title "[API] Реализация регистрации, входа, хеширование паролей" --body "Валидация, bcrypt, JWT/session, тестовый защищённый эндпоинт." --milestone "Фича: аутентификация (логин/пароль, API, SQLite)"
 ```
 
 ```bash
-gh issue create --repo OWNER/REPO --title "[UI] Формы входа и регистрации + клиент API" --body "Маршруты /login /register, styled-components, клиент API same-origin, контекст сессии, ошибки API." --milestone "Фича: аутентификация (логин/пароль, API, SQLite)"
+gh issue create --repo alexeyabretov00-eng/workout-counter-react --title "[UI] Формы входа и регистрации + клиент API" --body "Маршруты /login /register, styled-components, клиент API same-origin, контекст сессии, ошибки API." --milestone "Фича: аутентификация (логин/пароль, API, SQLite)"
 ```
 
 ```bash
-gh issue create --repo OWNER/REPO --title "[Док] README/docs: запуск фронта и API" --body "Локальный сценарий, env, расположение SQLite, чеклист ручной проверки." --milestone "Фича: аутентификация (логин/пароль, API, SQLite)"
+gh issue create --repo alexeyabretov00-eng/workout-counter-react --title "[Док] README/docs: запуск фронта и API" --body "Локальный сценарий, env, расположение SQLite, чеклист ручной проверки." --milestone "Фича: аутентификация (логин/пароль, API, SQLite)"
 ```
 
 ```bash
-gh issue create --repo OWNER/REPO --title "[Docker] Compose: API + SQLite, доработка nginx, один порт" --body "Сервис api, volume для SQLite, proxy_pass /api на api; web единственный с портом на хост; проверка UI в Docker; same-origin, без CORS." --milestone "Фича: аутентификация (логин/пароль, API, SQLite)"
+gh issue create --repo alexeyabretov00-eng/workout-counter-react --title "[Docker] Compose: API + SQLite, доработка nginx, один порт" --body "Сервис api, volume для SQLite, proxy_pass /api на api; web единственный с портом на хост; проверка UI в Docker; same-origin, без CORS." --milestone "Фича: аутентификация (логин/пароль, API, SQLite)"
 ```
 
 В PowerShell для длинного тела удобнее `--body-file` (см. `docs/github-planning.md`).

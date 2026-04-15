@@ -1,4 +1,5 @@
 export { clearCanvas, computeCoverLayout, drawRestCountdown, resizeCanvas } from './canvas'
+export { resolveAfterAuthPath } from './resolveAfterAuthPath'
 export { numberToRussianWords } from './russianWords'
 export {
   POSE_INDEX,
