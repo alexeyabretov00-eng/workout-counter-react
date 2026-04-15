@@ -1,21 +1,22 @@
-import { Button, Select, type SelectOption } from '@components'
-import { ExerciseControlBarRoot } from './ExerciseControlBar.styled'
+import { Button, Select, type SelectOption } from '@components';
+
+import { ExerciseControlBarRoot } from './ExerciseControlBar.styled';
 
 export type ExerciseControlBarProps = {
-  exerciseId: string
-  exerciseOptions: SelectOption[]
-  restDurationMinutes: number
-  restDurationOptions: SelectOption[]
-  isRunning: boolean
-  isModelReady: boolean
-  isCameraInitializing: boolean
-  resetStopEnabled: boolean
-  onExerciseChange: (exerciseId: string) => void
-  onStartPause: () => void
-  onReset: () => void
-  onShutdown: () => void
-  onRestDurationChange: (minutes: number) => void
-}
+  exerciseId: string;
+  exerciseOptions: SelectOption[];
+  restDurationMinutes: number;
+  restDurationOptions: SelectOption[];
+  isRunning: boolean;
+  isModelReady: boolean;
+  isCameraInitializing: boolean;
+  resetStopEnabled: boolean;
+  onExerciseChange: (exerciseId: string) => void;
+  onStartPause: () => void;
+  onReset: () => void;
+  onShutdown: () => void;
+  onRestDurationChange: (minutes: number) => void;
+};
 
 export const ExerciseControlBar = ({
   exerciseId,
@@ -45,8 +46,7 @@ export const ExerciseControlBar = ({
       <Button
         onClick={onStartPause}
         disabled={isRunning ? false : !isModelReady || isCameraInitializing}
-        ariaLabel={isRunning ? 'Пауза' : 'Старт'}
-      >
+        ariaLabel={isRunning ? 'Пауза' : 'Старт'}>
         {isRunning ? 'Пауза' : 'Старт'}
       </Button>
       <Button onClick={onReset} disabled={!resetStopEnabled}>
@@ -60,8 +60,8 @@ export const ExerciseControlBar = ({
         label="Отдых"
         value={String(restDurationMinutes)}
         options={restDurationOptions}
-        onChange={(value) => onRestDurationChange(Number(value))}
+        onChange={value => onRestDurationChange(Number(value))}
       />
     </ExerciseControlBarRoot>
-  )
-}
+  );
+};

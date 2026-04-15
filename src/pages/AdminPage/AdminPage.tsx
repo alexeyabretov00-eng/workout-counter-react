@@ -1,4 +1,4 @@
-import { AdminPageLead, AdminPageRoot, AdminPageTitle } from './AdminPage.styled'
+import { AdminPageLead, AdminPageRoot, AdminPageTitle } from './AdminPage.styled';
 
 export const AdminPage = () => {
   return (
@@ -6,5 +6,5 @@ export const AdminPage = () => {
       <AdminPageTitle>Админка</AdminPageTitle>
       <AdminPageLead>Заглушка: раздел в разработке.</AdminPageLead>
     </AdminPageRoot>
-  )
-}
+  );
+};

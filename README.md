@@ -101,6 +101,13 @@ docker run --rm -p 8080:80 workout-counter-react:local
 
 Перед PR имеет смысл выполнить `npm run lint` и `npm run test`.
 
+### Линтинг и форматирование
+
+- **ESLint** (flat config, `eslint.config.js`): рекомендованные правила TypeScript (`typescript-eslint`), React и React Hooks (`eslint-plugin-react`, `eslint-plugin-react-hooks`), обновление модулей Vite (`eslint-plugin-react-refresh`), сортировка импортов и экспортов (`eslint-plugin-simple-import-sort`), согласование с **Prettier** через `eslint-plugin-prettier` и `eslint-config-prettier` (конфликтующие стилевые правила ESLint отключены).
+- **Prettier** — базовые настройки в [`.prettierrc.json`](.prettierrc.json); проверка форматирования входит в `npm run lint` (правило `prettier/prettier`). Автоисправление: `npx eslint . --fix` (поправит и порядок импортов, и формат там, где это безопасно).
+
+Импорты между верхнеуровневыми папками `src` и соглашения про `..` — по-прежнему в [docs/import-aliases.md](docs/import-aliases.md); при расхождениях сначала выравнивайте порядок по сообщению линтера, затем по документу.
+
 Размеры сгенерированных JS-чанков удобно смотреть в логе после `npm run build` (строки вида `dist/assets/…`) и при необходимости через `npm run build:analyze` и отчёт `dist/bundle-stats.html`.
 
 ## Сообщения коммитов (Conventional Commits)

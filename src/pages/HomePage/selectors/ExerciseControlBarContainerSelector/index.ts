@@ -1,1 +1,1 @@
-export { useExerciseControlBarContainerSelector } from './useExerciseControlBarContainerSelector'
+export { useExerciseControlBarContainerSelector } from './useExerciseControlBarContainerSelector';

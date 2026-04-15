@@ -1,12 +1,13 @@
-import babel from '@babel/core'
-import react from '@vitejs/plugin-react'
-import { visualizer } from 'rollup-plugin-visualizer'
-import { join } from 'node:path'
-import { fileURLToPath, URL } from 'node:url'
-import type { Plugin } from 'vite'
-import { defineConfig } from 'vite'
+import { join } from 'node:path';
+import { fileURLToPath, URL } from 'node:url';
 
-const srcDir = fileURLToPath(new URL('./src', import.meta.url))
+import babel from '@babel/core';
+import react from '@vitejs/plugin-react';
+import { visualizer } from 'rollup-plugin-visualizer';
+import type { Plugin } from 'vite';
+import { defineConfig } from 'vite';
+
+const srcDir = fileURLToPath(new URL('./src', import.meta.url));
 
 const srcAliases: Record<string, string> = {
   '@api': join(srcDir, 'api'),
@@ -18,38 +19,38 @@ const srcAliases: Record<string, string> = {
   '@theme': join(srcDir, 'theme'),
   '@types': join(srcDir, 'types'),
   '@utils': join(srcDir, 'utils'),
-}
+};
 
 const vendorChunk = (id: string): string | undefined => {
   if (!id.includes('node_modules')) {
-    return undefined
+    return undefined;
   }
-  const norm = id.replace(/\\/g, '/')
+  const norm = id.replace(/\\/g, '/');
   if (norm.includes('@mediapipe')) {
-    return 'mediapipe'
+    return 'mediapipe';
   }
   if (norm.includes('react-router')) {
-    return 'react-router'
+    return 'react-router';
   }
   if (norm.includes('styled-components')) {
-    return 'styled-components'
+    return 'styled-components';
   }
   if (norm.includes('react-dom')) {
-    return 'react-dom'
+    return 'react-dom';
   }
   if (norm.includes('/react/')) {
-    return 'react'
+    return 'react';
   }
-  return undefined
-}
+  return undefined;
+};
 
 const styledComponentsDevPlugin = (): Plugin => {
-  let root: string
-  let babelOptions: babel.TransformOptions | null = null
+  let root: string;
+  let babelOptions: babel.TransformOptions | null = null;
 
   const getBabelOptions = (): babel.TransformOptions => {
     if (babelOptions) {
-      return babelOptions
+      return babelOptions;
     }
     const partial = babel.loadPartialConfig({
       cwd: root,
@@ -64,31 +65,31 @@ const styledComponentsDevPlugin = (): Plugin => {
           },
         ],
       ],
-    })
-    babelOptions = partial?.options ?? {}
-    return babelOptions
-  }
+    });
+    babelOptions = partial?.options ?? {};
+    return babelOptions;
+  };
 
   return {
     name: 'babel-styled-components-dev',
     enforce: 'pre',
     apply: 'serve',
     configResolved(config) {
-      root = config.root
+      root = config.root;
     },
     async transform(code, id) {
       if (!/\.styled\.tsx(?:\?|$)/.test(id)) {
-        return
+        return;
       }
-      const opts = getBabelOptions()
-      const result = await babel.transformAsync(code, { ...opts, filename: id })
+      const opts = getBabelOptions();
+      const result = await babel.transformAsync(code, { ...opts, filename: id });
       if (!result) {
-        return
+        return;
       }
-      return { code: result.code ?? '', map: result.map }
+      return { code: result.code ?? '', map: result.map };
     },
-  }
-}
+  };
+};
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -127,4 +128,4 @@ export default defineConfig(({ mode }) => ({
   preview: {
     open: true,
   },
-}))
+}));

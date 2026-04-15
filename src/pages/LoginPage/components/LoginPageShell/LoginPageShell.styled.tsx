@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const LoginPageRoot = styled.main`
   box-sizing: border-box;
@@ -8,10 +8,10 @@ export const LoginPageRoot = styled.main`
   color: ${({ theme }) => theme.palette.text.primary};
   font-family: ${({ theme }) => theme.typography.family};
   line-height: ${({ theme }) => theme.typography.lineHeight};
-`
+`;
 
 export const LoginPageTitle = styled.h1`
   margin: 0 0 ${({ theme }) => theme.spacing.md};
   font-size: 1.5rem;
   font-weight: ${({ theme }) => theme.typography.labelWeight};
-`
+`;

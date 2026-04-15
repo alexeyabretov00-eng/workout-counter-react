@@ -1,7 +1,9 @@
+import type { DatabaseSync } from 'node:sqlite'
+
 import type { CookieOptions } from 'express'
 import type { Request } from 'express'
 import jwt from 'jsonwebtoken'
-import type { DatabaseSync } from 'node:sqlite'
+
 import { findUserById } from './db.js'
 
 export const AUTH_COOKIE_NAME = 'auth_token'

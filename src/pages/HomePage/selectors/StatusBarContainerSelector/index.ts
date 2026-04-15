@@ -1,1 +1,1 @@
-export { useStatusBarContainerSelector } from './useStatusBarContainerSelector'
+export { useStatusBarContainerSelector } from './useStatusBarContainerSelector';

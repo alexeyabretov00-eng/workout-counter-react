@@ -1,19 +1,20 @@
-import type { ExerciseRuntimeState } from '@types'
-import { computeCoverLayout, resizeCanvas } from './canvas'
+import type { ExerciseRuntimeState } from '@types';
+
+import { computeCoverLayout, resizeCanvas } from './canvas';
 
 export interface PosePoint {
-  x: number
-  y: number
-  z: number
-  visibility: number
-  presence: number
+  x: number;
+  y: number;
+  z: number;
+  visibility: number;
+  presence: number;
 }
 
-export type PoseLandmarks = PosePoint[]
+export type PoseLandmarks = PosePoint[];
 
 export interface PoseFrame {
-  landmarks: PoseLandmarks | null
-  timestampMs: number
+  landmarks: PoseLandmarks | null;
+  timestampMs: number;
 }
 
 export const POSE_INDEX = {
@@ -30,7 +31,7 @@ export const POSE_INDEX = {
   rightKnee: 26,
   leftAnkle: 27,
   rightAnkle: 28,
-} as const
+} as const;
 
 export function getPoint(
   landmarks: PoseLandmarks | null,
@@ -38,31 +39,31 @@ export function getPoint(
   minVisibility: number,
 ): PosePoint | null {
   if (!landmarks || !landmarks[index]) {
-    return null
+    return null;
   }
 
-  const point = landmarks[index]
+  const point = landmarks[index];
   if (point.visibility < minVisibility || point.presence < minVisibility) {
-    return null
+    return null;
   }
-  return point
+  return point;
 }
 
 export function calculateAngle(a: PosePoint, b: PosePoint, c: PosePoint): number {
-  const abX = a.x - b.x
-  const abY = a.y - b.y
-  const cbX = c.x - b.x
-  const cbY = c.y - b.y
-  const dot = abX * cbX + abY * cbY
-  const magAB = Math.sqrt(abX ** 2 + abY ** 2)
-  const magCB = Math.sqrt(cbX ** 2 + cbY ** 2)
+  const abX = a.x - b.x;
+  const abY = a.y - b.y;
+  const cbX = c.x - b.x;
+  const cbY = c.y - b.y;
+  const dot = abX * cbX + abY * cbY;
+  const magAB = Math.sqrt(abX ** 2 + abY ** 2);
+  const magCB = Math.sqrt(cbX ** 2 + cbY ** 2);
 
   if (magAB === 0 || magCB === 0) {
-    return 180
+    return 180;
   }
 
-  const cosine = Math.max(-1, Math.min(1, dot / (magAB * magCB)))
-  return (Math.acos(cosine) * 180) / Math.PI
+  const cosine = Math.max(-1, Math.min(1, dot / (magAB * magCB)));
+  return (Math.acos(cosine) * 180) / Math.PI;
 }
 
 const POSE_SKELETON_CONNECTIONS: Array<[number, number]> = [
@@ -78,7 +79,7 @@ const POSE_SKELETON_CONNECTIONS: Array<[number, number]> = [
   [25, 27],
   [24, 26],
   [26, 28],
-]
+];
 
 const drawPoseSkeleton = (
   ctx: CanvasRenderingContext2D,
@@ -88,63 +89,63 @@ const drawPoseSkeleton = (
   dw: number,
   dh: number,
 ): void => {
-  ctx.save()
-  ctx.lineWidth = 3
-  ctx.strokeStyle = '#00e0ff'
-  ctx.fillStyle = '#ffdf00'
+  ctx.save();
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = '#00e0ff';
+  ctx.fillStyle = '#ffdf00';
 
   for (const [a, b] of POSE_SKELETON_CONNECTIONS) {
-    const pa = landmarks[a]
-    const pb = landmarks[b]
+    const pa = landmarks[a];
+    const pb = landmarks[b];
     if (!pa || !pb) {
-      continue
+      continue;
     }
     if (pa.visibility < 0.4 || pb.visibility < 0.4) {
-      continue
+      continue;
     }
 
-    ctx.beginPath()
-    ctx.moveTo(dx + pa.x * dw, dy + pa.y * dh)
-    ctx.lineTo(dx + pb.x * dw, dy + pb.y * dh)
-    ctx.stroke()
+    ctx.beginPath();
+    ctx.moveTo(dx + pa.x * dw, dy + pa.y * dh);
+    ctx.lineTo(dx + pb.x * dw, dy + pb.y * dh);
+    ctx.stroke();
   }
 
   for (const point of landmarks) {
     if (point.visibility < 0.4) {
-      continue
+      continue;
     }
-    ctx.beginPath()
-    ctx.arc(dx + point.x * dw, dy + point.y * dh, 4, 0, Math.PI * 2)
-    ctx.fill()
+    ctx.beginPath();
+    ctx.arc(dx + point.x * dw, dy + point.y * dh, 4, 0, Math.PI * 2);
+    ctx.fill();
   }
-  ctx.restore()
-}
+  ctx.restore();
+};
 
 const drawHud = (ctx: CanvasRenderingContext2D, runtime: ExerciseRuntimeState): void => {
-  const metricEntries = Object.entries(runtime.metrics)
-  const hudHeight = 112 + metricEntries.length * 22
+  const metricEntries = Object.entries(runtime.metrics);
+  const hudHeight = 112 + metricEntries.length * 22;
 
-  ctx.save()
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.6)'
-  ctx.fillRect(16, 16, 340, hudHeight)
+  ctx.save();
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+  ctx.fillRect(16, 16, 340, hudHeight);
 
-  ctx.fillStyle = '#ffffff'
-  ctx.font = '600 22px system-ui'
-  ctx.fillText(`Повторы: ${runtime.reps}`, 28, 50)
-  ctx.font = '500 16px system-ui'
-  ctx.fillText(`Фаза: ${runtime.phase}`, 28, 76)
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '600 22px system-ui';
+  ctx.fillText(`Повторы: ${runtime.reps}`, 28, 50);
+  ctx.font = '500 16px system-ui';
+  ctx.fillText(`Фаза: ${runtime.phase}`, 28, 76);
   const status = runtime.isBodyDetected
     ? `Confidence: ${(runtime.confidence * 100).toFixed(0)}%`
-    : 'Поза не найдена'
-  ctx.fillText(status, 28, 102)
+    : 'Поза не найдена';
+  ctx.fillText(status, 28, 102);
 
-  let y = 126
+  let y = 126;
   for (const [name, value] of metricEntries) {
-    ctx.fillText(`${name}: ${value.toFixed(1)}`, 28, y)
-    y += 22
+    ctx.fillText(`${name}: ${value.toFixed(1)}`, 28, y);
+    y += 22;
   }
-  ctx.restore()
-}
+  ctx.restore();
+};
 
 export const drawFrame = (
   canvas: HTMLCanvasElement,
@@ -152,27 +153,27 @@ export const drawFrame = (
   landmarks: PoseLandmarks | null,
   runtime: ExerciseRuntimeState,
 ): void => {
-  const ctx = canvas.getContext('2d')
+  const ctx = canvas.getContext('2d');
   if (!ctx || !video.videoWidth || !video.videoHeight) {
-    return
+    return;
   }
 
-  resizeCanvas(canvas)
+  resizeCanvas(canvas);
 
   const layout = computeCoverLayout(
     video.videoWidth,
     video.videoHeight,
     canvas.width,
     canvas.height,
-  )
+  );
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-  ctx.drawImage(video, layout.dx, layout.dy, layout.dw, layout.dh)
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(video, layout.dx, layout.dy, layout.dw, layout.dh);
 
   if (landmarks) {
-    drawPoseSkeleton(ctx, landmarks, layout.dx, layout.dy, layout.dw, layout.dh)
+    drawPoseSkeleton(ctx, landmarks, layout.dx, layout.dy, layout.dw, layout.dh);
   }
-  drawHud(ctx, runtime)
-}
+  drawHud(ctx, runtime);
+};
 
-export { drawRestCountdown } from './canvas'
+export { drawRestCountdown } from './canvas';

@@ -1,4 +1,5 @@
-import { type FormEvent } from 'react'
+import { type FormEvent } from 'react';
+
 import {
   RegisterFormError,
   RegisterFormFooter,
@@ -7,17 +8,17 @@ import {
   RegisterFormLabel,
   RegisterFormRoot,
   RegisterFormSubmit,
-} from './RegisterForm.styled'
+} from './RegisterForm.styled';
 
 export type RegisterFormProps = {
-  login: string
-  password: string
-  error: string | null
-  pending: boolean
-  onLoginChange: (value: string) => void
-  onPasswordChange: (value: string) => void
-  onSubmit: () => Promise<void>
-}
+  login: string;
+  password: string;
+  error: string | null;
+  pending: boolean;
+  onLoginChange: (value: string) => void;
+  onPasswordChange: (value: string) => void;
+  onSubmit: () => Promise<void>;
+};
 
 export const RegisterForm = ({
   login,
@@ -29,9 +30,9 @@ export const RegisterForm = ({
   onSubmit,
 }: RegisterFormProps) => {
   const handleSubmit = (event: FormEvent) => {
-    event.preventDefault()
-    void onSubmit()
-  }
+    event.preventDefault();
+    void onSubmit();
+  };
 
   return (
     <>
@@ -43,8 +44,8 @@ export const RegisterForm = ({
             name="login"
             autoComplete="username"
             value={login}
-            onChange={(e) => {
-              onLoginChange(e.target.value)
+            onChange={e => {
+              onLoginChange(e.target.value);
             }}
             disabled={pending}
           />
@@ -56,8 +57,8 @@ export const RegisterForm = ({
             type="password"
             autoComplete="new-password"
             value={password}
-            onChange={(e) => {
-              onPasswordChange(e.target.value)
+            onChange={e => {
+              onPasswordChange(e.target.value);
             }}
             disabled={pending}
           />
@@ -70,5 +71,5 @@ export const RegisterForm = ({
         Уже есть аккаунт? <RegisterFormFooterLink to="/login">Войти</RegisterFormFooterLink>
       </RegisterFormFooter>
     </>
-  )
-}
+  );
+};

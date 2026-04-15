@@ -1,1 +1,1 @@
-export { StatusBarContainer } from './StatusBarContainer'
+export { StatusBarContainer } from './StatusBarContainer';

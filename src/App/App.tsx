@@ -1,10 +1,12 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { ThemeProvider } from 'styled-components'
-import { AuthSessionProvider } from '@contexts'
-import { protectedAppRoutes, publicAuthRoutes } from '@routes'
-import { GlobalStyle, theme } from '@theme'
-import { AppPageLayout } from './AppPageLayout'
-import { RequireAuth } from './RequireAuth'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+
+import { AuthSessionProvider } from '@contexts';
+import { protectedAppRoutes, publicAuthRoutes } from '@routes';
+import { GlobalStyle, theme } from '@theme';
+
+import { AppPageLayout } from './AppPageLayout';
+import { RequireAuth } from './RequireAuth';
 
 export const App = () => {
   return (
@@ -27,5 +29,5 @@ export const App = () => {
         />
       </AuthSessionProvider>
     </ThemeProvider>
-  )
-}
+  );
+};

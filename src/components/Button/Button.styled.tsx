@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const ButtonRoot = styled.button`
   height: ${({ theme }) => theme.controlHeight};
@@ -16,4 +16,4 @@ export const ButtonRoot = styled.button`
     opacity: 0.6;
     cursor: not-allowed;
   }
-`
+`;

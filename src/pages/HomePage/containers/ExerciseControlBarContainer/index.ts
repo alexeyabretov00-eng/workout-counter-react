@@ -1,1 +1,1 @@
-export { ExerciseControlBarContainer } from './ExerciseControlBarContainer'
+export { ExerciseControlBarContainer } from './ExerciseControlBarContainer';

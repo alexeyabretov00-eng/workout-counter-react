@@ -1,8 +1,10 @@
+import type { DatabaseSync } from 'node:sqlite'
+
 import bcrypt from 'bcrypt'
 import cookieParser from 'cookie-parser'
 import express from 'express'
 import rateLimit from 'express-rate-limit'
-import type { DatabaseSync } from 'node:sqlite'
+
 import { AUTH_COOKIE_NAME, getCookieOptions, requireUser, signToken } from './auth.js'
 import { findUserByLogin, insertUser, openDatabase } from './db.js'
 import { sendError } from './httpErrors.js'

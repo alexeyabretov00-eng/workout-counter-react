@@ -1,5 +1,6 @@
-import type { RouteObject } from 'react-router'
-import { AdminPageLazy } from './AdminPageLazy'
+import type { RouteObject } from 'react-router';
+
+import { AdminPageLazy } from './AdminPageLazy';
 
 export const routes: RouteObject[] = [
   {
@@ -9,4 +10,4 @@ export const routes: RouteObject[] = [
       nav: { label: 'Админка', sort: 1 },
     },
   },
-]
+];

@@ -19,7 +19,7 @@ const RU_UNITS = [
   'семнадцать',
   'восемнадцать',
   'девятнадцать',
-]
+];
 
 const RU_TENS = [
   '',
@@ -32,7 +32,7 @@ const RU_TENS = [
   'семьдесят',
   'восемьдесят',
   'девяносто',
-]
+];
 
 const RU_HUNDREDS = [
   '',
@@ -45,27 +45,27 @@ const RU_HUNDREDS = [
   'семьсот',
   'восемьсот',
   'девятьсот',
-]
+];
 
 export const numberToRussianWords = (value: number): string => {
-  const safeValue = Math.max(0, Math.trunc(value))
+  const safeValue = Math.max(0, Math.trunc(value));
   if (safeValue < 20) {
-    return RU_UNITS[safeValue]
+    return RU_UNITS[safeValue];
   }
 
   if (safeValue < 100) {
-    const tens = Math.floor(safeValue / 10)
-    const units = safeValue % 10
-    return units > 0 ? `${RU_TENS[tens]} ${RU_UNITS[units]}` : RU_TENS[tens]
+    const tens = Math.floor(safeValue / 10);
+    const units = safeValue % 10;
+    return units > 0 ? `${RU_TENS[tens]} ${RU_UNITS[units]}` : RU_TENS[tens];
   }
 
   if (safeValue < 1000) {
-    const hundreds = Math.floor(safeValue / 100)
-    const rest = safeValue % 100
+    const hundreds = Math.floor(safeValue / 100);
+    const rest = safeValue % 100;
     return rest > 0
       ? `${RU_HUNDREDS[hundreds]} ${numberToRussianWords(rest)}`
-      : RU_HUNDREDS[hundreds]
+      : RU_HUNDREDS[hundreds];
   }
 
-  return String(safeValue)
-}
+  return String(safeValue);
+};

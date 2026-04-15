@@ -1,13 +1,13 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const chevronBackgroundUrl = (strokeHex: string): string => {
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='${strokeHex}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 8 4 4 4-4'/></svg>`
-  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`
-}
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='${strokeHex}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 8 4 4 4-4'/></svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+};
 
 export const SelectLabel = styled.label`
   font-weight: ${({ theme }) => theme.typography.labelWeight};
-`
+`;
 
 export const SelectField = styled.select`
   height: ${({ theme }) => theme.controlHeight};
@@ -28,4 +28,4 @@ export const SelectField = styled.select`
     opacity: 0.6;
     cursor: not-allowed;
   }
-`
+`;

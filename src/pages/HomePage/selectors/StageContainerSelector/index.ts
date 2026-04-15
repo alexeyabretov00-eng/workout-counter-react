@@ -1,1 +1,1 @@
-export { useStageContainerSelector } from './useStageContainerSelector'
+export { useStageContainerSelector } from './useStageContainerSelector';

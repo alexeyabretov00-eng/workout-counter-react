@@ -1,1 +1,1 @@
-export { RegisterPageShell, type RegisterPageShellProps } from './RegisterPageShell'
+export { RegisterPageShell, type RegisterPageShellProps } from './RegisterPageShell';

@@ -1,1 +1,1 @@
-export { squatDetector } from './squatDetector'
+export { squatDetector } from './squatDetector';

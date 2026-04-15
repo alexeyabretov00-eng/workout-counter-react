@@ -1,12 +1,6 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useCameraStream } from './useCameraStream'
-import {
-  getExerciseDetectorByIdOrDefault,
-  type ExerciseRuntimeState,
-  type ExerciseState,
-} from '../exercises'
-import { PoseLandmarkerService } from '../services'
-import type { EntityStatus } from '@types'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { EntityStatus } from '@types';
+
 import {
   clearCanvas,
   drawFrame,
@@ -14,7 +8,16 @@ import {
   numberToRussianWords,
   speakRussianCount,
   speakRussianText,
-} from '@utils'
+} from '@utils';
+
+import {
+  type ExerciseRuntimeState,
+  type ExerciseState,
+  getExerciseDetectorByIdOrDefault,
+} from '../exercises';
+import { PoseLandmarkerService } from '../services';
+
+import { useCameraStream } from './useCameraStream';
 
 const WorkoutSessionRuntimeDefaultState: ExerciseRuntimeState = {
   reps: 0,
@@ -22,99 +25,99 @@ const WorkoutSessionRuntimeDefaultState: ExerciseRuntimeState = {
   confidence: 0,
   metrics: {},
   isBodyDetected: false,
-}
+};
 
-type SessionStatus = 'idle' | 'running' | 'paused' | 'rest'
+type SessionStatus = 'idle' | 'running' | 'paused' | 'rest';
 
 export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: number) => {
-  const memoryVideoRef = useRef<HTMLVideoElement | null>(null)
-  const canvasRef = useRef<HTMLCanvasElement | null>(null)
-  const rafRef = useRef<number | null>(null)
-  const restRafRef = useRef<number | null>(null)
-  const restCountdownVersionRef = useRef(0)
-  const poseServiceRef = useRef(new PoseLandmarkerService())
-  const detectorStateRef = useRef<ExerciseState>({})
-  const runtimeRef = useRef<ExerciseRuntimeState>(WorkoutSessionRuntimeDefaultState)
-  const restDurationMsRef = useRef(restDurationMs)
+  const memoryVideoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const restRafRef = useRef<number | null>(null);
+  const restCountdownVersionRef = useRef(0);
+  const poseServiceRef = useRef(new PoseLandmarkerService());
+  const detectorStateRef = useRef<ExerciseState>({});
+  const runtimeRef = useRef<ExerciseRuntimeState>(WorkoutSessionRuntimeDefaultState);
+  const restDurationMsRef = useRef(restDurationMs);
 
-  const [modelStatus, setModelStatus] = useState<EntityStatus>('loading')
-  const [sessionStatus, setSessionStatus] = useState<SessionStatus>('idle')
-  const { startCamera, stopCamera, cameraError, cameraStatus } = useCameraStream()
-  
-  const isRunning = sessionStatus === 'running'
-  const isPaused = sessionStatus === 'paused'
-  const isRestCountdownActive = sessionStatus === 'rest'
+  const [modelStatus, setModelStatus] = useState<EntityStatus>('loading');
+  const [sessionStatus, setSessionStatus] = useState<SessionStatus>('idle');
+  const { startCamera, stopCamera, cameraError, cameraStatus } = useCameraStream();
+
+  const isRunning = sessionStatus === 'running';
+  const isPaused = sessionStatus === 'paused';
+  const isRestCountdownActive = sessionStatus === 'rest';
 
   const detector = useMemo(
     () => getExerciseDetectorByIdOrDefault(selectedExerciseId),
     [selectedExerciseId],
-  )
+  );
 
   useEffect(() => {
-    restDurationMsRef.current = restDurationMs
-  }, [restDurationMs])
+    restDurationMsRef.current = restDurationMs;
+  }, [restDurationMs]);
 
   useEffect(() => {
-    memoryVideoRef.current = document.createElement('video')
-    memoryVideoRef.current.playsInline = true
-    memoryVideoRef.current.muted = true
-    
+    memoryVideoRef.current = document.createElement('video');
+    memoryVideoRef.current.playsInline = true;
+    memoryVideoRef.current.muted = true;
+
     return () => {
-      memoryVideoRef.current = null
-    }
-  }, [])
+      memoryVideoRef.current = null;
+    };
+  }, []);
 
   useEffect(() => {
-    let isMounted = true
-    const poseService = poseServiceRef.current
+    let isMounted = true;
+    const poseService = poseServiceRef.current;
 
     const initModel = async () => {
       try {
-        await poseService.init()
+        await poseService.init();
         if (isMounted) {
-          setModelStatus('ready')
+          setModelStatus('ready');
         }
       } catch (error) {
-        console.error('Failed to initialize pose model', error)
+        console.error('Failed to initialize pose model', error);
         if (isMounted) {
-          setModelStatus('error')
+          setModelStatus('error');
         }
       }
-    }
+    };
 
-    void initModel()
+    void initModel();
 
     return () => {
-      isMounted = false
-      poseService.dispose()
-    }
-  }, [])
+      isMounted = false;
+      poseService.dispose();
+    };
+  }, []);
 
   useEffect(() => {
     if (!isRunning) {
       if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current)
-        rafRef.current = null
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
       }
-      return
+      return;
     }
 
     if (restRafRef.current) {
-      cancelAnimationFrame(restRafRef.current)
-      restRafRef.current = null
+      cancelAnimationFrame(restRafRef.current);
+      restRafRef.current = null;
     }
 
     const renderFrame = () => {
-      const video = memoryVideoRef.current
-      const canvas = canvasRef.current
+      const video = memoryVideoRef.current;
+      const canvas = canvasRef.current;
 
       if (!video || !canvas || !isRunning) {
-        return
+        return;
       }
 
-      const frame = poseServiceRef.current.detect(video, performance.now())
-      const result = detector.update(frame.landmarks, detectorStateRef.current)
-      detectorStateRef.current = result.nextState
+      const frame = poseServiceRef.current.detect(video, performance.now());
+      const result = detector.update(frame.landmarks, detectorStateRef.current);
+      detectorStateRef.current = result.nextState;
 
       const nextRuntime: ExerciseRuntimeState = {
         reps: runtimeRef.current.reps + result.repDelta,
@@ -122,118 +125,121 @@ export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: nu
         confidence: result.confidence,
         metrics: result.metrics,
         isBodyDetected: Boolean(frame.landmarks) && result.confidence > 0,
-      }
-      runtimeRef.current = nextRuntime
+      };
+      runtimeRef.current = nextRuntime;
 
       if (result.repDelta > 0) {
-        speakRussianCount(nextRuntime.reps)
+        speakRussianCount(nextRuntime.reps);
       }
 
-      drawFrame(canvas, video, frame.landmarks, nextRuntime)
-      rafRef.current = requestAnimationFrame(renderFrame)
-    }
+      drawFrame(canvas, video, frame.landmarks, nextRuntime);
+      rafRef.current = requestAnimationFrame(renderFrame);
+    };
 
-    rafRef.current = requestAnimationFrame(renderFrame)
+    rafRef.current = requestAnimationFrame(renderFrame);
     return () => {
       if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current)
-        rafRef.current = null
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
       }
-    }
-  }, [detector, isRunning])
+    };
+  }, [detector, isRunning]);
 
   const start = useCallback(async () => {
     if (restRafRef.current) {
-      cancelAnimationFrame(restRafRef.current)
-      restRafRef.current = null
+      cancelAnimationFrame(restRafRef.current);
+      restRafRef.current = null;
     }
-    restCountdownVersionRef.current += 1
+    restCountdownVersionRef.current += 1;
     if (sessionStatus === 'rest') {
-      setSessionStatus('idle')
+      setSessionStatus('idle');
     }
 
     if (sessionStatus === 'paused') {
-      setSessionStatus('running')
-      return
+      setSessionStatus('running');
+      return;
     }
 
-    await startCamera(memoryVideoRef.current)
-    detectorStateRef.current = detector.createState()
-    runtimeRef.current = WorkoutSessionRuntimeDefaultState
-    poseServiceRef.current.stop()
-    setSessionStatus('running')
-  }, [detector, sessionStatus, startCamera])
+    await startCamera(memoryVideoRef.current);
+    detectorStateRef.current = detector.createState();
+    runtimeRef.current = WorkoutSessionRuntimeDefaultState;
+    poseServiceRef.current.stop();
+    setSessionStatus('running');
+  }, [detector, sessionStatus, startCamera]);
 
   const pause = useCallback(() => {
-    setSessionStatus('paused')
-  }, [])
+    setSessionStatus('paused');
+  }, []);
 
   const reset = useCallback(() => {
-    detectorStateRef.current = detector.createState()
-    runtimeRef.current = WorkoutSessionRuntimeDefaultState
-  }, [detector])
+    detectorStateRef.current = detector.createState();
+    runtimeRef.current = WorkoutSessionRuntimeDefaultState;
+  }, [detector]);
 
   const stopSession = useCallback(
     (withRestCountdown: boolean, restDurationOverrideMs?: number) => {
       if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current)
-        rafRef.current = null
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
       }
       if (restRafRef.current) {
-        cancelAnimationFrame(restRafRef.current)
-        restRafRef.current = null
+        cancelAnimationFrame(restRafRef.current);
+        restRafRef.current = null;
       }
-      restCountdownVersionRef.current += 1
-      setSessionStatus('idle')
-      stopCamera()
-      clearCanvas(canvasRef.current)
+      restCountdownVersionRef.current += 1;
+      setSessionStatus('idle');
+      stopCamera();
+      clearCanvas(canvasRef.current);
 
       if (!withRestCountdown) {
-        return
+        return;
       }
 
-      const countdownDurationMs = restDurationOverrideMs ?? restDurationMsRef.current
-      const durationMinutes = Math.max(1, Math.round(countdownDurationMs / 60000))
-      speakRussianText(`Отдыхаем ${numberToRussianWords(durationMinutes)} минут`)
-      const countdownVersion = restCountdownVersionRef.current
-      const restStartedAt = performance.now()
-      let isFinishAnnounced = false
-      setSessionStatus('rest')
+      const countdownDurationMs = restDurationOverrideMs ?? restDurationMsRef.current;
+      const durationMinutes = Math.max(1, Math.round(countdownDurationMs / 60000));
+      speakRussianText(`Отдыхаем ${numberToRussianWords(durationMinutes)} минут`);
+      const countdownVersion = restCountdownVersionRef.current;
+      const restStartedAt = performance.now();
+      let isFinishAnnounced = false;
+      setSessionStatus('rest');
       const restTick = (now: number) => {
         if (countdownVersion !== restCountdownVersionRef.current) {
-          return
+          return;
         }
 
-        const elapsed = now - restStartedAt
-        const remaining = Math.max(0, countdownDurationMs - elapsed)
-        const canvas = canvasRef.current
+        const elapsed = now - restStartedAt;
+        const remaining = Math.max(0, countdownDurationMs - elapsed);
+        const canvas = canvasRef.current;
         if (canvas) {
-          drawRestCountdown(canvas, remaining, countdownDurationMs)
+          drawRestCountdown(canvas, remaining, countdownDurationMs);
         }
 
         if (remaining > 0) {
-          restRafRef.current = requestAnimationFrame(restTick)
+          restRafRef.current = requestAnimationFrame(restTick);
         } else {
           if (!isFinishAnnounced) {
-            speakRussianText('Ебашим')
-            isFinishAnnounced = true
+            speakRussianText('Ебашим');
+            isFinishAnnounced = true;
           }
-          restRafRef.current = null
-          setSessionStatus('idle')
+          restRafRef.current = null;
+          setSessionStatus('idle');
         }
-      }
-      restRafRef.current = requestAnimationFrame(restTick)
+      };
+      restRafRef.current = requestAnimationFrame(restTick);
     },
     [stopCamera],
-  )
+  );
 
-  const shutdown = useCallback((restDurationOverrideMs?: number) => {
-    stopSession(true, restDurationOverrideMs)
-  }, [stopSession])
+  const shutdown = useCallback(
+    (restDurationOverrideMs?: number) => {
+      stopSession(true, restDurationOverrideMs);
+    },
+    [stopSession],
+  );
 
   useEffect(() => {
-    return () => stopSession(false)
-  }, [stopSession])
+    return () => stopSession(false);
+  }, [stopSession]);
 
   return {
     canvasRef,
@@ -249,5 +255,5 @@ export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: nu
     pause,
     reset,
     shutdown,
-  }
-}
+  };
+};

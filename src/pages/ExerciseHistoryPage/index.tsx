@@ -1,5 +1,6 @@
-import type { RouteObject } from 'react-router'
-import { ExerciseHistoryPageLazy } from './ExerciseHistoryPageLazy'
+import type { RouteObject } from 'react-router';
+
+import { ExerciseHistoryPageLazy } from './ExerciseHistoryPageLazy';
 
 export const routes: RouteObject[] = [
   {
@@ -9,4 +10,4 @@ export const routes: RouteObject[] = [
       nav: { label: 'История', sort: 2 },
     },
   },
-]
+];

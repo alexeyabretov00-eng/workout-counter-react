@@ -1,4 +1,5 @@
-import type { RefObject } from 'react'
+import type { RefObject } from 'react';
+
 import {
   StageCanvas,
   StageLoader,
@@ -8,13 +9,13 @@ import {
   StagePausedText,
   StageRoot,
   StageViewport,
-} from './Stage.styled'
+} from './Stage.styled';
 
 export type StageProps = {
-  canvasRef: RefObject<HTMLCanvasElement | null>
-  isCameraInitializing: boolean
-  isPaused: boolean
-}
+  canvasRef: RefObject<HTMLCanvasElement | null>;
+  isCameraInitializing: boolean;
+  isPaused: boolean;
+};
 
 export const Stage = ({ canvasRef, isCameraInitializing, isPaused }: StageProps) => {
   return (
@@ -35,5 +36,5 @@ export const Stage = ({ canvasRef, isCameraInitializing, isPaused }: StageProps)
         )}
       </StageViewport>
     </StageRoot>
-  )
-}
+  );
+};

@@ -1,12 +1,13 @@
-import { createContext, useContext } from 'react'
-import type { WorkoutSessionStageValue } from './types'
+import { createContext, useContext } from 'react';
 
-export const WorkoutSessionStageContext = createContext<WorkoutSessionStageValue | null>(null)
+import type { WorkoutSessionStageValue } from './types';
+
+export const WorkoutSessionStageContext = createContext<WorkoutSessionStageValue | null>(null);
 
 export const useWorkoutSessionStageContext = (): WorkoutSessionStageValue => {
-  const value = useContext(WorkoutSessionStageContext)
+  const value = useContext(WorkoutSessionStageContext);
   if (!value) {
-    throw new Error('WorkoutSessionStageContext: provider is missing')
+    throw new Error('WorkoutSessionStageContext: provider is missing');
   }
-  return value
-}
+  return value;
+};

@@ -1,1 +1,1 @@
-export { headSideTiltDetector } from './headSideTiltDetector'
+export { headSideTiltDetector } from './headSideTiltDetector';

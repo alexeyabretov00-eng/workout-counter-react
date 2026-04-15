@@ -67,6 +67,6 @@ export const theme = {
     spinnerSize: '44px',
     spinnerBorder: '3px',
   },
-} as const
+} as const;
 
-export type AppTheme = typeof theme
+export type AppTheme = typeof theme;

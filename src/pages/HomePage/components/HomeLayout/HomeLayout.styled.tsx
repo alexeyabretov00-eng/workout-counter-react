@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const HomeLayoutRoot = styled.main`
   margin: 0 auto;
@@ -6,9 +6,9 @@ export const HomeLayoutRoot = styled.main`
   padding: ${({ theme }) => theme.spacing.xl};
   display: grid;
   gap: ${({ theme }) => theme.spacing.lg};
-`
+`;
 
-export const HomeLayoutSection = styled.section``
+export const HomeLayoutSection = styled.section``;
 
 export const HomeLayoutHeaderSection = styled(HomeLayoutSection)`
   & h1 {
@@ -19,8 +19,8 @@ export const HomeLayoutHeaderSection = styled(HomeLayoutSection)`
     margin: ${({ theme }) => theme.spacing.sm} 0 0;
     color: ${({ theme }) => theme.palette.text.muted};
   }
-`
+`;
 
 export const HomeLayoutStageSection = styled(HomeLayoutSection)`
   min-width: 0;
-`
+`;

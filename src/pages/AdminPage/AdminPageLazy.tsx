@@ -1,6 +1,6 @@
-import { lazy } from 'react'
+import { lazy } from 'react';
 
 export const AdminPageLazy = lazy(async () => {
-  const { AdminPage } = await import('./AdminPage')
-  return { default: AdminPage }
-})
+  const { AdminPage } = await import('./AdminPage');
+  return { default: AdminPage };
+});

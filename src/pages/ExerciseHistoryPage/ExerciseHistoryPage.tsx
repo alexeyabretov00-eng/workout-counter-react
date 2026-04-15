@@ -2,7 +2,7 @@ import {
   ExerciseHistoryPageLead,
   ExerciseHistoryPageRoot,
   ExerciseHistoryPageTitle,
-} from './ExerciseHistoryPage.styled'
+} from './ExerciseHistoryPage.styled';
 
 export const ExerciseHistoryPage = () => {
   return (
@@ -10,5 +10,5 @@ export const ExerciseHistoryPage = () => {
       <ExerciseHistoryPageTitle>История упражнений</ExerciseHistoryPageTitle>
       <ExerciseHistoryPageLead>Заглушка: раздел в разработке.</ExerciseHistoryPageLead>
     </ExerciseHistoryPageRoot>
-  )
-}
+  );
+};

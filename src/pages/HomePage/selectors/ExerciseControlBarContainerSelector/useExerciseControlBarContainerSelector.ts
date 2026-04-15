@@ -1,16 +1,17 @@
-import { useMemo } from 'react'
-import type { SelectOption } from '@components'
-import { useWorkoutSessionChromeControlsContext } from '../../contexts'
+import { useMemo } from 'react';
+import type { SelectOption } from '@components';
 
-const REST_DURATION_MINUTES = [1, 2, 3, 5] as const
+import { useWorkoutSessionChromeControlsContext } from '../../contexts';
 
-const REST_DURATION_OPTIONS: SelectOption[] = REST_DURATION_MINUTES.map((minutes) => ({
+const REST_DURATION_MINUTES = [1, 2, 3, 5] as const;
+
+const REST_DURATION_OPTIONS: SelectOption[] = REST_DURATION_MINUTES.map(minutes => ({
   value: String(minutes),
   label: `${minutes} мин`,
-}))
+}));
 
 export const useExerciseControlBarContainerSelector = () => {
-  const ctx = useWorkoutSessionChromeControlsContext()
+  const ctx = useWorkoutSessionChromeControlsContext();
   return useMemo(
     () => ({
       exerciseId: ctx.exerciseId,
@@ -31,5 +32,5 @@ export const useExerciseControlBarContainerSelector = () => {
       ctx.resetStopEnabled,
       ctx.dispatchChromeControl,
     ],
-  )
-}
+  );
+};

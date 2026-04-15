@@ -1,4 +1,5 @@
-import { useAuthSessionContext } from '@contexts'
+import { useAuthSessionContext } from '@contexts';
+
 import {
   AppNavAuth,
   AppNavLink,
@@ -6,14 +7,14 @@ import {
   AppNavRoot,
   AppNavTextButton,
   AppNavUserLabel,
-} from './AppNav.styled'
+} from './AppNav.styled';
 
 type AppNavProps = {
-  items: { path: string; label: string; end?: boolean }[]
-}
+  items: { path: string; label: string; end?: boolean }[];
+};
 
 export const AppNav = ({ items }: AppNavProps) => {
-  const { user, status, logout } = useAuthSessionContext()
+  const { user, status, logout } = useAuthSessionContext();
 
   return (
     <AppNavRoot>
@@ -31,9 +32,8 @@ export const AppNav = ({ items }: AppNavProps) => {
             <AppNavTextButton
               type="button"
               onClick={() => {
-                void logout()
-              }}
-            >
+                void logout();
+              }}>
               Выйти
             </AppNavTextButton>
           </>
@@ -45,5 +45,5 @@ export const AppNav = ({ items }: AppNavProps) => {
         )}
       </AppNavAuth>
     </AppNavRoot>
-  )
-}
+  );
+};

@@ -1,43 +1,43 @@
-import { type RouteObject } from 'react-router'
+import { type RouteObject } from 'react-router';
 
 /** Настройки маршрута страницы (поле `handle` у `RouteObject`). */
 export type AppPageRouteHandle = {
   /** `public` — доступ без входа (логин, регистрация и т.п.). Иначе маршрут защищён `RequireAuth`. */
-  auth?: 'public'
+  auth?: 'public';
   nav?: {
-    label: string
-    end?: boolean
-    sort?: number
-  }
-}
+    label: string;
+    end?: boolean;
+    sort?: number;
+  };
+};
 
 type PageIndexModule = {
-  routes?: unknown
-}
+  routes?: unknown;
+};
 
 const collectPageRouteObjects = (): RouteObject[] => {
   const pageIndexModules = import.meta.glob<PageIndexModule>('../pages/*/index.tsx', {
     eager: true,
-  })
-  const list: RouteObject[] = []
+  });
+  const list: RouteObject[] = [];
 
   for (const mod of Object.values(pageIndexModules)) {
     if (!Array.isArray(mod.routes) || mod.routes.length === 0) {
-      continue
+      continue;
     }
-    list.push(...(mod.routes as RouteObject[]))
+    list.push(...(mod.routes as RouteObject[]));
   }
 
-  return list
-}
+  return list;
+};
 
 const buildNavItems = (routes: RouteObject[]) => {
-  const items: { path: string; label: string; end?: boolean; sort: number }[] = []
+  const items: { path: string; label: string; end?: boolean; sort: number }[] = [];
   for (const route of routes) {
-    const handle = route.handle as AppPageRouteHandle
+    const handle = route.handle as AppPageRouteHandle;
 
     if (!handle?.nav) {
-      continue
+      continue;
     }
 
     items.push({
@@ -45,26 +45,26 @@ const buildNavItems = (routes: RouteObject[]) => {
       label: handle.nav.label,
       end: handle.nav.end,
       sort: handle.nav.sort ?? Number.POSITIVE_INFINITY,
-    })
+    });
   }
 
   items.sort((left, right) => {
-      return left.sort - right.sort
-  })
+    return left.sort - right.sort;
+  });
 
-  return items.map(({ path, label, end }) => ({ path, label, end }))
-}
+  return items.map(({ path, label, end }) => ({ path, label, end }));
+};
 
-export const routes = collectPageRouteObjects()
+export const routes = collectPageRouteObjects();
 
 const isPublicAuthRoute = (route: RouteObject): boolean => {
-  return (route.handle as AppPageRouteHandle)?.auth === 'public'
-}
+  return (route.handle as AppPageRouteHandle)?.auth === 'public';
+};
 
-export const publicAuthRoutes = routes.filter(isPublicAuthRoute)
+export const publicAuthRoutes = routes.filter(isPublicAuthRoute);
 
-export const protectedAppRoutes = routes.filter((route) => {
-  return !isPublicAuthRoute(route)
-})
+export const protectedAppRoutes = routes.filter(route => {
+  return !isPublicAuthRoute(route);
+});
 
-export const navItems = buildNavItems(routes)
+export const navItems = buildNavItems(routes);

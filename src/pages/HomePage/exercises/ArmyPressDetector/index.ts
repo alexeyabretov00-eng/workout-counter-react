@@ -1,1 +1,1 @@
-export { armyPressDetector } from './armyPressDetector'
+export { armyPressDetector } from './armyPressDetector';

@@ -1,10 +1,11 @@
-import type { ReactNode } from 'react'
-import { LoginPageRoot, LoginPageTitle } from './LoginPageShell.styled'
+import type { ReactNode } from 'react';
+
+import { LoginPageRoot, LoginPageTitle } from './LoginPageShell.styled';
 
 export type LoginPageShellProps = {
-  title: string
-  children: ReactNode
-}
+  title: string;
+  children: ReactNode;
+};
 
 export const LoginPageShell = ({ title, children }: LoginPageShellProps) => {
   return (
@@ -12,5 +13,5 @@ export const LoginPageShell = ({ title, children }: LoginPageShellProps) => {
       <LoginPageTitle>{title}</LoginPageTitle>
       {children}
     </LoginPageRoot>
-  )
-}
+  );
+};

@@ -1,17 +1,18 @@
-import { memo, type ReactNode } from 'react'
+import { memo, type ReactNode } from 'react';
+
 import {
   HomeLayoutHeaderSection,
   HomeLayoutRoot,
   HomeLayoutSection,
   HomeLayoutStageSection,
-} from './HomeLayout.styled'
+} from './HomeLayout.styled';
 
 export type HomeLayoutProps = {
-  header: ReactNode
-  controls: ReactNode
-  statusBar: ReactNode
-  stage: ReactNode
-}
+  header: ReactNode;
+  controls: ReactNode;
+  statusBar: ReactNode;
+  stage: ReactNode;
+};
 
 const HomeLayoutComponent = ({ header, controls, statusBar, stage }: HomeLayoutProps) => {
   return (
@@ -21,8 +22,8 @@ const HomeLayoutComponent = ({ header, controls, statusBar, stage }: HomeLayoutP
       <HomeLayoutSection>{statusBar}</HomeLayoutSection>
       <HomeLayoutStageSection>{stage}</HomeLayoutStageSection>
     </HomeLayoutRoot>
-  )
-}
+  );
+};
 
-export const HomeLayout = memo(HomeLayoutComponent)
-HomeLayout.displayName = 'HomeLayout'
+export const HomeLayout = memo(HomeLayoutComponent);
+HomeLayout.displayName = 'HomeLayout';

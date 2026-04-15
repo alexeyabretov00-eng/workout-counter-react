@@ -1,10 +1,11 @@
-import type { ReactNode } from 'react'
-import { RegisterPageRoot, RegisterPageTitle } from './RegisterPageShell.styled'
+import type { ReactNode } from 'react';
+
+import { RegisterPageRoot, RegisterPageTitle } from './RegisterPageShell.styled';
 
 export type RegisterPageShellProps = {
-  title: string
-  children: ReactNode
-}
+  title: string;
+  children: ReactNode;
+};
 
 export const RegisterPageShell = ({ title, children }: RegisterPageShellProps) => {
   return (
@@ -12,5 +13,5 @@ export const RegisterPageShell = ({ title, children }: RegisterPageShellProps) =
       <RegisterPageTitle>{title}</RegisterPageTitle>
       {children}
     </RegisterPageRoot>
-  )
-}
+  );
+};

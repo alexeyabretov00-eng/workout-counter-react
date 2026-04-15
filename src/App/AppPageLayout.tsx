@@ -1,12 +1,14 @@
-import { Suspense } from 'react'
-import { Outlet } from 'react-router-dom'
-import { AppNav } from './components'
-import { navItems } from '@routes'
-import { AppRootLayoutRoot, RouteOutletFallbackRoot } from './AppPageLayout.styled'
-import { useAuthSessionContext } from '@contexts'
+import { Suspense } from 'react';
+import { Outlet } from 'react-router-dom';
+
+import { useAuthSessionContext } from '@contexts';
+import { navItems } from '@routes';
+
+import { AppRootLayoutRoot, RouteOutletFallbackRoot } from './AppPageLayout.styled';
+import { AppNav } from './components';
 export const AppPageLayout = () => {
-  const { user } = useAuthSessionContext()
-  const mainNavItems = user ? navItems : []
+  const { user } = useAuthSessionContext();
+  const mainNavItems = user ? navItems : [];
 
   return (
     <AppRootLayoutRoot>
@@ -16,10 +18,9 @@ export const AppPageLayout = () => {
           <RouteOutletFallbackRoot role="status" aria-live="polite">
             Загрузка…
           </RouteOutletFallbackRoot>
-        }
-      >
+        }>
         <Outlet />
       </Suspense>
     </AppRootLayoutRoot>
-  )
-}
+  );
+};

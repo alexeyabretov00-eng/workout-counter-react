@@ -1,5 +1,6 @@
-import type { RouteObject } from 'react-router'
-import { LoginPageLazy } from './LoginPageLazy'
+import type { RouteObject } from 'react-router';
+
+import { LoginPageLazy } from './LoginPageLazy';
 
 export const routes: RouteObject[] = [
   {
@@ -9,4 +10,4 @@ export const routes: RouteObject[] = [
       auth: 'public',
     },
   },
-]
+];
