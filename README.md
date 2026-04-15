@@ -32,30 +32,66 @@ npm run dev
 
 Откройте URL из Vite в браузере. Для камеры и (при голосовом управлении) микрофона браузер запросит разрешения. Для `getUserMedia` нужен **HTTPS** или **localhost**.
 
+### API аутентификации (логин и пароль)
+
+Фронтенд ходит к REST API по путям **`/api/...`** на том же origin, что и страница. В режиме разработки Vite **проксирует** префикс `/api` на процесс бэкенда (`vite.config.ts` → `127.0.0.1:3001`).
+
+1. Установите зависимости сервера (отдельный `package.json` в каталоге `server/`):
+
+   ```bash
+   npm install --prefix server
+   ```
+
+2. Во втором терминале запустите API (по умолчанию порт **3001**, SQLite-файл в `server/data/app.sqlite`, не коммитится):
+
+   ```bash
+   npm run dev:api
+   ```
+
+3. В первом терминале как обычно: `npm run dev` — откройте приложение, страницы **«Вход»** и **«Регистрация»** в шапке.
+
+Переменные окружения API (опционально):
+
+| Переменная | Назначение |
+|------------|------------|
+| `PORT` | Порт HTTP (по умолчанию `3001`) |
+| `DATABASE_PATH` | Путь к файлу SQLite (по умолчанию `./data/app.sqlite` относительно каталога `server/`) |
+| `JWT_SECRET` | Секрет подписи JWT; в `production` обязателен |
+| `COOKIE_SECURE` | Если `true`, cookie с флагом `Secure` (для HTTPS) |
+
+Контракт эндпоинтов: [specs/features/_archive/auth-login-password/api-contract.md](specs/features/_archive/auth-login-password/api-contract.md).
+
 ## Docker (локально)
 
 Нужны [Docker Engine](https://docs.docker.com/engine/install/) и (для Compose) [Docker Compose](https://docs.docker.com/compose/).
 
-Сборка и запуск через Compose (приложение на **http://localhost:8080**):
+Сборка и запуск через Compose (SPA и API на **одном** origin — **http://localhost:8080**):
 
 ```bash
 docker compose up --build
 ```
 
-Только образ и контейнер:
+- Сервис **`web`** (nginx + собранный фронт) публикует порт **8080** на хост.
+- Сервис **`api`** (Node, каталог `server/`) обрабатывает префикс **`/api`**; **не** публикует порт наружу; данные SQLite лежат в именованном томе **`workout_sqlite`** (путь в контейнере задаётся через `DATABASE_PATH=/data/app.sqlite`).
+- Перед первым запуском задайте надёжный **`JWT_SECRET`** в окружении (например файл `.env` рядом с `docker-compose.yml` или переменная в оболочке). Значение по умолчанию в compose небезопасно и только для локальной проверки.
+
+Только фронтенд (без API в контейнере):
 
 ```bash
 docker build -t workout-counter-react:local .
 docker run --rm -p 8080:80 workout-counter-react:local
 ```
 
-Образ: multi-stage (Node — `npm ci` и `npm run build`, затем nginx со статикой из `dist/` и fallback на `index.html` для маршрутов React Router). Камера и микрофон проверяйте в браузере по адресу **localhost** (как при `npm run dev`); доступ по IP в локальной сети может не дать secure context для медиа.
+В этом режиме запросы к `/api` из браузера не попадут на бэкенд; для полного сценария входа и регистрации используйте **`docker compose`** или локальную пару Vite + `npm run dev:api`.
+
+Образ `web`: multi-stage (Node — `npm ci` и `npm run build`, затем nginx со статикой из `dist/` и прокси `location /api` на сервис `api`, плюс fallback на `index.html` для маршрутов React Router). Камера и микрофон проверяйте в браузере по адресу **localhost** (как при `npm run dev`); доступ по IP в локальной сети может не дать secure context для медиа.
 
 План и чеклист (архив): `specs/features/_archive/local-docker-deploy/`.
 
 ## Скрипты
 
 - `npm run dev` — локальная разработка (Vite).
+- `npm run dev:api` — только HTTP API из каталога `server/` (порт по умолчанию 3001; совместно с `npm run dev` даёт один origin за счёт прокси Vite).
 - `npm run build` — проверка TypeScript и production-сборка.
 - `npm run build:analyze` — та же сборка в режиме `analyze`: дополнительно пишется отчёт **`dist/bundle-stats.html`** (дерево чанков и размеры; откройте файл в браузере после сборки).
 - `npm run preview` — локальный просмотр уже собранного приложения (после `npm run build`).

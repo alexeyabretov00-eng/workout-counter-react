@@ -1,5 +1,23 @@
 services:
+  api:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_PATH: /data/app.sqlite
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-docker}
+      COOKIE_SECURE: "false"
+    volumes:
+      - workout_sqlite:/data
+
   web:
     build: .
     ports:
       - "8080:80"
+    depends_on:
+      - api
+
+volumes:
+  workout_sqlite:

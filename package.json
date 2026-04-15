@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:api": "npm run dev --prefix server",
     "build": "tsc -b && vite build",
     "build:analyze": "tsc -b && vite build --mode analyze",
     "lint": "eslint .",

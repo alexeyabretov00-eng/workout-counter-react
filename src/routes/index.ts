@@ -1,1 +1,2 @@
-export { navItems, routes } from './routes'
+export type { AppPageRouteHandle } from './routes'
+export { navItems, protectedAppRoutes, publicAuthRoutes, routes } from './routes'

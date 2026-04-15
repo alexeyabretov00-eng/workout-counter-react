@@ -1,6 +1,9 @@
 import { type RouteObject } from 'react-router'
 
-type AppPageRouteHandle = {
+/** Настройки маршрута страницы (поле `handle` у `RouteObject`). */
+export type AppPageRouteHandle = {
+  /** `public` — доступ без входа (логин, регистрация и т.п.). Иначе маршрут защищён `RequireAuth`. */
+  auth?: 'public'
   nav?: {
     label: string
     end?: boolean
@@ -53,5 +56,15 @@ const buildNavItems = (routes: RouteObject[]) => {
 }
 
 export const routes = collectPageRouteObjects()
+
+const isPublicAuthRoute = (route: RouteObject): boolean => {
+  return (route.handle as AppPageRouteHandle)?.auth === 'public'
+}
+
+export const publicAuthRoutes = routes.filter(isPublicAuthRoute)
+
+export const protectedAppRoutes = routes.filter((route) => {
+  return !isPublicAuthRoute(route)
+})
 
 export const navItems = buildNavItems(routes)

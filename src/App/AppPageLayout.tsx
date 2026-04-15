@@ -1,13 +1,17 @@
 import { Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
 import { AppNav } from '../components/AppNav'
-import { AppRootLayoutRoot, RouteOutletFallbackRoot } from './AppPageLayout.styled'
+import { useAuthSessionContext } from '../contexts'
 import { navItems } from '../routes'
+import { AppRootLayoutRoot, RouteOutletFallbackRoot } from './AppPageLayout.styled'
 
 export const AppPageLayout = () => {
+  const { user } = useAuthSessionContext()
+  const mainNavItems = user ? navItems : []
+
   return (
     <AppRootLayoutRoot>
-      <AppNav items={navItems} />
+      <AppNav items={mainNavItems} />
       <Suspense
         fallback={
           <RouteOutletFallbackRoot role="status" aria-live="polite">
