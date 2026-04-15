@@ -7,7 +7,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { AuthSessionProvider } from '@contexts';
 import { theme } from '@theme';
 
-import { AppNav } from '../AppNav';
+import { AppNavContainer } from '../AppNavContainer';
 
 const jsonResponse = (body: unknown, init?: ResponseInit) =>
   new Response(JSON.stringify(body), {
@@ -15,7 +15,7 @@ const jsonResponse = (body: unknown, init?: ResponseInit) =>
     headers: { 'Content-Type': 'application/json', ...init?.headers },
   });
 
-describe('AppNav (fetch через AuthSessionProvider)', () => {
+describe('AppNavContainer (fetch через AuthSessionProvider)', () => {
   beforeEach(() => {
     vi.stubGlobal(
       'fetch',
@@ -44,7 +44,7 @@ describe('AppNav (fetch через AuthSessionProvider)', () => {
       <MemoryRouter>
         <ThemeProvider theme={theme}>
           <AuthSessionProvider>
-            <AppNav items={[{ path: '/home', label: 'Главная' }]} />
+            <AppNavContainer items={[{ path: '/home', label: 'Главная' }]} />
           </AuthSessionProvider>
         </ThemeProvider>
       </MemoryRouter>,

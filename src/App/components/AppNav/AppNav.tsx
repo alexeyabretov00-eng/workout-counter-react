@@ -1,5 +1,3 @@
-import { useAuthSessionContext } from '@contexts';
-
 import {
   AppNavAuth,
   AppNavLink,
@@ -9,13 +7,16 @@ import {
   AppNavUserLabel,
 } from './AppNav.styled';
 
-type AppNavProps = {
-  items: { path: string; label: string; end?: boolean }[];
+export type AppNavItem = { path: string; label: string; end?: boolean };
+
+export type AppNavProps = {
+  items: AppNavItem[];
+  sessionStatus: 'loading' | 'ready';
+  user: { login: string } | null;
+  onLogout: () => void;
 };
 
-export const AppNav = ({ items }: AppNavProps) => {
-  const { user, status, logout } = useAuthSessionContext();
-
+export const AppNav = ({ items, sessionStatus, user, onLogout }: AppNavProps) => {
   return (
     <AppNavRoot>
       <AppNavMain>
@@ -26,14 +27,10 @@ export const AppNav = ({ items }: AppNavProps) => {
         ))}
       </AppNavMain>
       <AppNavAuth>
-        {status === 'loading' ? null : user ? (
+        {sessionStatus === 'loading' ? null : user ? (
           <>
             <AppNavUserLabel>{user.login}</AppNavUserLabel>
-            <AppNavTextButton
-              type="button"
-              onClick={() => {
-                void logout();
-              }}>
+            <AppNavTextButton type="button" onClick={onLogout}>
               Выйти
             </AppNavTextButton>
           </>

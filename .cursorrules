@@ -4,19 +4,47 @@ When suggesting or auto-generating a **git commit message** (including the Sourc
 
 ## Format
 
-- Single-line **header** only unless the user explicitly asks for a body: `type(scope): subject`
+- **Header** (required, one line): `type(scope): subject`
 - **`type`** — lowercase, one of the [Conventional Commits](https://www.conventionalcommits.org/) types. Common in this repo: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`; also valid when appropriate: `build`, `ci`, `perf`, `style`, etc.
-- **`(scope)`** — optional, lowercase, no spaces (e.g. `fix(ui): …`).
+- **`(scope)`** — optional, lowercase, no spaces (e.g. `fix(ui): …`). Prefer a **meaningful** scope: слой или область (`app`, `api`, `home`, `test`), а не общее `components`, если точнее можно сказать (`app-nav`, `auth`).
 - After the colon there must be a **space**, then **`subject`** (imperative, concise). **Russian is OK** in `subject` — examples in `README.md` use Russian.
 - Do **not** use: `WIP`, past-tense-only titles without `type:`, or a subject without `type:` (e.g. not `Update App.tsx` alone).
+- **Subject — не шаблон из диффа:** избегайте бессодержательных формулировок вроде «заменить A на B и обновить типы» без смысла. В заголовке отразите **намерение для репозитория** (например: «разделить навигацию на презентацию и контейнер», «покрыть событиями тестами AppNav»), а детали вынесите в body.
 
-## Examples (valid)
+## Body (optional, but use when useful)
+
+- Добавляй **body** (после пустой строки под заголовком), если коммит затрагивает **несколько слоёв**, **новую структуру папок**, **тесты + код**, или это **один из трёх коммитов** цикла задачи (`specs/…` — план / реализация / архив), см. `AGENTS.md` и `.cursor/rules/feature-planning.mdc`.
+- Body должен быть **совместим с commitlint**: обычный текст, без выдуманных футеров; `BREAKING CHANGE:` — только при реальном ломающем изменении ([Conventional Commits](https://www.conventionalcommits.org/)). Ограничение длины строк **тела** в этом репозитории отключено в `commitlint.config.js` (иначе длинные русские абзацы в одну строку ломали хук); для читаемости в `git log` всё равно разумно переносить строки вручную.
+- **Структура body (ориентир):**
+  1. Одно короткое предложение: **зачем** изменение (мотивация, эффект для пользователя или для кода).
+  2. Маркированный список **что сделано** по смыслу, с привязкой к правилам проекта, а не только к именам файлов:
+     - слои: `src/components` / `App/components` / `App/containers` / `pages/…` — как принято в `docs/components.md`, `docs/src-layout.md`;
+     - тесты: какой уровень (юнит презентации, снапшот контейнера, `*.api.test` и т.д.), хелперы (`@test-helpers`, `renderWithRouterTheme`);
+     - если уместно: **этап цикла** задачи (только план / реализация / архив) и путь к `specs/…`.
+  3. Не дублируй заголовок; не перечисляй десятки файлов без группировки.
+
+## Examples (valid headers)
 
 - `feat: озвучивать число повторов после каждого засчитанного подхода`
 - `docs: описать голосовые команды в voice-commands`
 - `test: покрыть детектор приседаний граничными углами`
 - `fix(ui): поправить отступ`
 
+## Example (header + body)
+
+```text
+refactor(app): разделить AppNav на презентацию и контейнер
+
+Навигация оболочки соответствует соглашению: презентация в App/components,
+данные сессии — в App/containers. Упрощены тесты презентации и добавлены
+снапшоты контейнера.
+
+- AppNav: только пропсы и стили; AppNavContainer — useAuthSessionContext
+- AppPageLayout подключает контейнер из ./containers
+- Тесты: renderWithRouterTheme для AppNav; Provider — для AppNavContainer
+```
+
 ## Check
 
-If unsure, the same header should work with: `echo "type: subject" | npm run commitlint` (PowerShell) or Husky `commit-msg` on `git commit`.
+- Заголовок: `echo "type: subject" | npm run commitlint` или Husky `commit-msg`.
+- Полное сообщение с body: `npx commitlint --edit путь\к\файлу_сообщения` (как при `git commit -F`).

@@ -1,61 +1,105 @@
-import { MemoryRouter } from 'react-router-dom';
-import { render } from '@testing-library/react';
-import { ThemeProvider } from 'styled-components';
+import { Outlet, Route, Routes } from 'react-router-dom';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 
-import { AuthSessionContext, type AuthSessionValue } from '@contexts';
-import { theme } from '@theme';
+import { renderWithRouterTheme } from '@test-helpers';
 
 import { AppNav } from '../AppNav';
 
-const session = (overrides: Partial<AuthSessionValue>): AuthSessionValue => ({
-  user: null,
-  status: 'ready',
-  loginWithPassword: vi.fn(),
-  registerWithPassword: vi.fn(),
-  logout: vi.fn(),
-  refresh: vi.fn(),
-  ...overrides,
-});
+const GuestShell = () => (
+  <>
+    <AppNav
+      items={[{ path: '/home', label: 'Главная' }]}
+      sessionStatus="ready"
+      user={null}
+      onLogout={vi.fn()}
+    />
+    <Outlet />
+  </>
+);
 
 describe('AppNav', () => {
   test('matches snapshot (guest)', () => {
-    const { container } = render(
-      <MemoryRouter>
-        <ThemeProvider theme={theme}>
-          <AuthSessionContext.Provider value={session({})}>
-            <AppNav items={[{ path: '/home', label: 'Главная' }]} />
-          </AuthSessionContext.Provider>
-        </ThemeProvider>
-      </MemoryRouter>,
+    const { container } = renderWithRouterTheme(
+      <AppNav
+        items={[{ path: '/home', label: 'Главная' }]}
+        sessionStatus="ready"
+        user={null}
+        onLogout={vi.fn()}
+      />,
     );
     expect(container.firstChild).toMatchSnapshot();
   });
 
   test('matches snapshot (authenticated)', () => {
-    const { container } = render(
-      <MemoryRouter>
-        <ThemeProvider theme={theme}>
-          <AuthSessionContext.Provider
-            value={session({ user: { id: 1, login: 'alex' }, status: 'ready' })}>
-            <AppNav items={[{ path: '/home', label: 'Главная' }]} />
-          </AuthSessionContext.Provider>
-        </ThemeProvider>
-      </MemoryRouter>,
+    const { container } = renderWithRouterTheme(
+      <AppNav
+        items={[{ path: '/home', label: 'Главная' }]}
+        sessionStatus="ready"
+        user={{ login: 'alex' }}
+        onLogout={vi.fn()}
+      />,
     );
     expect(container.firstChild).toMatchSnapshot();
   });
 
   test('matches snapshot (loading hides auth actions)', () => {
-    const { container } = render(
-      <MemoryRouter>
-        <ThemeProvider theme={theme}>
-          <AuthSessionContext.Provider value={session({ status: 'loading' })}>
-            <AppNav items={[]} />
-          </AuthSessionContext.Provider>
-        </ThemeProvider>
-      </MemoryRouter>,
+    const { container } = renderWithRouterTheme(
+      <AppNav items={[]} sessionStatus="loading" user={null} onLogout={vi.fn()} />,
     );
     expect(container.firstChild).toMatchSnapshot();
+  });
+
+  test('вызывает onLogout при клике по кнопке «Выйти»', async () => {
+    const onLogout = vi.fn();
+    const user = userEvent.setup();
+
+    renderWithRouterTheme(
+      <AppNav
+        items={[{ path: '/home', label: 'Главная' }]}
+        sessionStatus="ready"
+        user={{ login: 'alex' }}
+        onLogout={onLogout}
+      />,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Выйти' }));
+    expect(onLogout).toHaveBeenCalledTimes(1);
+  });
+
+  test('гость: клик по «Вход» открывает маршрут /login', async () => {
+    const user = userEvent.setup();
+
+    renderWithRouterTheme(
+      <Routes>
+        <Route path="/" element={<GuestShell />}>
+          <Route index element={null} />
+          <Route path="login" element={<div data-testid="login-route">login</div>} />
+        </Route>
+      </Routes>,
+      { initialEntries: ['/'] },
+    );
+
+    await user.click(screen.getByRole('link', { name: 'Вход' }));
+    expect(screen.getByTestId('login-route')).toBeInTheDocument();
+  });
+
+  test('гость: клик по пункту основного меню ведёт на целевой path', async () => {
+    const user = userEvent.setup();
+
+    renderWithRouterTheme(
+      <Routes>
+        <Route path="/" element={<GuestShell />}>
+          <Route path="away" element={<div data-testid="away">away</div>} />
+          <Route path="home" element={<div data-testid="home-route">home</div>} />
+        </Route>
+      </Routes>,
+      { initialEntries: ['/away'] },
+    );
+
+    expect(screen.getByTestId('away')).toBeInTheDocument();
+    await user.click(screen.getByRole('link', { name: 'Главная' }));
+    expect(screen.getByTestId('home-route')).toBeInTheDocument();
   });
 });

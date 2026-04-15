@@ -5,14 +5,14 @@ import { useAuthSessionContext } from '@contexts';
 import { navItems } from '@routes';
 
 import { AppRootLayoutRoot, RouteOutletFallbackRoot } from './AppPageLayout.styled';
-import { AppNav } from './components';
+import { AppNavContainer } from './containers';
 export const AppPageLayout = () => {
   const { user } = useAuthSessionContext();
   const mainNavItems = user ? navItems : [];
 
   return (
     <AppRootLayoutRoot>
-      <AppNav items={mainNavItems} />
+      <AppNavContainer items={mainNavItems} />
       <Suspense
         fallback={
           <RouteOutletFallbackRoot role="status" aria-live="polite">
