@@ -96,10 +96,12 @@ docker run --rm -p 8080:80 workout-counter-react:local
 - `npm run build:analyze` — та же сборка в режиме `analyze`: дополнительно пишется отчёт **`dist/bundle-stats.html`** (дерево чанков и размеры; откройте файл в браузере после сборки).
 - `npm run preview` — локальный просмотр уже собранного приложения (после `npm run build`).
 - `npm run lint` — ESLint.
-- `npm run test` — unit-тесты детекторов (Vitest).
+- `npm run test` — один прогон всех тестов (Vitest, `vitest run`).
+- `npm run test:watch` — Vitest в режиме watch (`vitest`).
+- `npm run test:coverage` — прогон с отчётом покрытия кода.
 - `npm run commitlint` — проверка текста коммита через [commitlint](https://commitlint.js.org/) (сообщение передаётся в **stdin**).
 
-Перед PR имеет смысл выполнить `npm run lint` и `npm run test`.
+Перед PR имеет смысл выполнить `npm run lint` и `npm run test`. Подробности: скрипты, расположение тестов, `setupTests`, хуки Husky (`pre-commit` / `commit-msg`), покрытие и типовые приёмы — в **[docs/testing.md](docs/testing.md)**.
 
 ### Линтинг и форматирование
 
@@ -116,7 +118,7 @@ docker run --rm -p 8080:80 workout-counter-react:local
 
 **Часто используемые `type`:** `feat`, `fix`, `docs`, `refactor`, `test`, `chore` (а также, при необходимости, `build`, `ci`, `perf`, `style` и др. — см. [Conventional Commits](https://www.conventionalcommits.org/)).
 
-После `npm install` [Husky](https://github.com/typicode/husky) подключает git hook **`commit-msg`**: несоответствующее сообщение коммит не пропустит. Обойти проверку для разового коммита можно только осознанно (`git commit --no-verify` — не злоупотребляйте).
+После `npm install` [Husky](https://github.com/typicode/husky) подключает git hooks: **`commit-msg`** (commitlint) и **`pre-commit`** (линт и `vitest run --changed` — см. [docs/testing.md](docs/testing.md)). Несоответствующее сообщение коммит не пропустит. Обойти проверку для разового коммита можно только осознанно (`git commit --no-verify` — не злоупотребляйте).
 
 **Примеры для этого репозитория**
 
@@ -176,7 +178,7 @@ npm install
 
 ## Стек
 
-React 19, TypeScript, Vite 8, styled-components, MediaPipe Tasks Vision (pose landmarker heavy с откатом на lite при недоступности GPU), Vitest.
+React 19, TypeScript, Vite 8, styled-components, MediaPipe Tasks Vision (pose landmarker heavy с откатом на lite при недоступности GPU), Vitest (см. [docs/testing.md](docs/testing.md)).
 
 ## Архитектура
 
