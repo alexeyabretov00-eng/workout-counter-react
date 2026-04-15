@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { AuthApiError } from '../../api'
-import { useAuthSessionContext } from '../../contexts'
+import { useAuthSessionContext } from '../../contexts/AuthSession'
 import { resolveAfterAuthPath } from '../../utils'
 import { RegisterForm, RegisterPageShell } from './components'
 

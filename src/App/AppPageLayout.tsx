@@ -1,9 +1,9 @@
 import { Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
-import { AppNav } from '../components/AppNav'
-import { useAuthSessionContext } from '../contexts'
+import { AppNav } from './components'
 import { navItems } from '../routes'
 import { AppRootLayoutRoot, RouteOutletFallbackRoot } from './AppPageLayout.styled'
+import { useAuthSessionContext } from '../contexts/AuthSession'
 
 export const AppPageLayout = () => {
   const { user } = useAuthSessionContext()
