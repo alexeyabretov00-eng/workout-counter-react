@@ -1,1 +1,1 @@
-export { WorkoutStatusBar, type WorkoutStatusBarProps } from './WorkoutStatusBar'
+export { WorkoutStatusBar, type WorkoutStatusBarProps } from './WorkoutStatusBar';

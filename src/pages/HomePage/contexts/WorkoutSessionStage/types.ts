@@ -1,4 +1,4 @@
-import type { RefObject } from 'react'
+import type { RefObject } from 'react';
 
 /**
  * Срез для слота сцены: ref на canvas и флаги оверлеев.
@@ -6,7 +6,7 @@ import type { RefObject } from 'react'
  * императивно в `useWorkoutSession` (`requestAnimationFrame` + `drawFrame`), без React state.
  */
 export type WorkoutSessionStageValue = {
-  canvasRef: RefObject<HTMLCanvasElement | null>
-  isCameraInitializing: boolean
-  isPaused: boolean
-}
+  canvasRef: RefObject<HTMLCanvasElement | null>;
+  isCameraInitializing: boolean;
+  isPaused: boolean;
+};

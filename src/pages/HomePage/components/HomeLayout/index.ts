@@ -1,1 +1,1 @@
-export { HomeLayout, type HomeLayoutProps } from './HomeLayout'
+export { HomeLayout, type HomeLayoutProps } from './HomeLayout';

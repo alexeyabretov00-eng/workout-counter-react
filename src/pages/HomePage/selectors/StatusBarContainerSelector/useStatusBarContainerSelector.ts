@@ -1,7 +1,7 @@
-import { useMemo } from 'react'
-import { useWorkoutSessionChromeStatusContext } from '../../contexts'
+import { useMemo } from 'react';
+import type { EntityStatus, VoiceStatus } from '@types';
 
-import type { EntityStatus, VoiceStatus } from '@types'
+import { useWorkoutSessionChromeStatusContext } from '../../contexts';
 
 const VOICE_STATUS_LABEL: Record<VoiceStatus, string> = {
   unsupported: 'Голос: не поддерживается',
@@ -10,7 +10,7 @@ const VOICE_STATUS_LABEL: Record<VoiceStatus, string> = {
   'inactive-tab': 'Голос: переключитесь на эту вкладку',
   blocked: 'Голос: доступ к микрофону запрещен',
   error: 'Голос: ошибка распознавания',
-}
+};
 
 const MODEL_STATUS_LABEL: Record<EntityStatus, string> = {
   idle: 'ожидание',
@@ -18,11 +18,10 @@ const MODEL_STATUS_LABEL: Record<EntityStatus, string> = {
   loading: 'загружается',
   ready: 'загружена',
   error: 'не загружена',
-}
-
+};
 
 export const useStatusBarContainerSelector = () => {
-  const ctx = useWorkoutSessionChromeStatusContext()
+  const ctx = useWorkoutSessionChromeStatusContext();
   return useMemo(
     () => ({
       modelStatus: ctx.modelStatus,
@@ -33,12 +32,6 @@ export const useStatusBarContainerSelector = () => {
       isPaused: ctx.isPaused,
       cameraError: ctx.cameraError,
     }),
-    [
-      ctx.modelStatus,
-      ctx.isCameraReady,
-      ctx.voiceStatus,
-      ctx.isPaused,
-      ctx.cameraError,
-    ],
-  )
-}
+    [ctx.modelStatus, ctx.isCameraReady, ctx.voiceStatus, ctx.isPaused, ctx.cameraError],
+  );
+};

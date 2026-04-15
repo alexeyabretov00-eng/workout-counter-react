@@ -1,5 +1,5 @@
-import { NavLink } from 'react-router-dom'
-import styled from 'styled-components'
+import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
 
 export const AppNavRoot = styled.nav`
   display: flex;
@@ -12,14 +12,14 @@ export const AppNavRoot = styled.nav`
   max-width: ${({ theme }) => theme.layout.maxWidth};
   margin: 0 auto;
   box-sizing: border-box;
-`
+`;
 
 export const AppNavMain = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${({ theme }) => theme.spacing.md};
   flex: 1 1 auto;
-`
+`;
 
 export const AppNavAuth = styled.div`
   display: flex;
@@ -27,12 +27,12 @@ export const AppNavAuth = styled.div`
   align-items: center;
   gap: ${({ theme }) => theme.spacing.md};
   margin-left: auto;
-`
+`;
 
 export const AppNavUserLabel = styled.span`
   font-size: ${({ theme }) => theme.typography.statusBar};
   color: ${({ theme }) => theme.palette.text.muted};
-`
+`;
 
 export const AppNavTextButton = styled.button`
   margin: 0;
@@ -48,7 +48,7 @@ export const AppNavTextButton = styled.button`
   &:hover {
     color: ${({ theme }) => theme.palette.text.gray700};
   }
-`
+`;
 
 export const AppNavLink = styled(NavLink)`
   color: ${({ theme }) => theme.palette.text.primary};
@@ -59,4 +59,4 @@ export const AppNavLink = styled(NavLink)`
   &[aria-current='page'] {
     font-weight: ${({ theme }) => theme.typography.labelWeight};
   }
-`
+`;

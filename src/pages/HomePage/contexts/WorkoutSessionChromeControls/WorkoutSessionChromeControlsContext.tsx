@@ -1,12 +1,14 @@
-import { createContext, useContext } from 'react'
-import type { WorkoutSessionChromeControlsValue } from './types'
+import { createContext, useContext } from 'react';
 
-export const WorkoutSessionChromeControlsContext = createContext<WorkoutSessionChromeControlsValue | null>(null)
+import type { WorkoutSessionChromeControlsValue } from './types';
+
+export const WorkoutSessionChromeControlsContext =
+  createContext<WorkoutSessionChromeControlsValue | null>(null);
 
 export const useWorkoutSessionChromeControlsContext = (): WorkoutSessionChromeControlsValue => {
-  const value = useContext(WorkoutSessionChromeControlsContext)
+  const value = useContext(WorkoutSessionChromeControlsContext);
   if (!value) {
-    throw new Error('WorkoutSessionChromeControlsContext: provider is missing')
+    throw new Error('WorkoutSessionChromeControlsContext: provider is missing');
   }
-  return value
-}
+  return value;
+};

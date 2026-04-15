@@ -1,14 +1,15 @@
-import { POSE_INDEX, calculateAngle, getPoint } from '@utils'
-import type { ExerciseDetector } from '../types'
+import { calculateAngle, getPoint, POSE_INDEX } from '@utils';
 
-type SquatPhase = 'standing' | 'squat'
+import type { ExerciseDetector } from '../types';
+
+type SquatPhase = 'standing' | 'squat';
 type SquatState = {
-  phase: SquatPhase
-}
+  phase: SquatPhase;
+};
 
-const VISIBILITY = 0.5
-const SQUAT_THRESHOLD = 95
-const STANDING_THRESHOLD = 155
+const VISIBILITY = 0.5;
+const SQUAT_THRESHOLD = 95;
+const STANDING_THRESHOLD = 155;
 
 export const squatDetector: ExerciseDetector<SquatState> = {
   id: 'squat',
@@ -18,12 +19,12 @@ export const squatDetector: ExerciseDetector<SquatState> = {
   voiceAliases: ['присед', 'приседания', 'приседание'],
   createState: () => ({ phase: 'standing' }),
   update: (landmarks, state) => {
-    const leftHip = getPoint(landmarks, POSE_INDEX.leftHip, VISIBILITY)
-    const leftKnee = getPoint(landmarks, POSE_INDEX.leftKnee, VISIBILITY)
-    const leftAnkle = getPoint(landmarks, POSE_INDEX.leftAnkle, VISIBILITY)
-    const rightHip = getPoint(landmarks, POSE_INDEX.rightHip, VISIBILITY)
-    const rightKnee = getPoint(landmarks, POSE_INDEX.rightKnee, VISIBILITY)
-    const rightAnkle = getPoint(landmarks, POSE_INDEX.rightAnkle, VISIBILITY)
+    const leftHip = getPoint(landmarks, POSE_INDEX.leftHip, VISIBILITY);
+    const leftKnee = getPoint(landmarks, POSE_INDEX.leftKnee, VISIBILITY);
+    const leftAnkle = getPoint(landmarks, POSE_INDEX.leftAnkle, VISIBILITY);
+    const rightHip = getPoint(landmarks, POSE_INDEX.rightHip, VISIBILITY);
+    const rightKnee = getPoint(landmarks, POSE_INDEX.rightKnee, VISIBILITY);
+    const rightAnkle = getPoint(landmarks, POSE_INDEX.rightAnkle, VISIBILITY);
 
     if (!leftHip || !leftKnee || !leftAnkle || !rightHip || !rightKnee || !rightAnkle) {
       return {
@@ -32,21 +33,21 @@ export const squatDetector: ExerciseDetector<SquatState> = {
         phase: state.phase,
         metrics: {} as Record<string, number>,
         confidence: 0,
-      }
+      };
     }
 
-    const leftAngle = calculateAngle(leftHip, leftKnee, leftAnkle)
-    const rightAngle = calculateAngle(rightHip, rightKnee, rightAnkle)
-    const avgAngle = (leftAngle + rightAngle) / 2
+    const leftAngle = calculateAngle(leftHip, leftKnee, leftAnkle);
+    const rightAngle = calculateAngle(rightHip, rightKnee, rightAnkle);
+    const avgAngle = (leftAngle + rightAngle) / 2;
 
-    let repDelta = 0
-    let nextPhase = state.phase
+    let repDelta = 0;
+    let nextPhase = state.phase;
 
     if (state.phase === 'standing' && avgAngle <= SQUAT_THRESHOLD) {
-      nextPhase = 'squat'
+      nextPhase = 'squat';
     } else if (state.phase === 'squat' && avgAngle >= STANDING_THRESHOLD) {
-      nextPhase = 'standing'
-      repDelta = 1
+      nextPhase = 'standing';
+      repDelta = 1;
     }
 
     return {
@@ -59,6 +60,6 @@ export const squatDetector: ExerciseDetector<SquatState> = {
         avgKneeAngle: avgAngle,
       },
       confidence: 1,
-    }
+    };
   },
-}
+};

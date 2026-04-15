@@ -1,6 +1,6 @@
-import { ExerciseControlBar } from '../../components'
-import { exerciseRegistry } from '../../exercises'
-import { useExerciseControlBarContainerSelector } from '../../logic'
+import { ExerciseControlBar } from '../../components';
+import { exerciseRegistry } from '../../exercises';
+import { useExerciseControlBarContainerSelector } from '../../logic';
 
 export const ExerciseControlBarContainer = () => {
   const {
@@ -12,12 +12,12 @@ export const ExerciseControlBarContainer = () => {
     isCameraInitializing,
     resetStopEnabled,
     dispatchChromeControl,
-  } = useExerciseControlBarContainerSelector()
+  } = useExerciseControlBarContainerSelector();
 
-  const exerciseOptions = exerciseRegistry.map((exercise) => ({
+  const exerciseOptions = exerciseRegistry.map(exercise => ({
     value: exercise.id,
     label: exercise.name,
-  }))
+  }));
 
   return (
     <ExerciseControlBar
@@ -29,19 +29,19 @@ export const ExerciseControlBarContainer = () => {
       isModelReady={isModelReady}
       isCameraInitializing={isCameraInitializing}
       resetStopEnabled={resetStopEnabled}
-      onExerciseChange={(id) => dispatchChromeControl({ type: 'setExerciseId', exerciseId: id })}
+      onExerciseChange={id => dispatchChromeControl({ type: 'setExerciseId', exerciseId: id })}
       onStartPause={() => {
         if (isRunning) {
-          dispatchChromeControl({ type: 'pause' })
+          dispatchChromeControl({ type: 'pause' });
         } else {
-          dispatchChromeControl({ type: 'start' })
+          dispatchChromeControl({ type: 'start' });
         }
       }}
       onReset={() => dispatchChromeControl({ type: 'reset' })}
       onShutdown={() => dispatchChromeControl({ type: 'shutdown' })}
-      onRestDurationChange={(minutes) =>
+      onRestDurationChange={minutes =>
         dispatchChromeControl({ type: 'setRestDurationMinutes', minutes })
       }
     />
-  )
-}
+  );
+};

@@ -1,1 +1,1 @@
-export { LoginPageShell, type LoginPageShellProps } from './LoginPageShell'
+export { LoginPageShell, type LoginPageShellProps } from './LoginPageShell';

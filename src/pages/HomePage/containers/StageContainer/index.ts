@@ -1,1 +1,1 @@
-export { StageContainer } from './StageContainer'
+export { StageContainer } from './StageContainer';

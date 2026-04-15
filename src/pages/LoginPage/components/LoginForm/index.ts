@@ -1,1 +1,1 @@
-export { LoginForm, type LoginFormProps } from './LoginForm'
+export { LoginForm, type LoginFormProps } from './LoginForm';

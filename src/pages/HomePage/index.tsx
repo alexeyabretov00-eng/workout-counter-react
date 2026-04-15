@@ -1,5 +1,6 @@
-import { Navigate, type RouteObject } from 'react-router'
-import { HomePageLazy } from './HomePageLazy'
+import { Navigate, type RouteObject } from 'react-router';
+
+import { HomePageLazy } from './HomePageLazy';
 
 export const routes: RouteObject[] = [
   {
@@ -14,4 +15,4 @@ export const routes: RouteObject[] = [
     path: '*',
     element: <Navigate to="/home" replace />,
   },
-]
+];

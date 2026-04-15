@@ -1,47 +1,48 @@
-import { Badge, type BadgeVariant } from '@components'
-import { WorkoutStatusBarCameraError, WorkoutStatusBarRoot } from './WorkoutStatusBar.styled'
+import { Badge, type BadgeVariant } from '@components';
+
+import { WorkoutStatusBarCameraError, WorkoutStatusBarRoot } from './WorkoutStatusBar.styled';
 
 const modelStatusToBadgeVariant = (modelStatus: string): BadgeVariant => {
   switch (modelStatus) {
     case 'ready':
-      return 'success'
+      return 'success';
     case 'loading':
-      return 'info'
+      return 'info';
     case 'error':
-      return 'error'
+      return 'error';
     default:
-      return 'neutral'
+      return 'neutral';
   }
-}
+};
 
 const cameraToBadgeVariant = (isCameraReady: boolean): BadgeVariant =>
-  isCameraReady ? 'success' : 'muted'
+  isCameraReady ? 'success' : 'muted';
 
 const voiceStatusToBadgeVariant = (voiceStatus: string): BadgeVariant => {
   switch (voiceStatus) {
     case 'listening':
-      return 'info'
+      return 'info';
     case 'inactive-tab':
-      return 'warning'
+      return 'warning';
     case 'blocked':
     case 'error':
-      return 'error'
+      return 'error';
     case 'unsupported':
-      return 'muted'
+      return 'muted';
     default:
-      return 'neutral'
+      return 'neutral';
   }
-}
+};
 
 export type WorkoutStatusBarProps = {
-  modelStatus: string
-  modelStatusLabel: string
-  isCameraReady: boolean
-  voiceStatus: string
-  voiceStatusLabel: string
-  isPaused: boolean
-  cameraError: string | null
-}
+  modelStatus: string;
+  modelStatusLabel: string;
+  isCameraReady: boolean;
+  voiceStatus: string;
+  voiceStatusLabel: string;
+  isPaused: boolean;
+  cameraError: string | null;
+};
 
 export const WorkoutStatusBar = ({
   modelStatus,
@@ -54,9 +55,7 @@ export const WorkoutStatusBar = ({
 }: WorkoutStatusBarProps) => {
   return (
     <WorkoutStatusBarRoot>
-      <Badge variant={modelStatusToBadgeVariant(modelStatus)}>
-        Модель: {modelStatusLabel}
-      </Badge>
+      <Badge variant={modelStatusToBadgeVariant(modelStatus)}>Модель: {modelStatusLabel}</Badge>
       <Badge variant={cameraToBadgeVariant(isCameraReady)}>
         Camera: {isCameraReady ? 'ready' : 'off'}
       </Badge>
@@ -66,5 +65,5 @@ export const WorkoutStatusBar = ({
         <WorkoutStatusBarCameraError>Ошибка камеры: {cameraError}</WorkoutStatusBarCameraError>
       ) : null}
     </WorkoutStatusBarRoot>
-  )
-}
+  );
+};

@@ -3,10 +3,10 @@ export type {
   WorkoutSessionChromeControlsValue,
   WorkoutSessionChromeStatusValue,
   WorkoutSessionStageValue,
-} from '../contexts'
+} from '../contexts';
 export {
   useExerciseControlBarContainerSelector,
   useStageContainerSelector,
   useStatusBarContainerSelector,
-} from '../selectors'
-export { WorkoutLogicLayout, type WorkoutLogicLayoutProps } from './WorkoutLogicLayout'
+} from '../selectors';
+export { WorkoutLogicLayout, type WorkoutLogicLayoutProps } from './WorkoutLogicLayout';

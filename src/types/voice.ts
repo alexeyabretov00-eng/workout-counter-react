@@ -4,4 +4,4 @@ export type VoiceStatus =
   | 'listening'
   | 'inactive-tab'
   | 'blocked'
-  | 'error'
+  | 'error';

@@ -1,5 +1,5 @@
-import { WorkoutStatusBar } from '../../components'
-import { useStatusBarContainerSelector } from '../../logic'
+import { WorkoutStatusBar } from '../../components';
+import { useStatusBarContainerSelector } from '../../logic';
 
 export const StatusBarContainer = () => {
   const {
@@ -10,7 +10,7 @@ export const StatusBarContainer = () => {
     voiceStatusLabel,
     isPaused,
     cameraError,
-  } = useStatusBarContainerSelector()
+  } = useStatusBarContainerSelector();
 
   return (
     <WorkoutStatusBar
@@ -22,5 +22,5 @@ export const StatusBarContainer = () => {
       isPaused={isPaused}
       cameraError={cameraError}
     />
-  )
-}
+  );
+};

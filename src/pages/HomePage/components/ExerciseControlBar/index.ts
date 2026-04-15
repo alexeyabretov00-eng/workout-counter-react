@@ -1,1 +1,1 @@
-export { ExerciseControlBar, type ExerciseControlBarProps } from './ExerciseControlBar'
+export { ExerciseControlBar, type ExerciseControlBarProps } from './ExerciseControlBar';

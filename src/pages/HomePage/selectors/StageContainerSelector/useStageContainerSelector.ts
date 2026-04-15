@@ -1,8 +1,9 @@
-import { useMemo } from 'react'
-import { useWorkoutSessionStageContext } from '../../contexts'
+import { useMemo } from 'react';
+
+import { useWorkoutSessionStageContext } from '../../contexts';
 
 export const useStageContainerSelector = () => {
-  const ctx = useWorkoutSessionStageContext()
+  const ctx = useWorkoutSessionStageContext();
   return useMemo(
     () => ({
       canvasRef: ctx.canvasRef,
@@ -10,5 +11,5 @@ export const useStageContainerSelector = () => {
       isPaused: ctx.isPaused,
     }),
     [ctx.canvasRef, ctx.isCameraInitializing, ctx.isPaused],
-  )
-}
+  );
+};

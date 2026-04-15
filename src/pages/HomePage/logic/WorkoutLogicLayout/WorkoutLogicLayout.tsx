@@ -1,22 +1,23 @@
-import { useCallback, useMemo, useState, type ReactNode } from 'react'
+import { type ReactNode, useCallback, useMemo, useState } from 'react';
+
 import {
-  WorkoutSessionChromeControlsContext,
-  WorkoutSessionChromeStatusContext,
-  WorkoutSessionStageContext,
   type WorkoutSessionChromeControlAction,
+  WorkoutSessionChromeControlsContext,
   type WorkoutSessionChromeControlsValue,
+  WorkoutSessionChromeStatusContext,
   type WorkoutSessionChromeStatusValue,
-} from '../../contexts'
-import { exerciseRegistry } from '../../exercises'
-import { useSpeechRecognition, useWorkoutSession } from '../../hooks'
+  WorkoutSessionStageContext,
+} from '../../contexts';
+import { exerciseRegistry } from '../../exercises';
+import { useSpeechRecognition, useWorkoutSession } from '../../hooks';
 
 export type WorkoutLogicLayoutProps = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
 
 export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
-  const [exerciseId, setExerciseId] = useState(exerciseRegistry[0].id)
-  const [restDurationMinutes, setRestDurationMinutes] = useState<number>(3)
+  const [exerciseId, setExerciseId] = useState(exerciseRegistry[0].id);
+  const [restDurationMinutes, setRestDurationMinutes] = useState<number>(3);
   const {
     canvasRef,
     isRunning,
@@ -31,37 +32,37 @@ export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
     pause,
     reset,
     shutdown,
-  } = useWorkoutSession(exerciseId, restDurationMinutes * 60_000)
+  } = useWorkoutSession(exerciseId, restDurationMinutes * 60_000);
 
   const dispatchChromeControl = useCallback(
     (action: WorkoutSessionChromeControlAction) => {
       switch (action.type) {
         case 'start':
-          void start()
-          return
+          void start();
+          return;
         case 'pause':
-          pause()
-          return
+          pause();
+          return;
         case 'reset':
-          reset()
-          return
+          reset();
+          return;
         case 'shutdown':
-          shutdown(action.restDurationOverrideMs)
-          return
+          shutdown(action.restDurationOverrideMs);
+          return;
         case 'setExerciseId':
-          setExerciseId(action.exerciseId)
-          return
+          setExerciseId(action.exerciseId);
+          return;
         case 'setRestDurationMinutes':
-          setRestDurationMinutes(action.minutes)
-          return
+          setRestDurationMinutes(action.minutes);
+          return;
         default: {
-          const _never: never = action
-          return _never
+          const _never: never = action;
+          return _never;
         }
       }
     },
     [pause, reset, setExerciseId, setRestDurationMinutes, shutdown, start],
-  )
+  );
 
   const { voiceStatus } = useSpeechRecognition({
     exercises: exerciseRegistry,
@@ -70,9 +71,9 @@ export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
     isCameraInitializing,
     isModelReady,
     dispatchChromeControl,
-  })
+  });
 
-  const resetStopEnabled = isRunning && !isRestCountdownActive
+  const resetStopEnabled = isRunning && !isRestCountdownActive;
 
   const controlsValue = useMemo<WorkoutSessionChromeControlsValue>(
     () => ({
@@ -93,7 +94,7 @@ export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
       isCameraInitializing,
       dispatchChromeControl,
     ],
-  )
+  );
 
   const statusValue = useMemo<WorkoutSessionChromeStatusValue>(
     () => ({
@@ -104,7 +105,7 @@ export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
       cameraError,
     }),
     [modelStatus, isCameraReady, voiceStatus, isPaused, cameraError],
-  )
+  );
 
   const stageValue = useMemo(
     () => ({
@@ -113,13 +114,15 @@ export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
       isPaused,
     }),
     [canvasRef, isCameraInitializing, isPaused],
-  )
+  );
 
   return (
     <WorkoutSessionChromeControlsContext.Provider value={controlsValue}>
       <WorkoutSessionChromeStatusContext.Provider value={statusValue}>
-        <WorkoutSessionStageContext.Provider value={stageValue}>{children}</WorkoutSessionStageContext.Provider>
+        <WorkoutSessionStageContext.Provider value={stageValue}>
+          {children}
+        </WorkoutSessionStageContext.Provider>
       </WorkoutSessionChromeStatusContext.Provider>
     </WorkoutSessionChromeControlsContext.Provider>
-  )
-}
+  );
+};

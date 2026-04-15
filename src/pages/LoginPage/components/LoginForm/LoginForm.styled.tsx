@@ -1,12 +1,12 @@
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 export const LoginFormRoot = styled.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.md};
   max-width: 360px;
-`
+`;
 
 export const LoginFormLabel = styled.label`
   display: flex;
@@ -14,7 +14,7 @@ export const LoginFormLabel = styled.label`
   gap: ${({ theme }) => theme.spacing.xs};
   font-size: ${({ theme }) => theme.typography.statusBar};
   color: ${({ theme }) => theme.palette.text.gray700};
-`
+`;
 
 export const LoginFormInput = styled.input`
   height: ${({ theme }) => theme.controlHeight};
@@ -23,7 +23,7 @@ export const LoginFormInput = styled.input`
   padding: 0 ${({ theme }) => theme.spacing.md};
   font-family: inherit;
   font-size: ${({ theme }) => theme.typography.statusBar};
-`
+`;
 
 export const LoginFormSubmit = styled.button`
   height: ${({ theme }) => theme.controlHeight};
@@ -43,7 +43,7 @@ export const LoginFormSubmit = styled.button`
     opacity: 0.6;
     cursor: not-allowed;
   }
-`
+`;
 
 export const LoginFormError = styled.div`
   padding: ${({ theme }) => theme.spacing.md};
@@ -52,13 +52,13 @@ export const LoginFormError = styled.div`
   background: ${({ theme }) => theme.palette.status.error.bg};
   color: ${({ theme }) => theme.palette.status.error.fg};
   font-size: ${({ theme }) => theme.typography.statusBar};
-`
+`;
 
 export const LoginFormFooter = styled.p`
   margin: ${({ theme }) => theme.spacing.lg} 0 0;
   font-size: ${({ theme }) => theme.typography.statusBar};
   color: ${({ theme }) => theme.palette.text.muted};
-`
+`;
 
 export const LoginFormFooterLink = styled(Link)`
   color: ${({ theme }) => theme.palette.status.info.fg};
@@ -67,4 +67,4 @@ export const LoginFormFooterLink = styled(Link)`
   &:hover {
     text-decoration: underline;
   }
-`
+`;

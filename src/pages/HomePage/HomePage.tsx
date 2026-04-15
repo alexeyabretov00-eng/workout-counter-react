@@ -1,6 +1,6 @@
-import { HomeLayout } from './components'
-import { ExerciseControlBarContainer, StageContainer, StatusBarContainer } from './containers'
-import { WorkoutLogicLayout } from './logic'
+import { HomeLayout } from './components';
+import { ExerciseControlBarContainer, StageContainer, StatusBarContainer } from './containers';
+import { WorkoutLogicLayout } from './logic';
 
 export const HomePage = () => {
   return (
@@ -12,5 +12,5 @@ export const HomePage = () => {
         stage={<StageContainer />}
       />
     </WorkoutLogicLayout>
-  )
-}
+  );
+};

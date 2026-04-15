@@ -1,1 +1,1 @@
-export { bicepsCurlDetector } from './bicepsCurlDetector'
+export { bicepsCurlDetector } from './bicepsCurlDetector';

@@ -1,8 +1,5 @@
+export type { WorkoutSessionChromeControlAction, WorkoutSessionChromeControlsValue } from './types';
 export {
-  WorkoutSessionChromeControlsContext,
   useWorkoutSessionChromeControlsContext,
-} from './WorkoutSessionChromeControlsContext'
-export type {
-  WorkoutSessionChromeControlAction,
-  WorkoutSessionChromeControlsValue,
-} from './types'
+  WorkoutSessionChromeControlsContext,
+} from './WorkoutSessionChromeControlsContext';

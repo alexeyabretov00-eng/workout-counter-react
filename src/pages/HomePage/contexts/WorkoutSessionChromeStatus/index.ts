@@ -1,5 +1,5 @@
+export type { WorkoutSessionChromeStatusValue } from './types';
 export {
-  WorkoutSessionChromeStatusContext,
   useWorkoutSessionChromeStatusContext,
-} from './WorkoutSessionChromeStatusContext'
-export type { WorkoutSessionChromeStatusValue } from './types'
+  WorkoutSessionChromeStatusContext,
+} from './WorkoutSessionChromeStatusContext';

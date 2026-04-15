@@ -1,1 +1,1 @@
-export { WorkoutLogicLayout, type WorkoutLogicLayoutProps } from './WorkoutLogicLayout'
+export { WorkoutLogicLayout, type WorkoutLogicLayoutProps } from './WorkoutLogicLayout';

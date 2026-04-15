@@ -1,16 +1,17 @@
-import { POSE_INDEX, getPoint } from '@utils'
-import type { ExerciseDetector } from '../types'
+import { getPoint, POSE_INDEX } from '@utils';
 
-type HeadTiltPhase = 'center' | 'right' | 'left'
-type HeadTiltSide = 'right' | 'left'
+import type { ExerciseDetector } from '../types';
+
+type HeadTiltPhase = 'center' | 'right' | 'left';
+type HeadTiltSide = 'right' | 'left';
 
 type HeadSideTiltState = {
-  phase: HeadTiltPhase
-  lastExtremeSide: HeadTiltSide | null
-}
+  phase: HeadTiltPhase;
+  lastExtremeSide: HeadTiltSide | null;
+};
 
-const VISIBILITY = 0.5
-const SIDE_THRESHOLD = 0.035
+const VISIBILITY = 0.5;
+const SIDE_THRESHOLD = 0.035;
 
 export const headSideTiltDetector: ExerciseDetector<HeadSideTiltState> = {
   id: 'head-side-tilt',
@@ -26,9 +27,9 @@ export const headSideTiltDetector: ExerciseDetector<HeadSideTiltState> = {
   ],
   createState: () => ({ phase: 'center', lastExtremeSide: null }),
   update: (landmarks, state) => {
-    const nose = getPoint(landmarks, POSE_INDEX.nose, VISIBILITY)
-    const leftShoulder = getPoint(landmarks, POSE_INDEX.leftShoulder, VISIBILITY)
-    const rightShoulder = getPoint(landmarks, POSE_INDEX.rightShoulder, VISIBILITY)
+    const nose = getPoint(landmarks, POSE_INDEX.nose, VISIBILITY);
+    const leftShoulder = getPoint(landmarks, POSE_INDEX.leftShoulder, VISIBILITY);
+    const rightShoulder = getPoint(landmarks, POSE_INDEX.rightShoulder, VISIBILITY);
 
     if (!nose || !leftShoulder || !rightShoulder) {
       return {
@@ -37,31 +38,31 @@ export const headSideTiltDetector: ExerciseDetector<HeadSideTiltState> = {
         phase: state.phase,
         metrics: {} as Record<string, number>,
         confidence: 0,
-      }
+      };
     }
 
-    const shoulderCenterX = (leftShoulder.x + rightShoulder.x) / 2
-    const noseOffsetX = nose.x - shoulderCenterX
+    const shoulderCenterX = (leftShoulder.x + rightShoulder.x) / 2;
+    const noseOffsetX = nose.x - shoulderCenterX;
 
-    let nextPhase: HeadTiltPhase = 'center'
-    let extremeSide: HeadTiltSide | null = null
+    let nextPhase: HeadTiltPhase = 'center';
+    let extremeSide: HeadTiltSide | null = null;
 
     if (noseOffsetX >= SIDE_THRESHOLD) {
-      nextPhase = 'right'
-      extremeSide = 'right'
+      nextPhase = 'right';
+      extremeSide = 'right';
     } else if (noseOffsetX <= -SIDE_THRESHOLD) {
-      nextPhase = 'left'
-      extremeSide = 'left'
+      nextPhase = 'left';
+      extremeSide = 'left';
     }
 
-    let repDelta = 0
-    let lastExtremeSide = state.lastExtremeSide
+    let repDelta = 0;
+    let lastExtremeSide = state.lastExtremeSide;
 
     if (extremeSide) {
       if (lastExtremeSide && lastExtremeSide !== extremeSide) {
-        repDelta = 1
+        repDelta = 1;
       }
-      lastExtremeSide = extremeSide
+      lastExtremeSide = extremeSide;
     }
 
     return {
@@ -74,6 +75,6 @@ export const headSideTiltDetector: ExerciseDetector<HeadSideTiltState> = {
         noseOffsetX,
       },
       confidence: 1,
-    }
+    };
   },
-}
+};
