@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
-import { useAuthSessionContext } from '../contexts/AuthSession'
+import { useAuthSessionContext } from '../contexts'
 import { RouteOutletFallbackRoot } from './AppPageLayout.styled'
 
 export const RequireAuth = () => {
