@@ -1,0 +1,22 @@
+# Git commit messages (this repository)
+
+When suggesting or auto-generating a **git commit message** (including the Source Control “Generate Commit Message” flow), it must pass **commitlint** with **`@commitlint/config-conventional`** — see `commitlint.config.js` and the section «Сообщения коммитов» in `README.md`.
+
+## Format
+
+- Single-line **header** only unless the user explicitly asks for a body: `type(scope): subject`
+- **`type`** — lowercase, one of the [Conventional Commits](https://www.conventionalcommits.org/) types. Common in this repo: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`; also valid when appropriate: `build`, `ci`, `perf`, `style`, etc.
+- **`(scope)`** — optional, lowercase, no spaces (e.g. `fix(ui): …`).
+- After the colon there must be a **space**, then **`subject`** (imperative, concise). **Russian is OK** in `subject` — examples in `README.md` use Russian.
+- Do **not** use: `WIP`, past-tense-only titles without `type:`, or a subject without `type:` (e.g. not `Update App.tsx` alone).
+
+## Examples (valid)
+
+- `feat: озвучивать число повторов после каждого засчитанного подхода`
+- `docs: описать голосовые команды в voice-commands`
+- `test: покрыть детектор приседаний граничными углами`
+- `fix(ui): поправить отступ`
+
+## Check
+
+If unsure, the same header should work with: `echo "type: subject" | npm run commitlint` (PowerShell) or Husky `commit-msg` on `git commit`.
