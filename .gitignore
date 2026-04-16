@@ -29,3 +29,6 @@ coverage
 # Auth API (SQLite)
 server/data/
 *.sqlite
+
+*storybook.log
+storybook-static

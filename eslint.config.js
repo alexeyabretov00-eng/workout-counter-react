@@ -1,3 +1,6 @@
+// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
+import storybook from 'eslint-plugin-storybook';
+
 import js from '@eslint/js'
 import globals from 'globals'
 import react from 'eslint-plugin-react'
@@ -26,78 +29,73 @@ const simpleImportSortImportGroups = [
   ['^.+\\.s?css$'],
 ]
 
-export default defineConfig([
-  globalIgnores(['dist', 'server/dist', 'coverage']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    ignores: ['server/**'],
-    extends: [
-      js.configs.recommended,
-      tseslint.configs.recommended,
-      react.configs.flat.recommended,
-      react.configs.flat['jsx-runtime'],
-      reactHooks.configs.flat.recommended,
-      reactRefresh.configs.vite,
-      eslintPluginPrettierRecommended,
+export default defineConfig([globalIgnores(['dist', 'server/dist', 'coverage', 'storybook-static']), {
+  files: ['**/*.{ts,tsx}'],
+  ignores: ['server/**'],
+  extends: [
+    js.configs.recommended,
+    tseslint.configs.recommended,
+    react.configs.flat.recommended,
+    react.configs.flat['jsx-runtime'],
+    reactHooks.configs.flat.recommended,
+    reactRefresh.configs.vite,
+    eslintPluginPrettierRecommended,
+  ],
+  languageOptions: {
+    ecmaVersion: 2020,
+    globals: globals.browser,
+  },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
+  plugins: {
+    'simple-import-sort': simpleImportSort,
+  },
+  rules: {
+    curly: ['error', 'all'],
+    'simple-import-sort/imports': [
+      'error',
+      {
+        groups: simpleImportSortImportGroups,
+      },
     ],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+    'simple-import-sort/exports': 'error',
+  },
+}, {
+  files: ['server/**/*.ts'],
+  extends: [js.configs.recommended, tseslint.configs.recommended],
+  languageOptions: {
+    ecmaVersion: 2020,
+    globals: globals.nodeBuiltin,
+    parserOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
     },
-    settings: {
-      react: {
-        version: 'detect',
+  },
+  plugins: {
+    'simple-import-sort': simpleImportSort,
+  },
+  rules: {
+    curly: ['error', 'all'],
+    'simple-import-sort/imports': [
+      'error',
+      {
+        groups: simpleImportSortImportGroups,
       },
-    },
-    plugins: {
-      'simple-import-sort': simpleImportSort,
-    },
-    rules: {
-      curly: ['error', 'all'],
-      'simple-import-sort/imports': [
-        'error',
-        {
-          groups: simpleImportSortImportGroups,
-        },
-      ],
-      'simple-import-sort/exports': 'error',
-    },
+    ],
+    'simple-import-sort/exports': 'error',
   },
-  {
-    files: ['server/**/*.ts'],
-    extends: [js.configs.recommended, tseslint.configs.recommended],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.nodeBuiltin,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
+}, {
+  files: ['src/pages/*/index.tsx'],
+  rules: {
+    'react-refresh/only-export-components': [
+      'error',
+      {
+        allowConstantExport: true,
+        allowExportNames: ['routes'],
       },
-    },
-    plugins: {
-      'simple-import-sort': simpleImportSort,
-    },
-    rules: {
-      curly: ['error', 'all'],
-      'simple-import-sort/imports': [
-        'error',
-        {
-          groups: simpleImportSortImportGroups,
-        },
-      ],
-      'simple-import-sort/exports': 'error',
-    },
+    ],
   },
-  {
-    files: ['src/pages/*/index.tsx'],
-    rules: {
-      'react-refresh/only-export-components': [
-        'error',
-        {
-          allowConstantExport: true,
-          allowExportNames: ['routes'],
-        },
-      ],
-    },
-  },
-])
+}, ...storybook.configs["flat/recommended"]])
