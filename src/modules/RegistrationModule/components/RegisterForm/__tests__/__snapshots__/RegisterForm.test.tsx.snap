@@ -1,0 +1,107 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`RegisterForm > matches snapshot with error 1`] = `
+<div>
+  <form
+    class="RegisterFormRoot-sc-lwna4b-0 PUyBE"
+  >
+    <div
+      class="RegisterFormError-sc-lwna4b-4 iBppDh"
+      role="alert"
+    >
+      fail
+    </div>
+    <label
+      class="RegisterFormLabel-sc-lwna4b-1 itkvoA"
+    >
+      Логин
+      <input
+        autocomplete="username"
+        class="RegisterFormInput-sc-lwna4b-2 hepYUg"
+        name="login"
+        value=""
+      />
+    </label>
+    <label
+      class="RegisterFormLabel-sc-lwna4b-1 itkvoA"
+    >
+      Пароль
+      <input
+        autocomplete="new-password"
+        class="RegisterFormInput-sc-lwna4b-2 hepYUg"
+        name="password"
+        type="password"
+        value=""
+      />
+    </label>
+    <button
+      class="RegisterFormSubmit-sc-lwna4b-3 igymjJ"
+      type="submit"
+    >
+      Создать учётную запись
+    </button>
+  </form>
+  <p
+    class="RegisterFormFooter-sc-lwna4b-5 lpcUxG"
+  >
+    Уже есть аккаунт? 
+    <a
+      class="RegisterFormFooterLink-sc-lwna4b-6 dreXhX"
+      data-discover="true"
+      href="/login"
+    >
+      Войти
+    </a>
+  </p>
+</div>
+`;
+
+exports[`RegisterForm > matches snapshot without error 1`] = `
+<div>
+  <form
+    class="RegisterFormRoot-sc-lwna4b-0 PUyBE"
+  >
+    <label
+      class="RegisterFormLabel-sc-lwna4b-1 itkvoA"
+    >
+      Логин
+      <input
+        autocomplete="username"
+        class="RegisterFormInput-sc-lwna4b-2 hepYUg"
+        name="login"
+        value="a"
+      />
+    </label>
+    <label
+      class="RegisterFormLabel-sc-lwna4b-1 itkvoA"
+    >
+      Пароль
+      <input
+        autocomplete="new-password"
+        class="RegisterFormInput-sc-lwna4b-2 hepYUg"
+        name="password"
+        type="password"
+        value="b"
+      />
+    </label>
+    <button
+      class="RegisterFormSubmit-sc-lwna4b-3 igymjJ"
+      type="submit"
+    >
+      Создать учётную запись
+    </button>
+  </form>
+  <p
+    class="RegisterFormFooter-sc-lwna4b-5 lpcUxG"
+  >
+    Уже есть аккаунт? 
+    <a
+      class="RegisterFormFooterLink-sc-lwna4b-6 dreXhX"
+      data-discover="true"
+      href="/login"
+    >
+      Войти
+    </a>
+  </p>
+</div>
+`;

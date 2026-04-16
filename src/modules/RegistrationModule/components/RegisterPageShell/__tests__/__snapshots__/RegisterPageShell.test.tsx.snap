@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`RegisterPageShell > matches snapshot 1`] = `
+<main
+  class="RegisterPageRoot-sc-cbh2op-0 cCWA-dX"
+>
+  <h1
+    class="RegisterPageTitle-sc-cbh2op-1 hDWmAQ"
+  >
+    Регистрация
+  </h1>
+  <div>
+    child
+  </div>
+</main>
+`;

@@ -11,7 +11,7 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
-/** Порядок групп импортов под алиасы из `tsconfig.app.json` (`@api`, `@app`, …). */
+/** Порядок групп импортов под алиасы из `tsconfig.app.json` (`@api`, `@app`, `@modules`, …). */
 const simpleImportSortImportGroups = [
   // Side effect imports.
   ['^\\u0000'],
@@ -20,7 +20,7 @@ const simpleImportSortImportGroups = [
   // Packages: `react` / `react-dom` first, затем остальные npm-пакеты (`styled-components`, `@mediapipe/...`, …).
   ['^react', '^@?\\w'],
   // Внутренние алиасы проекта (корни под `src/`).
-  ['^@(api|app|components|contexts|pages|routes|test-helpers|theme|types|utils)(/|$)'],
+  ['^@(api|app|components|contexts|modules|pages|routes|test-helpers|theme|types|utils)(/|$)'],
   // Parent imports. Put `..` last.
   ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
   // Other relative imports. Put same-folder `.` last.

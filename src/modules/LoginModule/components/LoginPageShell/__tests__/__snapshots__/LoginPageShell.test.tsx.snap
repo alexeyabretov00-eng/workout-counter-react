@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`LoginPageShell > matches snapshot 1`] = `
+<main
+  class="LoginPageRoot-sc-ba4lmw-0 htgjZw"
+>
+  <h1
+    class="LoginPageTitle-sc-ba4lmw-1 iUDvjz"
+  >
+    Вход
+  </h1>
+  <div>
+    child
+  </div>
+</main>
+`;

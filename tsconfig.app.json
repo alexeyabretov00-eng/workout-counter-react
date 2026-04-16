@@ -32,6 +32,7 @@
       "@theme": ["./src/theme"],
       "@types": ["./src/types"],
       "@utils": ["./src/utils"],
+      "@modules/*": ["./src/modules/*"]
     }
   },
   "include": ["src", ".storybook/**/*.ts", ".storybook/**/*.tsx"]
