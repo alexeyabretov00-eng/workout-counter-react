@@ -6,4 +6,4 @@
 - **Импорт снаружи** — через алиас **`@modules/<ИмяModule>`** (см. [docs/import-aliases.md](import-aliases.md), настройки в `tsconfig.app.json` и `vite.config.ts`).
 - **Страницы** подключают модуль как композицию; локальные `pages/<Page>/components` используются только для склейки модулей на экране. Исключение — **`HomePage`**: для неё действует [docs/src-layout.md](src-layout.md).
 
-Подробные определения, границы с `src/components` и примеры — в плане рефакторинга: [specs/refactor/app-modules/app-modules-plan.md](../specs/refactor/app-modules/app-modules-plan.md).
+Подробные определения, границы с `src/components` и примеры — в архивном плане рефакторинга: [`specs/refactor/_archive/app-modules/app-modules-plan.md`](../specs/refactor/_archive/app-modules/app-modules-plan.md).
