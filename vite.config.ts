@@ -149,8 +149,8 @@ export default defineConfig(({ mode }) => ({
         'src/types/**',
         '**/*Lazy.tsx',
         '**/index.ts',
-        'src/pages/HomePage/hooks/**',
-        'src/pages/HomePage/services/**',
+        'src/modules/HomeModule/hooks/**',
+        'src/modules/HomeModule/services/**',
       ],
       thresholds: {
         lines: 80,

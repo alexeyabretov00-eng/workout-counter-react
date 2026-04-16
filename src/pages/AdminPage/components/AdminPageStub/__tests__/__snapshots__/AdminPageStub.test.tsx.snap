@@ -1,9 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`AdminPageStub > matches snapshot 1`] = `
-<p
-  class="AdminPageLead-sc-a4zy97-0 ixlsXY"
->
-  Заглушка: раздел в разработке.
-</p>
-`;

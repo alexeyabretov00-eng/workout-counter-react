@@ -46,20 +46,20 @@
 
 Типичные случаи:
 
-1. **Страница `HomePage`** — подсистемы `logic`, `contexts`, `selectors`, `containers`, `hooks`, `components`, `exercises`, `services` лежат под **`src/pages/HomePage/`**. Импорты между ними часто выглядят как **`../../contexts`**, **`../exercises`**, **`../../components`** и т.п. — это путь к **`pages/HomePage/contexts`**, **`pages/HomePage/exercises`**, **`pages/HomePage/components`**, а **не** к глобальным `src/contexts` или `src/components`.
+1. **Модуль `HomeModule`** (экран тренировки) — подсистемы `logic`, `contexts`, `selectors`, `containers`, `hooks`, `components`, `exercises`, `services` лежат под **`src/modules/HomeModule/`**. Импорты между ними часто выглядят как **`../../contexts`**, **`../exercises`**, **`../../components`** и т.п. — это путь к **`modules/HomeModule/contexts`**, **`modules/HomeModule/exercises`**, **`modules/HomeModule/components`**, а **не** к глобальным `src/contexts` или `src/components`.
 
-2. **Селекторы / контейнеры / логика главной** — импорт контекстов и хуков страницы через относительный путь к баррелю **`pages/HomePage/contexts/index.ts`** (например `../../contexts` из файла в `selectors/.../`), а не через глобальный `@contexts` (тот относится к **`src/contexts`**, например сессия авторизации).
+2. **Селекторы / контейнеры / логика главной** — импорт контекстов и хуков через относительный путь к баррелю **`modules/HomeModule/contexts/index.ts`** (например `../../contexts` из файла в `selectors/.../`), а не через глобальный `@contexts` (тот относится к **`src/contexts`**, например сессия авторизации).
 
-3. **Детекторы упражнений** — `import type { ExerciseDetector } from '../types'` указывает на **`pages/HomePage/exercises/types.ts`**, а не на `src/types`.
+3. **Детекторы упражнений** — `import type { ExerciseDetector } from '../types'` указывает на **`modules/HomeModule/exercises/types.ts`**, а не на `src/types`.
 
 ### Как не перепутать глобальный `@contexts` и локальный `../contexts`
 
 | Нужен модуль | Пример импорта |
 |--------------|----------------|
 | Auth-сессия, `useAuthSessionContext` | `from '@contexts'` → `src/contexts` |
-| Контексты сессии тренировки на главной | `from '../../contexts'` (от файла внутри `HomePage/...`) → `pages/HomePage/contexts` |
+| Контексты сессии тренировки на главной | `from '../../contexts'` (от файла внутри `HomeModule/...`) → `modules/HomeModule/contexts` |
 
-Аналогично: **`@components`** — общие UI-примитивы в **`src/components`**; **`../../components`** из контейнера главной — виджеты экрана в **`pages/HomePage/components`**.
+Аналогично: **`@components`** — общие UI-примитивы в **`src/components`**; **`../../components`** из контейнера главной — виджеты экрана в **`modules/HomeModule/components`**.
 
 ### Когда `..` не подходит
 

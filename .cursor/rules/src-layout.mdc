@@ -5,15 +5,15 @@ alwaysApply: true
 
 # Логика экрана, контексты, селекторы, контейнеры (главная)
 
-Слои сессии тренировки живут под **`src/pages/HomePage/`** (не в корне `src`).
+Слои сессии тренировки живут под **`src/modules/HomeModule/`** (не в корне `src`). Маршрут и ленивый импорт страницы — **`src/pages/HomePage/`** (`HomePage` ренерит `HomeModule`).
 
-- **`pages/HomePage/logic`:** оркестрация экрана (хуки сессии/голоса, провайдеры). **Один** публичный модуль — **одна подпапка** `pages/HomePage/logic/<PascalCaseName>/` с `<Name>.tsx` и **`index.ts`** (явные реэкспорты, **без** `export *`). Баррель **`pages/HomePage/logic/index.ts`** реэкспортирует публичный API (в т.ч. селекторы и типы контекста для контейнеров). Снаружи папки импорт только из **`./logic`** относительно `HomePage`, не из глубоких путей.
+- **`modules/HomeModule/logic`:** оркестрация экрана (хуки сессии/голоса, провайдеры). **Один** публичный модуль — **одна подпапка** `modules/HomeModule/logic/<PascalCaseName>/` с `<Name>.tsx` и **`index.ts`** (явные реэкспорты, **без** `export *`). Баррель **`modules/HomeModule/logic/index.ts`** реэкспортирует публичный API (в т.ч. селекторы и типы контекста для контейнеров). Снаружи папки импорт только из **`./logic`** относительно корня `HomeModule`, не из глубоких путей.
 
-- **`pages/HomePage/contexts`:** каждый **`React.Context`** — **своя подпапка** `pages/HomePage/contexts/<PascalCaseName>/` (`createContext`, типы, при необходимости `use…Context`). Баррель **`pages/HomePage/contexts/index.ts`**. Импорт контекстов снаружи подпапок — только из барреля страницы.
+- **`modules/HomeModule/contexts`:** каждый **`React.Context`** — **своя подпапка** `modules/HomeModule/contexts/<PascalCaseName>/` (`createContext`, типы, при необходимости `use…Context`). Баррель **`modules/HomeModule/contexts/index.ts`**. Импорт контекстов снаружи подпапок — только из барреля модуля.
 
-- **`pages/HomePage/selectors`:** хук **`use<ContainerName>ContainerSelector`** — **своя подпапка** `pages/HomePage/selectors/<ContainerName>Selector/` с файлом `use…ContainerSelector.ts` и **`index.ts`**. Баррель **`pages/HomePage/selectors/index.ts`**. Контейнеры по соглашению импортируют селекторы из **`../logic`**, если они реэкспортированы в `logic/index.ts`.
+- **`modules/HomeModule/selectors`:** хук **`use<ContainerName>ContainerSelector`** — **своя подпапка** `modules/HomeModule/selectors/<ContainerName>Selector/` с файлом `use…ContainerSelector.ts` и **`index.ts`**. Баррель **`modules/HomeModule/selectors/index.ts`**. Контейнеры по соглашению импортируют селекторы из **`../logic`**, если они реэкспортированы в `logic/index.ts`.
 
-- **`pages/HomePage/containers`:** компонент слота layout **без** пропсов данных сессии; данные через **`use…ContainerSelector`**. Структура как у `components`: **`pages/HomePage/containers/<PascalCaseName>/<Name>.tsx`**, **`index.ts`**, баррель **`pages/HomePage/containers/index.ts`**. Импорт из `HomePage` только из **`./containers`**.
+- **`modules/HomeModule/containers`:** компонент слота layout **без** пропсов данных сессии; данные через **`use…ContainerSelector`**. Структура как у `components`: **`modules/HomeModule/containers/<PascalCaseName>/<Name>.tsx`**, **`index.ts`**, баррель **`modules/HomeModule/containers/index.ts`**. Импорт из `HomeModule` только из **`./containers`**.
 
 - Новую публичную сущность добавляй в соответствующий **`index.ts`** барреля **в той же задаче**. Между верхнеуровневыми папками `src` — импорты из баррелей; **`export *`** в `index.ts` не использовать (см. `imports-via-index.mdc`).
 

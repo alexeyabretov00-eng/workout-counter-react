@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`StageContainer > matches snapshot 1`] = `
+<div
+  class="StageRoot-sc-11c4sl4-0 jkLkYG"
+>
+  <div
+    aria-busy="false"
+    class="StageViewport-sc-11c4sl4-1 aIsJ"
+  >
+    <canvas
+      class="StageCanvas-sc-11c4sl4-5 eKhbpi"
+    />
+  </div>
+</div>
+`;

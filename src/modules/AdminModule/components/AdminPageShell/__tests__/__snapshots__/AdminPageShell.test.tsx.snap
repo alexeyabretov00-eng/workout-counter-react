@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AdminPageShell > matches snapshot 1`] = `
+<main
+  class="AdminPageRoot-sc-1af308t-0 eMnQco"
+>
+  <h1
+    class="AdminPageTitle-sc-1af308t-1 jflPyz"
+  >
+    Админка
+  </h1>
+  <div>
+    child
+  </div>
+</main>
+`;

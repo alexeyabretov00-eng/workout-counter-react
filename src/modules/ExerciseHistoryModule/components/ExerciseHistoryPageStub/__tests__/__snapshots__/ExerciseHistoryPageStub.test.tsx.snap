@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ExerciseHistoryPageStub > matches snapshot 1`] = `
+<p
+  class="ExerciseHistoryPageLead-sc-1t3zm83-0 btoPYx"
+>
+  Заглушка: раздел в разработке.
+</p>
+`;

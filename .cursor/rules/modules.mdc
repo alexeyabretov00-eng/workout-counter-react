@@ -7,4 +7,4 @@ description: Доменные модули под src/modules и импорт @m
 - Корень модуля: **`src/modules/<ИмяModule>/`** — PascalCase, суффикс **`Module`**.
 - Снаружи модуля импорты **только** из публичного барреля **`src/modules/<ИмяModule>/index.ts`**, предпочтительная форма: **`import { LoginModule } from '@modules/LoginModule'`** и т.п. (см. `docs/import-aliases.md`, `docs/modules.md`).
 - Зависимость модуля A от модуля B — только через **`@modules/<BModule>`**, без импорта из внутренних файлов B.
-- Общие UI-примитивы по-прежнему в **`src/components`**; **`pages/<Page>/components`** — только склейка модулей на странице; **`pages/HomePage/`** — отдельное соглашение (`docs/src-layout.md`).
+- Общие UI-примитивы по-прежнему в **`src/components`**; **`pages/<Page>/components`** — только склейка модулей на странице; слои тренировки — в **`src/modules/HomeModule/`** (`docs/src-layout.md`), тонкая страница — **`src/pages/HomePage/`**.

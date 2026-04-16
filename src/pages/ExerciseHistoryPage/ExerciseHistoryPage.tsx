@@ -1,9 +1,3 @@
-import { ExerciseHistoryPageShell, ExerciseHistoryPageStub } from './components';
+import { ExerciseHistoryModule } from '@modules/ExerciseHistoryModule';
 
-export const ExerciseHistoryPage = () => {
-  return (
-    <ExerciseHistoryPageShell title="История упражнений">
-      <ExerciseHistoryPageStub lead="Заглушка: раздел в разработке." />
-    </ExerciseHistoryPageShell>
-  );
-};
+export const ExerciseHistoryPage = () => <ExerciseHistoryModule />;

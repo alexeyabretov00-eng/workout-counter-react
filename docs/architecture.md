@@ -21,20 +21,20 @@
 
 - `src/pages/*`
   - Страницы приложения. Каждая подпапка страницы может экспортировать массив **`routes`** (`RouteObject[]`) из своего `index.tsx` — он попадает в общий роутер.
-  - **`HomePage`:** единственный экран с полной оркестрацией тренировки — внутри `WorkoutLogicLayout` и **`HomeLayout`** (слоты `header`, `controls`, `statusBar`, `stage`); в слоты передаются контейнеры из `pages/HomePage/containers`.
-  - Прочие страницы (например админка, история) — презентационный контент без `WorkoutLogicLayout`.
+  - **`HomePage` / `HomeModule`:** маршрут главной — `HomePage` рендерит **`HomeModule`** из `src/modules/HomeModule`. Это единственный экран с полной оркестрацией тренировки — внутри `WorkoutLogicLayout` и **`HomeLayout`** (слоты `header`, `controls`, `statusBar`, `stage`); в слоты передаются контейнеры из `modules/HomeModule/containers`.
+  - Прочие страницы (например админка, история) — презентационный контент без `WorkoutLogicLayout` (часто через свои модули в `src/modules`).
 
-- `src/pages/HomePage/logic/*`
-  - Оркестрация экрана тренировки: `WorkoutLogicLayout` (состояние упражнения/отдыха, `useWorkoutSession`, `useSpeechRecognition`, провайдеры контекстов). Один публичный модуль — подпапка PascalCase + `pages/HomePage/logic/index.ts`. Соглашения — в [docs/src-layout.md](src-layout.md).
+- `src/modules/HomeModule/logic/*`
+  - Оркестрация экрана тренировки: `WorkoutLogicLayout` (состояние упражнения/отдыха, `useWorkoutSession`, `useSpeechRecognition`, провайдеры контекстов). Один публичный модуль — подпапка PascalCase + `modules/HomeModule/logic/index.ts`. Соглашения — в [docs/src-layout.md](src-layout.md).
 
-- `src/pages/HomePage/contexts/*`
-  - React-контексты значений сессии главной (разделение chrome / stage и т.д.): подпапка на контекст, баррель `pages/HomePage/contexts/index.ts`.
+- `src/modules/HomeModule/contexts/*`
+  - React-контексты значений сессии главной (разделение chrome / stage и т.д.): подпапка на контекст, баррель `modules/HomeModule/contexts/index.ts`.
 
-- `src/pages/HomePage/selectors/*`
-  - Хуки `use…ContainerSelector` для контейнеров (`useContext` + `useMemo`); подпапка на селектор, баррель `pages/HomePage/selectors/index.ts`; для контейнеров реэкспорт через `pages/HomePage/logic/index.ts`.
+- `src/modules/HomeModule/selectors/*`
+  - Хуки `use…ContainerSelector` для контейнеров (`useContext` + `useMemo`); подпапка на селектор, баррель `modules/HomeModule/selectors/index.ts`; для контейнеров реэкспорт через `modules/HomeModule/logic/index.ts`.
 
-- `src/pages/HomePage/containers/*`
-  - Компоненты слотов layout главной страницы (`HomeLayout`: `controls`, `statusBar`, `stage` и т.д.) без пропсов данных сессии; данные через селекторы. Одна папка на контейнер, баррель `pages/HomePage/containers/index.ts`. Соглашения — в [docs/src-layout.md](src-layout.md).
+- `src/modules/HomeModule/containers/*`
+  - Компоненты слотов layout главной страницы (`HomeLayout`: `controls`, `statusBar`, `stage` и т.д.) без пропсов данных сессии; данные через селекторы. Одна папка на контейнер, баррель `modules/HomeModule/containers/index.ts`. Соглашения — в [docs/src-layout.md](src-layout.md).
 
 - `src/components/*`
   - Переиспользуемые UI-блоки (например выбор значения, кнопки панели управления): одна папка на компонент, оформление через **`<Имя>.styled.tsx`** и токены из темы (`src/theme`), импорт из барреля `./components`. Соглашения — в [docs/components.md](components.md).
@@ -42,19 +42,19 @@
 - `src/theme/*`
   - Базовая тема приложения (`theme.ts`), глобальные стили (`createGlobalStyle` в `globalStyle.tsx`), расширение типа `DefaultTheme` для TypeScript (`styled.d.ts`). Провайдер темы подключается в `src/App/App.tsx`.
 
-- `src/pages/HomePage/hooks/useSpeechRecognition.ts`
+- `src/modules/HomeModule/hooks/useSpeechRecognition.ts`
   - Web Speech API: запуск распознавания, разбор транскрипта; команды и смена упражнения / длительности отдыха сводятся к вызовам **`dispatchChromeControl`** с объектами действий (тот же контракт, что у панели управления через контекст).
 
-- `src/pages/HomePage/hooks/useWorkoutSession.ts`
+- `src/modules/HomeModule/hooks/useWorkoutSession.ts`
   - Оркестратор тренировки: связывает камеру, `PoseLandmarkerService`, детектор и отрисовку (`drawFrame`, `drawRestCountdown` из `src/utils`).
   - Управляет состоянием сессии: запуск, пауза, возобновление, сброс, остановка камеры.
   - Запускает цикл `requestAnimationFrame`, считает `repDelta`, озвучивает повторы.
   - Запускает и рендерит таймер отдыха после остановки.
 
-- `src/pages/HomePage/hooks/useCameraStream.ts`
+- `src/modules/HomeModule/hooks/useCameraStream.ts`
   - Работа с `getUserMedia`: старт/стоп потока и диагностика ошибок камеры.
 
-- `src/pages/HomePage/services/*`
+- `src/modules/HomeModule/services/*`
   - `PoseLandmarkerService`: инициализация MediaPipe Tasks Vision (модель heavy, при сбое — lite на CPU), `detectForVideo`, нормализация landmarks в типы из `src/utils/pose.ts`.
 
 - `src/utils/pose.ts`
@@ -63,7 +63,7 @@
 - `src/utils/canvas.ts`
   - Подгонка размера canvas под DPR, очистка, `computeCoverLayout`, экран отдыха `drawRestCountdown`.
 
-- `src/pages/HomePage/exercises/`
+- `src/modules/HomeModule/exercises/`
   - `types.ts`, баррель `index.ts`, `registry.ts`: `import.meta.glob` по `./**/*Detector.ts`, фильтр по истинному `isActive` (в детекторах проекта — `isActive: true`), сортировка по `id`.
   - Каждый детектор — подпапка в PascalCase (`ArmyPressDetector/`, `BicepsCurlDetector/`, …): файл `*Detector.ts` и `index.ts`; общий интерфейс из `types.ts`; математика по точкам из `src/utils` (`POSE_INDEX`, `getPoint`, `calculateAngle`).
 
@@ -80,7 +80,7 @@ flowchart TB
   R --> APL[AppPageLayout]
   APL --> Nav[AppNav]
   APL --> Out[Outlet]
-  Out --> Home[HomePage]
+  Out --> Home[HomePage → HomeModule]
   Home --> WLL[WorkoutLogicLayout]
   WLL --> Session[useWorkoutSession]
   WLL --> Speech[useSpeechRecognition]
@@ -100,7 +100,7 @@ flowchart TB
 
 ### Chrome-контролы: `dispatchChromeControl`
 
-Срез **`WorkoutSessionChromeControls`** отдаёт UI данные для панели (например `exerciseId`, `restDurationMinutes`, `isRunning`, флаги готовности) и **одну** функцию **`dispatchChromeControl(action)`**. Тип действия — дискриминирующий union **`WorkoutSessionChromeControlAction`** (`src/pages/HomePage/contexts/WorkoutSessionChromeControls/types.ts`), реэкспортируется из `src/pages/HomePage/contexts/index.ts` и при необходимости из `src/pages/HomePage/logic/index.ts`:
+Срез **`WorkoutSessionChromeControls`** отдаёт UI данные для панели (например `exerciseId`, `restDurationMinutes`, `isRunning`, флаги готовности) и **одну** функцию **`dispatchChromeControl(action)`**. Тип действия — дискриминирующий union **`WorkoutSessionChromeControlAction`** (`src/modules/HomeModule/contexts/WorkoutSessionChromeControls/types.ts`), реэкспортируется из `src/modules/HomeModule/contexts/index.ts` и при необходимости из `src/modules/HomeModule/logic/index.ts`:
 
 | `action.type` | Назначение |
 |----------------|------------|

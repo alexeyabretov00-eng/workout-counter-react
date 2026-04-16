@@ -1,0 +1,69 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Stage > matches snapshot (camera loading) 1`] = `
+<div
+  class="StageRoot-sc-11c4sl4-0 jkLkYG"
+>
+  <div
+    aria-busy="true"
+    class="StageViewport-sc-11c4sl4-1 aIsJ"
+  >
+    <div
+      aria-live="polite"
+      class="StageLoader-sc-11c4sl4-2 NOZfV"
+      role="status"
+    >
+      <span
+        aria-hidden="true"
+        class="StageLoaderSpinner-sc-11c4sl4-3 dasiRH"
+      />
+      <p
+        class="StageLoaderText-sc-11c4sl4-4 bLYXsl"
+      >
+        Подключение камеры…
+      </p>
+    </div>
+    <canvas
+      class="StageCanvas-sc-11c4sl4-5 eKhbpi"
+    />
+  </div>
+</div>
+`;
+
+exports[`Stage > matches snapshot (live canvas) 1`] = `
+<div
+  class="StageRoot-sc-11c4sl4-0 jkLkYG"
+>
+  <div
+    aria-busy="false"
+    class="StageViewport-sc-11c4sl4-1 aIsJ"
+  >
+    <canvas
+      class="StageCanvas-sc-11c4sl4-5 eKhbpi"
+    />
+  </div>
+</div>
+`;
+
+exports[`Stage > matches snapshot (paused) 1`] = `
+<div
+  class="StageRoot-sc-11c4sl4-0 jkLkYG"
+>
+  <div
+    aria-busy="false"
+    class="StageViewport-sc-11c4sl4-1 aIsJ"
+  >
+    <div
+      aria-live="polite"
+      class="StagePaused-sc-11c4sl4-6 XixKT"
+      role="status"
+    >
+      <p
+        class="StagePausedText-sc-11c4sl4-7 kNQhXT"
+      >
+        Упражнение приостановлено
+      </p>
+    </div>
+  </div>
+</div>
+`;
