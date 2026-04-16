@@ -100,6 +100,10 @@ docker run --rm -p 8080:80 workout-counter-react:local
 - `npm run test:watch` — Vitest в режиме watch (`vitest`).
 - `npm run test:coverage` — прогон с отчётом покрытия кода.
 - `npm run commitlint` — проверка текста коммита через [commitlint](https://commitlint.js.org/) (сообщение передаётся в **stdin**).
+- `npm run storybook` — [Storybook](https://storybook.js.org/) для изолированной разработки и документации UI (порт по умолчанию **6006**).
+- `npm run build-storybook` — статическая сборка Storybook в **`storybook-static/`**.
+
+Подробности по историям и соглашениям: [docs/storybook.md](docs/storybook.md).
 
 Перед PR имеет смысл выполнить `npm run lint` и `npm run test`. Подробности: скрипты, расположение тестов, `setupTests`, хуки Husky (`pre-commit` / `commit-msg`), покрытие и типовые приёмы — в **[docs/testing.md](docs/testing.md)**.
 
