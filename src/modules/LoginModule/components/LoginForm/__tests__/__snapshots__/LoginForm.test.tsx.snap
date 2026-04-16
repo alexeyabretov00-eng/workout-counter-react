@@ -1,0 +1,110 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`LoginForm > matches snapshot with error and pending 1`] = `
+<div>
+  <form
+    class="LoginFormRoot-sc-13wsqkk-0 dfMXpP"
+  >
+    <div
+      class="LoginFormError-sc-13wsqkk-4 frHQjW"
+      role="alert"
+    >
+      fail
+    </div>
+    <label
+      class="LoginFormLabel-sc-13wsqkk-1 hWdLvP"
+    >
+      Логин
+      <input
+        autocomplete="username"
+        class="LoginFormInput-sc-13wsqkk-2 eJEZUz"
+        disabled=""
+        name="login"
+        value=""
+      />
+    </label>
+    <label
+      class="LoginFormLabel-sc-13wsqkk-1 hWdLvP"
+    >
+      Пароль
+      <input
+        autocomplete="current-password"
+        class="LoginFormInput-sc-13wsqkk-2 eJEZUz"
+        disabled=""
+        name="password"
+        type="password"
+        value=""
+      />
+    </label>
+    <button
+      class="LoginFormSubmit-sc-13wsqkk-3 iJsoGi"
+      disabled=""
+      type="submit"
+    >
+      Вход…
+    </button>
+  </form>
+  <p
+    class="LoginFormFooter-sc-13wsqkk-5 gIxjaJ"
+  >
+    Нет учётной записи? 
+    <a
+      class="LoginFormFooterLink-sc-13wsqkk-6 lfpgfU"
+      data-discover="true"
+      href="/register"
+    >
+      Регистрация
+    </a>
+  </p>
+</div>
+`;
+
+exports[`LoginForm > matches snapshot without error 1`] = `
+<div>
+  <form
+    class="LoginFormRoot-sc-13wsqkk-0 dfMXpP"
+  >
+    <label
+      class="LoginFormLabel-sc-13wsqkk-1 hWdLvP"
+    >
+      Логин
+      <input
+        autocomplete="username"
+        class="LoginFormInput-sc-13wsqkk-2 eJEZUz"
+        name="login"
+        value="a"
+      />
+    </label>
+    <label
+      class="LoginFormLabel-sc-13wsqkk-1 hWdLvP"
+    >
+      Пароль
+      <input
+        autocomplete="current-password"
+        class="LoginFormInput-sc-13wsqkk-2 eJEZUz"
+        name="password"
+        type="password"
+        value="b"
+      />
+    </label>
+    <button
+      class="LoginFormSubmit-sc-13wsqkk-3 iJsoGi"
+      type="submit"
+    >
+      Войти
+    </button>
+  </form>
+  <p
+    class="LoginFormFooter-sc-13wsqkk-5 gIxjaJ"
+  >
+    Нет учётной записи? 
+    <a
+      class="LoginFormFooterLink-sc-13wsqkk-6 lfpgfU"
+      data-discover="true"
+      href="/register"
+    >
+      Регистрация
+    </a>
+  </p>
+</div>
+`;

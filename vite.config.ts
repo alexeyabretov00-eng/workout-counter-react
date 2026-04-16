@@ -22,6 +22,7 @@ const srcAliases: Record<string, string> = {
   '@theme': join(srcDir, 'theme'),
   '@types': join(srcDir, 'types'),
   '@utils': join(srcDir, 'utils'),
+  '@modules': join(srcDir, 'modules'),
 };
 
 const vendorChunk = (id: string): string | undefined => {

@@ -1,0 +1,1 @@
+export { RegistrationModule } from './RegistrationModule';
