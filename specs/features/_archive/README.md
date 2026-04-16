@@ -12,6 +12,7 @@
 | [github-milestones-and-issues](./github-milestones-and-issues/) | GitHub: Milestone, Issues, шаблоны и правило агента рядом со спеками |
 | [react-router-routing](./react-router-routing/) | React Router: главная, админка и история упражнений (заглушки) |
 | [styled-components-migration](./styled-components-migration/) | Переход UI на `styled-components`, тема и `*.styled.tsx` |
+| [storybook-adoption](./storybook-adoption/) | Storybook (React + Vite), истории в `__stories__`, документация `docs/storybook.md` |
 | [todo-roadmap-format](./todo-roadmap-format/) | Формат бэклога в `todo.md` |
 
 Правило переноса и расположение активных планов — в `specs/features/README.md` и в разделе «Планирование фич и исправлений» корневого `README.md`.
