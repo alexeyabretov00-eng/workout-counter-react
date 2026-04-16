@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 import { AuthApiError } from '@api';
 import { useAuthSessionContext } from '@contexts';
@@ -9,15 +9,17 @@ import { RegisterForm, RegisterPageShell } from './components';
 
 export const RegistrationModule = () => {
   const { registerWithPassword, user, status } = useAuthSessionContext();
-  const navigate = useNavigate();
   const location = useLocation();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
+  const state = location.state as { from?: { pathname?: string } } | undefined;
+  const afterAuthPath = resolveAfterAuthPath(state?.from);
+
   if (status === 'ready' && user) {
-    return <Navigate to="/home" replace />;
+    return <Navigate to={afterAuthPath} replace />;
   }
 
   const handleSubmit = async () => {
@@ -25,9 +27,6 @@ export const RegistrationModule = () => {
     setPending(true);
     try {
       await registerWithPassword(login, password);
-      const state = location.state as { from?: { pathname?: string } } | undefined;
-      const target = resolveAfterAuthPath(state?.from);
-      navigate(target, { replace: true });
     } catch (err: unknown) {
       const message =
         err instanceof AuthApiError
