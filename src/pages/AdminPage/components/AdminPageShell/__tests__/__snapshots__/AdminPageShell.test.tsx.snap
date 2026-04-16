@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AdminPage > matches snapshot 1`] = `
+exports[`AdminPageShell > matches snapshot 1`] = `
 <main
   class="AdminPageRoot-sc-l64j07-0 cbRsIe"
 >
@@ -9,10 +9,8 @@ exports[`AdminPage > matches snapshot 1`] = `
   >
     Админка
   </h1>
-  <p
-    class="AdminPageLead-sc-a4zy97-0 ixlsXY"
-  >
-    Заглушка: раздел в разработке.
-  </p>
+  <div>
+    child
+  </div>
 </main>
 `;

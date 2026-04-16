@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ExerciseHistoryPageRoot = styled.main`
+export const AdminPageRoot = styled.main`
   box-sizing: border-box;
   max-width: ${({ theme }) => theme.layout.maxWidth};
   margin: 0 auto;
@@ -10,14 +10,8 @@ export const ExerciseHistoryPageRoot = styled.main`
   line-height: ${({ theme }) => theme.typography.lineHeight};
 `;
 
-export const ExerciseHistoryPageTitle = styled.h1`
+export const AdminPageTitle = styled.h1`
   margin: 0 0 ${({ theme }) => theme.spacing.md};
   font-size: 1.5rem;
   font-weight: ${({ theme }) => theme.typography.labelWeight};
-`;
-
-export const ExerciseHistoryPageLead = styled.p`
-  margin: 0;
-  color: ${({ theme }) => theme.palette.text.muted};
-  font-size: ${({ theme }) => theme.typography.statusBar};
 `;

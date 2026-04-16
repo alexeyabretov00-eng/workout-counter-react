@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ExerciseHistoryPage > matches snapshot 1`] = `
+exports[`ExerciseHistoryPageShell > matches snapshot 1`] = `
 <main
   class="ExerciseHistoryPageRoot-sc-1h1ajuc-0 fISBjD"
 >
@@ -9,10 +9,8 @@ exports[`ExerciseHistoryPage > matches snapshot 1`] = `
   >
     История упражнений
   </h1>
-  <p
-    class="ExerciseHistoryPageLead-sc-gndcyj-0 dbvGOy"
-  >
-    Заглушка: раздел в разработке.
-  </p>
+  <div>
+    child
+  </div>
 </main>
 `;
