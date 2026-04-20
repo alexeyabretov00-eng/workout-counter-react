@@ -1,5 +1,12 @@
 export { clearCanvas, computeCoverLayout, drawRestCountdown, resizeCanvas } from './canvas';
 export {
+  type AppEventMap,
+  EVENT_AUTH_NAVIGATE_AFTER_LOGIN,
+  EventBus,
+  eventBus,
+  type EventHandler,
+} from './eventBus';
+export {
   calculateAngle,
   drawFrame,
   getPoint,
