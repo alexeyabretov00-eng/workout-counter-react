@@ -4,8 +4,8 @@ import { AuthApiError } from '@api';
 import { useAuthSessionContext } from '@contexts';
 import { EVENT_AUTH_NAVIGATE_AFTER_REGISTRATION, eventBus } from '@utils';
 
-import { RegisterFormContainer } from './containers/RegisterFormContainer';
 import { RegisterPageShell } from './components';
+import { RegisterFormContainer } from './containers';
 
 export const RegistrationModule = () => {
   const { registerWithPassword, user, status } = useAuthSessionContext();
