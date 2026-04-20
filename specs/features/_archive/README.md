@@ -8,6 +8,7 @@
 | [dynamic-routes-from-pages](./dynamic-routes-from-pages/) | Маршруты из `pages/*/index.tsx` через glob, `AppPageLayout`, `navItems` из `handle.nav` |
 | [commitlint-adoption](./commitlint-adoption/) | Внедрение commitlint и Husky (`commit-msg`) для Conventional Commits |
 | [eslint-packages-migration](./eslint-packages-migration/) | ESLint: Prettier, React/React Hooks, simple-import-sort и группы импортов |
+| [global-event-bus](./global-event-bus/) | Singleton `eventBus` (`window`/`CustomEvent`), канонические имена событий; эмит в модулях и контейнерах, подписка на страницах (`useEffect`) |
 | [documentation](./documentation/) | Обновление README и сопутствующей документации |
 | [github-milestones-and-issues](./github-milestones-and-issues/) | GitHub: Milestone, Issues, шаблоны и правило агента рядом со спеками |
 | [react-router-routing](./react-router-routing/) | React Router: главная, админка и история упражнений (заглушки) |

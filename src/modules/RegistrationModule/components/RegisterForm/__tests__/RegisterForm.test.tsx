@@ -31,6 +31,7 @@ describe('RegisterForm', () => {
             onPasswordChange(value);
           }}
           onSubmit={vi.fn(async () => undefined)}
+          onGoToLogin={vi.fn()}
         />
       );
     };
@@ -58,6 +59,7 @@ describe('RegisterForm', () => {
         onLoginChange={vi.fn()}
         onPasswordChange={vi.fn()}
         onSubmit={onSubmit}
+        onGoToLogin={vi.fn()}
       />,
     );
     const region = within(container);
@@ -65,7 +67,9 @@ describe('RegisterForm', () => {
     expect(onSubmit).toHaveBeenCalledTimes(1);
   });
 
-  test('footer link navigates to login route', () => {
+  test('footer button calls onGoToLogin', async () => {
+    const user = userEvent.setup();
+    const onGoToLogin = vi.fn();
     const { container } = renderWithRouterTheme(
       <RegisterForm
         login=""
@@ -75,10 +79,12 @@ describe('RegisterForm', () => {
         onLoginChange={vi.fn()}
         onPasswordChange={vi.fn()}
         onSubmit={vi.fn(async () => undefined)}
+        onGoToLogin={onGoToLogin}
       />,
     );
     const region = within(container);
-    expect(region.getByRole('link', { name: 'Войти' })).toHaveAttribute('href', '/login');
+    await user.click(region.getByRole('button', { name: 'Войти' }));
+    expect(onGoToLogin).toHaveBeenCalledTimes(1);
   });
 
   test('matches snapshot without error', () => {
@@ -91,6 +97,7 @@ describe('RegisterForm', () => {
         onLoginChange={vi.fn()}
         onPasswordChange={vi.fn()}
         onSubmit={vi.fn(async () => undefined)}
+        onGoToLogin={vi.fn()}
       />,
     );
     expect(container).toMatchSnapshot();
@@ -106,6 +113,7 @@ describe('RegisterForm', () => {
         onLoginChange={vi.fn()}
         onPasswordChange={vi.fn()}
         onSubmit={vi.fn(async () => undefined)}
+        onGoToLogin={vi.fn()}
       />,
     );
     expect(container).toMatchSnapshot();

@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const LoginFormRoot = styled.form`
@@ -60,7 +59,13 @@ export const LoginFormFooter = styled.p`
   color: ${({ theme }) => theme.palette.text.muted};
 `;
 
-export const LoginFormFooterLink = styled(Link)`
+export const LoginFormFooterLinkButton = styled.button.attrs({ type: 'button' })`
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font: inherit;
   color: ${({ theme }) => theme.palette.status.info.fg};
   text-decoration: none;
 

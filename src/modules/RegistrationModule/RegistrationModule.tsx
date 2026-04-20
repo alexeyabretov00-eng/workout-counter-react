@@ -1,25 +1,22 @@
 import { useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
 
 import { AuthApiError } from '@api';
 import { useAuthSessionContext } from '@contexts';
-import { resolveAfterAuthPath } from '@utils';
+import { EVENT_AUTH_NAVIGATE_AFTER_REGISTRATION, eventBus } from '@utils';
 
-import { RegisterForm, RegisterPageShell } from './components';
+import { RegisterFormContainer } from './containers/RegisterFormContainer';
+import { RegisterPageShell } from './components';
 
 export const RegistrationModule = () => {
   const { registerWithPassword, user, status } = useAuthSessionContext();
-  const location = useLocation();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
-  const state = location.state as { from?: { pathname?: string } } | undefined;
-  const afterAuthPath = resolveAfterAuthPath(state?.from);
-
   if (status === 'ready' && user) {
-    return <Navigate to={afterAuthPath} replace />;
+    eventBus.emit(EVENT_AUTH_NAVIGATE_AFTER_REGISTRATION);
+    return null;
   }
 
   const handleSubmit = async () => {
@@ -40,7 +37,7 @@ export const RegistrationModule = () => {
 
   return (
     <RegisterPageShell title="Регистрация">
-      <RegisterForm
+      <RegisterFormContainer
         login={login}
         password={password}
         error={error}

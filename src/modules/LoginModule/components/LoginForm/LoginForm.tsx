@@ -3,7 +3,7 @@ import { type FormEvent } from 'react';
 import {
   LoginFormError,
   LoginFormFooter,
-  LoginFormFooterLink,
+  LoginFormFooterLinkButton,
   LoginFormInput,
   LoginFormLabel,
   LoginFormRoot,
@@ -18,6 +18,7 @@ export type LoginFormProps = {
   onLoginChange: (value: string) => void;
   onPasswordChange: (value: string) => void;
   onSubmit: () => Promise<void>;
+  onGoToRegister: () => void;
 };
 
 export const LoginForm = ({
@@ -28,6 +29,7 @@ export const LoginForm = ({
   onLoginChange,
   onPasswordChange,
   onSubmit,
+  onGoToRegister,
 }: LoginFormProps) => {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -68,7 +70,8 @@ export const LoginForm = ({
         </LoginFormSubmit>
       </LoginFormRoot>
       <LoginFormFooter>
-        Нет учётной записи? <LoginFormFooterLink to="/register">Регистрация</LoginFormFooterLink>
+        Нет учётной записи?{' '}
+        <LoginFormFooterLinkButton onClick={onGoToRegister}>Регистрация</LoginFormFooterLinkButton>
       </LoginFormFooter>
     </>
   );
