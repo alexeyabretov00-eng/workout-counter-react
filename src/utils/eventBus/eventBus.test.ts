@@ -1,6 +1,12 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
-import { EVENT_AUTH_NAVIGATE_AFTER_LOGIN, eventBus } from './index';
+import {
+  EVENT_AUTH_NAVIGATE_AFTER_LOGIN,
+  EVENT_AUTH_NAVIGATE_AFTER_REGISTRATION,
+  EVENT_NAV_GO_TO_LOGIN,
+  EVENT_NAV_GO_TO_REGISTER,
+  eventBus,
+} from './index';
 
 describe('eventBus', () => {
   const cleanups: Array<() => void> = [];
@@ -20,6 +26,36 @@ describe('eventBus', () => {
 
     expect(handler).toHaveBeenCalledTimes(1);
     expect(handler).toHaveBeenCalledWith({ path: '/history' });
+  });
+
+  test('delivers registration event detail', () => {
+    const handler = vi.fn();
+    cleanups.push(eventBus.on(EVENT_AUTH_NAVIGATE_AFTER_REGISTRATION, handler));
+
+    eventBus.emit(EVENT_AUTH_NAVIGATE_AFTER_REGISTRATION, { path: '/home' });
+
+    expect(handler).toHaveBeenCalledTimes(1);
+    expect(handler).toHaveBeenCalledWith({ path: '/home' });
+  });
+
+  test('go-to-register invokes listener without payload', () => {
+    const handler = vi.fn();
+    cleanups.push(eventBus.on(EVENT_NAV_GO_TO_REGISTER, handler));
+
+    eventBus.emit(EVENT_NAV_GO_TO_REGISTER);
+
+    expect(handler).toHaveBeenCalledTimes(1);
+    expect(handler).toHaveBeenCalledWith(null);
+  });
+
+  test('go-to-login invokes listener without payload', () => {
+    const handler = vi.fn();
+    cleanups.push(eventBus.on(EVENT_NAV_GO_TO_LOGIN, handler));
+
+    eventBus.emit(EVENT_NAV_GO_TO_LOGIN);
+
+    expect(handler).toHaveBeenCalledTimes(1);
+    expect(handler).toHaveBeenCalledWith(null);
   });
 
   test('unsubscribe stops delivery', () => {

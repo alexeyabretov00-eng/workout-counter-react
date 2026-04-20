@@ -4,7 +4,8 @@ import { AuthApiError } from '@api';
 import { useAuthSessionContext } from '@contexts';
 import { EVENT_AUTH_NAVIGATE_AFTER_LOGIN, eventBus } from '@utils';
 
-import { LoginForm, LoginPageShell } from './components';
+import { LoginFormContainer } from './containers/LoginFormContainer';
+import { LoginPageShell } from './components';
 
 export const LoginModule = () => {
   const { loginWithPassword, user, status } = useAuthSessionContext();
@@ -34,7 +35,7 @@ export const LoginModule = () => {
 
   return (
     <LoginPageShell title="Вход">
-      <LoginForm
+      <LoginFormContainer
         login={login}
         password={password}
         error={error}

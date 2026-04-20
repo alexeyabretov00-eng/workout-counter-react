@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const RegisterFormRoot = styled.form`
@@ -60,7 +59,13 @@ export const RegisterFormFooter = styled.p`
   color: ${({ theme }) => theme.palette.text.muted};
 `;
 
-export const RegisterFormFooterLink = styled(Link)`
+export const RegisterFormFooterLinkButton = styled.button.attrs({ type: 'button' })`
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font: inherit;
   color: ${({ theme }) => theme.palette.status.info.fg};
   text-decoration: none;
 

@@ -47,14 +47,14 @@ exports[`LoginForm > matches snapshot with error and pending 1`] = `
   <p
     class="LoginFormFooter-sc-13wsqkk-5 gIxjaJ"
   >
-    Нет учётной записи? 
-    <a
-      class="LoginFormFooterLink-sc-13wsqkk-6 lfpgfU"
-      data-discover="true"
-      href="/register"
+    Нет учётной записи?
+     
+    <button
+      class="LoginFormFooterLinkButton-sc-13wsqkk-6 diQQcg"
+      type="button"
     >
       Регистрация
-    </a>
+    </button>
   </p>
 </div>
 `;
@@ -97,14 +97,14 @@ exports[`LoginForm > matches snapshot without error 1`] = `
   <p
     class="LoginFormFooter-sc-13wsqkk-5 gIxjaJ"
   >
-    Нет учётной записи? 
-    <a
-      class="LoginFormFooterLink-sc-13wsqkk-6 lfpgfU"
-      data-discover="true"
-      href="/register"
+    Нет учётной записи?
+     
+    <button
+      class="LoginFormFooterLinkButton-sc-13wsqkk-6 diQQcg"
+      type="button"
     >
       Регистрация
-    </a>
+    </button>
   </p>
 </div>
 `;

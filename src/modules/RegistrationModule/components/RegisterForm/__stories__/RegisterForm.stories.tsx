@@ -22,6 +22,7 @@ const meta = {
     onLoginChange: () => {},
     onPasswordChange: () => {},
     onSubmit: async () => {},
+    onGoToLogin: () => {},
   },
 } satisfies Meta<typeof RegisterForm>;
 

@@ -8,5 +8,11 @@
  */
 
 export { EventBus, eventBus } from './EventBus';
-export { type AppEventMap, EVENT_AUTH_NAVIGATE_AFTER_LOGIN } from './events';
+export {
+  type AppEventMap,
+  EVENT_AUTH_NAVIGATE_AFTER_LOGIN,
+  EVENT_AUTH_NAVIGATE_AFTER_REGISTRATION,
+  EVENT_NAV_GO_TO_LOGIN,
+  EVENT_NAV_GO_TO_REGISTER,
+} from './events';
 export type { EventHandler } from './types';
