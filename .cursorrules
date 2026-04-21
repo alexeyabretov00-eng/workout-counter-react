@@ -39,8 +39,8 @@ refactor(app): разделить AppNav на презентацию и конт
 данные сессии — в App/containers. Упрощены тесты презентации и добавлены
 снапшоты контейнера.
 
-- AppNav: только пропсы и стили; AppNavContainer — useAuthSessionContext
-- AppPageLayout подключает контейнер из ./containers
+- AppNav: только пропсы и стили; AppNavContainer — store
+- App.tsx передаёт в AppPageLayout слот header (например AppNavContainer)
 - Тесты: renderWithRouterTheme для AppNav; Provider — для AppNavContainer
 ```
 

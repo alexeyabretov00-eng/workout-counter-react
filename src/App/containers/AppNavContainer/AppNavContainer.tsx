@@ -1,21 +1,21 @@
-import { useAuthSessionContext } from '@contexts';
+import { navItems } from '@routes';
+import { logout, useAppDispatch, useAppSelector } from '@store';
 
-import { AppNav, type AppNavItem } from '../../components';
+import { AppNav } from '../../components';
+import { selectAppNavContainerSession } from '../../selectors';
 
-type AppNavContainerProps = {
-  items: AppNavItem[];
-};
-
-export const AppNavContainer = ({ items }: AppNavContainerProps) => {
-  const { user, status, logout } = useAuthSessionContext();
+export const AppNavContainer = () => {
+  const dispatch = useAppDispatch();
+  const { sessionStatus, navUser } = useAppSelector(selectAppNavContainerSession);
+  const items = navUser ? navItems : [];
 
   return (
     <AppNav
       items={items}
-      sessionStatus={status}
-      user={user ? { login: user.login } : null}
+      sessionStatus={sessionStatus}
+      user={navUser}
       onLogout={() => {
-        void logout();
+        void dispatch(logout());
       }}
     />
   );

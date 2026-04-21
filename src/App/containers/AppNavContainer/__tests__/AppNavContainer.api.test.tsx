@@ -1,10 +1,12 @@
+import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from 'styled-components';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { AuthSessionProvider } from '@contexts';
+import { AuthSessionInitializer } from '@app';
+import { setupStore } from '@store';
 import { theme } from '@theme';
 
 import { AppNavContainer } from '../AppNavContainer';
@@ -15,7 +17,7 @@ const jsonResponse = (body: unknown, init?: ResponseInit) =>
     headers: { 'Content-Type': 'application/json', ...init?.headers },
   });
 
-describe('AppNavContainer (fetch через AuthSessionProvider)', () => {
+describe('AppNavContainer (fetch через store)', () => {
   beforeEach(() => {
     vi.stubGlobal(
       'fetch',
@@ -39,15 +41,17 @@ describe('AppNavContainer (fetch через AuthSessionProvider)', () => {
 
   test('кнопка «Выйти» вызывает fetch POST /api/logout', async () => {
     const user = userEvent.setup();
+    const testStore = setupStore();
 
     render(
-      <MemoryRouter>
-        <ThemeProvider theme={theme}>
-          <AuthSessionProvider>
-            <AppNavContainer items={[{ path: '/home', label: 'Главная' }]} />
-          </AuthSessionProvider>
-        </ThemeProvider>
-      </MemoryRouter>,
+      <Provider store={testStore}>
+        <MemoryRouter>
+          <ThemeProvider theme={theme}>
+            <AuthSessionInitializer />
+            <AppNavContainer />
+          </ThemeProvider>
+        </MemoryRouter>
+      </Provider>,
     );
 
     await waitFor(() => {

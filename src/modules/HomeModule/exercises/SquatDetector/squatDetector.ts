@@ -13,6 +13,7 @@ const STANDING_THRESHOLD = 155;
 
 export const squatDetector: ExerciseDetector<SquatState> = {
   id: 'squat',
+  order: 40,
   name: 'Приседания',
   description: 'Счет повторений приседаний по углу колена.',
   isActive: true,

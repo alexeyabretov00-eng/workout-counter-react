@@ -1,14 +1,16 @@
 import { useState } from 'react';
 
 import { AuthApiError } from '@api';
-import { useAuthSessionContext } from '@contexts';
+import { loginWithPassword, useAppDispatch, useAppSelector } from '@store';
 import { EVENT_AUTH_NAVIGATE_AFTER_LOGIN, eventBus } from '@utils';
 
 import { LoginPageShell } from './components';
 import { LoginFormContainer } from './containers';
+import { selectLoginModuleAuth } from './selectors';
 
 export const LoginModule = () => {
-  const { loginWithPassword, user, status } = useAuthSessionContext();
+  const dispatch = useAppDispatch();
+  const { user, status } = useAppSelector(selectLoginModuleAuth);
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +25,7 @@ export const LoginModule = () => {
     setError(null);
     setPending(true);
     try {
-      await loginWithPassword(login, password);
+      await dispatch(loginWithPassword({ login, password })).unwrap();
     } catch (err: unknown) {
       const message =
         err instanceof AuthApiError ? err.message : 'Не удалось войти. Попробуйте ещё раз.';

@@ -1,14 +1,16 @@
 import { useState } from 'react';
 
 import { AuthApiError } from '@api';
-import { useAuthSessionContext } from '@contexts';
+import { registerWithPassword, useAppDispatch, useAppSelector } from '@store';
 import { EVENT_AUTH_NAVIGATE_AFTER_REGISTRATION, eventBus } from '@utils';
 
 import { RegisterPageShell } from './components';
 import { RegisterFormContainer } from './containers';
+import { selectRegistrationModuleAuth } from './selectors';
 
 export const RegistrationModule = () => {
-  const { registerWithPassword, user, status } = useAuthSessionContext();
+  const dispatch = useAppDispatch();
+  const { user, status } = useAppSelector(selectRegistrationModuleAuth);
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +25,7 @@ export const RegistrationModule = () => {
     setError(null);
     setPending(true);
     try {
-      await registerWithPassword(login, password);
+      await dispatch(registerWithPassword({ login, password })).unwrap();
     } catch (err: unknown) {
       const message =
         err instanceof AuthApiError

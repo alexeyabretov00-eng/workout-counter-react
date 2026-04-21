@@ -29,6 +29,15 @@ describe('exercise detectors', () => {
     expect(exerciseRegistry.every(detector => Boolean(detector.isActive))).toBe(true);
   });
 
+  test('orders registry by order field (stable for UI and snapshots)', () => {
+    expect(exerciseRegistry.map(detector => detector.id)).toEqual([
+      armyPressDetector.id,
+      bicepsCurlDetector.id,
+      headSideTiltDetector.id,
+      squatDetector.id,
+    ]);
+  });
+
   test('counts one biceps curl rep after down-up-down', () => {
     const down = createEmptyLandmarks();
     down[11] = { x: 0.4, y: 0.3, z: 0, visibility: 1, presence: 1 };

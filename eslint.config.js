@@ -20,7 +20,7 @@ const simpleImportSortImportGroups = [
   // Packages: `react` / `react-dom` first, затем остальные npm-пакеты (`styled-components`, `@mediapipe/...`, …).
   ['^react', '^@?\\w'],
   // Внутренние алиасы проекта (корни под `src/`).
-  ['^@(api|app|components|contexts|modules|pages|routes|test-helpers|theme|types|utils)(/|$)'],
+  ['^@(api|app|components|modules|pages|routes|store|test-helpers|theme|types|utils)(/|$)'],
   // Parent imports. Put `..` last.
   ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
   // Other relative imports. Put same-folder `.` last.

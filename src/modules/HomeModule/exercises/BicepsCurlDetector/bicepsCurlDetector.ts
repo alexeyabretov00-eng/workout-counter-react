@@ -13,6 +13,7 @@ const DOWN_THRESHOLD = 145;
 
 export const bicepsCurlDetector: ExerciseDetector<CurlState> = {
   id: 'biceps-curl',
+  order: 20,
   name: 'Подъем на бицепс',
   description: 'Счет повторений сгибаний рук в локтях.',
   isActive: true,
