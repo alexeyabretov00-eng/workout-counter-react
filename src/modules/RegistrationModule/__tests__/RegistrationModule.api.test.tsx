@@ -1,11 +1,13 @@
+import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from 'styled-components';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { AuthSessionProvider } from '@contexts';
+import { AuthSessionInitializer } from '@app';
 import { RegistrationModule } from '@modules/RegistrationModule';
+import { setupStore } from '@store';
 import { theme } from '@theme';
 
 const jsonResponse = (body: unknown, init?: ResponseInit) =>
@@ -14,7 +16,7 @@ const jsonResponse = (body: unknown, init?: ResponseInit) =>
     headers: { 'Content-Type': 'application/json', ...init?.headers },
   });
 
-describe('RegistrationModule (fetch через AuthSessionProvider)', () => {
+describe('RegistrationModule (fetch через store)', () => {
   beforeEach(() => {
     vi.stubGlobal(
       'fetch',
@@ -40,15 +42,17 @@ describe('RegistrationModule (fetch через AuthSessionProvider)', () => {
 
   test('после отправки формы вызывается fetch POST /api/register с введёнными данными', async () => {
     const user = userEvent.setup();
+    const testStore = setupStore();
 
     render(
-      <MemoryRouter initialEntries={['/register']}>
-        <ThemeProvider theme={theme}>
-          <AuthSessionProvider>
+      <Provider store={testStore}>
+        <MemoryRouter initialEntries={['/register']}>
+          <ThemeProvider theme={theme}>
+            <AuthSessionInitializer />
             <RegistrationModule />
-          </AuthSessionProvider>
-        </ThemeProvider>
-      </MemoryRouter>,
+          </ThemeProvider>
+        </MemoryRouter>
+      </Provider>,
     );
 
     await waitFor(() => {

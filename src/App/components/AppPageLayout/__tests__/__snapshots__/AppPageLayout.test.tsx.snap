@@ -1,0 +1,14 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AppPageLayout > matches snapshot with outlet 1`] = `
+<div
+  class="AppRootLayoutRoot-sc-1iczgko-0 hoshPn"
+>
+  <div>
+    header
+  </div>
+  <div>
+    page
+  </div>
+</div>
+`;

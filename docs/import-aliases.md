@@ -15,8 +15,8 @@
 | `@api`      | `src/api`              |
 | `@app`      | `src/App`              |
 | `@components` | `src/components`     |
-| `@contexts` | `src/contexts`         |
 | `@pages`    | `src/pages`            |
+| `@store`    | `src/store` (Redux store, базовые селекторы среза `auth`, хуки, thunk'и) |
 | `@routes`   | `src/routes`           |
 | `@test-helpers` | `src/test` (хелперы для тестов) |
 | `@theme`    | `src/theme`            |
@@ -28,7 +28,7 @@
 
 ## Когда использовать алиасы
 
-- Переход из **любого** файла под `src/` в **другую верхнеуровневую** папку `src/*` (например из `pages/...` в `src/utils`, из `App` в `src/contexts`) — через соответствующий **`@…`** и баррель, а не через `../../../utils`.
+- Переход из **любого** файла под `src/` в **другую верхнеуровневую** папку `src/*` (например из `pages/...` в `src/utils`, из `App` в `src/store`) — через соответствующий **`@…`** и баррель, а не через `../../../utils`.
 - Точка входа приложения: например `import { App } from '@app'` (баррель `src/App/index.ts`).
 - Модули приложения: например `import { LoginModule } from '@modules/LoginModule'` — публичное API только из барреля `src/modules/<ИмяModule>/index.ts` (см. [docs/modules.md](modules.md)).
 
@@ -46,17 +46,19 @@
 
 Типичные случаи:
 
-1. **Модуль `HomeModule`** (экран тренировки) — подсистемы `logic`, `contexts`, `selectors`, `containers`, `hooks`, `components`, `exercises`, `services` лежат под **`src/modules/HomeModule/`**. Импорты между ними часто выглядят как **`../../contexts`**, **`../exercises`**, **`../../components`** и т.п. — это путь к **`modules/HomeModule/contexts`**, **`modules/HomeModule/exercises`**, **`modules/HomeModule/components`**, а **не** к глобальным `src/contexts` или `src/components`.
+1. **Модуль `HomeModule`** (экран тренировки) — подсистемы `logic`, `contexts`, `selectors`, `containers`, `hooks`, `components`, `exercises`, `services` лежат под **`src/modules/HomeModule/`**. Импорты между ними часто выглядят как **`../../contexts`**, **`../exercises`**, **`../../components`** и т.п. — это путь к **`modules/HomeModule/contexts`**, **`modules/HomeModule/exercises`**, **`modules/HomeModule/components`**, а **не** к **`src/store`** / **`src/components`**.
 
-2. **Селекторы / контейнеры / логика главной** — импорт контекстов и хуков через относительный путь к баррелю **`modules/HomeModule/contexts/index.ts`** (например `../../contexts` из файла в `selectors/.../`), а не через глобальный `@contexts` (тот относится к **`src/contexts`**, например сессия авторизации).
+2. **Контексты и хуки главной (HomeModule)** — импорт через относительный путь к баррелю **`modules/HomeModule/contexts/index.ts`** (например `../../contexts` из файла внутри модуля). Селекторы Redux для экрана — из **`modules/HomeModule/selectors/...`** (локальные хуки/селекторы модуля), не из **`@store`** напрямую в контейнерах, если принято склеивать через слой селекторов модуля.
 
 3. **Детекторы упражнений** — `import type { ExerciseDetector } from '../types'` указывает на **`modules/HomeModule/exercises/types.ts`**, а не на `src/types`.
 
-### Как не перепутать глобальный `@contexts` и локальный `../contexts`
+### Селекторы Redux и `HomeModule`
 
-| Нужен модуль | Пример импорта |
+| Нужно | Пример импорта |
 |--------------|----------------|
-| Auth-сессия, `useAuthSessionContext` | `from '@contexts'` → `src/contexts` |
+| Базовые поля среза auth (`selectAuthUser`, …) | `from '@store'` |
+| Комбинированные селекторы под оболочку приложения | `from './selectors'` рядом с **`App/…`** (папка **`src/App/selectors/`**) |
+| Комбинированные селекторы под модуль (логин, регистрация, …) | `from './selectors'` внутри **`src/modules/<ИмяModule>/`** |
 | Контексты сессии тренировки на главной | `from '../../contexts'` (от файла внутри `HomeModule/...`) → `modules/HomeModule/contexts` |
 
 Аналогично: **`@components`** — общие UI-примитивы в **`src/components`**; **`../../components`** из контейнера главной — виджеты экрана в **`modules/HomeModule/components`**.

@@ -1,18 +1,17 @@
-import { Suspense } from 'react';
+import { type ReactNode, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { useAuthSessionContext } from '@contexts';
-import { navItems } from '@routes';
-
 import { AppRootLayoutRoot, RouteOutletFallbackRoot } from './AppPageLayout.styled';
-import { AppNavContainer } from './containers';
-export const AppPageLayout = () => {
-  const { user } = useAuthSessionContext();
-  const mainNavItems = user ? navItems : [];
 
+export type AppPageLayoutProps = {
+  /** Верхняя область оболочки (например контейнер навигации), без привязки к store внутри layout. */
+  header: ReactNode;
+};
+
+export const AppPageLayout = ({ header }: AppPageLayoutProps) => {
   return (
     <AppRootLayoutRoot>
-      <AppNavContainer items={mainNavItems} />
+      {header}
       <Suspense
         fallback={
           <RouteOutletFallbackRoot role="status" aria-live="polite">

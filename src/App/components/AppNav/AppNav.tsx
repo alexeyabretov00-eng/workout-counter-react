@@ -1,3 +1,5 @@
+import type { LoadingReadyStatus } from '@types';
+
 import {
   AppNavAuth,
   AppNavLink,
@@ -11,7 +13,7 @@ export type AppNavItem = { path: string; label: string; end?: boolean };
 
 export type AppNavProps = {
   items: AppNavItem[];
-  sessionStatus: 'loading' | 'ready';
+  sessionStatus: LoadingReadyStatus;
   user: { login: string } | null;
   onLogout: () => void;
 };

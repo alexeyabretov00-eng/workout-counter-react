@@ -1,60 +1,62 @@
+import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';
 import { ThemeProvider } from 'styled-components';
-import { describe, expect, test, vi } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
-import { AuthSessionContext, type AuthSessionValue } from '@contexts';
+import { setupStore } from '@store';
 import { theme } from '@theme';
 
 import { AppNavContainer } from '../AppNavContainer';
 
-const session = (overrides: Partial<AuthSessionValue>): AuthSessionValue => ({
-  user: null,
-  status: 'ready',
-  loginWithPassword: vi.fn(),
-  registerWithPassword: vi.fn(),
-  logout: vi.fn(),
-  refresh: vi.fn(),
-  ...overrides,
-});
-
 describe('AppNavContainer', () => {
   test('matches snapshot (guest)', () => {
+    const testStore = setupStore({
+      auth: { user: null, status: 'ready' },
+    });
+
     const { container } = render(
-      <MemoryRouter>
-        <ThemeProvider theme={theme}>
-          <AuthSessionContext.Provider value={session({})}>
-            <AppNavContainer items={[{ path: '/home', label: 'Главная' }]} />
-          </AuthSessionContext.Provider>
-        </ThemeProvider>
-      </MemoryRouter>,
+      <Provider store={testStore}>
+        <MemoryRouter>
+          <ThemeProvider theme={theme}>
+            <AppNavContainer />
+          </ThemeProvider>
+        </MemoryRouter>
+      </Provider>,
     );
     expect(container.firstChild).toMatchSnapshot();
   });
 
   test('matches snapshot (authenticated)', () => {
+    const testStore = setupStore({
+      auth: { user: { id: 1, login: 'alex' }, status: 'ready' },
+    });
+
     const { container } = render(
-      <MemoryRouter>
-        <ThemeProvider theme={theme}>
-          <AuthSessionContext.Provider
-            value={session({ user: { id: 1, login: 'alex' }, status: 'ready' })}>
-            <AppNavContainer items={[{ path: '/home', label: 'Главная' }]} />
-          </AuthSessionContext.Provider>
-        </ThemeProvider>
-      </MemoryRouter>,
+      <Provider store={testStore}>
+        <MemoryRouter>
+          <ThemeProvider theme={theme}>
+            <AppNavContainer />
+          </ThemeProvider>
+        </MemoryRouter>
+      </Provider>,
     );
     expect(container.firstChild).toMatchSnapshot();
   });
 
   test('matches snapshot (loading hides auth actions)', () => {
+    const testStore = setupStore({
+      auth: { user: null, status: 'loading' },
+    });
+
     const { container } = render(
-      <MemoryRouter>
-        <ThemeProvider theme={theme}>
-          <AuthSessionContext.Provider value={session({ status: 'loading' })}>
-            <AppNavContainer items={[]} />
-          </AuthSessionContext.Provider>
-        </ThemeProvider>
-      </MemoryRouter>,
+      <Provider store={testStore}>
+        <MemoryRouter>
+          <ThemeProvider theme={theme}>
+            <AppNavContainer />
+          </ThemeProvider>
+        </MemoryRouter>
+      </Provider>,
     );
     expect(container.firstChild).toMatchSnapshot();
   });

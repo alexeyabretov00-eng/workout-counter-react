@@ -1,11 +1,12 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
-import { useAuthSessionContext } from '@contexts';
+import { useAppSelector } from '@store';
 
-import { RouteOutletFallbackRoot } from './AppPageLayout.styled';
+import { RouteOutletFallbackRoot } from './components';
+import { selectRequireAuthGate } from './selectors';
 
 export const RequireAuth = () => {
-  const { user, status } = useAuthSessionContext();
+  const { user, status } = useAppSelector(selectRequireAuthGate);
   const location = useLocation();
 
   if (status === 'loading') {

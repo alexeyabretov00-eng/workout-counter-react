@@ -1,44 +1,37 @@
+import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from 'styled-components';
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
-import * as auth from '@contexts';
-import { LoginModule } from '@modules/LoginModule';
-import { theme } from '@theme';
-
-vi.mock('@contexts', async importOriginal => {
-  const mod = await importOriginal<typeof import('@contexts')>();
+vi.mock('@api', async importOriginal => {
+  const actual = await importOriginal<typeof import('@api')>();
   return {
-    ...mod,
-    useAuthSessionContext: vi.fn(),
+    ...actual,
+    authLogin: vi.fn(() => Promise.resolve({ user: { id: 1, login: 'alice' } })),
   };
 });
 
+import { LoginModule } from '@modules/LoginModule';
+import { setupStore } from '@store';
+import { theme } from '@theme';
+
 describe('LoginModule', () => {
-  let loginWithPassword: ReturnType<typeof vi.fn>;
-
-  beforeEach(() => {
-    loginWithPassword = vi.fn().mockResolvedValue(undefined);
-    vi.mocked(auth.useAuthSessionContext).mockReturnValue({
-      user: null,
-      status: 'ready',
-      loginWithPassword,
-      registerWithPassword: vi.fn(),
-      logout: vi.fn(),
-      refresh: vi.fn(),
-    });
-  });
-
-  test('submits credentials and calls loginWithPassword', async () => {
+  test('submits credentials and updates auth in store', async () => {
     const user = userEvent.setup();
+    const testStore = setupStore({
+      auth: { user: null, status: 'ready' },
+    });
+
     render(
-      <MemoryRouter>
-        <ThemeProvider theme={theme}>
-          <LoginModule />
-        </ThemeProvider>
-      </MemoryRouter>,
+      <Provider store={testStore}>
+        <MemoryRouter>
+          <ThemeProvider theme={theme}>
+            <LoginModule />
+          </ThemeProvider>
+        </MemoryRouter>
+      </Provider>,
     );
     const loginInput = document.querySelector<HTMLInputElement>('input[name="login"]');
     const passwordInput = document.querySelector<HTMLInputElement>('input[name="password"]');
@@ -48,17 +41,23 @@ describe('LoginModule', () => {
     await user.type(passwordInput!, 'secret42');
     await user.click(screen.getByRole('button', { name: 'Войти' }));
     await waitFor(() => {
-      expect(loginWithPassword).toHaveBeenCalledWith('alice', 'secret42');
+      expect(testStore.getState().auth.user).toEqual({ id: 1, login: 'alice' });
     });
   });
 
   test('renders shell and form', () => {
+    const testStore = setupStore({
+      auth: { user: null, status: 'ready' },
+    });
+
     render(
-      <MemoryRouter>
-        <ThemeProvider theme={theme}>
-          <LoginModule />
-        </ThemeProvider>
-      </MemoryRouter>,
+      <Provider store={testStore}>
+        <MemoryRouter>
+          <ThemeProvider theme={theme}>
+            <LoginModule />
+          </ThemeProvider>
+        </MemoryRouter>
+      </Provider>,
     );
     expect(screen.getByText('Вход')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Войти' })).toBeInTheDocument();

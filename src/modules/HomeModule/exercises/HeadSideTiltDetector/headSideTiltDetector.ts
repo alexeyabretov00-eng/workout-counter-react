@@ -15,6 +15,7 @@ const SIDE_THRESHOLD = 0.035;
 
 export const headSideTiltDetector: ExerciseDetector<HeadSideTiltState> = {
   id: 'head-side-tilt',
+  order: 30,
   name: 'Наклоны головы вправо-влево',
   description: 'Счет повторений наклонов головы по смещению носа относительно плеч.',
   isActive: true,

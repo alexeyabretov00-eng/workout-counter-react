@@ -30,7 +30,7 @@
 - Добавить алиас **`@store`** → **`./src/store`** в **`tsconfig.app.json`** и **`vite.config.ts`** (как у остальных **`@…`**); обновить **`docs/import-aliases.md`**.
 - **`configureStore`** в **`src/store/`**: редьюсер **`auth`** (имя зафиксировать: например **`authReducer`** / ключ **`auth`**).
 - Файлы slice: например **`src/store/auth/authSlice.ts`** (state, reducers, **`extraReducers`** для thunk’ов) и **`src/store/auth/authThunks.ts`** или thunk’и рядом со slice — на усмотрение реализации, без **`export *`**.
-- **Селекторы — в отдельном каталоге на уровне `src`**, не внутри **`src/store/`** и не внутри файла slice: **`src/selectors/`**. Для среза auth — подпапка **`src/selectors/auth/`** (например **`index.ts`** и при необходимости отдельные файлы по смыслу), баррель **`src/selectors/index.ts`**. Другие срезы позже — **`src/selectors/<slice>/`**. Добавить алиас **`@selectors`** → **`./src/selectors`** в **`tsconfig.app.json`** и **`vite.config.ts`**; обновить **`docs/import-aliases.md`** (импорт селекторов из **`@selectors`**, без **`export *`** в баррелях).
+- **Базовые селекторы среза auth** — в **`src/store/auth/authSelectors.ts`**, реэкспорт из **`@store`**. **Комбинированные селекторы под UI** — рядом с потребителями: **`src/App/selectors/*Selectors.ts`** (оболочка), **`src/modules/LoginModule/selectors/`**, **`src/modules/RegistrationModule/selectors/`** и т.д.; импорт через относительный **`./selectors`** или баррель папки. Глобального алиаса **`@selectors`** нет.
 
 ### 3.3. Состояние и действия
 
@@ -42,9 +42,9 @@
 
 ### 3.4. Селекторы
 
-- Все селекторы — в **`src/selectors/`** (см. §3.2). Для auth: **`src/selectors/auth/`** — **`selectAuthUser`**, **`selectAuthStatus`**, производные через **`createSelector`** при необходимости; тип **`RootState`** импортировать из **`@store`** (чтобы избежать циклических импортов — при необходимости вынести **`RootState`** в **`src/store/types.ts`** или реэкспорт из **`store.ts`**).
-- Не класть селекторы в **`authSlice.ts`**: slice отвечает за state и редьюсеры, чтение state — только через **`@selectors`**.
-- Компоненты и тесты импортируют селекторы из **`@selectors`** (баррель **`src/selectors/index.ts`**), без прямого доступа к **`state.auth`** в UI.
+- Примитивы **`selectAuthUser`**, **`selectAuthStatus`** — в **`src/store/auth/authSelectors.ts`**, без прямого доступа к **`state.auth`** в UI из компонентов (кроме комбинированных селекторов, построенных на этих примитивах).
+- Комбинированные селекторы под контейнеры — в **`App/selectors/`** и **`modules/…/selectors/`**; **`createSelector`** и примитивы из **`@store`**.
+- Не класть селекторы в **`authSlice.ts`**: slice отвечает за state и редьюсеры.
 
 ### 3.5. Типы
 
