@@ -5,11 +5,6 @@ export {
   type WorkoutSessionChromeControlsValue,
 } from './WorkoutSessionChromeControls';
 export {
-  useWorkoutSessionChromeStatusContext,
-  WorkoutSessionChromeStatusContext,
-  type WorkoutSessionChromeStatusValue,
-} from './WorkoutSessionChromeStatus';
-export {
   useWorkoutSessionStageContext,
   WorkoutSessionStageContext,
   type WorkoutSessionStageValue,

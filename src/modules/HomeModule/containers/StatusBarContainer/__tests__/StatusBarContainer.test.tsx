@@ -1,28 +1,28 @@
-import { describe, expect, test, vi } from 'vitest';
+import { Provider } from 'react-redux';
+import { describe, expect, test } from 'vitest';
 
+import { setupStore } from '@store';
 import { renderWithTheme } from '@test-helpers';
 
 import { StatusBarContainer } from '../StatusBarContainer';
 
-vi.mock('../../../logic', async importOriginal => {
-  const actual = await importOriginal<typeof import('../../../logic')>();
-  return {
-    ...actual,
-    useStatusBarContainerSelector: () => ({
-      modelStatus: 'ready',
-      modelStatusLabel: 'загружена',
-      isCameraReady: true,
-      voiceStatus: 'listening',
-      voiceStatusLabel: 'Голос: слушаю',
-      isPaused: false,
-      cameraError: null,
-    }),
-  };
+const testStore = setupStore({
+  workoutSessionChrome: {
+    modelStatus: 'ready',
+    isCameraReady: true,
+    voiceStatus: 'listening',
+    isPaused: false,
+    cameraError: null,
+  },
 });
 
 describe('StatusBarContainer', () => {
   test('matches snapshot', () => {
-    const { container } = renderWithTheme(<StatusBarContainer />);
+    const { container } = renderWithTheme(
+      <Provider store={testStore}>
+        <StatusBarContainer />
+      </Provider>,
+    );
     expect(container.firstChild).toMatchSnapshot();
   });
 });

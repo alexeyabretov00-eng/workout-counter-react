@@ -16,7 +16,7 @@
 | `@app`      | `src/App`              |
 | `@components` | `src/components`     |
 | `@pages`    | `src/pages`            |
-| `@store`    | `src/store` (Redux store, базовые селекторы среза `auth`, хуки, thunk'и) |
+| `@store`    | `src/store` (Redux store, селекторы срезов `auth`, `workoutSessionChrome`, хуки, thunk'и) |
 | `@routes`   | `src/routes`           |
 | `@test-helpers` | `src/test` (хелперы для тестов) |
 | `@theme`    | `src/theme`            |
@@ -56,10 +56,10 @@
 
 | Нужно | Пример импорта |
 |--------------|----------------|
-| Базовые поля среза auth (`selectAuthUser`, …) | `from '@store'` |
+| Базовые поля срезов (`selectAuthUser`, `selectWorkoutSessionChrome`, …) | `from '@store'` |
 | Комбинированные селекторы под оболочку приложения | `from './selectors'` рядом с **`App/…`** (папка **`src/App/selectors/`**) |
 | Комбинированные селекторы под модуль (логин, регистрация, …) | `from './selectors'` внутри **`src/modules/<ИмяModule>/`** |
-| Контексты сессии тренировки на главной | `from '../../contexts'` (от файла внутри `HomeModule/...`) → `modules/HomeModule/contexts` |
+| Контексты сессии тренировки на главной (controls, stage; статус chrome — в `@store`) | `from '../../contexts'` (от файла внутри `HomeModule/...`) → `modules/HomeModule/contexts` |
 
 Аналогично: **`@components`** — общие UI-примитивы в **`src/components`**; **`../../components`** из контейнера главной — виджеты экрана в **`modules/HomeModule/components`**.
 

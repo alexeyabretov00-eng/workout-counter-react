@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import { authReducer } from './auth';
+import { workoutSessionChromeReducer } from './workoutSessionChrome';
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  workoutSessionChrome: workoutSessionChromeReducer,
 });
 
 const devToolsOptions = import.meta.env.DEV ? { name: 'workout-counter' } : false;

@@ -1,5 +1,7 @@
+import { Provider } from 'react-redux';
 import { describe, expect, test, vi } from 'vitest';
 
+import { setupStore } from '@store';
 import { renderWithTheme } from '@test-helpers';
 
 import { WorkoutLogicLayout } from '../WorkoutLogicLayout';
@@ -28,10 +30,13 @@ vi.mock('../../../hooks', () => {
 
 describe('WorkoutLogicLayout', () => {
   test('provides chrome contexts to children', () => {
+    const testStore = setupStore();
     const { getByText } = renderWithTheme(
-      <WorkoutLogicLayout>
-        <span>child</span>
-      </WorkoutLogicLayout>,
+      <Provider store={testStore}>
+        <WorkoutLogicLayout>
+          <span>child</span>
+        </WorkoutLogicLayout>
+      </Provider>,
     );
     expect(getByText('child')).toBeInTheDocument();
   });

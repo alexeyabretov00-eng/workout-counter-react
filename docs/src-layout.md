@@ -32,7 +32,7 @@
 ## `modules/HomeModule/contexts`
 
 - Назначение: **`React.createContext`**, типы значения контекста и при необходимости хук **`use…Context`** с проверкой провайдера (throw, если `null`).
-- **Каждый контекст — своя подпапка** в PascalCase (например `WorkoutSessionChromeControls`, `WorkoutSessionChromeStatus`, `WorkoutSessionStage`); внутри — файлы контекста, типов, хука потребления, **`index.ts`** с явными реэкспортами.
+- **Каждый контекст — своя подпапка** в PascalCase (например `WorkoutSessionChromeControls`, `WorkoutSessionStage`); статус chrome (модель, камера, голос, пауза) синхронизируется в **`@store`** (`workoutSessionChrome`), без отдельного контекста. Внутри подпапки — файлы контекста, типов, хука потребления, **`index.ts`** с явными реэкспортами.
 - Пример контракта **`WorkoutSessionChromeControls`**: значения для отображения плюс **`dispatchChromeControl`**, аргумент — union **`WorkoutSessionChromeControlAction`** (см. `modules/HomeModule/contexts/WorkoutSessionChromeControls/types.ts` и раздел **«Chrome-контролы»** в [architecture.md](architecture.md)).
 - Баррель: **`modules/HomeModule/contexts/index.ts`** — точка импорта для кода вне подпапок контекста (например из `WorkoutLogicLayout` — **`../../contexts`** относительно файла в `logic/WorkoutLogicLayout/`).
 
@@ -40,7 +40,7 @@
 
 ## `modules/HomeModule/selectors`
 
-- Назначение: хуки **`use<ИмяКонтейнера>ContainerSelector`** для контейнеров слотов: внутри `useContext` + `useMemo` по полям контекста (без сторонних библиотек селекторов, если проект так не договорился отдельно).
+- Назначение: хуки **`use<ИмяКонтейнера>ContainerSelector`** для контейнеров слотов: внутри `useContext` / **`useAppSelector`** + `useMemo` по полям (без сторонних библиотек селекторов, если проект так не договорился отдельно).
 - **Каждый селектор — своя подпапка** в PascalCase с суффиксом **`Selector`** (например `ExerciseControlBarContainerSelector`, `StatusBarContainerSelector`, `StageContainerSelector`).
 
 | Файл | Назначение |

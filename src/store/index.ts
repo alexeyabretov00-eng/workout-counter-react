@@ -11,3 +11,14 @@ export {
 export { useAppDispatch, useAppSelector } from './hooks';
 export type { AppDispatch, RootState } from './store';
 export { setupStore, store } from './store';
+export type {
+  WorkoutSessionChromeState,
+  WorkoutSessionChromeStatusValue,
+} from './workoutSessionChrome';
+export {
+  initialWorkoutSessionChromeState,
+  resetWorkoutSessionChrome,
+  selectWorkoutSessionChrome,
+  setWorkoutSessionChrome,
+  workoutSessionChromeReducer,
+} from './workoutSessionChrome';

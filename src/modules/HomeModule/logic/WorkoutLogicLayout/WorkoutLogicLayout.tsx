@@ -1,11 +1,11 @@
-import { type ReactNode, useCallback, useMemo, useState } from 'react';
+import { type ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+
+import { resetWorkoutSessionChrome, setWorkoutSessionChrome, useAppDispatch } from '@store';
 
 import {
   type WorkoutSessionChromeControlAction,
   WorkoutSessionChromeControlsContext,
   type WorkoutSessionChromeControlsValue,
-  WorkoutSessionChromeStatusContext,
-  type WorkoutSessionChromeStatusValue,
   WorkoutSessionStageContext,
 } from '../../contexts';
 import { exerciseRegistry } from '../../exercises';
@@ -16,6 +16,7 @@ export type WorkoutLogicLayoutProps = {
 };
 
 export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
+  const dispatch = useAppDispatch();
   const [exerciseId, setExerciseId] = useState(exerciseRegistry[0].id);
   const [restDurationMinutes, setRestDurationMinutes] = useState<number>(3);
   const {
@@ -96,16 +97,23 @@ export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
     ],
   );
 
-  const statusValue = useMemo<WorkoutSessionChromeStatusValue>(
-    () => ({
-      modelStatus,
-      isCameraReady,
-      voiceStatus,
-      isPaused,
-      cameraError,
-    }),
-    [modelStatus, isCameraReady, voiceStatus, isPaused, cameraError],
-  );
+  useEffect(() => {
+    dispatch(
+      setWorkoutSessionChrome({
+        modelStatus,
+        isCameraReady,
+        voiceStatus,
+        isPaused,
+        cameraError,
+      }),
+    );
+  }, [cameraError, dispatch, isCameraReady, isPaused, modelStatus, voiceStatus]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetWorkoutSessionChrome());
+    };
+  }, [dispatch]);
 
   const stageValue = useMemo(
     () => ({
@@ -118,11 +126,9 @@ export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
 
   return (
     <WorkoutSessionChromeControlsContext.Provider value={controlsValue}>
-      <WorkoutSessionChromeStatusContext.Provider value={statusValue}>
-        <WorkoutSessionStageContext.Provider value={stageValue}>
-          {children}
-        </WorkoutSessionStageContext.Provider>
-      </WorkoutSessionChromeStatusContext.Provider>
+      <WorkoutSessionStageContext.Provider value={stageValue}>
+        {children}
+      </WorkoutSessionStageContext.Provider>
     </WorkoutSessionChromeControlsContext.Provider>
   );
 };
