@@ -1,2 +1,2 @@
 export type { LoginModuleAuthModel } from './loginModuleSelectors';
-export { selectLoginModuleAuth } from './loginModuleSelectors';
+export { getLoginFormContainerProps } from './loginModuleSelectors';
