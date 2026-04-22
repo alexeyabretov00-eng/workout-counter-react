@@ -10,7 +10,7 @@ alwaysApply: true
 - Корневой баррель **`src/components/index.ts`**: при добавлении компонента **в той же задаче** добавь явные реэкспорты из `./<Name>`.
 - Снаружи каталога `components` (например из `App.tsx`) импортируй только из **`./components`**, не из `./components/<Name>/<Name>`.
 - Стили виджета — **styled-components** в **`<Name>.styled.tsx`**, значения из **темы** (`src/theme`); глобальный базис — **`GlobalStyle`** в `src/theme/globalStyle.tsx`. Для вариантов состояния используй transient props (`$…`), чтобы не засорять DOM.
-- Объявляй компонент как **именованный** `const` со стрелочной функцией: `export const Name = (props: Props) => { … }`. Свойство **`displayName`** задавай **только** если из-за обёртки (`memo`, `forwardRef`, HOC и т.п.) имя в React DevTools теряется — тогда `Name.displayName = 'Name'` (как у публичного экспорта).
+- Объявляй презентационный компонент как **именованный** `const` со стрелочной функцией и типом **`React.FC<Props>`**: `export const Name: React.FC<NameProps> = (props) => { … }` (деструктуризация пропсов в аргументе — по желанию). Отдельный `import React` для `React.FC` не обязателен, если среда уже видит глобальный namespace `React` из типов. Свойство **`displayName`** задавай **только** если из-за обёртки (`memo`, `forwardRef`, HOC и т.п.) имя в React DevTools теряется — тогда `Name.displayName = 'Name'` (как у публичного экспорта).
 - Логику сессии, хуки и сервисы в компоненты не тащи — пропсы и коллбеки.
 
 Подробнее для людей: `docs/components.md`.

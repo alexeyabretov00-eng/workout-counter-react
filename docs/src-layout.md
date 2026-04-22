@@ -8,7 +8,7 @@
 
 ## Стиль объявления функций
 
-Функциональные компоненты в **`logic`** и **`containers`**, хуки в **`contexts`** и **`selectors`** оформляйте как **именованный** `const` со стрелочной функцией (`export const Name = … => { … }`). Свойство **`displayName`** задавайте **только** если имя в React DevTools теряется из‑за обёртки (`memo`, `forwardRef`, HOC и т.п.). Подробности и примеры — в [docs/components.md](components.md), раздел **«Объявление компонента (функция)»**.
+Функциональные компоненты в **`logic`** и **`containers`**, хуки в **`contexts`** и **`selectors`** оформляйте как **именованный** `const` со стрелочной функцией (`export const Name = … => { … }`); **`React.FC`** здесь **не требуется**. Презентационные виджеты в **`modules/HomeModule/components`** (и аналогично в `src/components`, `src/App/components`) — с **`React.FC<Props>`**, как в [docs/components.md](components.md), раздел **«Объявление компонента (функция)»**. Свойство **`displayName`** задавайте **только** если имя в React DevTools теряется из‑за обёртки (`memo`, `forwardRef`, HOC и т.п.).
 
 ---
 

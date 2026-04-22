@@ -11,7 +11,7 @@ const GuestShell = () => (
   <>
     <AppNav
       items={[{ path: '/home', label: 'Главная' }]}
-      sessionStatus="ready"
+      isLoading={false}
       user={null}
       onLogout={vi.fn()}
     />
@@ -24,7 +24,7 @@ describe('AppNav', () => {
     const { container } = renderWithRouterTheme(
       <AppNav
         items={[{ path: '/home', label: 'Главная' }]}
-        sessionStatus="ready"
+        isLoading={false}
         user={null}
         onLogout={vi.fn()}
       />,
@@ -36,7 +36,7 @@ describe('AppNav', () => {
     const { container } = renderWithRouterTheme(
       <AppNav
         items={[{ path: '/home', label: 'Главная' }]}
-        sessionStatus="ready"
+        isLoading={false}
         user={{ login: 'alex' }}
         onLogout={vi.fn()}
       />,
@@ -46,7 +46,7 @@ describe('AppNav', () => {
 
   test('matches snapshot (loading hides auth actions)', () => {
     const { container } = renderWithRouterTheme(
-      <AppNav items={[]} sessionStatus="loading" user={null} onLogout={vi.fn()} />,
+      <AppNav items={[]} isLoading user={null} onLogout={vi.fn()} />,
     );
     expect(container.firstChild).toMatchSnapshot();
   });
@@ -58,7 +58,7 @@ describe('AppNav', () => {
     renderWithRouterTheme(
       <AppNav
         items={[{ path: '/home', label: 'Главная' }]}
-        sessionStatus="ready"
+        isLoading={false}
         user={{ login: 'alex' }}
         onLogout={onLogout}
       />,

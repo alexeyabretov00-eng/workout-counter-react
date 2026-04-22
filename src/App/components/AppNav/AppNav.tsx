@@ -1,5 +1,3 @@
-import type { LoadingReadyStatus } from '@types';
-
 import {
   AppNavAuth,
   AppNavLink,
@@ -13,12 +11,39 @@ export type AppNavItem = { path: string; label: string; end?: boolean };
 
 export type AppNavProps = {
   items: AppNavItem[];
-  sessionStatus: LoadingReadyStatus;
+  /** `true` во время начальной загрузки сессии (`/api/me`) — блок входа/выхода скрыт. */
+  isLoading: boolean;
   user: { login: string } | null;
   onLogout: () => void;
 };
 
-export const AppNav = ({ items, sessionStatus, user, onLogout }: AppNavProps) => {
+type AppNavAuthContentProps = Pick<AppNavProps, 'isLoading' | 'user' | 'onLogout'>;
+
+const AppNavAuthContent: React.FC<AppNavAuthContentProps> = ({ isLoading, user, onLogout }) => {
+  if (isLoading) {
+    return null;
+  }
+
+  if (user) {
+    return (
+      <>
+        <AppNavUserLabel>{user.login}</AppNavUserLabel>
+        <AppNavTextButton type="button" onClick={onLogout}>
+          Выйти
+        </AppNavTextButton>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <AppNavLink to="/login">Вход</AppNavLink>
+      <AppNavLink to="/register">Регистрация</AppNavLink>
+    </>
+  );
+};
+
+export const AppNav: React.FC<AppNavProps> = ({ items, isLoading, user, onLogout }) => {
   return (
     <AppNavRoot>
       <AppNavMain>
@@ -29,19 +54,7 @@ export const AppNav = ({ items, sessionStatus, user, onLogout }: AppNavProps) =>
         ))}
       </AppNavMain>
       <AppNavAuth>
-        {sessionStatus === 'loading' ? null : user ? (
-          <>
-            <AppNavUserLabel>{user.login}</AppNavUserLabel>
-            <AppNavTextButton type="button" onClick={onLogout}>
-              Выйти
-            </AppNavTextButton>
-          </>
-        ) : (
-          <>
-            <AppNavLink to="/login">Вход</AppNavLink>
-            <AppNavLink to="/register">Регистрация</AppNavLink>
-          </>
-        )}
+        <AppNavAuthContent isLoading={isLoading} user={user} onLogout={onLogout} />
       </AppNavAuth>
     </AppNavRoot>
   );

@@ -3,13 +3,13 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAppSelector } from '@store';
 
 import { RouteOutletFallbackRoot } from './components';
-import { selectRequireAuthGate } from './selectors';
+import { getRequireAuthProps } from './selectors';
 
 export const RequireAuth = () => {
-  const { user, status } = useAppSelector(selectRequireAuthGate);
+  const { user, isLoading } = useAppSelector(getRequireAuthProps);
   const location = useLocation();
 
-  if (status === 'loading') {
+  if (isLoading) {
     return (
       <RouteOutletFallbackRoot role="status" aria-live="polite">
         Загрузка…
