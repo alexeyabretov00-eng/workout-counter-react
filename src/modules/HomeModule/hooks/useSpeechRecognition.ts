@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { VoiceStatus } from '@types';
 
-import { matchesCommand, normalizeSpeechText } from '@utils';
+import { patchWorkoutSessionControls, useAppDispatch } from '@store';
+import { eventBus, matchesCommand, normalizeSpeechText } from '@utils';
 
-import type { WorkoutSessionChromeControlAction } from '../contexts';
+import { EVENT_WORKOUT_SESSION_CONTROLS_COMMAND } from '../constants';
 import type { ExerciseDetector } from '../exercises';
 
 const TRANSIENT_SPEECH_ERRORS = new Set(['aborted', 'no-speech']);
@@ -14,7 +15,6 @@ type UseSpeechRecognitionParams = {
   isRestCountdownActive: boolean;
   isCameraInitializing: boolean;
   isModelReady: boolean;
-  dispatchChromeControl: (action: WorkoutSessionChromeControlAction) => void;
 };
 
 const START_COMMANDS = ['старт', 'начинаем упражнение', 'начать упражнение'];
@@ -43,8 +43,9 @@ export const useSpeechRecognition = ({
   isRestCountdownActive,
   isCameraInitializing,
   isModelReady,
-  dispatchChromeControl,
 }: UseSpeechRecognitionParams) => {
+  const dispatch = useAppDispatch();
+
   const [voiceStatus, setVoiceStatus] = useState<VoiceStatus>(() => getInitialVoiceStatus());
 
   const commandExerciseLookup = useMemo(() => {
@@ -66,7 +67,6 @@ export const useSpeechRecognition = ({
   const isRestCountdownActiveRef = useRef(isRestCountdownActive);
   const isCameraInitializingRef = useRef(isCameraInitializing);
   const isModelReadyRef = useRef(isModelReady);
-  const dispatchChromeControlRef = useRef(dispatchChromeControl);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const shouldRestartRef = useRef(false);
   const lastCommandRef = useRef<{ key: string; at: number } | null>(null);
@@ -76,8 +76,7 @@ export const useSpeechRecognition = ({
     isRestCountdownActiveRef.current = isRestCountdownActive;
     isCameraInitializingRef.current = isCameraInitializing;
     isModelReadyRef.current = isModelReady;
-    dispatchChromeControlRef.current = dispatchChromeControl;
-  }, [dispatchChromeControl, isCameraInitializing, isModelReady, isRestCountdownActive, isRunning]);
+  }, [isCameraInitializing, isModelReady, isRestCountdownActive, isRunning]);
 
   useEffect(() => {
     const SpeechRecognitionCtor = window.SpeechRecognition ?? window.webkitSpeechRecognition;
@@ -131,20 +130,24 @@ export const useSpeechRecognition = ({
         isModelReadyRef.current
       ) {
         runCommand('start', () => {
-          dispatchChromeControlRef.current({ type: 'start' });
+          eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, { type: 'start' });
         });
         return;
       }
 
       const isPauseCommand = PAUSE_COMMANDS.some(command => matchesCommand(transcript, command));
       if (isPauseCommand && isRunningRef.current) {
-        runCommand('pause', () => dispatchChromeControlRef.current({ type: 'pause' }));
+        runCommand('pause', () =>
+          eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, { type: 'pause' }),
+        );
         return;
       }
 
       const isResetCommand = RESET_COMMANDS.some(command => matchesCommand(transcript, command));
       if (isResetCommand && isRunningRef.current && !isRestCountdownActiveRef.current) {
-        runCommand('reset', () => dispatchChromeControlRef.current({ type: 'reset' }));
+        runCommand('reset', () =>
+          eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, { type: 'reset' }),
+        );
         return;
       }
 
@@ -152,7 +155,9 @@ export const useSpeechRecognition = ({
         matchesCommand(transcript, command),
       );
       if (isShutdownCommand && isRunningRef.current && !isRestCountdownActiveRef.current) {
-        runCommand('shutdown', () => dispatchChromeControlRef.current({ type: 'shutdown' }));
+        runCommand('shutdown', () =>
+          eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, { type: 'shutdown' }),
+        );
         return;
       }
 
@@ -161,11 +166,8 @@ export const useSpeechRecognition = ({
           runCommand(
             `rest-${option.minutes}`,
             () => {
-              dispatchChromeControlRef.current({
-                type: 'setRestDurationMinutes',
-                minutes: option.minutes,
-              });
-              dispatchChromeControlRef.current({
+              dispatch(patchWorkoutSessionControls({ restDurationMinutes: option.minutes }));
+              eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, {
                 type: 'shutdown',
                 restDurationOverrideMs: option.minutes * 60_000,
               });
@@ -183,10 +185,7 @@ export const useSpeechRecognition = ({
       for (const [phrase, nextExerciseId] of commandExerciseLookup) {
         if (matchesCommand(transcript, phrase)) {
           runCommand(`exercise-${nextExerciseId}`, () =>
-            dispatchChromeControlRef.current({
-              type: 'setExerciseId',
-              exerciseId: nextExerciseId,
-            }),
+            dispatch(patchWorkoutSessionControls({ exerciseId: nextExerciseId })),
           );
           return;
         }
@@ -254,7 +253,7 @@ export const useSpeechRecognition = ({
       recognition.stop();
       recognitionRef.current = null;
     };
-  }, [commandExerciseLookup]);
+  }, [commandExerciseLookup, dispatch]);
 
   return { voiceStatus };
 };

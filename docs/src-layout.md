@@ -15,7 +15,7 @@
 ## `modules/HomeModule/logic`
 
 - Назначение: компоненты и модули **оркестрации** экрана тренировки (хуки сессии, голоса, провайдеры контекста), **без** презентационных слотов в духе кнопок из `components`.
-- Публичная точка входа: **`modules/HomeModule/logic/index.ts`** — реэкспорт того, что должны импортировать контейнеры и `HomeModule` (`WorkoutLogicLayout`, хуки `use…ContainerSelector`, типы контекстов).
+- Публичная точка входа: **`modules/HomeModule/logic/index.ts`** — реэкспорт оркестрации (`WorkoutLogicLayout`), типов из `@store` при необходимости, селектора сцены **`useStageContainerSelector`** и типов **`WorkoutSessionStageValue`**; остальные селекторы контейнеров импортируют из **`../selectors`**.
 - **Один публичный компонент логики — одна подпапка в PascalCase** (как у UI-компонентов):
 
 | Файл | Назначение |
@@ -32,30 +32,33 @@
 ## `modules/HomeModule/contexts`
 
 - Назначение: **`React.createContext`**, типы значения контекста и при необходимости хук **`use…Context`** с проверкой провайдера (throw, если `null`).
-- **Каждый контекст — своя подпапка** в PascalCase (например `WorkoutSessionChromeControls`, `WorkoutSessionStage`); статус chrome (модель, камера, голос, пауза) синхронизируется в **`@store`** (`workoutSessionChrome`), без отдельного контекста. Внутри подпапки — файлы контекста, типов, хука потребления, **`index.ts`** с явными реэкспортами.
-- Пример контракта **`WorkoutSessionChromeControls`**: значения для отображения плюс **`dispatchChromeControl`**, аргумент — union **`WorkoutSessionChromeControlAction`** (см. `modules/HomeModule/contexts/WorkoutSessionChromeControls/types.ts` и раздел **«Chrome-контролы»** в [architecture.md](architecture.md)).
+- **Каждый контекст — своя подпапка** в PascalCase. Сейчас публично экспортируется **`WorkoutSessionStage`** (сцена: ссылка на canvas, `isCameraInitializing`, `isPaused`). Данные панели и строки статуса (модель, камера, голос, `exerciseId`, отдых и т.д.) лежат в **Redux** — срез **`workoutSessionControls`**, а команды сессии доставляются через **`eventBus`** (см. раздел **«Срез controls и команды сессии»** в [architecture.md](architecture.md)).
+- Внутри подпапки контекста — файлы провайдера, типов, хука потребления, **`index.ts`** с явными реэкспортами.
 - Баррель: **`modules/HomeModule/contexts/index.ts`** — точка импорта для кода вне подпапок контекста (например из `WorkoutLogicLayout` — **`../../contexts`** относительно файла в `logic/WorkoutLogicLayout/`).
+- Имя среза **`workoutSessionControls`** — про панель и статусы вокруг сцены, не про браузер Chrome; подробнее — [architecture.md](architecture.md), раздел **«Именование: workoutSessionControls»**.
 
 ---
 
 ## `modules/HomeModule/selectors`
 
-- Назначение: хуки **`use<ИмяКонтейнера>ContainerSelector`** для контейнеров слотов: внутри `useContext` / **`useAppSelector`** + `useMemo` по полям (без сторонних библиотек селекторов, если проект так не договорился отдельно).
+- Назначение: подготовка пропсов для контейнеров слотов.
+  - Для данных **Redux** — мемоизированный селектор **`get<ИмяКонтейнера>Props`** (файл **`ExerciseControlBarContainerSelector.ts`** / **`StatusBarContainerSelector.ts`**, **`createSelector`** из **`@reduxjs/toolkit`**), в контейнере — **`useAppSelector(get…Props)`**.
+  - Для **сцены** — хук **`useStageContainerSelector`** (читает **`WorkoutSessionStageContext`**, внутри **`useMemo`**).
 - **Каждый селектор — своя подпапка** в PascalCase с суффиксом **`Selector`** (например `ExerciseControlBarContainerSelector`, `StatusBarContainerSelector`, `StageContainerSelector`).
 
 | Файл | Назначение |
 |------|------------|
-| `<Name>/use…ContainerSelector.ts` | Реализация хука |
-| `<Name>/index.ts` | `export { use…ContainerSelector } from '…'` |
+| `<Name>/<Name>ContainerSelector.ts` или аналог | Селектор(ы) для стора (`get…Props`) или хук для контекста |
+| `<Name>/index.ts` | Явный реэкспорт публичного API подпапки |
 
 - Баррель: **`modules/HomeModule/selectors/index.ts`**.
-- Контейнеры по соглашению импортируют селекторы из **`../logic`** (реэкспорт из `logic/index.ts`), а не напрямую из `./selectors`, чтобы сохранить одну привычную точку для «всё про экран тренировки».
+- **`useStageContainerSelector`** реэкспортируется из **`modules/HomeModule/logic/index.ts`**; **`getExerciseControlBarContainerProps`** и **`getStatusBarContainerProps`** импортируют из **`../selectors`** или из барреля **`../../selectors`** (как договорено в конкретном контейнере).
 
 ---
 
 ## `modules/HomeModule/containers`
 
-- Назначение: компоненты **слотов** `HomeLayout` (`controls`, `statusBar`, `stage` и т.д.): подключаются к данным **только** через **`use…ContainerSelector`**, **без пропсов** состояния сессии (кроме того, что приходит из React-контекста внутри селектора).
+- Назначение: компоненты **слотов** `HomeLayout` (`header`, `controls`, `statusBar`, `stage` и т.д.): подключаются к данным через селекторы (**`useAppSelector(get…ContainerProps)`** для Redux, **`useStageContainerSelector`** для сцены), **без пропсов** состояния сессии извне. Команды **`start` / pause / reset / shutdown`** инициируют через **`eventBus`**, смена упражнения и минут отдыха — **`patchWorkoutSessionControls`** (см. [architecture.md](architecture.md)).
 - Структура **как у `src/components`**: одна папка на контейнер в PascalCase, **`ContainerName/ContainerName.tsx`**, **`ContainerName/index.ts`**, баррель **`modules/HomeModule/containers/index.ts`**.
 - Разметка слота: контейнер рендерит **один** презентационный компонент — из **`src/components`** (примитивы) или из барреля **`modules/HomeModule/components`** для виджетов главной (панель управления, статус-бар, сцена); стили виджета — **`<Имя>.styled.tsx`**, токены из **`src/theme`**. Глобальные правила — в **`GlobalStyle`** (`src/theme/globalStyle.tsx`).
 - Импорт в `HomeModule.tsx`: только из **`./containers`** (путь к баррелю — относительно файла модуля).
@@ -78,4 +81,4 @@
 
 После добавления публичной сущности обновляйте соответствующий **`index.ts`** барреля в **той же задаче**.
 
-Код вне **`HomeModule`** при необходимости может импортировать **типы** контекстов главной из **`src/modules/HomeModule/contexts`**; хуки сессии и речь живут в **`src/modules/HomeModule/hooks`**.
+Код вне **`HomeModule`** при необходимости может импортировать **типы** контекста сцены из **`src/modules/HomeModule/contexts`**, типы «хрома» сессии — из **`@store`**; хуки сессии и речь живут в **`src/modules/HomeModule/hooks`**.

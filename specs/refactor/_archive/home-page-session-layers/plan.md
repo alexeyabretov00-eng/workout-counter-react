@@ -1,5 +1,7 @@
 # План: колокация контекстов, контейнеров, селекторов и логики главной
 
+> **Сейчас:** слои главной — в **`src/modules/HomeModule/`**; данные панели/статусов — Redux **`workoutSessionControls`**. Ниже — план переноса из корня `src`.
+
 ## 1. Контекст
 
 Экран тренировки (`HomePage`) — единственный потребитель `WorkoutLogicLayout`, контекстов сессии (`WorkoutSessionChromeControls`, `WorkoutSessionChromeStatus`, `WorkoutSessionStage`), контейнеров слотов и селекторов. Сейчас эти слои лежат в корне `src` (`contexts`, `containers`, `selectors`, `logic`), хотя по смыслу относятся только к главной — аналогично перенесённым под `HomePage` презентационным виджетам.

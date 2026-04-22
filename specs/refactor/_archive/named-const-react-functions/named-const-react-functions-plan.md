@@ -1,5 +1,7 @@
 # План: единый стиль объявления — именованный `const` и `displayName` при необходимости
 
+> **Сейчас:** вместо контекстов `WorkoutSessionChrome*` из таблицы §3 — **`WorkoutSessionStage`** и Redux **`workoutSessionControls`**; пути **`src/modules/HomeModule/...`**.
+
 ## 1. Контекст
 
 В `src/components`, `src/containers`, `src/contexts`, `src/logic` и `src/selectors` часть сущностей объявлена как **`export function Name(…) { … }`** или как внутренняя **`function Name(…) { … }`**. Соглашение репозитория зафиксировано в `docs/components.md`, `docs/src-layout.md` и правилах `.cursor/rules/components.mdc`, `.cursor/rules/src-layout.mdc`:

@@ -54,6 +54,8 @@ export default defineConfig([globalIgnores(['dist', 'server/dist', 'coverage', '
     'simple-import-sort': simpleImportSort,
   },
   rules: {
+    // TypeScript `Props` / interfaces replace runtime PropTypes; the rule misfires for `memo` etc.
+    'react/prop-types': 'off',
     curly: ['error', 'all'],
     'simple-import-sort/imports': [
       'error',

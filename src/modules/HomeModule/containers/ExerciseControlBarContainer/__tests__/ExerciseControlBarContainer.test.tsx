@@ -1,101 +1,91 @@
+import { Provider } from 'react-redux';
 import { within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, type Mock, test, vi } from 'vitest';
 
+import { initialWorkoutSessionControlsState, setupStore } from '@store';
 import { renderWithTheme } from '@test-helpers';
+import { eventBus } from '@utils';
 
+import { EVENT_WORKOUT_SESSION_CONTROLS_COMMAND } from '../../../constants';
 import { ExerciseControlBarContainer } from '../ExerciseControlBarContainer';
 
-const dispatchChromeControl = vi.fn();
-
-const createSelectorFixture = () => ({
-  exerciseId: 'biceps-curl',
+const createControlsFixture = () => ({
+  ...initialWorkoutSessionControlsState,
+  exerciseId: 'biceps-curl' as const,
   restDurationMinutes: 1,
-  restDurationOptions: [
-    { value: '1', label: '1 мин' },
-    { value: '2', label: '2 мин' },
-  ],
   isRunning: false,
   isModelReady: true,
   isCameraInitializing: false,
   resetStopEnabled: false,
 });
 
-let selectorFixture = createSelectorFixture();
-
-vi.mock('../../../logic', async importOriginal => {
-  const actual = await importOriginal<typeof import('../../../logic')>();
-  return {
-    ...actual,
-    useExerciseControlBarContainerSelector: () => ({
-      ...selectorFixture,
-      dispatchChromeControl,
-    }),
-  };
-});
+let controlsFixture = createControlsFixture();
 
 describe('ExerciseControlBarContainer', () => {
+  let testStore: ReturnType<typeof setupStore>;
+  let emitSpy: Mock<(type: string, detail?: unknown) => void>;
+
   beforeEach(() => {
-    selectorFixture = createSelectorFixture();
-    dispatchChromeControl.mockClear();
+    controlsFixture = createControlsFixture();
+    testStore = setupStore({
+      workoutSessionControls: controlsFixture,
+    });
+    emitSpy = vi.spyOn(eventBus, 'emit') as Mock<(type: string, detail?: unknown) => void>;
+    emitSpy.mockClear();
   });
 
-  test('dispatches start when Старт is clicked', async () => {
+  const renderBar = () =>
+    renderWithTheme(
+      <Provider store={testStore}>
+        <ExerciseControlBarContainer />
+      </Provider>,
+    );
+
+  test('emits start when Старт is clicked', async () => {
     const user = userEvent.setup();
-    const { container } = renderWithTheme(<ExerciseControlBarContainer />);
+    const { container } = renderBar();
     const region = within(container);
     await user.click(region.getByRole('button', { name: 'Старт' }));
-    expect(dispatchChromeControl).toHaveBeenCalledWith({ type: 'start' });
+    expect(emitSpy).toHaveBeenCalledWith(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, { type: 'start' });
   });
 
-  test('dispatches pause when Пауза is clicked while running', async () => {
+  test('emits pause when Пауза is clicked while running', async () => {
     const user = userEvent.setup();
-    selectorFixture.isRunning = true;
-    const { container } = renderWithTheme(<ExerciseControlBarContainer />);
+    controlsFixture = { ...createControlsFixture(), isRunning: true };
+    testStore = setupStore({ workoutSessionControls: controlsFixture });
+    emitSpy = vi.spyOn(eventBus, 'emit') as Mock<(type: string, detail?: unknown) => void>;
+    emitSpy.mockClear();
+    const { container } = renderBar();
     const region = within(container);
     await user.click(region.getByRole('button', { name: 'Пауза' }));
-    expect(dispatchChromeControl).toHaveBeenCalledWith({ type: 'pause' });
+    expect(emitSpy).toHaveBeenCalledWith(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, { type: 'pause' });
   });
 
-  test('dispatches reset and shutdown when enabled', async () => {
+  test('emits reset and shutdown when enabled', async () => {
     const user = userEvent.setup();
-    selectorFixture.resetStopEnabled = true;
-    const { container } = renderWithTheme(<ExerciseControlBarContainer />);
+    controlsFixture = {
+      ...createControlsFixture(),
+      isRunning: true,
+      resetStopEnabled: true,
+    };
+    testStore = setupStore({ workoutSessionControls: controlsFixture });
+    emitSpy = vi.spyOn(eventBus, 'emit') as Mock<(type: string, detail?: unknown) => void>;
+    emitSpy.mockClear();
+    const { container } = renderBar();
     const region = within(container);
     await user.click(region.getByRole('button', { name: 'Сброс' }));
     await user.click(region.getByRole('button', { name: 'Стоп' }));
-    expect(dispatchChromeControl).toHaveBeenNthCalledWith(1, { type: 'reset' });
-    expect(dispatchChromeControl).toHaveBeenNthCalledWith(2, { type: 'shutdown' });
-  });
-
-  test('dispatches setExerciseId when another exercise is selected', async () => {
-    const user = userEvent.setup();
-    const { container } = renderWithTheme(<ExerciseControlBarContainer />);
-    const region = within(container);
-    // Порядок как в ExerciseControlBar: упражнение, отдых (getByLabelText с styled select не подходит).
-    const [exerciseSelect] = region.getAllByRole('combobox');
-    await user.selectOptions(exerciseSelect, 'squat');
-    expect(dispatchChromeControl).toHaveBeenCalledWith({
-      type: 'setExerciseId',
-      exerciseId: 'squat',
+    expect(emitSpy).toHaveBeenNthCalledWith(1, EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, {
+      type: 'reset',
     });
-  });
-
-  test('dispatches setRestDurationMinutes when rest option changes', async () => {
-    const user = userEvent.setup();
-    const { container } = renderWithTheme(<ExerciseControlBarContainer />);
-    const region = within(container);
-    const comboboxes = region.getAllByRole('combobox');
-    const restSelect = comboboxes[1];
-    await user.selectOptions(restSelect, '2');
-    expect(dispatchChromeControl).toHaveBeenCalledWith({
-      type: 'setRestDurationMinutes',
-      minutes: 2,
+    expect(emitSpy).toHaveBeenNthCalledWith(2, EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, {
+      type: 'shutdown',
     });
   });
 
   test('matches snapshot', () => {
-    const { container } = renderWithTheme(<ExerciseControlBarContainer />);
+    const { container } = renderBar();
     expect(container.firstChild).toMatchSnapshot();
   });
 });

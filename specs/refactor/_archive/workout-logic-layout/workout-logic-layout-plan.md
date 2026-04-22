@@ -1,5 +1,7 @@
 # План: вынести умную логику в `WorkoutLogicLayout` (контексты и контейнеры)
 
+> **Сейчас:** оркестрация — **`src/modules/HomeModule/logic/WorkoutLogicLayout/`**; низкочастотные поля панели и статусов — в **`workoutSessionControls`** (Redux), высокочастотное для сцены — **`WorkoutSessionStageContext`**. В §4 — структура каталогов из этого плана (`src/logic`, `src/contexts` в корне).
+
 ## 1. Контекст
 
 В `src/App.tsx` сосуществуют точка входа приложения и **вся оркестрация экрана тренировки**: локальный `useState` (упражнение, длительность отдыха), `useWorkoutSession`, `useSpeechRecognition`, производные значения и подписи для UI, разметка слотов `AppLayout`.

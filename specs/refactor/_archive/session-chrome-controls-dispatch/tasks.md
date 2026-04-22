@@ -1,5 +1,7 @@
 # Задачи: единый `dispatch` для chrome-контролов сессии
 
+> **Сейчас:** см. `src/store/workoutSessionControls/controlActionTypes.ts` (`WorkoutSessionControlsAction`), `HomeModuleConstants` (`EVENT_WORKOUT_SESSION_CONTROLS_COMMAND`), подписка в `WorkoutLogicLayout`.
+
 План: [./plan.md](./plan.md)
 
 ## Чеклист

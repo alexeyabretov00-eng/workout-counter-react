@@ -1,5 +1,7 @@
 # Задачи: именованный `const` для React-компонентов и хуков слоя экрана
 
+> **Сейчас:** актуальные пути — **`src/modules/HomeModule/`**; вместо контекстов `WorkoutSessionChrome*` — stage-контекст и стор **`workoutSessionControls`**.
+
 План: [./named-const-react-functions-plan.md](./named-const-react-functions-plan.md)
 
 ## Чеклист

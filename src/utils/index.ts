@@ -1,6 +1,5 @@
 export { clearCanvas, computeCoverLayout, drawRestCountdown, resizeCanvas } from './canvas';
 export {
-  type AppEventMap,
   EVENT_AUTH_NAVIGATE_AFTER_LOGIN,
   EVENT_AUTH_NAVIGATE_AFTER_REGISTRATION,
   EVENT_NAV_GO_TO_LOGIN,

@@ -20,8 +20,9 @@
 
 ## Связанные файлы
 
-- `src/contexts/WorkoutSessionChromeControls/`, `WorkoutSessionChromeStatus/`
-- `src/logic/WorkoutLogicLayout/WorkoutLogicLayout.tsx`
-- `src/selectors/*ContainerSelector/`
-- `src/components/AppLayout/AppLayout.tsx`
-- `src/contexts/index.ts`, `src/logic/index.ts`
+- `src/store/workoutSessionControls/`
+- `src/modules/HomeModule/contexts/` (сцена)
+- `src/modules/HomeModule/logic/WorkoutLogicLayout/WorkoutLogicLayout.tsx`
+- `src/modules/HomeModule/selectors/*ContainerSelector/`
+- `src/modules/HomeModule/components/HomeLayout/`
+- Баррели: `src/modules/HomeModule/contexts/index.ts`, `src/modules/HomeModule/logic/index.ts`

@@ -5,10 +5,3 @@ export const EVENT_AUTH_NAVIGATE_AFTER_REGISTRATION = 'auth:navigate-after-regis
 export const EVENT_NAV_GO_TO_REGISTER = 'nav:go-to-register' as const;
 /** Перейти на экран входа (URL задаёт только страница-подписчик). */
 export const EVENT_NAV_GO_TO_LOGIN = 'nav:go-to-login' as const;
-
-export type AppEventMap = {
-  [EVENT_AUTH_NAVIGATE_AFTER_LOGIN]: { path: string };
-  [EVENT_AUTH_NAVIGATE_AFTER_REGISTRATION]: { path: string };
-  [EVENT_NAV_GO_TO_REGISTER]: void;
-  [EVENT_NAV_GO_TO_LOGIN]: void;
-};

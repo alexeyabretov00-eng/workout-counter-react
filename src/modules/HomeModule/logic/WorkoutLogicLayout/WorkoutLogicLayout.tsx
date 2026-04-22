@@ -1,13 +1,16 @@
-import { type ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-
-import { resetWorkoutSessionChrome, setWorkoutSessionChrome, useAppDispatch } from '@store';
+import { type ReactNode, useEffect, useMemo } from 'react';
+import type { WorkoutSessionControlsAction } from '@store';
 
 import {
-  type WorkoutSessionChromeControlAction,
-  WorkoutSessionChromeControlsContext,
-  type WorkoutSessionChromeControlsValue,
-  WorkoutSessionStageContext,
-} from '../../contexts';
+  patchWorkoutSessionControls,
+  resetWorkoutSessionControls,
+  useAppDispatch,
+  useAppSelector,
+} from '@store';
+import { eventBus } from '@utils';
+
+import { EVENT_WORKOUT_SESSION_CONTROLS_COMMAND } from '../../constants';
+import { WorkoutSessionStageContext } from '../../contexts';
 import { exerciseRegistry } from '../../exercises';
 import { useSpeechRecognition, useWorkoutSession } from '../../hooks';
 
@@ -17,8 +20,8 @@ export type WorkoutLogicLayoutProps = {
 
 export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
   const dispatch = useAppDispatch();
-  const [exerciseId, setExerciseId] = useState(exerciseRegistry[0].id);
-  const [restDurationMinutes, setRestDurationMinutes] = useState<number>(3);
+  const exerciseId = useAppSelector(s => s.workoutSessionControls.exerciseId);
+  const restDurationMinutes = useAppSelector(s => s.workoutSessionControls.restDurationMinutes);
   const {
     canvasRef,
     isRunning,
@@ -35,8 +38,9 @@ export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
     shutdown,
   } = useWorkoutSession(exerciseId, restDurationMinutes * 60_000);
 
-  const dispatchChromeControl = useCallback(
-    (action: WorkoutSessionChromeControlAction) => {
+  useEffect(() => {
+    return eventBus.on(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, detail => {
+      const action = detail as WorkoutSessionControlsAction;
       switch (action.type) {
         case 'start':
           void start();
@@ -50,20 +54,13 @@ export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
         case 'shutdown':
           shutdown(action.restDurationOverrideMs);
           return;
-        case 'setExerciseId':
-          setExerciseId(action.exerciseId);
-          return;
-        case 'setRestDurationMinutes':
-          setRestDurationMinutes(action.minutes);
-          return;
         default: {
           const _never: never = action;
           return _never;
         }
       }
-    },
-    [pause, reset, setExerciseId, setRestDurationMinutes, shutdown, start],
-  );
+    });
+  }, [dispatch, pause, reset, shutdown, start]);
 
   const { voiceStatus } = useSpeechRecognition({
     exercises: exerciseRegistry,
@@ -71,47 +68,40 @@ export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
     isRestCountdownActive,
     isCameraInitializing,
     isModelReady,
-    dispatchChromeControl,
   });
 
   const resetStopEnabled = isRunning && !isRestCountdownActive;
 
-  const controlsValue = useMemo<WorkoutSessionChromeControlsValue>(
-    () => ({
-      exerciseId,
-      restDurationMinutes,
-      isRunning,
-      resetStopEnabled,
-      isModelReady,
-      isCameraInitializing,
-      dispatchChromeControl,
-    }),
-    [
-      exerciseId,
-      restDurationMinutes,
-      isRunning,
-      resetStopEnabled,
-      isModelReady,
-      isCameraInitializing,
-      dispatchChromeControl,
-    ],
-  );
-
   useEffect(() => {
     dispatch(
-      setWorkoutSessionChrome({
+      patchWorkoutSessionControls({
         modelStatus,
         isCameraReady,
         voiceStatus,
         isPaused,
         cameraError,
+        isRunning,
+        resetStopEnabled,
+        isModelReady,
+        isCameraInitializing,
       }),
     );
-  }, [cameraError, dispatch, isCameraReady, isPaused, modelStatus, voiceStatus]);
+  }, [
+    cameraError,
+    dispatch,
+    isCameraInitializing,
+    isCameraReady,
+    isModelReady,
+    isPaused,
+    isRunning,
+    modelStatus,
+    resetStopEnabled,
+    voiceStatus,
+  ]);
 
   useEffect(() => {
     return () => {
-      dispatch(resetWorkoutSessionChrome());
+      dispatch(resetWorkoutSessionControls());
     };
   }, [dispatch]);
 
@@ -125,10 +115,8 @@ export const WorkoutLogicLayout = ({ children }: WorkoutLogicLayoutProps) => {
   );
 
   return (
-    <WorkoutSessionChromeControlsContext.Provider value={controlsValue}>
-      <WorkoutSessionStageContext.Provider value={stageValue}>
-        {children}
-      </WorkoutSessionStageContext.Provider>
-    </WorkoutSessionChromeControlsContext.Provider>
+    <WorkoutSessionStageContext.Provider value={stageValue}>
+      {children}
+    </WorkoutSessionStageContext.Provider>
   );
 };

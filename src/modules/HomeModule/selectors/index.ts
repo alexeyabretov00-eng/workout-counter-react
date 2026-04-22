@@ -1,3 +1,3 @@
-export { useExerciseControlBarContainerSelector } from './ExerciseControlBarContainerSelector';
+export { getExerciseControlBarContainerProps } from './ExerciseControlBarContainerSelector';
 export { useStageContainerSelector } from './StageContainerSelector';
-export { selectStatusBarContainerModel } from './StatusBarContainerSelector';
+export { getStatusBarContainerProps } from './StatusBarContainerSelector';

@@ -1,2 +1,1 @@
-export type { StatusBarContainerModel } from './StatusBarContainerSelector';
-export { selectStatusBarContainerModel } from './StatusBarContainerSelector';
+export { getStatusBarContainerProps } from './StatusBarContainerSelector';

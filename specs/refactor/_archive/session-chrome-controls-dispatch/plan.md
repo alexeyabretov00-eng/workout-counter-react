@@ -1,5 +1,7 @@
 # План: единый API действий для chrome-контролов сессии (`dispatch` вместо четырёх колбеков)
 
+> **Итог в коде:** вместо колбеков в контексте — **`eventBus`** и тип **`WorkoutSessionControlsAction`**; константа события **`EVENT_WORKOUT_SESSION_CONTROLS_COMMAND`**. Состояние панели — срез **`workoutSessionControls`**. Ниже — проектирование API.
+
 ## 1. Контекст
 
 Срез **`WorkoutSessionChromeControls`** сейчас публикует четыре отдельные функции — `start`, `pause`, `reset`, `shutdown` — в типе `WorkoutSessionChromeControlsValue` (`src/contexts/WorkoutSessionChromeControls/types.ts`). Их потребляют:

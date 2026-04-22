@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import type { EntityStatus, VoiceStatus } from '@types';
 
-import { selectWorkoutSessionChrome } from '@store';
+import { selectWorkoutSessionControls } from '@store';
 
 const VOICE_STATUS_LABEL: Record<VoiceStatus, string> = {
   unsupported: 'Голос: не поддерживается',
@@ -20,25 +20,15 @@ const MODEL_STATUS_LABEL: Record<EntityStatus, string> = {
   error: 'не загружена',
 };
 
-export type StatusBarContainerModel = {
-  modelStatus: EntityStatus;
-  modelStatusLabel: string;
-  isCameraReady: boolean;
-  voiceStatus: VoiceStatus;
-  voiceStatusLabel: string;
-  isPaused: boolean;
-  cameraError: string | null;
-};
-
-export const selectStatusBarContainerModel = createSelector(
-  [selectWorkoutSessionChrome],
-  (chrome): StatusBarContainerModel => ({
-    modelStatus: chrome.modelStatus,
-    modelStatusLabel: MODEL_STATUS_LABEL[chrome.modelStatus],
-    isCameraReady: chrome.isCameraReady,
-    voiceStatus: chrome.voiceStatus,
-    voiceStatusLabel: VOICE_STATUS_LABEL[chrome.voiceStatus],
-    isPaused: chrome.isPaused,
-    cameraError: chrome.cameraError,
+export const getStatusBarContainerProps = createSelector(
+  [selectWorkoutSessionControls],
+  controls => ({
+    modelStatus: controls.modelStatus,
+    modelStatusLabel: MODEL_STATUS_LABEL[controls.modelStatus],
+    isCameraReady: controls.isCameraReady,
+    voiceStatus: controls.voiceStatus,
+    voiceStatusLabel: VOICE_STATUS_LABEL[controls.voiceStatus],
+    isPaused: controls.isPaused,
+    cameraError: controls.cameraError,
   }),
 );

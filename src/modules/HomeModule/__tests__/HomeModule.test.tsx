@@ -5,9 +5,11 @@ import { HomeModule } from '@modules/HomeModule';
 import { setupStore } from '@store';
 import { renderWithTheme } from '@test-helpers';
 
-vi.mock('../hooks', () => {
+vi.mock('../hooks', async importOriginal => {
+  const actual = await importOriginal<typeof import('../hooks')>();
   const canvasRef = { current: null };
   return {
+    ...actual,
     useWorkoutSession: () => ({
       canvasRef,
       isRunning: false,

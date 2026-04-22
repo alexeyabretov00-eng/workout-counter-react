@@ -6,9 +6,11 @@ import { renderWithTheme } from '@test-helpers';
 
 import { WorkoutLogicLayout } from '../WorkoutLogicLayout';
 
-vi.mock('../../../hooks', () => {
+vi.mock('../../../hooks', async importOriginal => {
+  const actual = await importOriginal<typeof import('../../../hooks')>();
   const canvasRef = { current: null };
   return {
+    ...actual,
     useWorkoutSession: () => ({
       canvasRef,
       isRunning: false,
@@ -29,7 +31,7 @@ vi.mock('../../../hooks', () => {
 });
 
 describe('WorkoutLogicLayout', () => {
-  test('provides chrome contexts to children', () => {
+  test('provides workout session stage context to children', () => {
     const testStore = setupStore();
     const { getByText } = renderWithTheme(
       <Provider store={testStore}>

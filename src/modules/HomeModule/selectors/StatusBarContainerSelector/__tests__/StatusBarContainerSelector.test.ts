@@ -1,13 +1,14 @@
 import { describe, expect, test } from 'vitest';
 
-import { setupStore } from '@store';
+import { initialWorkoutSessionControlsState, setupStore } from '@store';
 
-import { selectStatusBarContainerModel } from '../StatusBarContainerSelector';
+import { getStatusBarContainerProps } from '../StatusBarContainerSelector';
 
-describe('selectStatusBarContainerModel', () => {
-  test('maps workout session chrome to status bar model', () => {
+describe('getStatusBarContainerProps', () => {
+  test('maps workout session controls to status bar model', () => {
     const store = setupStore({
-      workoutSessionChrome: {
+      workoutSessionControls: {
+        ...initialWorkoutSessionControlsState,
         modelStatus: 'ready',
         isCameraReady: true,
         voiceStatus: 'listening',
@@ -16,7 +17,7 @@ describe('selectStatusBarContainerModel', () => {
       },
     });
 
-    expect(selectStatusBarContainerModel(store.getState())).toEqual({
+    expect(getStatusBarContainerProps(store.getState())).toEqual({
       modelStatus: 'ready',
       modelStatusLabel: 'загружена',
       isCameraReady: true,

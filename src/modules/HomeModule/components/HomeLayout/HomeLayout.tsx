@@ -1,4 +1,4 @@
-import { memo, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import {
   HomeLayoutHeaderSection,
@@ -14,7 +14,7 @@ export type HomeLayoutProps = {
   stage: ReactNode;
 };
 
-const HomeLayoutComponent = ({ header, controls, statusBar, stage }: HomeLayoutProps) => {
+export const HomeLayout: React.FC<HomeLayoutProps> = ({ header, controls, statusBar, stage }) => {
   return (
     <HomeLayoutRoot>
       <HomeLayoutHeaderSection>{header}</HomeLayoutHeaderSection>
@@ -24,6 +24,3 @@ const HomeLayoutComponent = ({ header, controls, statusBar, stage }: HomeLayoutP
     </HomeLayoutRoot>
   );
 };
-
-export const HomeLayout = memo(HomeLayoutComponent);
-HomeLayout.displayName = 'HomeLayout';

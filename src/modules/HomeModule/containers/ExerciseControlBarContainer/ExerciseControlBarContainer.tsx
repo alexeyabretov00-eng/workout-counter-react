@@ -1,6 +1,10 @@
+import { patchWorkoutSessionControls, useAppDispatch, useAppSelector } from '@store';
+import { eventBus } from '@utils';
+
 import { ExerciseControlBar } from '../../components';
+import { EVENT_WORKOUT_SESSION_CONTROLS_COMMAND } from '../../constants';
 import { exerciseRegistry } from '../../exercises';
-import { useExerciseControlBarContainerSelector } from '../../logic';
+import { getExerciseControlBarContainerProps } from '../../selectors';
 
 export const ExerciseControlBarContainer = () => {
   const {
@@ -11,8 +15,8 @@ export const ExerciseControlBarContainer = () => {
     isModelReady,
     isCameraInitializing,
     resetStopEnabled,
-    dispatchChromeControl,
-  } = useExerciseControlBarContainerSelector();
+  } = useAppSelector(getExerciseControlBarContainerProps);
+  const dispatch = useAppDispatch();
 
   const exerciseOptions = exerciseRegistry.map(exercise => ({
     value: exercise.id,
@@ -29,18 +33,16 @@ export const ExerciseControlBarContainer = () => {
       isModelReady={isModelReady}
       isCameraInitializing={isCameraInitializing}
       resetStopEnabled={resetStopEnabled}
-      onExerciseChange={id => dispatchChromeControl({ type: 'setExerciseId', exerciseId: id })}
-      onStartPause={() => {
-        if (isRunning) {
-          dispatchChromeControl({ type: 'pause' });
-        } else {
-          dispatchChromeControl({ type: 'start' });
-        }
-      }}
-      onReset={() => dispatchChromeControl({ type: 'reset' })}
-      onShutdown={() => dispatchChromeControl({ type: 'shutdown' })}
+      onExerciseChange={id => dispatch(patchWorkoutSessionControls({ exerciseId: id }))}
+      onStartPause={() =>
+        eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, {
+          type: isRunning ? 'pause' : 'start',
+        })
+      }
+      onReset={() => eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, { type: 'reset' })}
+      onShutdown={() => eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, { type: 'shutdown' })}
       onRestDurationChange={minutes =>
-        dispatchChromeControl({ type: 'setRestDurationMinutes', minutes })
+        dispatch(patchWorkoutSessionControls({ restDurationMinutes: minutes }))
       }
     />
   );

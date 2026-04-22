@@ -18,7 +18,7 @@ export type ExerciseControlBarProps = {
   onRestDurationChange: (minutes: number) => void;
 };
 
-export const ExerciseControlBar = ({
+export const ExerciseControlBar: React.FC<ExerciseControlBarProps> = ({
   exerciseId,
   exerciseOptions,
   restDurationMinutes,
@@ -32,7 +32,7 @@ export const ExerciseControlBar = ({
   onReset,
   onShutdown,
   onRestDurationChange,
-}: ExerciseControlBarProps) => {
+}) => {
   return (
     <ExerciseControlBarRoot>
       <Select

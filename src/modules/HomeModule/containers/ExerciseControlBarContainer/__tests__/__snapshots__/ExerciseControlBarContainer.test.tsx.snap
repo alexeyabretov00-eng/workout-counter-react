@@ -77,6 +77,16 @@ exports[`ExerciseControlBarContainer > matches snapshot 1`] = `
     >
       2 мин
     </option>
+    <option
+      value="3"
+    >
+      3 мин
+    </option>
+    <option
+      value="5"
+    >
+      5 мин
+    </option>
   </select>
 </div>
 `;
