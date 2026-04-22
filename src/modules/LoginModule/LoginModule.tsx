@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { AuthApiError } from '@api';
+import { ApiRequestError } from '@api';
 import { loginWithPassword, useAppDispatch, useAppSelector } from '@store';
 import { EVENT_AUTH_NAVIGATE_AFTER_LOGIN, eventBus } from '@utils';
 
@@ -28,7 +28,7 @@ export const LoginModule = () => {
       await dispatch(loginWithPassword({ login, password })).unwrap();
     } catch (err: unknown) {
       const message =
-        err instanceof AuthApiError ? err.message : 'Не удалось войти. Попробуйте ещё раз.';
+        err instanceof ApiRequestError ? err.message : 'Не удалось войти. Попробуйте ещё раз.';
       setError(message);
     } finally {
       setPending(false);

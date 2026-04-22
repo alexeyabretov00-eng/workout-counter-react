@@ -1,9 +1,3 @@
-export {
-  type ApiErrorBody,
-  AuthApiError,
-  authLogin,
-  authLogout,
-  authMe,
-  authRegister,
-  type AuthUserDto,
-} from './authClient';
+export { AuthClient, authClient, type AuthUserDto } from './authClient';
+export type { ApiErrorBody } from '@utils';
+export { ApiRequestError } from '@utils';

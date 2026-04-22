@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { AuthApiError } from '@api';
+import { ApiRequestError } from '@api';
 import { registerWithPassword, useAppDispatch, useAppSelector } from '@store';
 import { EVENT_AUTH_NAVIGATE_AFTER_REGISTRATION, eventBus } from '@utils';
 
@@ -28,7 +28,7 @@ export const RegistrationModule = () => {
       await dispatch(registerWithPassword({ login, password })).unwrap();
     } catch (err: unknown) {
       const message =
-        err instanceof AuthApiError
+        err instanceof ApiRequestError
           ? err.message
           : 'Не удалось зарегистрироваться. Попробуйте ещё раз.';
       setError(message);

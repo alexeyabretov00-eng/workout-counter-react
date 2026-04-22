@@ -1,6 +1,8 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { AuthApiError, authLogin, authLogout, authMe, authRegister } from '../authClient';
+import { ApiRequestError } from '@utils';
+
+import { authClient } from '../authClient';
 
 const jsonResponse = (body: unknown, init?: ResponseInit) => {
   return new Response(JSON.stringify(body), {
@@ -23,7 +25,7 @@ describe('authClient', () => {
   });
 
   test('authRegister calls fetch with POST, credentials, JSON body and /api/register', async () => {
-    const result = await authRegister('user', 'secret');
+    const result = await authClient.register('user', 'secret');
     expect(result.user.login).toBe('a');
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(
@@ -38,7 +40,7 @@ describe('authClient', () => {
   });
 
   test('authLogin calls fetch with POST, credentials, JSON body and /api/login', async () => {
-    await authLogin('user', 'secret');
+    await authClient.login('user', 'secret');
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(
       '/api/login',
@@ -53,7 +55,7 @@ describe('authClient', () => {
 
   test('authLogout calls fetch with POST, credentials, JSON body {} and /api/logout', async () => {
     vi.mocked(fetch).mockResolvedValueOnce(jsonResponse({ ok: true }));
-    await authLogout();
+    await authClient.logout();
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(
       '/api/logout',
@@ -68,7 +70,7 @@ describe('authClient', () => {
 
   test('authMe calls fetch with GET, credentials, no body and /api/me', async () => {
     vi.mocked(fetch).mockResolvedValueOnce(jsonResponse({ user: { id: 2, login: 'b' } }));
-    await authMe();
+    await authClient.me();
     expect(fetch).toHaveBeenCalledTimes(1);
     const [, init] = vi.mocked(fetch).mock.calls[0];
     expect(init).toMatchObject({
@@ -79,12 +81,12 @@ describe('authClient', () => {
     expect(vi.mocked(fetch).mock.calls[0][0]).toBe('/api/me');
   });
 
-  test('throws AuthApiError on error body', async () => {
+  test('throws ApiRequestError on error body', async () => {
     vi.mocked(fetch).mockResolvedValueOnce(
       jsonResponse({ error: { code: 'BAD', message: 'oops' } }, { status: 400 }),
     );
-    await expect(authLogin('u', 'p')).rejects.toMatchObject({
-      name: 'AuthApiError',
+    await expect(authClient.login('u', 'p')).rejects.toMatchObject({
+      name: 'ApiRequestError',
       code: 'BAD',
       message: 'oops',
     });
@@ -101,7 +103,7 @@ describe('authClient', () => {
     vi.mocked(fetch).mockResolvedValueOnce(
       jsonResponse({ error: { code: 'UNAUTHORIZED', message: 'no' } }, { status: 401 }),
     );
-    await expect(authMe()).resolves.toBeNull();
+    await expect(authClient.me()).resolves.toBeNull();
     expect(vi.mocked(fetch).mock.calls[0][0]).toBe('/api/me');
   });
 
@@ -109,11 +111,11 @@ describe('authClient', () => {
     vi.mocked(fetch).mockResolvedValueOnce(
       jsonResponse({ error: { code: 'UNKNOWN', message: 'x' } }, { status: 500 }),
     );
-    await expect(authMe()).rejects.toBeInstanceOf(AuthApiError);
+    await expect(authClient.me()).rejects.toBeInstanceOf(ApiRequestError);
   });
 
   test('authMe returns user on success', async () => {
     vi.mocked(fetch).mockResolvedValueOnce(jsonResponse({ user: { id: 2, login: 'b' } }));
-    await expect(authMe()).resolves.toEqual({ user: { id: 2, login: 'b' } });
+    await expect(authClient.me()).resolves.toEqual({ user: { id: 2, login: 'b' } });
   });
 });

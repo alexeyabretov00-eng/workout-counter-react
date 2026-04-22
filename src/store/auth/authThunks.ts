@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { authLogin, authLogout, authMe, authRegister } from '@api';
+import { authClient } from '@api';
 
 import type { AuthUser } from './types';
 
@@ -8,7 +8,7 @@ export const initializeAuth = createAsyncThunk<{ user: AuthUser | null }, void>(
   'auth/initialize',
   async () => {
     try {
-      const result = await authMe();
+      const result = await authClient.me();
       return { user: result?.user ?? null };
     } catch {
       return { user: null };
@@ -19,7 +19,7 @@ export const initializeAuth = createAsyncThunk<{ user: AuthUser | null }, void>(
 export const loginWithPassword = createAsyncThunk(
   'auth/login',
   async ({ login, password }: { login: string; password: string }) => {
-    const result = await authLogin(login, password);
+    const result = await authClient.login(login, password);
     return { user: result.user };
   },
 );
@@ -27,20 +27,20 @@ export const loginWithPassword = createAsyncThunk(
 export const registerWithPassword = createAsyncThunk(
   'auth/register',
   async ({ login, password }: { login: string; password: string }) => {
-    const result = await authRegister(login, password);
+    const result = await authClient.register(login, password);
     return { user: result.user };
   },
 );
 
 export const logout = createAsyncThunk('auth/logout', async () => {
-  await authLogout();
+  await authClient.logout();
 });
 
 export const refreshSession = createAsyncThunk<{ user: AuthUser | null }, void>(
   'auth/refresh',
   async () => {
     try {
-      const result = await authMe();
+      const result = await authClient.me();
       return { user: result?.user ?? null };
     } catch {
       return { user: null };

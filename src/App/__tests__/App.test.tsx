@@ -11,10 +11,12 @@ vi.mock('react-router-dom', async importOriginal => {
 });
 
 vi.mock('@api', () => ({
-  authMe: vi.fn(() => Promise.resolve(null)),
-  authLogin: vi.fn(),
-  authRegister: vi.fn(),
-  authLogout: vi.fn(),
+  authClient: {
+    me: vi.fn(() => Promise.resolve(null)),
+    login: vi.fn(),
+    register: vi.fn(),
+    logout: vi.fn(),
+  },
 }));
 
 import { App } from '../App';

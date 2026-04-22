@@ -9,7 +9,13 @@ vi.mock('@api', async importOriginal => {
   const actual = await importOriginal<typeof import('@api')>();
   return {
     ...actual,
-    authRegister: vi.fn(() => Promise.resolve({ user: { id: 2, login: 'newuser' } })),
+    authClient: Object.assign(
+      Object.create(Object.getPrototypeOf(actual.authClient)),
+      actual.authClient,
+      {
+        register: vi.fn(() => Promise.resolve({ user: { id: 2, login: 'newuser' } })),
+      },
+    ),
   };
 });
 

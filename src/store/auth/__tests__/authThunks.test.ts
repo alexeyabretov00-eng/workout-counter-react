@@ -3,13 +3,15 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { setupStore } from '../../store';
 
 vi.mock('@api', () => ({
-  authLogin: vi.fn(),
-  authLogout: vi.fn(),
-  authMe: vi.fn(),
-  authRegister: vi.fn(),
+  authClient: {
+    me: vi.fn(),
+    login: vi.fn(),
+    register: vi.fn(),
+    logout: vi.fn(),
+  },
 }));
 
-import { authLogin, authLogout, authMe, authRegister } from '@api';
+import { authClient } from '@api';
 import {
   initializeAuth,
   loginWithPassword,
@@ -22,25 +24,25 @@ import {
 
 describe('auth thunks (store + mocked @api)', () => {
   beforeEach(() => {
-    vi.mocked(authMe).mockReset();
-    vi.mocked(authLogin).mockReset();
-    vi.mocked(authRegister).mockReset();
-    vi.mocked(authLogout).mockReset();
+    vi.mocked(authClient.me).mockReset();
+    vi.mocked(authClient.login).mockReset();
+    vi.mocked(authClient.register).mockReset();
+    vi.mocked(authClient.logout).mockReset();
   });
 
   test('initializeAuth: /me returns user → ready + user in state', async () => {
-    vi.mocked(authMe).mockResolvedValue({ user: { id: 10, login: 'remote' } });
+    vi.mocked(authClient.me).mockResolvedValue({ user: { id: 10, login: 'remote' } });
     const store = setupStore();
 
     await store.dispatch(initializeAuth());
 
     expect(selectAuthStatus(store.getState())).toBe('ready');
     expect(selectAuthUser(store.getState())).toEqual({ id: 10, login: 'remote' });
-    expect(authMe).toHaveBeenCalledTimes(1);
+    expect(authClient.me).toHaveBeenCalledTimes(1);
   });
 
   test('initializeAuth: /me throws → fulfilled with null user', async () => {
-    vi.mocked(authMe).mockRejectedValue(new Error('network'));
+    vi.mocked(authClient.me).mockRejectedValue(new Error('network'));
     const store = setupStore();
 
     await store.dispatch(initializeAuth());
@@ -50,7 +52,7 @@ describe('auth thunks (store + mocked @api)', () => {
   });
 
   test('loginWithPassword updates user via fulfilled', async () => {
-    vi.mocked(authLogin).mockResolvedValue({ user: { id: 2, login: 'bob' } });
+    vi.mocked(authClient.login).mockResolvedValue({ user: { id: 2, login: 'bob' } });
     const store = setupStore({ auth: { user: null, status: 'ready' } });
 
     await store.dispatch(loginWithPassword({ login: 'bob', password: 'secret' }));
@@ -59,7 +61,7 @@ describe('auth thunks (store + mocked @api)', () => {
   });
 
   test('registerWithPassword updates user via fulfilled', async () => {
-    vi.mocked(authRegister).mockResolvedValue({ user: { id: 3, login: 'new' } });
+    vi.mocked(authClient.register).mockResolvedValue({ user: { id: 3, login: 'new' } });
     const store = setupStore({ auth: { user: null, status: 'ready' } });
 
     await store.dispatch(registerWithPassword({ login: 'new', password: 'pw' }));
@@ -68,7 +70,7 @@ describe('auth thunks (store + mocked @api)', () => {
   });
 
   test('logout clears user', async () => {
-    vi.mocked(authLogout).mockResolvedValue(undefined);
+    vi.mocked(authClient.logout).mockResolvedValue(undefined);
     const store = setupStore({
       auth: { user: { id: 1, login: 'a' }, status: 'ready' },
     });
@@ -76,11 +78,11 @@ describe('auth thunks (store + mocked @api)', () => {
     await store.dispatch(logout());
 
     expect(selectAuthUser(store.getState())).toBeNull();
-    expect(authLogout).toHaveBeenCalledTimes(1);
+    expect(authClient.logout).toHaveBeenCalledTimes(1);
   });
 
   test('refreshSession updates user from /me', async () => {
-    vi.mocked(authMe).mockResolvedValue({ user: { id: 99, login: 'refreshed' } });
+    vi.mocked(authClient.me).mockResolvedValue({ user: { id: 99, login: 'refreshed' } });
     const store = setupStore({
       auth: { user: { id: 1, login: 'old' }, status: 'ready' },
     });
@@ -91,7 +93,7 @@ describe('auth thunks (store + mocked @api)', () => {
   });
 
   test('refreshSession: /me throws → null user', async () => {
-    vi.mocked(authMe).mockRejectedValue(new Error('unauthorized'));
+    vi.mocked(authClient.me).mockRejectedValue(new Error('unauthorized'));
     const store = setupStore({
       auth: { user: { id: 1, login: 'a' }, status: 'ready' },
     });

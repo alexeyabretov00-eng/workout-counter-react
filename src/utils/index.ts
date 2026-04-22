@@ -1,3 +1,5 @@
+export type { ApiErrorBody, ApiErrorConstructor, ApiJsonRequestOptions } from './api';
+export { ApiJsonClient, ApiRequestError, joinApiPath } from './api';
 export { clearCanvas, computeCoverLayout, drawRestCountdown, resizeCanvas } from './canvas';
 export {
   EVENT_AUTH_NAVIGATE_AFTER_LOGIN,
