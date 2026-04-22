@@ -1,5 +1,3 @@
-import { type FormEvent } from 'react';
-
 import {
   RegisterFormError,
   RegisterFormFooter,
@@ -31,7 +29,7 @@ export const RegisterForm = ({
   onSubmit,
   onGoToLogin,
 }: RegisterFormProps) => {
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     void onSubmit();
   };

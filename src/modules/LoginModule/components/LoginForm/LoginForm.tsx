@@ -1,5 +1,3 @@
-import { type FormEvent } from 'react';
-
 import {
   LoginFormError,
   LoginFormFooter,
@@ -21,7 +19,7 @@ export type LoginFormProps = {
   onGoToRegister: () => void;
 };
 
-export const LoginForm = ({
+export const LoginForm: React.FC<LoginFormProps> = ({
   login,
   password,
   error,
@@ -30,8 +28,8 @@ export const LoginForm = ({
   onPasswordChange,
   onSubmit,
   onGoToRegister,
-}: LoginFormProps) => {
-  const handleSubmit = (event: FormEvent) => {
+}) => {
+  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     void onSubmit();
   };

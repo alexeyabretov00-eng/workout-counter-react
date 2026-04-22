@@ -11,7 +11,14 @@ export type SelectProps = {
   disabled?: boolean;
 };
 
-export const Select = ({ id, label, value, options, onChange, disabled }: SelectProps) => {
+export const Select: React.FC<SelectProps> = ({
+  id,
+  label,
+  value,
+  options,
+  onChange,
+  disabled,
+}) => {
   return (
     <>
       <SelectLabel htmlFor={id}>{label}</SelectLabel>
