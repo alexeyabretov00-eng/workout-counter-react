@@ -1,10 +1,11 @@
-import { patchWorkoutSessionControls, useAppDispatch, useAppSelector } from '@store';
+import { useAppDispatch, useAppSelector } from '@store';
 import { eventBus } from '@utils';
 
 import { ExerciseControlBar } from '../../components';
 import { EVENT_WORKOUT_SESSION_CONTROLS_COMMAND } from '../../constants';
 import { exerciseRegistry } from '../../exercises';
 import { getExerciseControlBarContainerProps } from '../../selectors';
+import { updateHomeModuleState } from '../../store';
 
 export const ExerciseControlBarContainer = () => {
   const {
@@ -33,7 +34,7 @@ export const ExerciseControlBarContainer = () => {
       isModelReady={isModelReady}
       isCameraInitializing={isCameraInitializing}
       resetStopEnabled={resetStopEnabled}
-      onExerciseChange={id => dispatch(patchWorkoutSessionControls({ exerciseId: id }))}
+      onExerciseChange={id => dispatch(updateHomeModuleState({ exerciseId: id }))}
       onStartPause={() =>
         eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, {
           type: isRunning ? 'pause' : 'start',
@@ -42,7 +43,7 @@ export const ExerciseControlBarContainer = () => {
       onReset={() => eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, { type: 'reset' })}
       onShutdown={() => eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, { type: 'shutdown' })}
       onRestDurationChange={minutes =>
-        dispatch(patchWorkoutSessionControls({ restDurationMinutes: minutes }))
+        dispatch(updateHomeModuleState({ restDurationMinutes: minutes }))
       }
     />
   );

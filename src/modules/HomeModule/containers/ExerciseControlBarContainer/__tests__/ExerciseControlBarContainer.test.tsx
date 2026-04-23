@@ -3,7 +3,7 @@ import { within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, type Mock, test, vi } from 'vitest';
 
-import { initialWorkoutSessionControlsState, setupStore } from '@store';
+import { initialHomeModuleState, setupStore } from '@store';
 import { renderWithTheme } from '@test-helpers';
 import { eventBus } from '@utils';
 
@@ -11,7 +11,7 @@ import { EVENT_WORKOUT_SESSION_CONTROLS_COMMAND } from '../../../constants';
 import { ExerciseControlBarContainer } from '../ExerciseControlBarContainer';
 
 const createControlsFixture = () => ({
-  ...initialWorkoutSessionControlsState,
+  ...initialHomeModuleState,
   exerciseId: 'biceps-curl' as const,
   restDurationMinutes: 1,
   isRunning: false,

@@ -28,6 +28,7 @@
       "@pages": ["./src/pages"],
       "@store": ["./src/store"],
       "@routes": ["./src/routes"],
+      "@hooks": ["./src/hooks"],
       "@test-helpers": ["./src/test"],
       "@theme": ["./src/theme"],
       "@types": ["./src/types"],

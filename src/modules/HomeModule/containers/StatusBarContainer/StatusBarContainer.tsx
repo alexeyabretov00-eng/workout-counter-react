@@ -1,7 +1,7 @@
 import { useAppSelector } from '@store';
 
 import { WorkoutStatusBar } from '../../components';
-import { getStatusBarContainerProps } from '../../selectors/StatusBarContainerSelector';
+import { getStatusBarContainerProps } from '../../selectors';
 
 export const StatusBarContainer = () => {
   const {

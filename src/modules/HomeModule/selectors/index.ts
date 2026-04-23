@@ -1,3 +1,6 @@
-export { getExerciseControlBarContainerProps } from './ExerciseControlBarContainerSelector';
-export { useStageContainerSelector } from './StageContainerSelector';
-export { getStatusBarContainerProps } from './StatusBarContainerSelector';
+export {
+  getExerciseControlBarContainerProps,
+  getHomeModuleProps,
+  getStatusBarContainerProps,
+  useStageContainerSelector,
+} from './HomeModuleSelectors';

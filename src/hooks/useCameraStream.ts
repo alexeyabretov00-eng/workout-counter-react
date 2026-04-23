@@ -1,26 +1,13 @@
-import { useCallback, useRef, useState } from 'react';
-import type { EntityStatus } from '@types';
+import { useCallback, useRef } from 'react';
 
-export const useCameraStream = () => {
+export const useCameraStream = (onError?: (error: string) => void, onReady?: () => void) => {
   const streamRef = useRef<MediaStream | null>(null);
-  const [cameraState, setCameraState] = useState<{
-    status: EntityStatus;
-    cameraError: string | null;
-  }>({
-    status: 'idle',
-    cameraError: null,
-  });
 
   const stopCamera = useCallback(() => {
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop());
       streamRef.current = null;
     }
-
-    setCameraState(prev => ({
-      ...prev,
-      status: 'idle',
-    }));
   }, []);
 
   const startCamera = useCallback(
@@ -30,10 +17,6 @@ export const useCameraStream = () => {
       }
 
       stopCamera();
-      setCameraState({
-        status: 'initializing',
-        cameraError: null,
-      });
 
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -50,24 +33,16 @@ export const useCameraStream = () => {
 
         await videoEl.play();
 
-        setCameraState({
-          status: 'ready',
-          cameraError: null,
-        });
+        onReady?.();
       } catch (error) {
-        setCameraState({
-          status: 'error',
-          cameraError: error instanceof Error ? error.message : 'Не удалось открыть камеру',
-        });
+        onError?.(error instanceof Error ? error.message : 'Не удалось открыть камеру');
       }
     },
-    [stopCamera],
+    [stopCamera, onError, onReady],
   );
 
   return {
     startCamera,
     stopCamera,
-    cameraStatus: cameraState.status,
-    cameraError: cameraState.cameraError,
   };
 };

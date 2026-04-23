@@ -18,6 +18,7 @@ const srcAliases: Record<string, string> = {
   '@pages': join(srcDir, 'pages'),
   '@store': join(srcDir, 'store'),
   '@routes': join(srcDir, 'routes'),
+  '@hooks': join(srcDir, 'hooks'),
   '@test-helpers': join(srcDir, 'test'),
   '@theme': join(srcDir, 'theme'),
   '@types': join(srcDir, 'types'),

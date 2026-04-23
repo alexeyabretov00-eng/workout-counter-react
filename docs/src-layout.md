@@ -58,7 +58,7 @@
 
 ## `modules/HomeModule/containers`
 
-- Назначение: компоненты **слотов** `HomeLayout` (`header`, `controls`, `statusBar`, `stage` и т.д.): подключаются к данным через селекторы (**`useAppSelector(get…ContainerProps)`** для Redux, **`useStageContainerSelector`** для сцены), **без пропсов** состояния сессии извне. Команды **`start` / pause / reset / shutdown`** инициируют через **`eventBus`**, смена упражнения и минут отдыха — **`patchWorkoutSessionControls`** (см. [architecture.md](architecture.md)).
+- Назначение: компоненты **слотов** `HomeLayout` (`header`, `controls`, `statusBar`, `stage` и т.д.): подключаются к данным через селекторы (**`useAppSelector(get…ContainerProps)`** для Redux, **`useStageContainerSelector`** для сцены), **без пропсов** состояния сессии извне. Команды **`start` / pause / reset / shutdown`** инициируют через **`eventBus`**, смена упражнения и минут отдыха — **`updateHomeModuleState`** (см. [architecture.md](architecture.md)).
 - Структура **как у `src/components`**: одна папка на контейнер в PascalCase, **`ContainerName/ContainerName.tsx`**, **`ContainerName/index.ts`**, баррель **`modules/HomeModule/containers/index.ts`**.
 - Разметка слота: контейнер рендерит **один** презентационный компонент — из **`src/components`** (примитивы) или из барреля **`modules/HomeModule/components`** для виджетов главной (панель управления, статус-бар, сцена); стили виджета — **`<Имя>.styled.tsx`**, токены из **`src/theme`**. Глобальные правила — в **`GlobalStyle`** (`src/theme/globalStyle.tsx`).
 - Импорт в `HomeModule.tsx`: только из **`./containers`** (путь к баррелю — относительно файла модуля).

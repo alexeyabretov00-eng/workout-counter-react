@@ -11,16 +11,3 @@ export {
 export { useAppDispatch, useAppSelector } from './hooks';
 export type { AppDispatch, RootState } from './store';
 export { setupStore, store } from './store';
-export type {
-  WorkoutSessionControlsAction,
-  WorkoutSessionControlsState,
-  WorkoutSessionControlsStatusValue,
-} from './workoutSessionControls';
-export {
-  initialWorkoutSessionControlsState,
-  patchWorkoutSessionControls,
-  resetWorkoutSessionControls,
-  selectWorkoutSessionControls,
-  setWorkoutSessionControls,
-  workoutSessionControlsReducer,
-} from './workoutSessionControls';

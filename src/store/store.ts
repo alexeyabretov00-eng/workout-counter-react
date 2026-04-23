@@ -1,11 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
+import { HomeModuleReducer } from '../modules/HomeModule/store';
+
 import { authReducer } from './auth';
-import { workoutSessionControlsReducer } from './workoutSessionControls';
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  workoutSessionControls: workoutSessionControlsReducer,
+  workoutSessionControls: HomeModuleReducer,
 });
 
 const devToolsOptions = import.meta.env.DEV ? { name: 'workout-counter' } : false;

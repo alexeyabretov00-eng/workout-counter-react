@@ -56,7 +56,7 @@
 
 | Нужно | Пример импорта |
 |--------------|----------------|
-| Базовые поля срезов (`selectAuthUser`, `selectWorkoutSessionControls`, …) | `from '@store'` |
+| Базовые поля срезов (`selectAuthUser`, `getWorkoutControlsState`, …) | `from '@store'` |
 | Комбинированные селекторы под оболочку приложения | `from './selectors'` рядом с **`App/…`** (папка **`src/App/selectors/`**) |
 | Комбинированные селекторы под модуль (логин, регистрация, …) | `from './selectors'` внутри **`src/modules/<ИмяModule>/`** |
 | Контекст сцены тренировки на главной (`WorkoutSessionStage`; панель и статусы — в `@store`) | `from '../../contexts'` (от файла внутри `HomeModule/...`) → `modules/HomeModule/contexts` |

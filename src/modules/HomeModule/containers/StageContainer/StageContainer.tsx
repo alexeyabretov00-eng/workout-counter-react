@@ -1,5 +1,5 @@
 import { Stage } from '../../components';
-import { useStageContainerSelector } from '../../logic';
+import { useStageContainerSelector } from '../../selectors';
 
 export const StageContainer = () => {
   const { canvasRef, isCameraInitializing, isPaused } = useStageContainerSelector();

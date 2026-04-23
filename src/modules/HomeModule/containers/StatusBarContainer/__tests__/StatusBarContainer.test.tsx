@@ -1,16 +1,17 @@
 import { Provider } from 'react-redux';
 import { describe, expect, test } from 'vitest';
 
-import { initialWorkoutSessionControlsState, setupStore } from '@store';
+import { setupStore } from '@store';
 import { renderWithTheme } from '@test-helpers';
 
+import { initialHomeModuleState } from '../../../store';
 import { StatusBarContainer } from '../StatusBarContainer';
 
 const testStore = setupStore({
   workoutSessionControls: {
-    ...initialWorkoutSessionControlsState,
+    ...initialHomeModuleState,
     modelStatus: 'ready',
-    isCameraReady: true,
+    cameraStatus: 'ready',
     voiceStatus: 'listening',
     isPaused: false,
     cameraError: null,

@@ -1,1 +1,0 @@
-export { getExerciseControlBarContainerProps } from './ExerciseControlBarContainerSelector';

@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { VoiceStatus } from '@types';
 
-import { patchWorkoutSessionControls, useAppDispatch } from '@store';
+import { useAppDispatch } from '@store';
 import { eventBus, matchesCommand, normalizeSpeechText } from '@utils';
 
 import { EVENT_WORKOUT_SESSION_CONTROLS_COMMAND } from '../constants';
 import type { ExerciseDetector } from '../exercises';
+import { updateHomeModuleState } from '../store';
 
 const TRANSIENT_SPEECH_ERRORS = new Set(['aborted', 'no-speech']);
 
@@ -166,7 +167,7 @@ export const useSpeechRecognition = ({
           runCommand(
             `rest-${option.minutes}`,
             () => {
-              dispatch(patchWorkoutSessionControls({ restDurationMinutes: option.minutes }));
+              dispatch(updateHomeModuleState({ restDurationMinutes: option.minutes }));
               eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, {
                 type: 'shutdown',
                 restDurationOverrideMs: option.minutes * 60_000,
@@ -185,7 +186,7 @@ export const useSpeechRecognition = ({
       for (const [phrase, nextExerciseId] of commandExerciseLookup) {
         if (matchesCommand(transcript, phrase)) {
           runCommand(`exercise-${nextExerciseId}`, () =>
-            dispatch(patchWorkoutSessionControls({ exerciseId: nextExerciseId })),
+            dispatch(updateHomeModuleState({ exerciseId: nextExerciseId })),
           );
           return;
         }

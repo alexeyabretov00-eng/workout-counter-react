@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCameraStream } from '@hooks';
 import type { EntityStatus } from '@types';
 
+import { useAppDispatch } from '@store';
 import {
   clearCanvas,
   drawFrame,
@@ -16,8 +18,7 @@ import {
   getExerciseDetectorByIdOrDefault,
 } from '../exercises';
 import { PoseLandmarkerService } from '../services';
-
-import { useCameraStream } from './useCameraStream';
+import { updateHomeModuleState } from '../store';
 
 const WorkoutSessionRuntimeDefaultState: ExerciseRuntimeState = {
   reps: 0,
@@ -30,6 +31,8 @@ const WorkoutSessionRuntimeDefaultState: ExerciseRuntimeState = {
 type SessionStatus = 'idle' | 'running' | 'paused' | 'rest';
 
 export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: number) => {
+  const dispatch = useAppDispatch();
+
   const memoryVideoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -42,7 +45,24 @@ export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: nu
 
   const [modelStatus, setModelStatus] = useState<EntityStatus>('loading');
   const [sessionStatus, setSessionStatus] = useState<SessionStatus>('idle');
-  const { startCamera, stopCamera, cameraError, cameraStatus } = useCameraStream();
+  const { startCamera, stopCamera } = useCameraStream(
+    error => {
+      dispatch(
+        updateHomeModuleState({
+          status: 'error',
+          cameraError: error,
+        }),
+      );
+    },
+    () => {
+      dispatch(
+        updateHomeModuleState({
+          cameraStatus: 'ready',
+          cameraError: null,
+        }),
+      );
+    },
+  );
 
   const isRunning = sessionStatus === 'running';
   const isPaused = sessionStatus === 'paused';
@@ -160,12 +180,20 @@ export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: nu
       return;
     }
 
+    dispatch(
+      updateHomeModuleState({
+        cameraStatus: 'initializing',
+        cameraError: null,
+      }),
+    );
+
     await startCamera(memoryVideoRef.current);
+
     detectorStateRef.current = detector.createState();
     runtimeRef.current = WorkoutSessionRuntimeDefaultState;
     poseServiceRef.current.stop();
     setSessionStatus('running');
-  }, [detector, sessionStatus, startCamera]);
+  }, [detector, sessionStatus, startCamera, dispatch]);
 
   const pause = useCallback(() => {
     setSessionStatus('paused');
@@ -188,6 +216,13 @@ export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: nu
       }
       restCountdownVersionRef.current += 1;
       setSessionStatus('idle');
+
+      dispatch(
+        updateHomeModuleState({
+          cameraStatus: 'idle',
+          cameraError: null,
+        }),
+      );
       stopCamera();
       clearCanvas(canvasRef.current);
 
@@ -227,7 +262,7 @@ export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: nu
       };
       restRafRef.current = requestAnimationFrame(restTick);
     },
-    [stopCamera],
+    [stopCamera, dispatch],
   );
 
   const shutdown = useCallback(
@@ -248,9 +283,6 @@ export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: nu
     isRestCountdownActive,
     modelStatus,
     isModelReady: modelStatus === 'ready',
-    isCameraReady: cameraStatus === 'ready',
-    isCameraInitializing: cameraStatus === 'initializing',
-    cameraError,
     start,
     pause,
     reset,
