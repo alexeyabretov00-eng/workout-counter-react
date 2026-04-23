@@ -137,7 +137,7 @@ export default defineConfig(({ mode }) => ({
     environment: 'jsdom',
     setupFiles: ['./src/test/setupTests.ts'],
     include: ['src/**/*.test.{ts,tsx}'],
-    /** One file at a time avoids rare module-initialization races with antd + styled. */
+    /** One file at a time avoids rare module-initialization races (antd + parallel workers). */
     fileParallelism: false,
     coverage: {
       provider: 'v8',

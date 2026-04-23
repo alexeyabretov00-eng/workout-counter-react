@@ -1,26 +1,12 @@
-import { useMemo } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import type { EntityStatus, VoiceStatus } from '@types';
 
-import { useWorkoutSessionStageContext } from '../contexts';
 import type { HomeModuleState } from '../store/types';
 
 type HomeModuleSliceState = { workoutSessionControls: HomeModuleState };
 
 export const getWorkoutControlsState = (state: HomeModuleSliceState) =>
   state.workoutSessionControls;
-
-export const useStageContainerSelector = () => {
-  const ctx = useWorkoutSessionStageContext();
-  return useMemo(
-    () => ({
-      canvasRef: ctx.canvasRef,
-      isCameraInitializing: ctx.isCameraInitializing,
-      isPaused: ctx.isPaused,
-    }),
-    [ctx.canvasRef, ctx.isCameraInitializing, ctx.isPaused],
-  );
-};
 
 export const getHomeModuleProps = createSelector([getWorkoutControlsState], controls => ({
   exerciseId: controls.exerciseId,
