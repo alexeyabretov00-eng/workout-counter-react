@@ -1,14 +1,29 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AdminModule > matches snapshot 1`] = `
+.c0 {
+  box-sizing: border-box;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+  color: #111827;
+  font-family: Inter,system-ui,Arial,sans-serif;
+  line-height: 1.4;
+}
+
+.c1.c1 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
 <div
   class="ant-layout css-dev-only-do-not-override-xogyor css-var-_r_0_"
 >
   <main
-    class="ant-layout-content sc-bdnAzI eQprrB css-dev-only-do-not-override-xogyor"
+    class="ant-layout-content c0 css-dev-only-do-not-override-xogyor"
   >
     <h1
-      class="ant-typography sc-gtstET ccXCwe css-dev-only-do-not-override-xogyor css-var-_r_0_"
+      class="ant-typography c1 css-dev-only-do-not-override-xogyor css-var-_r_0_"
     >
       Админка
     </h1>

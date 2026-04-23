@@ -1,65 +1,175 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`StageContainer > matches snapshot (camera loading) 1`] = `
+.c0 {
+  position: relative;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #111827;
+  aspect-ratio: 16/9;
+}
+
+.c1 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.c2 {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: rgba(17, 24, 39, 0.88);
+}
+
+.c3 {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  border-top-color: #34d399;
+  border-radius: 50%;
+  animation: k0 0.75s linear infinite;
+}
+
+.c4 {
+  margin: 0;
+  color: #e5e7eb;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.c5 {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes k0 {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 <div
-  class="StageRoot-sc-11c4sl4-0 jkLkYG"
+  class="c0"
 >
   <div
     aria-busy="true"
-    class="StageViewport-sc-11c4sl4-1 aIsJ"
+    class="c1"
   >
     <div
       aria-live="polite"
-      class="StageLoader-sc-11c4sl4-2 NOZfV"
+      class="c2"
       role="status"
     >
       <span
         aria-hidden="true"
-        class="StageLoaderSpinner-sc-11c4sl4-3 dasiRH"
+        class="c3"
       />
       <p
-        class="StageLoaderText-sc-11c4sl4-4 bLYXsl"
+        class="c4"
       >
         Подключение камеры…
       </p>
     </div>
     <canvas
-      class="StageCanvas-sc-11c4sl4-5 eKhbpi"
+      class="c5"
     />
   </div>
 </div>
 `;
 
 exports[`StageContainer > matches snapshot (live canvas) 1`] = `
+.c0 {
+  position: relative;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #111827;
+  aspect-ratio: 16/9;
+}
+
+.c1 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.c2 {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 <div
-  class="StageRoot-sc-11c4sl4-0 jkLkYG"
+  class="c0"
 >
   <div
     aria-busy="false"
-    class="StageViewport-sc-11c4sl4-1 aIsJ"
+    class="c1"
   >
     <canvas
-      class="StageCanvas-sc-11c4sl4-5 eKhbpi"
+      class="c2"
     />
   </div>
 </div>
 `;
 
 exports[`StageContainer > matches snapshot (paused) 1`] = `
+.c0 {
+  position: relative;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #111827;
+  aspect-ratio: 16/9;
+}
+
+.c1 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.c2 {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.c3 {
+  margin: 0;
+  color: #e5e7eb;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+}
+
 <div
-  class="StageRoot-sc-11c4sl4-0 jkLkYG"
+  class="c0"
 >
   <div
     aria-busy="false"
-    class="StageViewport-sc-11c4sl4-1 aIsJ"
+    class="c1"
   >
     <div
       aria-live="polite"
-      class="StagePaused-sc-11c4sl4-6 XixKT"
+      class="c2"
       role="status"
     >
       <p
-        class="StagePausedText-sc-11c4sl4-7 kNQhXT"
+        class="c3"
       >
         Упражнение приостановлено
       </p>

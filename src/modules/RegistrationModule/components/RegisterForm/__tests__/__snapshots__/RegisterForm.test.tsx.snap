@@ -1,9 +1,27 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`RegisterForm > matches snapshot with error 1`] = `
+.c0.c0 {
+  max-width: 360px;
+  margin: 0;
+}
+
+.c1 {
+  display: block;
+  margin: 16px 0 0;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.c2.c2 {
+  padding: 0;
+  height: auto;
+  font-size: 14px;
+}
+
 <div>
   <form
-    class="ant-form ant-form-vertical ant-form-hide-required-mark css-var-_r_4_ ant-form-css-var css-dev-only-do-not-override-xogyor RegisterFormRoot-sc-lwna4b-0 kGjfUJ"
+    class="ant-form ant-form-vertical ant-form-hide-required-mark css-var-_r_4_ ant-form-css-var css-dev-only-do-not-override-xogyor c0"
     novalidate=""
   >
     <div
@@ -184,12 +202,12 @@ exports[`RegisterForm > matches snapshot with error 1`] = `
     </div>
   </form>
   <div
-    class="RegisterFormFooter-sc-lwna4b-1 kqinaQ"
+    class="c1"
   >
     Уже есть аккаунт?
      
     <button
-      class="ant-btn css-dev-only-do-not-override-xogyor css-var-_r_4_ ant-btn-link ant-btn-color-link ant-btn-variant-link RegisterFormFooterLink-sc-lwna4b-2 czIJxK"
+      class="ant-btn css-dev-only-do-not-override-xogyor css-var-_r_4_ ant-btn-link ant-btn-color-link ant-btn-variant-link c2"
       type="button"
     >
       <span>
@@ -201,9 +219,27 @@ exports[`RegisterForm > matches snapshot with error 1`] = `
 `;
 
 exports[`RegisterForm > matches snapshot without error 1`] = `
+.c0.c0 {
+  max-width: 360px;
+  margin: 0;
+}
+
+.c1 {
+  display: block;
+  margin: 16px 0 0;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.c2.c2 {
+  padding: 0;
+  height: auto;
+  font-size: 14px;
+}
+
 <div>
   <form
-    class="ant-form ant-form-vertical ant-form-hide-required-mark css-var-_r_3_ ant-form-css-var css-dev-only-do-not-override-xogyor RegisterFormRoot-sc-lwna4b-0 kGjfUJ"
+    class="ant-form ant-form-vertical ant-form-hide-required-mark css-var-_r_3_ ant-form-css-var css-dev-only-do-not-override-xogyor c0"
     novalidate=""
   >
     <div
@@ -345,12 +381,12 @@ exports[`RegisterForm > matches snapshot without error 1`] = `
     </div>
   </form>
   <div
-    class="RegisterFormFooter-sc-lwna4b-1 kqinaQ"
+    class="c1"
   >
     Уже есть аккаунт?
      
     <button
-      class="ant-btn css-dev-only-do-not-override-xogyor css-var-_r_3_ ant-btn-link ant-btn-color-link ant-btn-variant-link RegisterFormFooterLink-sc-lwna4b-2 czIJxK"
+      class="ant-btn css-dev-only-do-not-override-xogyor css-var-_r_3_ ant-btn-link ant-btn-color-link ant-btn-variant-link c2"
       type="button"
     >
       <span>

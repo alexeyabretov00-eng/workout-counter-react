@@ -1,6 +1,20 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`ExerciseControlBar > matches snapshot (idle) 1`] = `
+.c0 {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.c1 {
+  font-weight: 600;
+}
+
+.c2 {
+  min-width: 160px;
+}
+
 <div
   class="ant-space css-dev-only-do-not-override-xogyor ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small css-var-_r_h_"
   style="flex-wrap: wrap;"
@@ -9,16 +23,16 @@ exports[`ExerciseControlBar > matches snapshot (idle) 1`] = `
     class="ant-space-item"
   >
     <span
-      class="SelectRoot-sc-13w9l2w-0 gDvuMX"
+      class="c0"
     >
       <label
-        class="SelectLabel-sc-13w9l2w-1 biibIH"
+        class="c1"
         for="exercise-select"
       >
         Упражнение
       </label>
       <div
-        class="ant-select ant-select-outlined SelectStyled-sc-13w9l2w-2 eQkxXv css-var-_r_h_ ant-select-css-var css-dev-only-do-not-override-xogyor ant-select-single ant-select-show-arrow"
+        class="ant-select ant-select-outlined c2 css-var-_r_h_ ant-select-css-var css-dev-only-do-not-override-xogyor ant-select-single ant-select-show-arrow"
       >
         <div
           class="ant-select-content ant-select-content-has-value"
@@ -106,16 +120,16 @@ exports[`ExerciseControlBar > matches snapshot (idle) 1`] = `
     class="ant-space-item"
   >
     <span
-      class="SelectRoot-sc-13w9l2w-0 gDvuMX"
+      class="c0"
     >
       <label
-        class="SelectLabel-sc-13w9l2w-1 biibIH"
+        class="c1"
         for="rest-duration-select"
       >
         Отдых
       </label>
       <div
-        class="ant-select ant-select-outlined SelectStyled-sc-13w9l2w-2 eQkxXv css-var-_r_h_ ant-select-css-var css-dev-only-do-not-override-xogyor ant-select-single ant-select-show-arrow"
+        class="ant-select ant-select-outlined c2 css-var-_r_h_ ant-select-css-var css-dev-only-do-not-override-xogyor ant-select-single ant-select-show-arrow"
       >
         <div
           class="ant-select-content ant-select-content-has-value"
@@ -165,6 +179,20 @@ exports[`ExerciseControlBar > matches snapshot (idle) 1`] = `
 `;
 
 exports[`ExerciseControlBar > matches snapshot (running) 1`] = `
+.c0 {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.c1 {
+  font-weight: 600;
+}
+
+.c2 {
+  min-width: 160px;
+}
+
 <div
   class="ant-space css-dev-only-do-not-override-xogyor ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small css-var-_r_m_"
   style="flex-wrap: wrap;"
@@ -173,16 +201,16 @@ exports[`ExerciseControlBar > matches snapshot (running) 1`] = `
     class="ant-space-item"
   >
     <span
-      class="SelectRoot-sc-13w9l2w-0 gDvuMX"
+      class="c0"
     >
       <label
-        class="SelectLabel-sc-13w9l2w-1 biibIH"
+        class="c1"
         for="exercise-select"
       >
         Упражнение
       </label>
       <div
-        class="ant-select ant-select-outlined SelectStyled-sc-13w9l2w-2 eQkxXv css-var-_r_m_ ant-select-css-var css-dev-only-do-not-override-xogyor ant-select-single ant-select-show-arrow ant-select-disabled"
+        class="ant-select ant-select-outlined c2 css-var-_r_m_ ant-select-css-var css-dev-only-do-not-override-xogyor ant-select-single ant-select-show-arrow ant-select-disabled"
       >
         <div
           class="ant-select-content ant-select-content-has-value"
@@ -273,16 +301,16 @@ exports[`ExerciseControlBar > matches snapshot (running) 1`] = `
     class="ant-space-item"
   >
     <span
-      class="SelectRoot-sc-13w9l2w-0 gDvuMX"
+      class="c0"
     >
       <label
-        class="SelectLabel-sc-13w9l2w-1 biibIH"
+        class="c1"
         for="rest-duration-select"
       >
         Отдых
       </label>
       <div
-        class="ant-select ant-select-outlined SelectStyled-sc-13w9l2w-2 eQkxXv css-var-_r_m_ ant-select-css-var css-dev-only-do-not-override-xogyor ant-select-single ant-select-show-arrow"
+        class="ant-select ant-select-outlined c2 css-var-_r_m_ ant-select-css-var css-dev-only-do-not-override-xogyor ant-select-single ant-select-show-arrow"
       >
         <div
           class="ant-select-content ant-select-content-has-value"

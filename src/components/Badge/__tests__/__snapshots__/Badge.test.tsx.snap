@@ -2,7 +2,7 @@
 
 exports[`Badge > matches snapshot (error) 1`] = `
 <span
-  class="ant-tag ant-tag-filled ant-tag-error BadgeTag-sc-1ky7gew-0 jhktSS css-dev-only-do-not-override-xogyor css-var-_r_3_"
+  class="ant-tag ant-tag-filled ant-tag-error css-dev-only-do-not-override-xogyor css-var-_r_3_"
 >
   label
 </span>
@@ -10,15 +10,19 @@ exports[`Badge > matches snapshot (error) 1`] = `
 
 exports[`Badge > matches snapshot (info) 1`] = `
 <span
-  class="ant-tag ant-tag-filled ant-tag-blue BadgeTag-sc-1ky7gew-0 jhktSS css-dev-only-do-not-override-xogyor css-var-_r_2_"
+  class="ant-tag ant-tag-filled ant-tag-blue css-dev-only-do-not-override-xogyor css-var-_r_2_"
 >
   label
 </span>
 `;
 
 exports[`Badge > matches snapshot (muted) 1`] = `
+.c0.c0 {
+  color: #6b7280;
+}
+
 <span
-  class="ant-tag ant-tag-filled BadgeTag-sc-1ky7gew-0 eVqakK css-dev-only-do-not-override-xogyor css-var-_r_5_"
+  class="ant-tag ant-tag-filled c0 css-dev-only-do-not-override-xogyor css-var-_r_5_"
 >
   label
 </span>
@@ -26,15 +30,19 @@ exports[`Badge > matches snapshot (muted) 1`] = `
 
 exports[`Badge > matches snapshot (neutral) 1`] = `
 <span
-  class="ant-tag ant-tag-filled ant-tag-default BadgeTag-sc-1ky7gew-0 jhktSS css-dev-only-do-not-override-xogyor css-var-_r_0_"
+  class="ant-tag ant-tag-filled ant-tag-default css-dev-only-do-not-override-xogyor css-var-_r_0_"
 >
   label
 </span>
 `;
 
 exports[`Badge > matches snapshot (note) 1`] = `
+.c0.c0 {
+  color: #374151;
+}
+
 <span
-  class="ant-tag ant-tag-filled BadgeTag-sc-1ky7gew-0 jtjROa css-dev-only-do-not-override-xogyor css-var-_r_6_"
+  class="ant-tag ant-tag-filled c0 css-dev-only-do-not-override-xogyor css-var-_r_6_"
 >
   label
 </span>
@@ -42,7 +50,7 @@ exports[`Badge > matches snapshot (note) 1`] = `
 
 exports[`Badge > matches snapshot (success) 1`] = `
 <span
-  class="ant-tag ant-tag-filled ant-tag-success BadgeTag-sc-1ky7gew-0 jhktSS css-dev-only-do-not-override-xogyor css-var-_r_1_"
+  class="ant-tag ant-tag-filled ant-tag-success css-dev-only-do-not-override-xogyor css-var-_r_1_"
 >
   label
 </span>
@@ -50,7 +58,7 @@ exports[`Badge > matches snapshot (success) 1`] = `
 
 exports[`Badge > matches snapshot (warning) 1`] = `
 <span
-  class="ant-tag ant-tag-filled ant-tag-warning BadgeTag-sc-1ky7gew-0 jhktSS css-dev-only-do-not-override-xogyor css-var-_r_4_"
+  class="ant-tag ant-tag-filled ant-tag-warning css-dev-only-do-not-override-xogyor css-var-_r_4_"
 >
   label
 </span>

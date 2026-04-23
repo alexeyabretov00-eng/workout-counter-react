@@ -1,18 +1,32 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Select > matches snapshot 1`] = `
+.c0 {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.c1 {
+  font-weight: 600;
+}
+
+.c2 {
+  min-width: 160px;
+}
+
 <div>
   <span
-    class="SelectRoot-sc-13w9l2w-0 gDvuMX"
+    class="c0"
   >
     <label
-      class="SelectLabel-sc-13w9l2w-1 biibIH"
+      class="c1"
       for="sel"
     >
       Pick
     </label>
     <div
-      class="ant-select ant-select-outlined SelectStyled-sc-13w9l2w-2 eQkxXv css-var-_r_7_ ant-select-css-var css-dev-only-do-not-override-xogyor ant-select-single ant-select-show-arrow"
+      class="ant-select ant-select-outlined c2 css-var-_r_7_ ant-select-css-var css-dev-only-do-not-override-xogyor ant-select-single ant-select-show-arrow"
     >
       <div
         class="ant-select-content ant-select-content-has-value"

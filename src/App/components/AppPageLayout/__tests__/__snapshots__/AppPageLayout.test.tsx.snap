@@ -1,14 +1,25 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AppPageLayout > matches snapshot with outlet 1`] = `
+.c0.c0 {
+  min-height: 100vh;
+}
+
+.c1.c1 {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 <div
-  class="ant-layout AppPageLayoutRoot-sc-1iczgko-0 hmLbso css-dev-only-do-not-override-xogyor css-var-_r_0_"
+  class="ant-layout c0 css-dev-only-do-not-override-xogyor css-var-_r_0_"
 >
   <div>
     header
   </div>
   <main
-    class="ant-layout-content AppPageContent-sc-1iczgko-1 gRJbmU css-dev-only-do-not-override-xogyor"
+    class="ant-layout-content c1 css-dev-only-do-not-override-xogyor"
   >
     <div>
       page
