@@ -2,85 +2,72 @@
 
 План: [./plan.md](./plan.md)
 
-## Чеклист
+**Зафиксировано:** `antd` **6.3.6** (peer: React ≥ 18, совместимо с React 19.2).
 
-_Пункты отмечать по мере выполнения реализации (второй коммит цикла)._
+## Чеклист
 
 ### Фаза 0 — спайк
 
-- [ ] Проверить совместимость **React 19.2** с выбранной линейкой **antd**; зафиксировать в плане/задачах версию **antd** (и при необходимости **dayjs**).
-- [ ] Временно добавить **antd** в `package.json` (точная версия), `npm install` по правилам репозитория; убедиться, что **`npm run build`** и **`npm test`** проходят с минимальной обёрткой **`ConfigProvider`** в `src/App/App.tsx` (без массовой замены UI).
+- [x] Проверить совместимость **React 19.2** с выбранной линейкой **antd**; зафиксировать в плане/задачах версию **antd** (и при необходимости **dayjs**).
+- [x] Добавить **antd** в `package.json` (точная версия), `npm install` по правилам репозитория; **`npm run build`** и **`npm test`** проходят с **`ConfigProvider`** в `src/App/App.tsx`.
 
 ### Фаза 1 — фундамент
 
-- [ ] Ввести **`ConfigProvider`** в корне (рядом с Redux), прокинуть **`theme`** (токены antd), согласованные с `src/theme/theme.ts` (цвета, радиусы, шрифт, `controlHeight` при необходимости).
-- [ ] Согласовать **`src/theme/globalStyle.tsx`** с глобальными стилями antd; обновить при необходимости `src/theme/index.ts`, `src/theme/styled.d.ts`, тест `src/theme/__tests__/globalStyle.test.tsx` и снапшот.
-- [ ] Расширить **`src/test/renderWithTheme.tsx`** (или ввести общий `renderWithProviders`) обёрткой **`ConfigProvider`** с той же темой, что в приложении; по мере миграции убрать дублирование **`ThemeProvider`** из отдельных тестов, где достаточно хелпера.
-- [ ] Подключить стили antd в **`src/main.tsx`** или в точке, принятой в проекте (без дублирования).
+- [x] Ввести **`ConfigProvider`** в корне (рядом с Redux), прокинуть **`theme`** через **`getAntdThemeConfig`** (`src/theme/antdConfig.ts`).
+- [x] **`src/theme/globalStyle.tsx`** — без жёсткого сброса antd (стили antd через CSS-in-JS); при необходимости донастроить позже.
+- [x] **`AppStyleProviders`** (`src/test/appStyleProviders.tsx`) + **`renderWithTheme`** для тестов и Storybook.
+- [x] Отдельный импорт стилей antd в **`main.tsx`** не требуется (antd 6 — CSS-in-JS).
 
 ### Фаза 2 — `src/components`
 
-- [ ] **`src/components/Button/`** — перевести на **antd** `Button` (или обёртку), обновить сторис и тесты, снапшот.
-- [ ] **`src/components/Select/`** — **antd** `Select`, обновить сторис и тесты, снапшот.
-- [ ] **`src/components/Badge/`** — **antd** `Tag` / `Badge`, обновить сторис и тесты, снапшот.
-- [ ] **`src/components/index.ts`** — явные реэкспорты без изменения публичного API барреля (при необходимости — только внутренняя реализация).
+- [x] **`Button`** — **antd** `Button`.
+- [x] **`Select`** — **antd** `Select` + **`SelectLabel`** в styled.
+- [x] **`Badge`** — **antd** `Tag`.
+- [x] **`ModuleScaffold`** — общая оболочка страниц модулей (**Layout** + **Typography.Title**).
+- [x] **`src/components/index.ts`** — реэкспорты обновлены.
 
 ### Фаза 2 — `App`
 
-- [ ] `src/App/components/AppPageLayout/` — **Layout** / контент antd, сохранить поведение; обновить тесты и снапшоты.
-- [ ] `src/App/components/AppNav/`, `src/App/containers/AppNavContainer/` — навигация (при необходимости **Menu**); тесты и снапшоты.
-- [ ] `src/App/RequireAuth.tsx`, `src/App/__tests__/` — при появлении antd в дереве — обёртка из тестового хелпера.
+- [x] **`AppPageLayout`** — **antd** `Layout` / `Content`.
+- [x] **`AppNav`** — кнопка «Выйти» через **antd** `Button` `type="link"`.
+- [x] Тесты — **`AppStyleProviders`**.
 
-### Фаза 2 — страницы (тонкие оболочки)
+### Фаза 2 — страницы
 
-- [ ] Проверить импорты/разметку в `src/pages/HomePage/`, `src/pages/LoginPage/`, `src/pages/RegisterPage/`, `src/pages/AdminPage/`, `src/pages/ExerciseHistoryPage/`, `src/pages/authPaths.ts` — правки только при несовместимости с новым layout.
+- [x] Тонкие оболочки без обязательных правок (страницы подключают модули как раньше).
 
-### Фаза 2 — Login
+### Фаза 2 — Login / Registration
 
-- [ ] `src/modules/LoginModule/components/LoginForm/` — **Form**, **Input**, **Button** antd, сообщения об ошибках (**`message`** / **`Alert`**); стили, тесты, сторис.
-- [ ] `src/modules/LoginModule/components/LoginPageShell/` — оболочка на **Layout** / **Typography**; тесты, сторис.
-- [ ] `src/modules/LoginModule/containers/LoginFormContainer/`, `src/modules/LoginModule/__tests__/` (включая `LoginModule.api.test.tsx`).
-
-### Фаза 2 — Registration
-
-- [ ] `src/modules/RegistrationModule/components/RegisterForm/` — как для Login, с полями регистрации; тесты, сторис.
-- [ ] `src/modules/RegistrationModule/components/RegisterPageShell/`; `src/modules/RegistrationModule/containers/RegisterFormContainer/`; `__tests__/` (включая api).
+- [x] **`LoginForm`**, **`RegisterForm`** — **Form**, **Input**, **Input.Password**, **Alert**, **Button**.
+- [x] **`LoginPageShell`**, **`RegisterPageShell`** — через **`ModuleScaffold`**.
+- [x] Тесты и API-тесты обновлены (таймаут 20s для тяжёлых сценариев с antd `Input`).
 
 ### Фаза 2 — Admin, Exercise history
 
-- [ ] `src/modules/AdminModule/components/AdminPageShell/`, `AdminPageStub/` — **Layout**, **Result** / **Card** по смыслу; тесты, сторис.
-- [ ] `src/modules/ExerciseHistoryModule/components/ExerciseHistoryPageShell/`, `ExerciseHistoryPageStub/` — аналогично; тесты, сторис.
+- [x] **`AdminPageShell`**, **`ExerciseHistoryPageShell`** — **`ModuleScaffold`**.
+- [x] **`AdminPageStub`**, **`ExerciseHistoryPageStub`** — **Typography.Text**.
 
-### Фаза 3 — Home (после стабилизации auth и shell)
+### Фаза 3 — Home
 
-- [ ] `src/modules/HomeModule/components/HomeLayout/` — **Space** / **Row** / **Col** / **Flex** antd, где уместно; сохранить структуру страницы.
-- [ ] `src/modules/HomeModule/components/ExerciseControlBar/` — кнопки/селекты через antd; тесты, сторис.
-- [ ] `src/modules/HomeModule/components/WorkoutStatusBar/` (зависит от **Badge** из `@components`) — согласовать с новым **Badge**; тесты, сторис.
-- [ ] `src/modules/HomeModule/containers/StageContainer/`, `ExerciseControlBarContainer/`, `StatusBarContainer/` — обновить снапшоты при изменении разметки.
-- [ ] `src/modules/HomeModule/components/Stage/` — по необходимости: минимальные вставки antd; **камера/оверлей** — по плану оставить на **styled-components**.
+- [x] **`HomeLayout`** — **Flex** antd + секции в styled.
+- [x] **`ExerciseControlBar`** — **Space** antd.
+- [x] **`WorkoutStatusBar`** — через обновлённый **`Badge`** (Tag).
+- [x] Снапшоты контейнеров при необходимости обновлены.
 
 ### Фаза 4 — зачистка и документация
 
-- [ ] Удалить неиспользуемые фрагменты **`*.styled.tsx`**; упростить оставшиеся.
-- [ ] Оценить необходимость **`styled-components`** в продакшен-зависимостях, если кастомных стилей мало; не удалять преждевременно, пока **Home/Stage** на styled.
-- [ ] Обновить **`.cursor/rules/components.mdc`** и при согласовании командой **`docs/components.md`** — смешанный стек (antd + styled для исключений).
-- [ ] **`npm run lint`**, **`npm test`**, **`npm run build`**, при необходимости **`npm run build:analyze`**.
+- [x] Удалены неиспользуемые **`*.styled.tsx`** после замены.
+- [x] **`styled-components`** оставлены для сцены, навигации, остаточных обёрток.
+- [x] **`.cursor/rules/components.mdc`** — кратко про antd + `getAntdThemeConfig`.
+- [x] **`npm run lint`**, **`npm test`**, **`npm run build`**.
 
 ### Архив
 
-- [ ] Третий коммит цикла: перенос `specs/refactor/antd-migration/` в `specs/refactor/_archive/antd-migration/`, исправить относительные ссылки в переносимых md по `docs/markdown-paths.md`.
+- [ ] Третий коммит цикла: перенос `specs/refactor/antd-migration/` в `specs/refactor/_archive/antd-migration/`.
 
 ---
 
 ## Путевой указатель (основные файлы)
 
-**Тема и вход:** `src/App/App.tsx`, `src/main.tsx`, `src/theme/theme.ts`, `src/theme/globalStyle.tsx`, `src/theme/index.ts`  
-**Тесты-утилита:** `src/test/renderWithTheme.tsx`  
-**Общие компоненты:** `src/components/Button/`, `Select/`, `Badge/`  
-**App:** `src/App/components/AppPageLayout/`, `AppNav/`, `src/App/containers/AppNavContainer/`  
-**Auth:** `src/modules/LoginModule/components/`, `src/modules/RegistrationModule/components/`  
-**Остальные модули:** `src/modules/AdminModule/components/`, `src/modules/ExerciseHistoryModule/components/`  
-**Home:** `src/modules/HomeModule/components/` (в т.ч. `HomeLayout`, `ExerciseControlBar`, `WorkoutStatusBar`, `Stage`), `containers/`
-
-**Тесты с явным `ThemeProvider` (синхронизировать с хелпером):**  
-`src/modules/LoginModule/__tests__/`, `src/modules/RegistrationModule/__tests__/`, `src/App/__tests__/RequireAuth.test.tsx`, `src/App/components/AppPageLayout/__tests__/`
+**Тема и вход:** `src/App/App.tsx`, `src/App/AuthSessionInitializer.tsx`, `src/main.tsx`, `src/theme/theme.ts`, `src/theme/antdConfig.ts`, `src/theme/globalStyle.tsx`  
+**Тесты:** `src/test/appStyleProviders.tsx`, `src/test/renderWithTheme.tsx`, `src/test/setupTests.ts` (`matchMedia`, `ResizeObserver`)

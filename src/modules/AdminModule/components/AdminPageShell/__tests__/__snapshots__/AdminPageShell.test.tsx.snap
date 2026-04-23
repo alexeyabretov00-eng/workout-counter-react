@@ -1,16 +1,20 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AdminPageShell > matches snapshot 1`] = `
-<main
-  class="AdminPageRoot-sc-1af308t-0 eMnQco"
+<div
+  class="ant-layout css-dev-only-do-not-override-xogyor css-var-_r_0_"
 >
-  <h1
-    class="AdminPageTitle-sc-1af308t-1 jflPyz"
+  <main
+    class="ant-layout-content sc-bdnAzI eQprrB css-dev-only-do-not-override-xogyor"
   >
-    Админка
-  </h1>
-  <div>
-    child
-  </div>
-</main>
+    <h1
+      class="ant-typography sc-gtstET ccXCwe css-dev-only-do-not-override-xogyor css-var-_r_0_"
+    >
+      Админка
+    </h1>
+    <div>
+      child
+    </div>
+  </main>
+</div>
 `;

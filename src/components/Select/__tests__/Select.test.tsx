@@ -23,7 +23,9 @@ describe('Select', () => {
         onChange={onChange}
       />,
     );
-    await user.selectOptions(screen.getByLabelText('Pick'), 'b');
+    const combo = screen.getByRole('combobox', { name: 'Pick' });
+    await user.click(combo);
+    await user.click(await screen.findByText('B'));
     expect(onChange).toHaveBeenCalledWith('b');
   });
 
@@ -39,7 +41,9 @@ describe('Select', () => {
         disabled
       />,
     );
-    expect(screen.getByLabelText('Disabled field')).toBeDisabled();
+    const combo = screen.getByRole('combobox', { name: 'Disabled field' });
+    expect(combo).toBeDisabled();
+    expect(onChange).not.toHaveBeenCalled();
   });
 
   test('matches snapshot', () => {

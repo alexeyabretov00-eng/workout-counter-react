@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { RegisterPageRoot, RegisterPageTitle } from './RegisterPageShell.styled';
+import { ModuleScaffold } from '@components';
 
 export type RegisterPageShellProps = {
   title: string;
@@ -8,10 +8,5 @@ export type RegisterPageShellProps = {
 };
 
 export const RegisterPageShell = ({ title, children }: RegisterPageShellProps) => {
-  return (
-    <RegisterPageRoot>
-      <RegisterPageTitle>{title}</RegisterPageTitle>
-      {children}
-    </RegisterPageRoot>
-  );
+  return <ModuleScaffold title={title}>{children}</ModuleScaffold>;
 };

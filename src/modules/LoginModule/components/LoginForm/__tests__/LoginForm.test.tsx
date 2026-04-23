@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { within } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 
@@ -36,13 +36,11 @@ describe('LoginForm', () => {
       );
     };
 
-    const { container } = renderWithRouterTheme(<LoginFormTypingHarness />);
-    const loginInput = container.querySelector<HTMLInputElement>('input[name="login"]');
-    const passwordInput = container.querySelector<HTMLInputElement>('input[name="password"]');
-    expect(loginInput).toBeTruthy();
-    expect(passwordInput).toBeTruthy();
-    await user.type(loginInput!, 'ab');
-    await user.type(passwordInput!, 'cd');
+    renderWithRouterTheme(<LoginFormTypingHarness />);
+    const loginInput = screen.getByRole('textbox', { name: 'Логин' });
+    const passwordInput = screen.getByLabelText('Пароль');
+    await user.type(loginInput, 'ab');
+    await user.type(passwordInput, 'cd');
     expect(onLoginChange).toHaveBeenLastCalledWith('ab');
     expect(onPasswordChange).toHaveBeenLastCalledWith('cd');
   });

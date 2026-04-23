@@ -1,1 +1,1 @@
-export { RegisterFormContainer, type RegisterFormContainerProps } from './RegisterFormContainer';
+export { RegisterFormContainer } from './RegisterFormContainer';

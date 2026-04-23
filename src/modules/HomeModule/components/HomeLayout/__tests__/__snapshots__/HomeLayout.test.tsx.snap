@@ -2,31 +2,32 @@
 
 exports[`HomeLayout > matches snapshot 1`] = `
 <main
-  class="HomeLayoutRoot-sc-1df81yc-0 bjVPls"
+  class="FlexStyled-sc-1df81yc-3 jaASbO ant-flex css-dev-only-do-not-override-xogyor css-var-_r_0_ ant-flex-align-stretch ant-flex-vertical"
+  style="gap: 16px;"
 >
   <section
-    class="HomeLayoutSection-sc-1df81yc-1 HomeLayoutHeaderSection-sc-1df81yc-2 dBrCzQ"
+    class="HomeLayoutSection-sc-1df81yc-0 HomeLayoutHeaderSection-sc-1df81yc-1 bdLRBr"
   >
     <span>
       header
     </span>
   </section>
   <section
-    class="HomeLayoutSection-sc-1df81yc-1"
+    class="HomeLayoutSection-sc-1df81yc-0"
   >
     <span>
       controls
     </span>
   </section>
   <section
-    class="HomeLayoutSection-sc-1df81yc-1"
+    class="HomeLayoutSection-sc-1df81yc-0"
   >
     <span>
       status
     </span>
   </section>
   <section
-    class="HomeLayoutSection-sc-1df81yc-1 HomeLayoutStageSection-sc-1df81yc-3 dLylgP"
+    class="HomeLayoutSection-sc-1df81yc-0 HomeLayoutStageSection-sc-1df81yc-2 cvaBde"
   >
     <span>
       stage

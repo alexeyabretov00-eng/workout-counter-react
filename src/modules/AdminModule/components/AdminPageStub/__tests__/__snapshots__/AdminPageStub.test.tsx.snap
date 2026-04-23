@@ -1,9 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AdminPageStub > matches snapshot 1`] = `
-<p
-  class="AdminPageLead-sc-16nvmxg-0 dyYkUB"
+<span
+  class="ant-typography ant-typography-secondary css-dev-only-do-not-override-xogyor css-var-_r_0_"
+  style="display: block;"
 >
   Заглушка: раздел в разработке.
-</p>
+</span>
 `;

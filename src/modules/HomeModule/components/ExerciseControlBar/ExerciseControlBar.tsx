@@ -1,6 +1,6 @@
-import { Button, Select, type SelectOption } from '@components';
+import { Space } from 'antd';
 
-import { ExerciseControlBarRoot } from './ExerciseControlBar.styled';
+import { Button, Select, type SelectOption } from '@components';
 
 export type ExerciseControlBarProps = {
   exerciseId: string;
@@ -34,7 +34,7 @@ export const ExerciseControlBar: React.FC<ExerciseControlBarProps> = ({
   onRestDurationChange,
 }) => {
   return (
-    <ExerciseControlBarRoot>
+    <Space wrap align="center" size="small">
       <Select
         id="exercise-select"
         label="Упражнение"
@@ -62,6 +62,6 @@ export const ExerciseControlBar: React.FC<ExerciseControlBarProps> = ({
         options={restDurationOptions}
         onChange={value => onRestDurationChange(Number(value))}
       />
-    </ExerciseControlBarRoot>
+    </Space>
   );
 };

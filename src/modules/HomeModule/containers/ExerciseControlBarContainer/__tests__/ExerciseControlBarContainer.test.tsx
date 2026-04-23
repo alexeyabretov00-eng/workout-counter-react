@@ -3,11 +3,12 @@ import { within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, type Mock, test, vi } from 'vitest';
 
-import { initialHomeModuleState, setupStore } from '@store';
+import { setupStore } from '@store';
 import { renderWithTheme } from '@test-helpers';
 import { eventBus } from '@utils';
 
 import { EVENT_WORKOUT_SESSION_CONTROLS_COMMAND } from '../../../constants';
+import { initialHomeModuleState } from '../../../store';
 import { ExerciseControlBarContainer } from '../ExerciseControlBarContainer';
 
 const createControlsFixture = () => ({

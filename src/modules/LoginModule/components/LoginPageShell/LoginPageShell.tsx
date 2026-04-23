@@ -1,4 +1,4 @@
-import { LoginPageRoot, LoginPageTitle } from './LoginPageShell.styled';
+import { ModuleScaffold } from '@components';
 
 export type LoginPageShellProps = {
   title: string;
@@ -8,10 +8,5 @@ export const LoginPageShell: React.FC<React.PropsWithChildren<LoginPageShellProp
   title,
   children,
 }) => {
-  return (
-    <LoginPageRoot>
-      <LoginPageTitle>{title}</LoginPageTitle>
-      {children}
-    </LoginPageRoot>
-  );
+  return <ModuleScaffold title={title}>{children}</ModuleScaffold>;
 };

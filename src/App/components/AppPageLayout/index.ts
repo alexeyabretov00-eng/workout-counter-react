@@ -1,3 +1,3 @@
 export type { AppPageLayoutProps } from './AppPageLayout';
 export { AppPageLayout } from './AppPageLayout';
-export { AppRootLayoutRoot, RouteOutletFallbackRoot } from './AppPageLayout.styled';
+export { AppPageContent, AppPageLayoutRoot, RouteOutletFallbackRoot } from './AppPageLayout.styled';

@@ -1,20 +1,13 @@
-import { ButtonRoot } from './Button.styled';
+import { Button as AntButton, type ButtonProps } from 'antd';
 
-export type ButtonProps = {
-  onClick: () => void;
-  disabled?: boolean;
-  ariaLabel?: string;
-};
-
-export const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
+export const Button: React.FC<ButtonProps & { ariaLabel?: string }> = ({
   children,
-  onClick,
-  disabled,
   ariaLabel,
+  ...props
 }) => {
   return (
-    <ButtonRoot type="button" onClick={onClick} disabled={disabled} aria-label={ariaLabel}>
+    <AntButton htmlType="button" aria-label={ariaLabel} {...props}>
       {children}
-    </ButtonRoot>
+    </AntButton>
   );
 };

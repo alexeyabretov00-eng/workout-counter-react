@@ -1,6 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { Button } from '@components';
+
 export const AppNavRoot = styled.nav`
   display: flex;
   flex-wrap: wrap;
@@ -34,22 +36,6 @@ export const AppNavUserLabel = styled.span`
   color: ${({ theme }) => theme.palette.text.muted};
 `;
 
-export const AppNavTextButton = styled.button`
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: ${({ theme }) => theme.palette.text.primary};
-  font-size: ${({ theme }) => theme.typography.statusBar};
-  font-family: ${({ theme }) => theme.typography.family};
-  text-decoration: underline;
-
-  &:hover {
-    color: ${({ theme }) => theme.palette.text.gray700};
-  }
-`;
-
 export const AppNavLink = styled(NavLink)`
   color: ${({ theme }) => theme.palette.text.primary};
   text-decoration: none;
@@ -58,5 +44,12 @@ export const AppNavLink = styled(NavLink)`
 
   &[aria-current='page'] {
     font-weight: ${({ theme }) => theme.typography.labelWeight};
+  }
+`;
+
+export const ButtonStyled = styled(Button).attrs({ type: 'link' as const })`
+  && {
+    padding: 0;
+    height: auto;
   }
 `;

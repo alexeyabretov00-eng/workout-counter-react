@@ -1,11 +1,11 @@
+import { Alert, Form, Input } from 'antd';
+
+import { Button } from '@components';
+
 import {
-  RegisterFormError,
   RegisterFormFooter,
-  RegisterFormFooterLinkButton,
-  RegisterFormInput,
-  RegisterFormLabel,
+  RegisterFormFooterLink,
   RegisterFormRoot,
-  RegisterFormSubmit,
 } from './RegisterForm.styled';
 
 export type RegisterFormProps = {
@@ -19,7 +19,7 @@ export type RegisterFormProps = {
   onGoToLogin: () => void;
 };
 
-export const RegisterForm = ({
+export const RegisterForm: React.FC<RegisterFormProps> = ({
   login,
   password,
   error,
@@ -28,19 +28,20 @@ export const RegisterForm = ({
   onPasswordChange,
   onSubmit,
   onGoToLogin,
-}: RegisterFormProps) => {
-  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    void onSubmit();
-  };
-
+}) => {
   return (
     <>
-      <RegisterFormRoot onSubmit={handleSubmit}>
-        {error ? <RegisterFormError role="alert">{error}</RegisterFormError> : null}
-        <RegisterFormLabel>
-          Логин
-          <RegisterFormInput
+      <RegisterFormRoot
+        layout="vertical"
+        requiredMark={false}
+        onFinish={() => {
+          void onSubmit();
+        }}
+        noValidate>
+        {error ? <Alert type="error" showIcon title={error} role="alert" /> : null}
+        <Form.Item label="Логин" htmlFor="register-login-input">
+          <Input
+            id="register-login-input"
             name="login"
             autoComplete="username"
             value={login}
@@ -49,12 +50,11 @@ export const RegisterForm = ({
             }}
             disabled={pending}
           />
-        </RegisterFormLabel>
-        <RegisterFormLabel>
-          Пароль
-          <RegisterFormInput
+        </Form.Item>
+        <Form.Item label="Пароль" htmlFor="register-password-input">
+          <Input.Password
+            id="register-password-input"
             name="password"
-            type="password"
             autoComplete="new-password"
             value={password}
             onChange={e => {
@@ -62,14 +62,16 @@ export const RegisterForm = ({
             }}
             disabled={pending}
           />
-        </RegisterFormLabel>
-        <RegisterFormSubmit type="submit" disabled={pending}>
-          {pending ? 'Регистрация…' : 'Создать учётную запись'}
-        </RegisterFormSubmit>
+        </Form.Item>
+        <Form.Item>
+          <Button htmlType="submit" disabled={pending} block>
+            {pending ? 'Регистрация…' : 'Создать учётную запись'}
+          </Button>
+        </Form.Item>
       </RegisterFormRoot>
       <RegisterFormFooter>
         Уже есть аккаунт?{' '}
-        <RegisterFormFooterLinkButton onClick={onGoToLogin}>Войти</RegisterFormFooterLinkButton>
+        <RegisterFormFooterLink onClick={onGoToLogin}>Войти</RegisterFormFooterLink>
       </RegisterFormFooter>
     </>
   );

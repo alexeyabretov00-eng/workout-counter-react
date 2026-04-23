@@ -5,24 +5,24 @@ exports[`WorkoutStatusBar > matches snapshot (full state) 1`] = `
   class="WorkoutStatusBarRoot-sc-12c3i7q-0 diIruA"
 >
   <span
-    class="BadgeRoot-sc-1ky7gew-0 jPgDoj"
+    class="ant-tag ant-tag-filled ant-tag-success BadgeTag-sc-1ky7gew-0 jhktSS css-dev-only-do-not-override-xogyor css-var-_r_0_"
   >
     Модель: 
     ok
   </span>
   <span
-    class="BadgeRoot-sc-1ky7gew-0 jPgDoj"
+    class="ant-tag ant-tag-filled ant-tag-success BadgeTag-sc-1ky7gew-0 jhktSS css-dev-only-do-not-override-xogyor css-var-_r_0_"
   >
     Camera: 
     ready
   </span>
   <span
-    class="BadgeRoot-sc-1ky7gew-0 jPyCrP"
+    class="ant-tag ant-tag-filled ant-tag-blue BadgeTag-sc-1ky7gew-0 jhktSS css-dev-only-do-not-override-xogyor css-var-_r_0_"
   >
     Voice
   </span>
   <span
-    class="BadgeRoot-sc-1ky7gew-0 dcTerc"
+    class="ant-tag ant-tag-filled BadgeTag-sc-1ky7gew-0 jtjROa css-dev-only-do-not-override-xogyor css-var-_r_0_"
   >
     Упражнение приостановлено
   </span>
@@ -40,19 +40,19 @@ exports[`WorkoutStatusBar > matches snapshot (minimal) 1`] = `
   class="WorkoutStatusBarRoot-sc-12c3i7q-0 diIruA"
 >
   <span
-    class="BadgeRoot-sc-1ky7gew-0 jPyCrP"
+    class="ant-tag ant-tag-filled ant-tag-blue BadgeTag-sc-1ky7gew-0 jhktSS css-dev-only-do-not-override-xogyor css-var-_r_1_"
   >
     Модель: 
     wait
   </span>
   <span
-    class="BadgeRoot-sc-1ky7gew-0 eWxdxU"
+    class="ant-tag ant-tag-filled BadgeTag-sc-1ky7gew-0 eVqakK css-dev-only-do-not-override-xogyor css-var-_r_1_"
   >
     Camera: 
     off
   </span>
   <span
-    class="BadgeRoot-sc-1ky7gew-0 eWxdxU"
+    class="ant-tag ant-tag-filled BadgeTag-sc-1ky7gew-0 eVqakK css-dev-only-do-not-override-xogyor css-var-_r_1_"
   >
     V
   </span>

@@ -1,4 +1,4 @@
-import { SelectField, SelectLabel } from './Select.styled';
+import { SelectLabel, SelectStyled } from './Select.styled';
 
 export type SelectOption = { value: string; label: string };
 
@@ -22,17 +22,14 @@ export const Select: React.FC<SelectProps> = ({
   return (
     <>
       <SelectLabel htmlFor={id}>{label}</SelectLabel>
-      <SelectField
+      <SelectStyled
         id={id}
         value={value}
         disabled={disabled}
-        onChange={event => onChange(event.target.value)}>
-        {options.map(option => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </SelectField>
+        onChange={next => onChange(String(next))}
+        options={options}
+        popupMatchSelectWidth={false}
+      />
     </>
   );
 };

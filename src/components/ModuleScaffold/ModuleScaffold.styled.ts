@@ -1,6 +1,9 @@
+import { Layout, Typography } from 'antd';
 import styled from 'styled-components';
 
-export const AdminPageRoot = styled.main`
+const { Title } = Typography;
+
+export const Content = styled(Layout.Content)`
   box-sizing: border-box;
   max-width: ${({ theme }) => theme.layout.maxWidth};
   margin: 0 auto;
@@ -10,8 +13,9 @@ export const AdminPageRoot = styled.main`
   line-height: ${({ theme }) => theme.typography.lineHeight};
 `;
 
-export const AdminPageTitle = styled.h1`
-  margin: 0 0 ${({ theme }) => theme.spacing.md};
-  font-size: 1.5rem;
-  font-weight: ${({ theme }) => theme.typography.labelWeight};
+export const ModuleScaffoldTitle = styled(Title).attrs({ level: 1 })`
+  && {
+    margin-top: 0;
+    margin-bottom: ${({ theme }) => theme.spacing.md};
+  }
 `;

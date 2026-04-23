@@ -1,16 +1,20 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`RegisterPageShell > matches snapshot 1`] = `
-<main
-  class="RegisterPageRoot-sc-cbh2op-0 cCWA-dX"
+<div
+  class="ant-layout css-dev-only-do-not-override-xogyor css-var-_r_0_"
 >
-  <h1
-    class="RegisterPageTitle-sc-cbh2op-1 hDWmAQ"
+  <main
+    class="ant-layout-content sc-bdnAzI eQprrB css-dev-only-do-not-override-xogyor"
   >
-    Регистрация
-  </h1>
-  <div>
-    child
-  </div>
-</main>
+    <h1
+      class="ant-typography sc-gtstET ccXCwe css-dev-only-do-not-override-xogyor css-var-_r_0_"
+    >
+      Регистрация
+    </h1>
+    <div>
+      child
+    </div>
+  </main>
+</div>
 `;

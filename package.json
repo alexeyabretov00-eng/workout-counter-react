@@ -9,6 +9,7 @@
     "build": "tsc -b && vite build",
     "build:analyze": "tsc -b && vite build --mode analyze",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -21,6 +22,7 @@
   "dependencies": {
     "@mediapipe/tasks-vision": "0.10.34",
     "@reduxjs/toolkit": "2.11.2",
+    "antd": "6.3.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-redux": "9.2.0",

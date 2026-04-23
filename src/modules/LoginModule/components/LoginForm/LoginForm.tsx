@@ -1,12 +1,8 @@
-import {
-  LoginFormError,
-  LoginFormFooter,
-  LoginFormFooterLinkButton,
-  LoginFormInput,
-  LoginFormLabel,
-  LoginFormRoot,
-  LoginFormSubmit,
-} from './LoginForm.styled';
+import { Alert, Form, Input } from 'antd';
+
+import { Button } from '@components';
+
+import { LoginFormFooter, LoginFormFooterLink, LoginFormRoot } from './LoginForm.styled';
 
 export type LoginFormProps = {
   login: string;
@@ -29,18 +25,19 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   onSubmit,
   onGoToRegister,
 }) => {
-  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    void onSubmit();
-  };
-
   return (
     <>
-      <LoginFormRoot onSubmit={handleSubmit}>
-        {error ? <LoginFormError role="alert">{error}</LoginFormError> : null}
-        <LoginFormLabel>
-          Логин
-          <LoginFormInput
+      <LoginFormRoot
+        layout="vertical"
+        requiredMark={false}
+        onFinish={() => {
+          void onSubmit();
+        }}
+        noValidate>
+        {error ? <Alert type="error" showIcon title={error} role="alert" /> : null}
+        <Form.Item label="Логин" htmlFor="login-input">
+          <Input
+            id="login-input"
             name="login"
             autoComplete="username"
             value={login}
@@ -49,12 +46,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             }}
             disabled={pending}
           />
-        </LoginFormLabel>
-        <LoginFormLabel>
-          Пароль
-          <LoginFormInput
+        </Form.Item>
+        <Form.Item label="Пароль" htmlFor="password-input">
+          <Input.Password
+            id="password-input"
             name="password"
-            type="password"
             autoComplete="current-password"
             value={password}
             onChange={e => {
@@ -62,14 +58,16 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             }}
             disabled={pending}
           />
-        </LoginFormLabel>
-        <LoginFormSubmit type="submit" disabled={pending}>
-          {pending ? 'Вход…' : 'Войти'}
-        </LoginFormSubmit>
+        </Form.Item>
+        <Form.Item>
+          <Button htmlType="submit" disabled={pending} block>
+            {pending ? 'Вход…' : 'Войти'}
+          </Button>
+        </Form.Item>
       </LoginFormRoot>
       <LoginFormFooter>
         Нет учётной записи?{' '}
-        <LoginFormFooterLinkButton onClick={onGoToRegister}>Регистрация</LoginFormFooterLinkButton>
+        <LoginFormFooterLink onClick={onGoToRegister}>Регистрация</LoginFormFooterLink>
       </LoginFormFooter>
     </>
   );

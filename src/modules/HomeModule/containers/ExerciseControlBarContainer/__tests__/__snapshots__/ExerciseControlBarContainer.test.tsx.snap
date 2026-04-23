@@ -2,91 +2,158 @@
 
 exports[`ExerciseControlBarContainer > matches snapshot 1`] = `
 <div
-  class="ExerciseControlBarRoot-sc-vhf6fj-0 kfEzKc"
+  class="ant-space css-dev-only-do-not-override-xogyor ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small css-var-_r_f_"
+  style="flex-wrap: wrap;"
 >
-  <label
-    class="SelectLabel-sc-13w9l2w-0 dsnSxm"
-    for="exercise-select"
+  <div
+    class="ant-space-item"
   >
-    Упражнение
-  </label>
-  <select
-    class="SelectField-sc-13w9l2w-1 eQpTXU"
-    id="exercise-select"
+    <label
+      class="SelectLabel-sc-13w9l2w-0 dsnSxm"
+      for="exercise-select"
+    >
+      Упражнение
+    </label>
+    <div
+      class="ant-select ant-select-outlined SelectStyled-sc-13w9l2w-1 dGwqMc css-var-_r_f_ ant-select-css-var css-dev-only-do-not-override-xogyor ant-select-single ant-select-show-arrow"
+    >
+      <div
+        class="ant-select-content ant-select-content-has-value"
+        title="Подъем на бицепс"
+      >
+        Подъем на бицепс
+        <input
+          aria-autocomplete="list"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          autocomplete="off"
+          class="ant-select-input"
+          id="exercise-select"
+          readonly=""
+          role="combobox"
+          type="search"
+          value=""
+        />
+      </div>
+      <div
+        class="ant-select-suffix"
+      >
+        <span
+          aria-label="down"
+          class="anticon anticon-down"
+          role="img"
+        >
+          <svg
+            aria-hidden="true"
+            data-icon="down"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    class="ant-space-item"
   >
-    <option
-      value="army-press"
+    <button
+      aria-label="Старт"
+      class="ant-btn css-dev-only-do-not-override-xogyor css-var-_r_f_ ant-btn-default ant-btn-color-default ant-btn-variant-outlined"
+      type="button"
     >
-      Армейский жим
-    </option>
-    <option
-      value="biceps-curl"
-    >
-      Подъем на бицепс
-    </option>
-    <option
-      value="head-side-tilt"
-    >
-      Наклоны головы вправо-влево
-    </option>
-    <option
-      value="squat"
-    >
-      Приседания
-    </option>
-  </select>
-  <button
-    aria-label="Старт"
-    class="ButtonRoot-sc-113iyrz-0 eyWjFH"
-    type="button"
+      <span>
+        Старт
+      </span>
+    </button>
+  </div>
+  <div
+    class="ant-space-item"
   >
-    Старт
-  </button>
-  <button
-    class="ButtonRoot-sc-113iyrz-0 eyWjFH"
-    disabled=""
-    type="button"
-  >
-    Сброс
-  </button>
-  <button
-    aria-label="Стоп"
-    class="ButtonRoot-sc-113iyrz-0 eyWjFH"
-    disabled=""
-    type="button"
-  >
-    Стоп
-  </button>
-  <label
-    class="SelectLabel-sc-13w9l2w-0 dsnSxm"
-    for="rest-duration-select"
-  >
-    Отдых
-  </label>
-  <select
-    class="SelectField-sc-13w9l2w-1 eQpTXU"
-    id="rest-duration-select"
-  >
-    <option
-      value="1"
+    <button
+      class="ant-btn css-dev-only-do-not-override-xogyor css-var-_r_f_ ant-btn-default ant-btn-color-default ant-btn-variant-outlined"
+      disabled=""
+      type="button"
     >
-      1 мин
-    </option>
-    <option
-      value="2"
+      <span>
+        Сброс
+      </span>
+    </button>
+  </div>
+  <div
+    class="ant-space-item"
+  >
+    <button
+      aria-label="Стоп"
+      class="ant-btn css-dev-only-do-not-override-xogyor css-var-_r_f_ ant-btn-default ant-btn-color-default ant-btn-variant-outlined"
+      disabled=""
+      type="button"
     >
-      2 мин
-    </option>
-    <option
-      value="3"
+      <span>
+        Стоп
+      </span>
+    </button>
+  </div>
+  <div
+    class="ant-space-item"
+  >
+    <label
+      class="SelectLabel-sc-13w9l2w-0 dsnSxm"
+      for="rest-duration-select"
     >
-      3 мин
-    </option>
-    <option
-      value="5"
+      Отдых
+    </label>
+    <div
+      class="ant-select ant-select-outlined SelectStyled-sc-13w9l2w-1 dGwqMc css-var-_r_f_ ant-select-css-var css-dev-only-do-not-override-xogyor ant-select-single ant-select-show-arrow"
     >
-      5 мин
-    </option>
-  </select>
+      <div
+        class="ant-select-content ant-select-content-has-value"
+        title="1 мин"
+      >
+        1 мин
+        <input
+          aria-autocomplete="list"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          autocomplete="off"
+          class="ant-select-input"
+          id="rest-duration-select"
+          readonly=""
+          role="combobox"
+          type="search"
+          value=""
+        />
+      </div>
+      <div
+        class="ant-select-suffix"
+      >
+        <span
+          aria-label="down"
+          class="anticon anticon-down"
+          role="img"
+        >
+          <svg
+            aria-hidden="true"
+            data-icon="down"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
 </div>
 `;

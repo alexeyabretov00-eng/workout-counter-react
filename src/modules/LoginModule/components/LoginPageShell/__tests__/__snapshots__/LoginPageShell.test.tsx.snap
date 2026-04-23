@@ -1,16 +1,20 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`LoginPageShell > matches snapshot 1`] = `
-<main
-  class="LoginPageRoot-sc-ba4lmw-0 htgjZw"
+<div
+  class="ant-layout css-dev-only-do-not-override-xogyor css-var-_r_0_"
 >
-  <h1
-    class="LoginPageTitle-sc-ba4lmw-1 iUDvjz"
+  <main
+    class="ant-layout-content sc-bdnAzI eQprrB css-dev-only-do-not-override-xogyor"
   >
-    Вход
-  </h1>
-  <div>
-    child
-  </div>
-</main>
+    <h1
+      class="ant-typography sc-gtstET ccXCwe css-dev-only-do-not-override-xogyor css-var-_r_0_"
+    >
+      Вход
+    </h1>
+    <div>
+      child
+    </div>
+  </main>
+</div>
 `;

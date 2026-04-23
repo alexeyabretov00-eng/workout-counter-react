@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { AdminPageRoot, AdminPageTitle } from './AdminPageShell.styled';
+import { ModuleScaffold } from '@components';
 
 export type AdminPageShellProps = {
   title: string;
@@ -8,10 +8,5 @@ export type AdminPageShellProps = {
 };
 
 export const AdminPageShell = ({ title, children }: AdminPageShellProps) => {
-  return (
-    <AdminPageRoot>
-      <AdminPageTitle>{title}</AdminPageTitle>
-      {children}
-    </AdminPageRoot>
-  );
+  return <ModuleScaffold title={title}>{children}</ModuleScaffold>;
 };

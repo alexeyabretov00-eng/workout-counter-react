@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ModuleScaffold > matches snapshot 1`] = `
+<div
+  class="ant-layout css-dev-only-do-not-override-xogyor css-var-_r_2_"
+>
+  <main
+    class="ant-layout-content sc-bdnAzI eQprrB css-dev-only-do-not-override-xogyor"
+  >
+    <h1
+      class="ant-typography sc-gtstET ccXCwe css-dev-only-do-not-override-xogyor css-var-_r_2_"
+    >
+      Снапшот
+    </h1>
+    <div>
+      контент
+    </div>
+  </main>
+</div>
+`;

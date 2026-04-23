@@ -3,8 +3,8 @@ import {
   AppNavLink,
   AppNavMain,
   AppNavRoot,
-  AppNavTextButton,
   AppNavUserLabel,
+  ButtonStyled,
 } from './AppNav.styled';
 
 export type AppNavItem = { path: string; label: string; end?: boolean };
@@ -28,9 +28,7 @@ const AppNavAuthContent: React.FC<AppNavAuthContentProps> = ({ isLoading, user, 
     return (
       <>
         <AppNavUserLabel>{user.login}</AppNavUserLabel>
-        <AppNavTextButton type="button" onClick={onLogout}>
-          Выйти
-        </AppNavTextButton>
+        <ButtonStyled onClick={onLogout}>Выйти</ButtonStyled>
       </>
     );
   }

@@ -2,13 +2,17 @@
 
 exports[`AppPageLayout > matches snapshot with outlet 1`] = `
 <div
-  class="AppRootLayoutRoot-sc-1iczgko-0 hoshPn"
+  class="ant-layout AppPageLayoutRoot-sc-1iczgko-0 hmLbso css-dev-only-do-not-override-xogyor css-var-_r_0_"
 >
   <div>
     header
   </div>
-  <div>
-    page
-  </div>
+  <main
+    class="ant-layout-content AppPageContent-sc-1iczgko-1 gRJbmU css-dev-only-do-not-override-xogyor"
+  >
+    <div>
+      page
+    </div>
+  </main>
 </div>
 `;

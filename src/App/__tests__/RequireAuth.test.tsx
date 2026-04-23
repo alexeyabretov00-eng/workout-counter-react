@@ -1,11 +1,10 @@
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from 'styled-components';
 import { describe, expect, test } from 'vitest';
 
 import { setupStore } from '@store';
-import { theme } from '@theme';
+import { AppStyleProviders } from '@test-helpers';
 
 import { RequireAuth } from '../RequireAuth';
 
@@ -17,7 +16,7 @@ describe('RequireAuth', () => {
 
     render(
       <Provider store={testStore}>
-        <ThemeProvider theme={theme}>
+        <AppStyleProviders>
           <MemoryRouter initialEntries={['/app']}>
             <Routes>
               <Route path="/app" element={<RequireAuth />}>
@@ -25,7 +24,7 @@ describe('RequireAuth', () => {
               </Route>
             </Routes>
           </MemoryRouter>
-        </ThemeProvider>
+        </AppStyleProviders>
       </Provider>,
     );
     expect(screen.getByText('Загрузка…')).toBeInTheDocument();
@@ -38,7 +37,7 @@ describe('RequireAuth', () => {
 
     render(
       <Provider store={testStore}>
-        <ThemeProvider theme={theme}>
+        <AppStyleProviders>
           <MemoryRouter initialEntries={['/app']}>
             <Routes>
               <Route path="/app" element={<RequireAuth />}>
@@ -46,7 +45,7 @@ describe('RequireAuth', () => {
               </Route>
             </Routes>
           </MemoryRouter>
-        </ThemeProvider>
+        </AppStyleProviders>
       </Provider>,
     );
     expect(screen.getByText('secret')).toBeInTheDocument();

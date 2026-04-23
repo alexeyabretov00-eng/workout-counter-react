@@ -1,15 +1,18 @@
 import type { Preview } from '@storybook/react-vite';
+import { ConfigProvider } from 'antd';
 import { ThemeProvider } from 'styled-components';
 
-import { GlobalStyle, theme } from '@theme';
+import { getAntdThemeConfig, GlobalStyle, theme } from '@theme';
 
 const preview: Preview = {
   decorators: [
     Story => (
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <Story />
-      </ThemeProvider>
+      <ConfigProvider theme={getAntdThemeConfig(theme)}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <Story />
+        </ThemeProvider>
+      </ConfigProvider>
     ),
   ],
   parameters: {

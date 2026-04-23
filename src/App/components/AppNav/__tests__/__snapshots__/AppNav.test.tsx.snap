@@ -8,7 +8,7 @@ exports[`AppNav > matches snapshot (authenticated) 1`] = `
     class="AppNavMain-sc-49dfo2-1 cZgbMa"
   >
     <a
-      class="AppNavLink-sc-49dfo2-5 gwSzsL"
+      class="AppNavLink-sc-49dfo2-4 ioDkji"
       data-discover="true"
       href="/home"
     >
@@ -24,10 +24,12 @@ exports[`AppNav > matches snapshot (authenticated) 1`] = `
       alex
     </span>
     <button
-      class="AppNavTextButton-sc-49dfo2-4 leQhio"
+      class="ant-btn css-dev-only-do-not-override-xogyor css-var-_r_1_ ant-btn-link ant-btn-color-link ant-btn-variant-link ButtonStyled-sc-49dfo2-5 kFPXuF"
       type="button"
     >
-      Выйти
+      <span>
+        Выйти
+      </span>
     </button>
   </div>
 </nav>
@@ -41,7 +43,7 @@ exports[`AppNav > matches snapshot (guest) 1`] = `
     class="AppNavMain-sc-49dfo2-1 cZgbMa"
   >
     <a
-      class="AppNavLink-sc-49dfo2-5 gwSzsL"
+      class="AppNavLink-sc-49dfo2-4 ioDkji"
       data-discover="true"
       href="/home"
     >
@@ -52,14 +54,14 @@ exports[`AppNav > matches snapshot (guest) 1`] = `
     class="AppNavAuth-sc-49dfo2-2 hDFGYZ"
   >
     <a
-      class="AppNavLink-sc-49dfo2-5 gwSzsL"
+      class="AppNavLink-sc-49dfo2-4 ioDkji"
       data-discover="true"
       href="/login"
     >
       Вход
     </a>
     <a
-      class="AppNavLink-sc-49dfo2-5 gwSzsL"
+      class="AppNavLink-sc-49dfo2-4 ioDkji"
       data-discover="true"
       href="/register"
     >

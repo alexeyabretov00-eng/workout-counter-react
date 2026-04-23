@@ -1,8 +1,10 @@
 import { type ReactNode } from 'react';
+import type { AppTheme } from '@theme';
+import { useTheme } from 'styled-components';
 
 import {
+  FlexStyled,
   HomeLayoutHeaderSection,
-  HomeLayoutRoot,
   HomeLayoutSection,
   HomeLayoutStageSection,
 } from './HomeLayout.styled';
@@ -15,12 +17,14 @@ export type HomeLayoutProps = {
 };
 
 export const HomeLayout: React.FC<HomeLayoutProps> = ({ header, controls, statusBar, stage }) => {
+  const t = useTheme() as AppTheme;
+
   return (
-    <HomeLayoutRoot>
+    <FlexStyled component="main" vertical gap={t.spacing.lg}>
       <HomeLayoutHeaderSection>{header}</HomeLayoutHeaderSection>
       <HomeLayoutSection>{controls}</HomeLayoutSection>
       <HomeLayoutSection>{statusBar}</HomeLayoutSection>
       <HomeLayoutStageSection>{stage}</HomeLayoutStageSection>
-    </HomeLayoutRoot>
+    </FlexStyled>
   );
 };

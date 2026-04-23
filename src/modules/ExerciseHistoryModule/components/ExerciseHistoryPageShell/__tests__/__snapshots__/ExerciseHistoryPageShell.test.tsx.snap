@@ -1,16 +1,20 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`ExerciseHistoryPageShell > matches snapshot 1`] = `
-<main
-  class="ExerciseHistoryPageRoot-sc-1sp7lev-0 iXayGU"
+<div
+  class="ant-layout css-dev-only-do-not-override-xogyor css-var-_r_0_"
 >
-  <h1
-    class="ExerciseHistoryPageTitle-sc-1sp7lev-1 jrScfT"
+  <main
+    class="ant-layout-content sc-bdnAzI eQprrB css-dev-only-do-not-override-xogyor"
   >
-    История упражнений
-  </h1>
-  <div>
-    child
-  </div>
-</main>
+    <h1
+      class="ant-typography sc-gtstET ccXCwe css-dev-only-do-not-override-xogyor css-var-_r_0_"
+    >
+      История упражнений
+    </h1>
+    <div>
+      child
+    </div>
+  </main>
+</div>
 `;
