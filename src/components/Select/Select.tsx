@@ -1,4 +1,4 @@
-import { SelectLabel, SelectStyled } from './Select.styled';
+import { SelectLabel, SelectRoot, SelectStyled } from './Select.styled';
 
 export type SelectOption = { value: string; label: string };
 
@@ -20,7 +20,7 @@ export const Select: React.FC<SelectProps> = ({
   disabled,
 }) => {
   return (
-    <>
+    <SelectRoot>
       <SelectLabel htmlFor={id}>{label}</SelectLabel>
       <SelectStyled
         id={id}
@@ -30,6 +30,6 @@ export const Select: React.FC<SelectProps> = ({
         options={options}
         popupMatchSelectWidth={false}
       />
-    </>
+    </SelectRoot>
   );
 };
