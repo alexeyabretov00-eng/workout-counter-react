@@ -102,7 +102,7 @@
 
 
 
-- **Назначение:** слоты **`HomeLayout`**: `ExerciseControlBarContainer`, `StatusBarContainer`, `StageContainer` — данные из селекторов (для сцены: `getStageContainerProps`) и **`useStageContainerSelector`** (`canvasRef`), **без** пропсов сессии извне. Команды сессии — **`eventBus`**, смена упражнения/отдыха — **`updateHomeModuleState`**. Структура: **`ContainerName/ContainerName.tsx`**, **`index.ts`**, баррель **`containers/index.ts`**. Стили читают токены из **`src/theme`**.
+- **Назначение:** слоты **`HomeLayout`**: `ExerciseControlBarContainer`, `WorkoutStatusBarContainer`, `StageContainer` — данные из селекторов (для сцены: `getStageContainerProps`) и **`useStageContainerSelector`** (`canvasRef`), **без** пропсов сессии извне. Команды сессии — **`eventBus`**, смена упражнения/отдыха — **`updateHomeModuleState`**. Структура: **`ContainerName/ContainerName.tsx`**, **`index.ts`**, баррель **`containers/index.ts`**. Стили читают токены из **`src/theme`**.
 
 - Импорт в `HomeModule.tsx` — только из **`./containers`** (баррель).
 
@@ -138,7 +138,7 @@
 
 | Виджет экрана тренировки | `modules/HomeModule/components/` | тот же стиль папок, что у `components` |
 
-| Детекторы и реестр | `modules/HomeModule/exercises/` | `registry.ts`, `*Detector.ts` |
+| Детекторы и реестр | `modules/HomeModule/exercises/` | `registry.ts`, `*Detector.ts` (только алгоритмы; метаданные упражнения — в API/БД) |
 
 | Сервис pose landmarker | `modules/HomeModule/services/` | `PoseLandmarkerService` |
 

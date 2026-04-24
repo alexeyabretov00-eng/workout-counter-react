@@ -30,7 +30,7 @@ describe('HomeModuleReducer', () => {
         modelStatus: 'error',
         cameraStatus: 'idle',
         voiceStatus: 'error',
-        isPaused: true,
+        sessionStatus: 'paused',
         cameraError: 'err',
         exerciseId: 'squat',
       }),

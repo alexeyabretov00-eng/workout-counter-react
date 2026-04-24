@@ -15,17 +15,6 @@ const SIDE_THRESHOLD = 0.035;
 
 export const headSideTiltDetector: ExerciseDetector<HeadSideTiltState> = {
   id: 'head-side-tilt',
-  order: 30,
-  name: 'Наклоны головы вправо-влево',
-  description: 'Счет повторений наклонов головы по смещению носа относительно плеч.',
-  isActive: true,
-  voiceAliases: [
-    'наклоны головы',
-    'наклон головы',
-    'голова вправо влево',
-    'шея вправо влево',
-    'наклоны шеи',
-  ],
   createState: () => ({ phase: 'center', lastExtremeSide: null }),
   update: (landmarks, state) => {
     const nose = getPoint(landmarks, POSE_INDEX.nose, VISIBILITY);

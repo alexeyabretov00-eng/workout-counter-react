@@ -73,8 +73,19 @@
   - Подгонка размера canvas под DPR, очистка, `computeCoverLayout`, экран отдыха `drawRestCountdown`.
 
 - `src/modules/HomeModule/exercises/`
-  - `types.ts`, баррель `index.ts`, `registry.ts`: `import.meta.glob` по `./**/*Detector.ts`, фильтр по истинному `isActive`, сортировка по **`order`**, при равенстве — по **`id`**.
+  - `types.ts`, баррель `index.ts`, `registry.ts`: `import.meta.glob` по `./**/*Detector.ts`, детекторы сортируются по **`id`** (стабильный технический fallback при недоступном API-каталоге).
   - Каждый детектор — подпапка в PascalCase (`ArmyPressDetector/`, `BicepsCurlDetector/`, …): файл `*Detector.ts` и `index.ts`; общий интерфейс из `types.ts`; математика по точкам из `src/utils` (`POSE_INDEX`, `getPoint`, `calculateAngle`).
+
+- `src/modules/AdminModule/*` и `server/src/*` (каталог упражнений)
+  - **`AdminModule`**: защищенный экран админки с `ExerciseCatalogManager` (таблица, drawer создания, inline-редактирование, архивирование).
+  - **`src/modules/AdminModule/store`**: thunks `fetchAdminExercises`, `createAdminExercise`, `updateAdminExercise`, `archiveAdminExercise`; UI-статусы `isLoading`/`isSubmitting`.
+  - **`src/modules/AdminModule/api`**: клиент `adminExerciseClient` для `/api/admin/exercises` (`GET`, `POST`, `PATCH`, `DELETE`).
+  - **`server/src/index.ts`**: защищенные cookie-auth эндпоинты каталога:
+    - `GET /api/admin/exercises` — полный список (включая неактивные),
+    - `POST /api/admin/exercises` — создание,
+    - `PATCH /api/admin/exercises/:id` — обновление,
+    - `DELETE /api/admin/exercises/:id` — архивирование (`is_active = 0`).
+  - Публичный каталог для тренировки: `GET /api/exercises` возвращает только активные записи; фронт загружает их в `home.exerciseCatalogEntries` и на их основе строит выбор упражнения и голосовые синонимы.
 
 - `src/types/*`
   - Общие типы приложения, включая единый тип статусов `EntityStatus`, который используется в модели и камере, и **`ExerciseRuntimeState`** (HUD и отрисовка в `utils/pose`).
@@ -148,11 +159,10 @@ flowchart TB
 ## Контракты расширения
 
 - Новый детектор должен реализовать `ExerciseDetector`:
-  - `id`, `name`, `description`,
+  - `id`,
   - `createState()`,
   - `update(landmarks, state) -> { nextState, repDelta, phase, metrics, confidence }`.
-- Для голосового выбора упражнения поддерживается `voiceAliases`.
-- Для временного скрытия упражнения из UI/голоса используйте `isActive: false`.
+- Метаданные (`name`, `description`, `voiceAliases`, `sortOrder`, `isActive`) задаются в каталоге упражнений API/БД, а не в файле детектора.
 
 ## Именование: `home`
 

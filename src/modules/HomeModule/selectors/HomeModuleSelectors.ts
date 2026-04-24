@@ -1,3 +1,4 @@
+import type { SelectOption } from '@components';
 import { createSelector } from '@reduxjs/toolkit';
 import type { EntityStatus, VoiceStatus } from '@types';
 
@@ -9,6 +10,14 @@ export const getWorkoutControlsState = (state: HomeModuleSliceState) => state.ho
 
 export const getHomeModuleProps = createSelector([getWorkoutControlsState], controls => ({
   exerciseId: controls.exerciseId,
+  selectedDetectorId:
+    controls.exerciseCatalogEntries.find(entry => entry.id === controls.exerciseId)?.detectorId ??
+    controls.exerciseId,
+  speechExercises: controls.exerciseCatalogEntries.map(entry => ({
+    id: entry.id,
+    name: entry.name,
+    voiceAliases: entry.voiceAliases,
+  })),
   restDurationMinutes: controls.restDurationMinutes,
   isCameraInitializing: controls.cameraStatus === 'initializing',
   isModelReady: controls.modelStatus === 'ready',
@@ -60,6 +69,10 @@ export const getExerciseControlBarContainerProps = createSelector(
   [getWorkoutControlsState],
   controls => ({
     exerciseId: controls.exerciseId,
+    exerciseOptions: controls.exerciseCatalogEntries.map<SelectOption>(entry => ({
+      value: entry.id,
+      label: entry.name,
+    })),
     restDurationMinutes: controls.restDurationMinutes,
     restDurationOptions: REST_DURATION_OPTIONS,
     isRunning: controls.sessionStatus === 'running',

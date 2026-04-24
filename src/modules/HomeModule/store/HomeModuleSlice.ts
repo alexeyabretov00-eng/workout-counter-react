@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
+import { fetchExerciseCatalog } from './HomeModuleThunks';
 import { type HomeModuleState } from './types';
 
 export const initialHomeModuleState: HomeModuleState = {
@@ -9,7 +10,8 @@ export const initialHomeModuleState: HomeModuleState = {
   sessionStatus: 'idle',
   cameraError: null,
   voiceStatus: 'unsupported',
-  exerciseId: 'army-press',
+  exerciseId: '',
+  exerciseCatalogEntries: [],
   restDurationMinutes: 3,
   resetStopEnabled: false,
 };
@@ -24,6 +26,13 @@ export const HomeModuleSlice = createSlice({
     resetHomeModuleState: () => {
       return initialHomeModuleState;
     },
+  },
+  extraReducers: builder => {
+    builder.addCase(fetchExerciseCatalog.fulfilled, (state, action) => {
+      if (action.payload.length) {
+        state.exerciseCatalogEntries = action.payload;
+      }
+    });
   },
 });
 

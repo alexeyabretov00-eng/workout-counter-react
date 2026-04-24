@@ -6,9 +6,22 @@ import express from 'express'
 import rateLimit from 'express-rate-limit'
 
 import { AUTH_COOKIE_NAME, getCookieOptions, requireUser, signToken } from './auth.js'
-import { findUserByLogin, insertUser, openDatabase } from './db.js'
+import {
+  archiveExercise,
+  createExercise,
+  findExerciseById,
+  findUserByLogin,
+  insertUser,
+  listExercises,
+  openDatabase,
+  updateExercise,
+} from './db.js'
 import { sendError } from './httpErrors.js'
-import { validateCredentials } from './validation.js'
+import {
+  validateCreateExerciseInput,
+  validateCredentials,
+  validateUpdateExerciseInput,
+} from './validation.js'
 
 const DEFAULT_PORT = 3001
 const BCRYPT_ROUNDS = 10
@@ -35,6 +48,46 @@ const buildUserResponse = (id: number, login: string) => ({
   },
 })
 
+const parseVoiceAliases = (raw: string): string[] => {
+  try {
+    const parsed = JSON.parse(raw) as unknown
+    if (!Array.isArray(parsed)) {
+      return []
+    }
+    return parsed.filter((item): item is string => typeof item === 'string')
+  } catch {
+    return []
+  }
+}
+
+const buildExerciseResponse = (
+  exercise: ReturnType<typeof listExercises>[number],
+): {
+  id: number
+  slug: string
+  name: string
+  description: string
+  detectorKey: string
+  voiceAliases: string[]
+  sortOrder: number
+  isActive: boolean
+  createdAt: string
+  updatedAt: string
+} => {
+  return {
+    id: exercise.id,
+    slug: exercise.slug,
+    name: exercise.name,
+    description: exercise.description,
+    detectorKey: exercise.detector_key,
+    voiceAliases: parseVoiceAliases(exercise.voice_aliases_json),
+    sortOrder: exercise.sort_order,
+    isActive: exercise.is_active === 1,
+    createdAt: exercise.created_at,
+    updatedAt: exercise.updated_at,
+  }
+}
+
 const createApp = (db: DatabaseSync, jwtSecret: string) => {
   const app = express()
   app.disable('x-powered-by')
@@ -52,6 +105,13 @@ const createApp = (db: DatabaseSync, jwtSecret: string) => {
 
   api.get('/health', (_req, res) => {
     res.status(200).json({ ok: true })
+  })
+
+  api.get('/exercises', (_req, res) => {
+    const exercises = listExercises(db)
+      .filter((exercise) => exercise.is_active === 1)
+      .map(buildExerciseResponse)
+    res.status(200).json({ exercises })
   })
 
   api.post('/register', authRouteLimiter, async (req, res) => {
@@ -132,6 +192,137 @@ const createApp = (db: DatabaseSync, jwtSecret: string) => {
       return
     }
     res.status(200).json({ ok: true, login: user.login })
+  })
+
+  api.post('/admin/exercises', (req, res) => {
+    const user = requireUser(db, jwtSecret, req)
+    if (!user) {
+      sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+      return
+    }
+
+    const parsed = validateCreateExerciseInput(req.body)
+    if (Array.isArray(parsed)) {
+      const message = parsed.map((issue) => issue.message).join(' ')
+      sendError(res, 400, 'VALIDATION_ERROR', message)
+      return
+    }
+
+    try {
+      const id = createExercise(db, {
+        slug: parsed.slug,
+        name: parsed.name,
+        description: parsed.description,
+        detectorKey: parsed.detectorKey,
+        voiceAliasesJson: JSON.stringify(parsed.voiceAliases),
+        sortOrder: parsed.sortOrder,
+        isActive: parsed.isActive,
+      })
+      const exercise = findExerciseById(db, id)
+      if (!exercise) {
+        sendError(res, 500, 'INTERNAL', 'Не удалось прочитать созданное упражнение.')
+        return
+      }
+      res.status(201).json({ exercise: buildExerciseResponse(exercise) })
+    } catch (error: unknown) {
+      const errcode =
+        typeof error === 'object' && error !== null && 'errcode' in error
+          ? (error as { errcode?: number }).errcode
+          : undefined
+      const message = error instanceof Error ? error.message : ''
+      if (errcode === 2067 || message.includes('UNIQUE')) {
+        sendError(res, 409, 'EXERCISE_CONFLICT', 'Упражнение с таким slug уже существует.')
+        return
+      }
+      sendError(res, 500, 'INTERNAL', 'Не удалось создать упражнение.')
+    }
+  })
+
+  api.get('/admin/exercises', (req, res) => {
+    const user = requireUser(db, jwtSecret, req)
+    if (!user) {
+      sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+      return
+    }
+
+    const exercises = listExercises(db).map(buildExerciseResponse)
+    res.status(200).json({ exercises })
+  })
+
+  api.patch('/admin/exercises/:id', (req, res) => {
+    const user = requireUser(db, jwtSecret, req)
+    if (!user) {
+      sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+      return
+    }
+
+    const id = Number.parseInt(req.params.id, 10)
+    if (!Number.isInteger(id) || id <= 0) {
+      sendError(res, 400, 'VALIDATION_ERROR', 'Некорректный id упражнения.')
+      return
+    }
+
+    const parsed = validateUpdateExerciseInput(req.body)
+    if (Array.isArray(parsed)) {
+      const message = parsed.map((issue) => issue.message).join(' ')
+      sendError(res, 400, 'VALIDATION_ERROR', message)
+      return
+    }
+
+    try {
+      const changed = updateExercise(db, id, {
+        slug: parsed.slug,
+        name: parsed.name,
+        description: parsed.description,
+        detectorKey: parsed.detectorKey,
+        voiceAliasesJson:
+          parsed.voiceAliases !== undefined ? JSON.stringify(parsed.voiceAliases) : undefined,
+        sortOrder: parsed.sortOrder,
+        isActive: parsed.isActive,
+      })
+      if (!changed) {
+        sendError(res, 404, 'NOT_FOUND', 'Упражнение не найдено.')
+        return
+      }
+      const exercise = findExerciseById(db, id)
+      if (!exercise) {
+        sendError(res, 404, 'NOT_FOUND', 'Упражнение не найдено.')
+        return
+      }
+      res.status(200).json({ exercise: buildExerciseResponse(exercise) })
+    } catch (error: unknown) {
+      const errcode =
+        typeof error === 'object' && error !== null && 'errcode' in error
+          ? (error as { errcode?: number }).errcode
+          : undefined
+      const message = error instanceof Error ? error.message : ''
+      if (errcode === 2067 || message.includes('UNIQUE')) {
+        sendError(res, 409, 'EXERCISE_CONFLICT', 'Упражнение с таким slug уже существует.')
+        return
+      }
+      sendError(res, 500, 'INTERNAL', 'Не удалось обновить упражнение.')
+    }
+  })
+
+  api.delete('/admin/exercises/:id', (req, res) => {
+    const user = requireUser(db, jwtSecret, req)
+    if (!user) {
+      sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+      return
+    }
+
+    const id = Number.parseInt(req.params.id, 10)
+    if (!Number.isInteger(id) || id <= 0) {
+      sendError(res, 400, 'VALIDATION_ERROR', 'Некорректный id упражнения.')
+      return
+    }
+
+    const archived = archiveExercise(db, id)
+    if (!archived) {
+      sendError(res, 404, 'NOT_FOUND', 'Упражнение не найдено.')
+      return
+    }
+    res.status(200).json({ ok: true })
   })
 
   app.use('/api', api)

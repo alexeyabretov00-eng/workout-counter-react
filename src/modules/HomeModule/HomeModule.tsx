@@ -11,10 +11,10 @@ import {
   WorkoutStatusBarContainer,
 } from './containers';
 import { WorkoutSessionStageContext } from './contexts';
-import { exerciseRegistry } from './exercises';
 import { useSpeechRecognition, useWorkoutSession } from './hooks';
 import { getHomeModuleProps } from './selectors';
 import {
+  fetchExerciseCatalog,
   resetHomeModuleState,
   updateHomeModuleState,
   type WorkoutSessionControlsAction,
@@ -22,10 +22,32 @@ import {
 
 export const HomeModule = () => {
   const dispatch = useAppDispatch();
-  const { exerciseId, restDurationMinutes, isCameraInitializing, isModelReady } =
-    useAppSelector(getHomeModuleProps);
-  const { canvasRef, sessionStatus, start, pause, reset, shutdown } = useWorkoutSession(
+  const {
     exerciseId,
+    selectedDetectorId,
+    speechExercises,
+    restDurationMinutes,
+    isCameraInitializing,
+    isModelReady,
+  } = useAppSelector(getHomeModuleProps);
+
+  useEffect(() => {
+    void dispatch(fetchExerciseCatalog());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!speechExercises.length) {
+      return;
+    }
+
+    const hasCurrentSelection = speechExercises.some(entry => entry.id === exerciseId);
+    if (!hasCurrentSelection) {
+      dispatch(updateHomeModuleState({ exerciseId: speechExercises[0].id }));
+    }
+  }, [dispatch, exerciseId, speechExercises]);
+
+  const { canvasRef, sessionStatus, start, pause, reset, shutdown } = useWorkoutSession(
+    selectedDetectorId,
     restDurationMinutes * 60_000,
   );
 
@@ -50,7 +72,7 @@ export const HomeModule = () => {
   }, [dispatch, pause, reset, shutdown, start]);
 
   const { voiceStatus } = useSpeechRecognition({
-    exercises: exerciseRegistry,
+    exercises: speechExercises,
     isRunning: sessionStatus === 'running',
     isRestCountdownActive: sessionStatus === 'rest',
     isStartVoiceCommandEnabled: !isCameraInitializing && isModelReady,

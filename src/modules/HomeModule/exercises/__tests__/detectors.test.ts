@@ -20,16 +20,15 @@ const createEmptyLandmarks = (): PoseLandmarks => {
 };
 
 describe('exercise detectors', () => {
-  test('builds registry from active detectors', () => {
+  test('builds registry from detected exercise modules', () => {
     expect(exerciseRegistry.length).toBeGreaterThan(0);
     expect(exerciseRegistry.some(detector => detector.id === bicepsCurlDetector.id)).toBe(true);
     expect(exerciseRegistry.some(detector => detector.id === squatDetector.id)).toBe(true);
     expect(exerciseRegistry.some(detector => detector.id === armyPressDetector.id)).toBe(true);
     expect(exerciseRegistry.some(detector => detector.id === headSideTiltDetector.id)).toBe(true);
-    expect(exerciseRegistry.every(detector => Boolean(detector.isActive))).toBe(true);
   });
 
-  test('orders registry by order field (stable for UI and snapshots)', () => {
+  test('orders registry by id for stable fallback behavior', () => {
     expect(exerciseRegistry.map(detector => detector.id)).toEqual([
       armyPressDetector.id,
       bicepsCurlDetector.id,

@@ -5,11 +5,16 @@ import { useAppDispatch } from '@store';
 import { eventBus, matchesCommand, normalizeSpeechText } from '@utils';
 
 import { EVENT_WORKOUT_SESSION_CONTROLS_COMMAND } from '../constants';
-import type { ExerciseDetector } from '../exercises';
 import { updateHomeModuleState } from '../store';
 
+type SpeechExercise = {
+  id: string;
+  name: string;
+  voiceAliases?: string[];
+};
+
 type UseSpeechRecognitionParams = {
-  exercises: ExerciseDetector[];
+  exercises: SpeechExercise[];
   isRunning: boolean;
   isRestCountdownActive: boolean;
   isStartVoiceCommandEnabled: boolean;

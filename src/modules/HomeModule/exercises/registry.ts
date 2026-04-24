@@ -13,9 +13,6 @@ const isExerciseDetector = (value: unknown): value is ExerciseDetector => {
 
   return (
     typeof candidate.id === 'string' &&
-    typeof candidate.order === 'number' &&
-    typeof candidate.name === 'string' &&
-    typeof candidate.description === 'string' &&
     typeof candidate.createState === 'function' &&
     typeof candidate.update === 'function'
   );
@@ -39,15 +36,9 @@ const collectFromViteGlob = (): ExerciseDetector[] => {
 };
 
 const buildExerciseRegistry = (): ExerciseDetector[] => {
-  const activeDetectors = collectFromViteGlob()
-    .filter(detector => detector.isActive)
-    .sort((left, right) => {
-      const byOrder = left.order - right.order;
-      if (byOrder !== 0) {
-        return byOrder;
-      }
-      return left.id.localeCompare(right.id);
-    });
+  const activeDetectors = collectFromViteGlob().sort((left, right) =>
+    left.id.localeCompare(right.id),
+  );
 
   if (!activeDetectors.length) {
     throw new Error('Exercise registry is empty. Add at least one active detector.');
