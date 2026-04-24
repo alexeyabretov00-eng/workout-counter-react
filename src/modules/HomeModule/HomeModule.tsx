@@ -26,7 +26,6 @@ export const HomeModule = () => {
     isPaused,
     isRestCountdownActive,
     modelStatus,
-    isModelReady,
     start,
     pause,
     reset,
@@ -58,7 +57,7 @@ export const HomeModule = () => {
     isRunning,
     isRestCountdownActive,
     isCameraInitializing,
-    isModelReady,
+    isModelReady: modelStatus === 'ready',
   });
 
   const resetStopEnabled = isRunning && !isRestCountdownActive;
@@ -71,10 +70,9 @@ export const HomeModule = () => {
         isPaused,
         isRunning,
         resetStopEnabled,
-        isModelReady,
       }),
     );
-  }, [dispatch, isModelReady, isPaused, isRunning, modelStatus, resetStopEnabled, voiceStatus]);
+  }, [dispatch, isPaused, isRunning, modelStatus, resetStopEnabled, voiceStatus]);
 
   useEffect(() => {
     return () => {

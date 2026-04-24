@@ -84,8 +84,8 @@ describe('getExerciseControlBarContainerProps', () => {
         restDurationMinutes: 2,
         isRunning: true,
         resetStopEnabled: true,
-        isModelReady: true,
         cameraStatus: 'idle',
+        modelStatus: 'ready' as const,
       },
     });
 

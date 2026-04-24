@@ -16,7 +16,7 @@ const createControlsFixture = () => ({
   exerciseId: 'biceps-curl' as const,
   restDurationMinutes: 1,
   isRunning: false,
-  isModelReady: true,
+  modelStatus: 'ready' as const,
   isCameraInitializing: false,
   resetStopEnabled: false,
 });

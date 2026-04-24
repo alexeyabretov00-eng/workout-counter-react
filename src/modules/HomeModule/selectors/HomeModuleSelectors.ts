@@ -54,7 +54,7 @@ export const getExerciseControlBarContainerProps = createSelector(
     restDurationMinutes: controls.restDurationMinutes,
     restDurationOptions: REST_DURATION_OPTIONS,
     isRunning: controls.isRunning,
-    isModelReady: controls.isModelReady,
+    isModelReady: controls.modelStatus === 'ready',
     isCameraInitializing: controls.cameraStatus === 'initializing',
     resetStopEnabled: controls.resetStopEnabled,
   }),

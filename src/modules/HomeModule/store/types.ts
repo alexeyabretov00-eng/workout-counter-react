@@ -10,5 +10,4 @@ export type HomeModuleState = {
   restDurationMinutes: number;
   isRunning: boolean;
   resetStopEnabled: boolean;
-  isModelReady: boolean;
 };

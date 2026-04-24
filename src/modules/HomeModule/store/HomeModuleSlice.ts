@@ -12,7 +12,6 @@ export const initialHomeModuleState: HomeModuleState = {
   restDurationMinutes: 3,
   isRunning: false,
   resetStopEnabled: false,
-  isModelReady: false,
 };
 
 export const HomeModuleSlice = createSlice({

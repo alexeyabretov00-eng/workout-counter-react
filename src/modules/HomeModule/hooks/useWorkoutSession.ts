@@ -282,7 +282,6 @@ export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: nu
     isPaused,
     isRestCountdownActive,
     modelStatus,
-    isModelReady: modelStatus === 'ready',
     start,
     pause,
     reset,
