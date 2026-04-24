@@ -5,7 +5,7 @@ export type AuthUserDto = {
   login: string;
 };
 
-export class AuthClient extends ApiJsonClient {
+class AuthClient extends ApiJsonClient {
   async register(login: string, password: string): Promise<{ user: AuthUserDto }> {
     return this.request('/register', {
       method: 'POST',

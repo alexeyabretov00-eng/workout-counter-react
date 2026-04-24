@@ -1,7 +1,6 @@
 export type { WorkoutSessionControlsAction } from './controlActionTypes';
 export {
   HomeModuleReducer,
-  HomeModuleSlice,
   initialHomeModuleState,
   resetHomeModuleState,
   updateHomeModuleState,
