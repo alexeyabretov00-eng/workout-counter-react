@@ -3,13 +3,13 @@ import { eventBus } from '@utils';
 
 import { ExerciseControlBar } from '../../components';
 import { EVENT_WORKOUT_SESSION_CONTROLS_COMMAND } from '../../constants';
-import { exerciseRegistry } from '../../exercises';
 import { getExerciseControlBarContainerProps } from '../../selectors';
 import { updateHomeModuleState } from '../../store';
 
 export const ExerciseControlBarContainer = () => {
   const {
     exerciseId,
+    exerciseOptions,
     restDurationMinutes,
     restDurationOptions,
     isRunning,
@@ -18,11 +18,6 @@ export const ExerciseControlBarContainer = () => {
     resetStopEnabled,
   } = useAppSelector(getExerciseControlBarContainerProps);
   const dispatch = useAppDispatch();
-
-  const exerciseOptions = exerciseRegistry.map(exercise => ({
-    value: exercise.id,
-    label: exercise.name,
-  }));
 
   return (
     <ExerciseControlBar

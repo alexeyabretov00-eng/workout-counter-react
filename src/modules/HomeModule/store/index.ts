@@ -5,4 +5,5 @@ export {
   resetHomeModuleState,
   updateHomeModuleState,
 } from './HomeModuleSlice';
-export type { HomeModuleState } from './types';
+export { fetchExerciseCatalog } from './HomeModuleThunks';
+export type { HomeModuleExerciseCatalogEntry, HomeModuleState } from './types';

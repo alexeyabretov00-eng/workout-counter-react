@@ -16,18 +16,6 @@ const WRIST_ABOVE_HEAD_MARGIN = 0.08;
 
 export const armyPressDetector: ExerciseDetector<ArmyPressState> = {
   id: 'army-press',
-  order: 10,
-  name: 'Армейский жим',
-  description: 'Счет повторений жима над головой по углу локтя.',
-  isActive: true,
-  voiceAliases: [
-    'армейский жим',
-    'жим стоя',
-    'жим над головой',
-    'жим штанги стоя',
-    'оверхед пресс',
-    'overhead press',
-  ],
   createState: () => ({ phase: 'down' }),
   update: (landmarks, state) => {
     const nose = getPoint(landmarks, POSE_INDEX.nose, VISIBILITY);

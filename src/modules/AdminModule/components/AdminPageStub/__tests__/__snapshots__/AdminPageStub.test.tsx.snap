@@ -1,9 +1,12 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AdminPageStub > matches snapshot 1`] = `
+.c0 {
+  display: block;
+}
+
 <span
-  class="ant-typography ant-typography-secondary css-dev-only-do-not-override-xogyor css-var-_r_0_"
-  style="display: block;"
+  class="ant-typography ant-typography-secondary c0 css-dev-only-do-not-override-xogyor css-var-_r_0_"
 >
   Заглушка: раздел в разработке.
 </span>

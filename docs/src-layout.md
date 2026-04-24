@@ -138,7 +138,7 @@
 
 | Виджет экрана тренировки | `modules/HomeModule/components/` | тот же стиль папок, что у `components` |
 
-| Детекторы и реестр | `modules/HomeModule/exercises/` | `registry.ts`, `*Detector.ts` |
+| Детекторы и реестр | `modules/HomeModule/exercises/` | `registry.ts`, `*Detector.ts` (только алгоритмы; метаданные упражнения — в API/БД) |
 
 | Сервис pose landmarker | `modules/HomeModule/services/` | `PoseLandmarkerService` |
 

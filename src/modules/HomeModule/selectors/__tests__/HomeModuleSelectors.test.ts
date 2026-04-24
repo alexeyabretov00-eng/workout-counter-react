@@ -22,6 +22,8 @@ describe('getHomeModuleProps', () => {
 
     expect(getHomeModuleProps(store.getState())).toEqual({
       exerciseId: 'biceps-curl',
+      selectedDetectorId: 'biceps-curl',
+      speechExercises: [],
       restDurationMinutes: 2,
       isCameraInitializing: true,
       isModelReady: false,
@@ -120,6 +122,7 @@ describe('getExerciseControlBarContainerProps', () => {
 
     expect(getExerciseControlBarContainerProps(store.getState())).toEqual({
       exerciseId: 'biceps-curl',
+      exerciseOptions: [],
       restDurationMinutes: 2,
       restDurationOptions: [
         { value: '1', label: '1 мин' },

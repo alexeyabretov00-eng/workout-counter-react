@@ -73,7 +73,7 @@
   - Подгонка размера canvas под DPR, очистка, `computeCoverLayout`, экран отдыха `drawRestCountdown`.
 
 - `src/modules/HomeModule/exercises/`
-  - `types.ts`, баррель `index.ts`, `registry.ts`: `import.meta.glob` по `./**/*Detector.ts`, фильтр по истинному `isActive`, сортировка по **`order`**, при равенстве — по **`id`**.
+  - `types.ts`, баррель `index.ts`, `registry.ts`: `import.meta.glob` по `./**/*Detector.ts`, детекторы сортируются по **`id`** (стабильный технический fallback при недоступном API-каталоге).
   - Каждый детектор — подпапка в PascalCase (`ArmyPressDetector/`, `BicepsCurlDetector/`, …): файл `*Detector.ts` и `index.ts`; общий интерфейс из `types.ts`; математика по точкам из `src/utils` (`POSE_INDEX`, `getPoint`, `calculateAngle`).
 
 - `src/types/*`
@@ -148,11 +148,10 @@ flowchart TB
 ## Контракты расширения
 
 - Новый детектор должен реализовать `ExerciseDetector`:
-  - `id`, `name`, `description`,
+  - `id`,
   - `createState()`,
   - `update(landmarks, state) -> { nextState, repDelta, phase, metrics, confidence }`.
-- Для голосового выбора упражнения поддерживается `voiceAliases`.
-- Для временного скрытия упражнения из UI/голоса используйте `isActive: false`.
+- Метаданные (`name`, `description`, `voiceAliases`, `sortOrder`, `isActive`) задаются в каталоге упражнений API/БД, а не в файле детектора.
 
 ## Именование: `home`
 

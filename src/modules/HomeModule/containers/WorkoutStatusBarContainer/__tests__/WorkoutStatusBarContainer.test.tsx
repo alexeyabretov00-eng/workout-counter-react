@@ -13,7 +13,7 @@ const testStore = setupStore({
     modelStatus: 'ready',
     cameraStatus: 'ready',
     voiceStatus: 'listening',
-    isPaused: false,
+    sessionStatus: 'idle',
     cameraError: null,
   },
 });

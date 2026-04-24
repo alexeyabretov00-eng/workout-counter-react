@@ -1,0 +1,1 @@
+export { adminExerciseClient } from './adminExerciseClient';

@@ -14,6 +14,14 @@ import { ExerciseControlBarContainer } from '../ExerciseControlBarContainer';
 const createControlsFixture = (): HomeModuleState => ({
   ...initialHomeModuleState,
   exerciseId: 'biceps-curl' as const,
+  exerciseCatalogEntries: [
+    {
+      id: 'biceps-curl',
+      detectorId: 'biceps-curl',
+      name: 'Подъем на бицепс',
+      voiceAliases: ['бицепс'],
+    },
+  ],
   restDurationMinutes: 1,
   sessionStatus: 'idle' as const,
   modelStatus: 'ready' as const,

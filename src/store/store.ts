@@ -1,11 +1,13 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
+import { AdminModuleReducer } from '../modules/AdminModule/store';
 import { HomeModuleReducer } from '../modules/HomeModule/store';
 
 import { authReducer } from './auth';
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  admin: AdminModuleReducer,
   home: HomeModuleReducer,
 });
 
