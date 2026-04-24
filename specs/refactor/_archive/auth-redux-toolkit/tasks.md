@@ -16,4 +16,4 @@
 - [x] Удалить **`src/contexts/`** и баррель **`@contexts`**; убрать алиас из конфигов и документации.
 - [x] **`npm run lint`**, **`npm test`**, **`npm run build`**; ручная проверка сценариев из плана §4.
 
-После завершения — перенос каталога в **`specs/refactor/_archive/auth-redux-toolkit/`** (третий коммит цикла).
+Каталог перенесён в **`specs/refactor/_archive/auth-redux-toolkit/`** (архивация).
