@@ -47,8 +47,7 @@ export const HomeModule = () => {
     exercises: exerciseRegistry,
     isRunning: sessionStatus === 'running',
     isRestCountdownActive: sessionStatus === 'rest',
-    isCameraInitializing,
-    isModelReady: modelStatus === 'ready',
+    isStartVoiceCommandEnabled: !isCameraInitializing && modelStatus === 'ready',
   });
 
   const resetStopEnabled = sessionStatus === 'running';

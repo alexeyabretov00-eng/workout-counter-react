@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import type { VoiceStatus } from '@types';
+import { useEffect, useMemo, useRef } from 'react';
+import { useBrowserSpeechRecognition } from '@hooks';
 
 import { useAppDispatch } from '@store';
 import { eventBus, matchesCommand, normalizeSpeechText } from '@utils';
@@ -8,14 +8,11 @@ import { EVENT_WORKOUT_SESSION_CONTROLS_COMMAND } from '../constants';
 import type { ExerciseDetector } from '../exercises';
 import { updateHomeModuleState } from '../store';
 
-const TRANSIENT_SPEECH_ERRORS = new Set(['aborted', 'no-speech']);
-
 type UseSpeechRecognitionParams = {
   exercises: ExerciseDetector[];
   isRunning: boolean;
   isRestCountdownActive: boolean;
-  isCameraInitializing: boolean;
-  isModelReady: boolean;
+  isStartVoiceCommandEnabled: boolean;
 };
 
 const START_COMMANDS = ['старт', 'начинаем упражнение', 'начать упражнение'];
@@ -34,20 +31,13 @@ const REST_MINUTE_COMMANDS: Array<{ minutes: number; phrases: string[] }> = [
 const COMMAND_COOLDOWN_MS = 900;
 const REST_COMMAND_COOLDOWN_MS = 4_000;
 
-const getInitialVoiceStatus = (): VoiceStatus => {
-  return (window.SpeechRecognition ?? window.webkitSpeechRecognition) ? 'starting' : 'unsupported';
-};
-
 export const useSpeechRecognition = ({
   exercises,
   isRunning,
   isRestCountdownActive,
-  isCameraInitializing,
-  isModelReady,
+  isStartVoiceCommandEnabled,
 }: UseSpeechRecognitionParams) => {
   const dispatch = useAppDispatch();
-
-  const [voiceStatus, setVoiceStatus] = useState<VoiceStatus>(() => getInitialVoiceStatus());
 
   const commandExerciseLookup = useMemo(() => {
     const pairs: Array<[string, string]> = [];
@@ -66,44 +56,18 @@ export const useSpeechRecognition = ({
 
   const isRunningRef = useRef(isRunning);
   const isRestCountdownActiveRef = useRef(isRestCountdownActive);
-  const isCameraInitializingRef = useRef(isCameraInitializing);
-  const isModelReadyRef = useRef(isModelReady);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
-  const shouldRestartRef = useRef(false);
+  const isStartVoiceCommandEnabledRef = useRef(isStartVoiceCommandEnabled);
   const lastCommandRef = useRef<{ key: string; at: number } | null>(null);
 
   useEffect(() => {
     isRunningRef.current = isRunning;
     isRestCountdownActiveRef.current = isRestCountdownActive;
-    isCameraInitializingRef.current = isCameraInitializing;
-    isModelReadyRef.current = isModelReady;
-  }, [isCameraInitializing, isModelReady, isRestCountdownActive, isRunning]);
+    isStartVoiceCommandEnabledRef.current = isStartVoiceCommandEnabled;
+  }, [isRestCountdownActive, isRunning, isStartVoiceCommandEnabled]);
 
-  useEffect(() => {
-    const SpeechRecognitionCtor = window.SpeechRecognition ?? window.webkitSpeechRecognition;
-    if (!SpeechRecognitionCtor) {
-      return;
-    }
-
-    const recognition = new SpeechRecognitionCtor();
-    recognition.lang = 'ru-RU';
-    recognition.continuous = true;
-    recognition.interimResults = true;
-
-    shouldRestartRef.current = true;
-    recognitionRef.current = recognition;
-
-    recognition.onstart = () => {
-      setVoiceStatus('listening');
-    };
-
-    recognition.onresult = event => {
-      const firstResult = event.results[event.resultIndex];
-      if (!firstResult || firstResult.length === 0) {
-        return;
-      }
-
-      const transcript = normalizeSpeechText(firstResult[0].transcript);
+  const { voiceStatus } = useBrowserSpeechRecognition({
+    onTranscript: rawTranscript => {
+      const transcript = normalizeSpeechText(rawTranscript);
       if (!transcript) {
         return;
       }
@@ -123,13 +87,7 @@ export const useSpeechRecognition = ({
       };
 
       const isStartCommand = START_COMMANDS.some(command => matchesCommand(transcript, command));
-
-      if (
-        isStartCommand &&
-        !isRunningRef.current &&
-        !isCameraInitializingRef.current &&
-        isModelReadyRef.current
-      ) {
+      if (isStartCommand && !isRunningRef.current && isStartVoiceCommandEnabledRef.current) {
         runCommand('start', () => {
           eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, { type: 'start' });
         });
@@ -191,70 +149,8 @@ export const useSpeechRecognition = ({
           return;
         }
       }
-    };
-
-    recognition.onerror = event => {
-      if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
-        setVoiceStatus('blocked');
-        shouldRestartRef.current = false;
-        return;
-      }
-
-      if (TRANSIENT_SPEECH_ERRORS.has(event.error)) {
-        return;
-      }
-
-      setVoiceStatus('error');
-    };
-
-    recognition.onend = () => {
-      if (!shouldRestartRef.current) {
-        return;
-      }
-
-      try {
-        recognition.start();
-        setVoiceStatus('listening');
-      } catch {
-        // Ignore repeated starts during rapid onend chains.
-      }
-    };
-
-    const syncRecognitionToVisibility = () => {
-      if (document.hidden) {
-        shouldRestartRef.current = false;
-        try {
-          recognition.stop();
-        } catch {
-          // ignore
-        }
-        setVoiceStatus('inactive-tab');
-        return;
-      }
-
-      shouldRestartRef.current = true;
-      setVoiceStatus('starting');
-      try {
-        recognition.start();
-      } catch {
-        setVoiceStatus('listening');
-      }
-    };
-
-    document.addEventListener('visibilitychange', syncRecognitionToVisibility);
-    syncRecognitionToVisibility();
-
-    return () => {
-      document.removeEventListener('visibilitychange', syncRecognitionToVisibility);
-      shouldRestartRef.current = false;
-      recognition.onstart = null;
-      recognition.onresult = null;
-      recognition.onerror = null;
-      recognition.onend = null;
-      recognition.stop();
-      recognitionRef.current = null;
-    };
-  }, [commandExerciseLookup, dispatch]);
+    },
+  });
 
   return { voiceStatus };
 };
