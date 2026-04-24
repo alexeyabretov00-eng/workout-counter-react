@@ -71,7 +71,7 @@ exports[`WorkoutStatusBar > matches snapshot (minimal) 1`] = `
     class="ant-tag ant-tag-filled ant-tag-blue css-dev-only-do-not-override-xogyor css-var-_r_1_"
   >
     Модель: 
-    wait
+    wait (42%)
   </span>
   <span
     class="ant-tag ant-tag-filled c1 css-dev-only-do-not-override-xogyor css-var-_r_1_"

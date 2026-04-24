@@ -33,7 +33,12 @@ const MODEL_STATUS_LABEL: Record<EntityStatus, string> = {
 
 export const getStatusBarContainerProps = createSelector([getWorkoutControlsState], controls => ({
   modelStatus: controls.modelStatus,
-  modelStatusLabel: MODEL_STATUS_LABEL[controls.modelStatus],
+  modelStatusLabel:
+    controls.modelStatus === 'loading'
+      ? controls.modelLoadingProgress !== null
+        ? `${MODEL_STATUS_LABEL[controls.modelStatus]} (${controls.modelLoadingProgress}%)`
+        : `${MODEL_STATUS_LABEL[controls.modelStatus]}...`
+      : MODEL_STATUS_LABEL[controls.modelStatus],
   isCameraReady: controls.cameraStatus === 'ready',
   voiceStatus: controls.voiceStatus,
   voiceStatusLabel: VOICE_STATUS_LABEL[controls.voiceStatus],

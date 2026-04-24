@@ -74,6 +74,30 @@ describe('getStatusBarContainerProps', () => {
 
     expect(getStatusBarContainerProps(store.getState()).isCameraReady).toBe(false);
   });
+
+  test('shows loading ellipsis before first model progress chunk', () => {
+    const store = setupStore({
+      home: {
+        ...initialHomeModuleState,
+        modelStatus: 'loading',
+        modelLoadingProgress: null,
+      },
+    });
+
+    expect(getStatusBarContainerProps(store.getState()).modelStatusLabel).toBe('загружается...');
+  });
+
+  test('shows model progress percentage while loading', () => {
+    const store = setupStore({
+      home: {
+        ...initialHomeModuleState,
+        modelStatus: 'loading',
+        modelLoadingProgress: 42,
+      },
+    });
+
+    expect(getStatusBarContainerProps(store.getState()).modelStatusLabel).toBe('загружается (42%)');
+  });
 });
 
 describe('getExerciseControlBarContainerProps', () => {

@@ -24,7 +24,7 @@ describe('WorkoutStatusBar', () => {
     const { container } = renderWithTheme(
       <WorkoutStatusBar
         modelStatus="loading"
-        modelStatusLabel="wait"
+        modelStatusLabel="wait (42%)"
         isCameraReady={false}
         voiceStatus="unsupported"
         voiceStatusLabel="V"

@@ -4,6 +4,7 @@ import { type HomeModuleState } from './types';
 
 export const initialHomeModuleState: HomeModuleState = {
   modelStatus: 'idle',
+  modelLoadingProgress: null,
   cameraStatus: 'idle',
   sessionStatus: 'idle',
   cameraError: null,

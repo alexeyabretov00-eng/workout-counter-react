@@ -27,6 +27,7 @@ const WorkoutSessionRuntimeDefaultState: ExerciseRuntimeState = {
   metrics: {},
   isBodyDetected: false,
 };
+const MODEL_PROGRESS_UPDATE_INTERVAL_MS = 80;
 
 export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: number) => {
   const dispatch = useAppDispatch();
@@ -85,14 +86,52 @@ export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: nu
   useEffect(() => {
     let isMounted = true;
     const poseService = poseServiceRef.current;
+    let lastProgressUpdateAt = 0;
+    let lastProgressValue: number | null = null;
 
     const initModel = async () => {
       try {
-        await poseService.init();
+        if (isMounted) {
+          dispatch(
+            updateHomeModuleState({
+              modelStatus: 'loading',
+              modelLoadingProgress: null,
+            }),
+          );
+        }
+
+        await poseService.init(progress => {
+          if (!isMounted) {
+            return;
+          }
+
+          const now = performance.now();
+          const isNextPercent = progress !== lastProgressValue;
+          const isThrottleWindowElapsed =
+            now - lastProgressUpdateAt >= MODEL_PROGRESS_UPDATE_INTERVAL_MS;
+          const shouldDispatchProgress =
+            progress === 100 || (isNextPercent && isThrottleWindowElapsed);
+
+          if (!shouldDispatchProgress) {
+            return;
+          }
+
+          lastProgressValue = progress;
+          lastProgressUpdateAt = now;
+
+          dispatch(
+            updateHomeModuleState({
+              modelStatus: 'loading',
+              modelLoadingProgress: progress,
+            }),
+          );
+        });
+
         if (isMounted) {
           dispatch(
             updateHomeModuleState({
               modelStatus: 'ready',
+              modelLoadingProgress: null,
             }),
           );
         }
@@ -102,6 +141,7 @@ export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: nu
           dispatch(
             updateHomeModuleState({
               modelStatus: 'error',
+              modelLoadingProgress: null,
             }),
           );
         }
