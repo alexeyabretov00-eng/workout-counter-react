@@ -1,9 +1,9 @@
 import { useAppSelector } from '@store';
 
 import { WorkoutStatusBar } from '../../components';
-import { getStatusBarContainerProps } from '../../selectors';
+import { getWorkoutStatusBarContainerProps } from '../../selectors';
 
-export const StatusBarContainer = () => {
+export const WorkoutStatusBarContainer = () => {
   const {
     modelStatus,
     modelStatusLabel,
@@ -12,7 +12,7 @@ export const StatusBarContainer = () => {
     voiceStatusLabel,
     isPaused,
     cameraError,
-  } = useAppSelector(getStatusBarContainerProps);
+  } = useAppSelector(getWorkoutStatusBarContainerProps);
 
   return (
     <WorkoutStatusBar

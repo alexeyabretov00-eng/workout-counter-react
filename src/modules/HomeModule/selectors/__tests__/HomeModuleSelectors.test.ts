@@ -6,7 +6,7 @@ import { initialHomeModuleState } from '../../store';
 import {
   getExerciseControlBarContainerProps,
   getHomeModuleProps,
-  getStatusBarContainerProps,
+  getWorkoutStatusBarContainerProps,
 } from '../HomeModuleSelectors';
 
 describe('getHomeModuleProps', () => {
@@ -40,7 +40,7 @@ describe('getHomeModuleProps', () => {
   });
 });
 
-describe('getStatusBarContainerProps', () => {
+describe('getWorkoutStatusBarContainerProps', () => {
   test('maps workout controls to status bar model with labels', () => {
     const store = setupStore({
       home: {
@@ -53,7 +53,7 @@ describe('getStatusBarContainerProps', () => {
       },
     });
 
-    expect(getStatusBarContainerProps(store.getState())).toEqual({
+    expect(getWorkoutStatusBarContainerProps(store.getState())).toEqual({
       modelStatus: 'ready',
       modelStatusLabel: 'загружена',
       isCameraReady: true,
@@ -72,7 +72,7 @@ describe('getStatusBarContainerProps', () => {
       },
     });
 
-    expect(getStatusBarContainerProps(store.getState()).isCameraReady).toBe(false);
+    expect(getWorkoutStatusBarContainerProps(store.getState()).isCameraReady).toBe(false);
   });
 
   test('shows loading ellipsis before first model progress chunk', () => {
@@ -84,7 +84,9 @@ describe('getStatusBarContainerProps', () => {
       },
     });
 
-    expect(getStatusBarContainerProps(store.getState()).modelStatusLabel).toBe('загружается...');
+    expect(getWorkoutStatusBarContainerProps(store.getState()).modelStatusLabel).toBe(
+      'загружается...',
+    );
   });
 
   test('shows model progress percentage while loading', () => {
@@ -96,7 +98,9 @@ describe('getStatusBarContainerProps', () => {
       },
     });
 
-    expect(getStatusBarContainerProps(store.getState()).modelStatusLabel).toBe('загружается (42%)');
+    expect(getWorkoutStatusBarContainerProps(store.getState()).modelStatusLabel).toBe(
+      'загружается (42%)',
+    );
   });
 });
 

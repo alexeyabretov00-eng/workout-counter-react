@@ -5,7 +5,11 @@ import { eventBus } from '@utils';
 
 import { HomeLayout } from './components';
 import { EVENT_WORKOUT_SESSION_CONTROLS_COMMAND } from './constants';
-import { ExerciseControlBarContainer, StageContainer, StatusBarContainer } from './containers';
+import {
+  ExerciseControlBarContainer,
+  StageContainer,
+  WorkoutStatusBarContainer,
+} from './containers';
 import { WorkoutSessionStageContext } from './contexts';
 import { exerciseRegistry } from './exercises';
 import { useSpeechRecognition, useWorkoutSession } from './hooks';
@@ -84,7 +88,7 @@ export const HomeModule = () => {
       <HomeLayout
         header={<h1>Счетчик повторений</h1>}
         controls={<ExerciseControlBarContainer />}
-        statusBar={<StatusBarContainer />}
+        statusBar={<WorkoutStatusBarContainer />}
         stage={<StageContainer />}
       />
     </WorkoutSessionStageContext.Provider>

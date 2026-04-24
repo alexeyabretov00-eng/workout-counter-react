@@ -31,20 +31,23 @@ const MODEL_STATUS_LABEL: Record<EntityStatus, string> = {
   error: 'не загружена',
 };
 
-export const getStatusBarContainerProps = createSelector([getWorkoutControlsState], controls => ({
-  modelStatus: controls.modelStatus,
-  modelStatusLabel:
-    controls.modelStatus === 'loading'
-      ? controls.modelLoadingProgress !== null
-        ? `${MODEL_STATUS_LABEL[controls.modelStatus]} (${controls.modelLoadingProgress}%)`
-        : `${MODEL_STATUS_LABEL[controls.modelStatus]}...`
-      : MODEL_STATUS_LABEL[controls.modelStatus],
-  isCameraReady: controls.cameraStatus === 'ready',
-  voiceStatus: controls.voiceStatus,
-  voiceStatusLabel: VOICE_STATUS_LABEL[controls.voiceStatus],
-  isPaused: controls.sessionStatus === 'paused',
-  cameraError: controls.cameraError,
-}));
+export const getWorkoutStatusBarContainerProps = createSelector(
+  [getWorkoutControlsState],
+  controls => ({
+    modelStatus: controls.modelStatus,
+    modelStatusLabel:
+      controls.modelStatus === 'loading'
+        ? controls.modelLoadingProgress !== null
+          ? `${MODEL_STATUS_LABEL[controls.modelStatus]} (${controls.modelLoadingProgress}%)`
+          : `${MODEL_STATUS_LABEL[controls.modelStatus]}...`
+        : MODEL_STATUS_LABEL[controls.modelStatus],
+    isCameraReady: controls.cameraStatus === 'ready',
+    voiceStatus: controls.voiceStatus,
+    voiceStatusLabel: VOICE_STATUS_LABEL[controls.voiceStatus],
+    isPaused: controls.sessionStatus === 'paused',
+    cameraError: controls.cameraError,
+  }),
+);
 
 const REST_DURATION_MINUTES = [1, 2, 3, 5] as const;
 

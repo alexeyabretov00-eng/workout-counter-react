@@ -5,7 +5,7 @@ import { setupStore } from '@store';
 import { renderWithTheme } from '@test-helpers';
 
 import { initialHomeModuleState } from '../../../store';
-import { StatusBarContainer } from '../StatusBarContainer';
+import { WorkoutStatusBarContainer } from '../WorkoutStatusBarContainer';
 
 const testStore = setupStore({
   home: {
@@ -18,11 +18,11 @@ const testStore = setupStore({
   },
 });
 
-describe('StatusBarContainer', () => {
+describe('WorkoutStatusBarContainer', () => {
   test('matches snapshot', () => {
     const { container } = renderWithTheme(
       <Provider store={testStore}>
-        <StatusBarContainer />
+        <WorkoutStatusBarContainer />
       </Provider>,
     );
     expect(container.firstChild).toMatchSnapshot();

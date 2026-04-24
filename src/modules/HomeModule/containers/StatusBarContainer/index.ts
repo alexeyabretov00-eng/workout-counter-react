@@ -1,1 +1,0 @@
-export { StatusBarContainer } from './StatusBarContainer';

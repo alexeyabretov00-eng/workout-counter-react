@@ -1,5 +1,5 @@
 export {
   getExerciseControlBarContainerProps,
   getHomeModuleProps,
-  getStatusBarContainerProps,
+  getWorkoutStatusBarContainerProps,
 } from './HomeModuleSelectors';

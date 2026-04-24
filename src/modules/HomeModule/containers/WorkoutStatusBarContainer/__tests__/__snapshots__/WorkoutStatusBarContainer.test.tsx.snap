@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`StatusBarContainer > matches snapshot 1`] = `
+exports[`WorkoutStatusBarContainer > matches snapshot 1`] = `
 .c0 {
   display: flex;
   flex-wrap: wrap;
