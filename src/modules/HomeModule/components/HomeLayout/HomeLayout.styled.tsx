@@ -1,12 +1,5 @@
+import { Flex } from 'antd';
 import styled from 'styled-components';
-
-export const HomeLayoutRoot = styled.main`
-  margin: 0 auto;
-  max-width: ${({ theme }) => theme.layout.maxWidth};
-  padding: ${({ theme }) => theme.spacing.xl};
-  display: grid;
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
 
 export const HomeLayoutSection = styled.section``;
 
@@ -23,4 +16,11 @@ export const HomeLayoutHeaderSection = styled(HomeLayoutSection)`
 
 export const HomeLayoutStageSection = styled(HomeLayoutSection)`
   min-width: 0;
+`;
+
+export const FlexStyled = styled(Flex)`
+  margin: '0 auto';
+  max-width: ${({ theme }) => theme.layout.maxWidth};
+  padding: ${({ theme }) => theme.spacing.xl};
+  box-sizing: border-box;
 `;

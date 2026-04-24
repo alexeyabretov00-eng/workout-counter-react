@@ -20,7 +20,7 @@
 
 ## Связанные файлы
 
-- `src/store/workoutSessionControls/`
+- `src/store/home/`
 - `src/modules/HomeModule/contexts/` (сцена)
 - `src/modules/HomeModule/logic/WorkoutLogicLayout/WorkoutLogicLayout.tsx`
 - `src/modules/HomeModule/selectors/*ContainerSelector/`

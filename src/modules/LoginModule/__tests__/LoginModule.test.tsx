@@ -2,8 +2,9 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ThemeProvider } from 'styled-components';
 import { describe, expect, test, vi } from 'vitest';
+
+import { AppStyleProviders } from '@test-helpers';
 
 vi.mock('@api', async importOriginal => {
   const actual = await importOriginal<typeof import('@api')>();
@@ -21,8 +22,6 @@ vi.mock('@api', async importOriginal => {
 
 import { LoginModule } from '@modules/LoginModule';
 import { setupStore } from '@store';
-import { theme } from '@theme';
-
 describe('LoginModule', () => {
   test('submits credentials and updates auth in store', async () => {
     const user = userEvent.setup();
@@ -33,18 +32,18 @@ describe('LoginModule', () => {
     render(
       <Provider store={testStore}>
         <MemoryRouter>
-          <ThemeProvider theme={theme}>
+          <AppStyleProviders>
             <LoginModule />
-          </ThemeProvider>
+          </AppStyleProviders>
         </MemoryRouter>
       </Provider>,
     );
-    const loginInput = document.querySelector<HTMLInputElement>('input[name="login"]');
-    const passwordInput = document.querySelector<HTMLInputElement>('input[name="password"]');
+    const loginInput = document.getElementById('login-input') as HTMLInputElement;
+    const passwordInput = document.getElementById('password-input') as HTMLInputElement;
     expect(loginInput).toBeTruthy();
     expect(passwordInput).toBeTruthy();
-    await user.type(loginInput!, 'alice');
-    await user.type(passwordInput!, 'secret42');
+    await user.type(loginInput, 'alice');
+    await user.type(passwordInput, 'secret42');
     await user.click(screen.getByRole('button', { name: 'Войти' }));
     await waitFor(() => {
       expect(testStore.getState().auth.user).toEqual({ id: 1, login: 'alice' });
@@ -59,9 +58,9 @@ describe('LoginModule', () => {
     render(
       <Provider store={testStore}>
         <MemoryRouter>
-          <ThemeProvider theme={theme}>
+          <AppStyleProviders>
             <LoginModule />
-          </ThemeProvider>
+          </AppStyleProviders>
         </MemoryRouter>
       </Provider>,
     );

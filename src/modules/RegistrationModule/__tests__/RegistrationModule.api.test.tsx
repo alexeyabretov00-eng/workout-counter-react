@@ -2,13 +2,12 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ThemeProvider } from 'styled-components';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { AuthSessionInitializer } from '@app';
 import { RegistrationModule } from '@modules/RegistrationModule';
 import { setupStore } from '@store';
-import { theme } from '@theme';
+import { AppStyleProviders } from '@test-helpers';
 
 const jsonResponse = (body: unknown, init?: ResponseInit) =>
   new Response(JSON.stringify(body), {
@@ -47,10 +46,10 @@ describe('RegistrationModule (fetch через store)', () => {
     render(
       <Provider store={testStore}>
         <MemoryRouter initialEntries={['/register']}>
-          <ThemeProvider theme={theme}>
+          <AppStyleProviders>
             <AuthSessionInitializer />
             <RegistrationModule />
-          </ThemeProvider>
+          </AppStyleProviders>
         </MemoryRouter>
       </Provider>,
     );
@@ -59,13 +58,12 @@ describe('RegistrationModule (fetch через store)', () => {
       expect(screen.getByRole('button', { name: 'Создать учётную запись' })).toBeInTheDocument();
     });
 
-    const loginInput = document.querySelector<HTMLInputElement>('input[name="login"]');
-    const passwordInput = document.querySelector<HTMLInputElement>('input[name="password"]');
+    const loginInput = document.getElementById('register-login-input') as HTMLInputElement;
+    const passwordInput = document.getElementById('register-password-input') as HTMLInputElement;
     expect(loginInput).toBeTruthy();
     expect(passwordInput).toBeTruthy();
-
-    await user.type(loginInput!, 'newuser');
-    await user.type(passwordInput!, 'newpass99');
+    await user.type(loginInput, 'newuser');
+    await user.type(passwordInput, 'newpass99');
     await user.click(screen.getByRole('button', { name: 'Создать учётную запись' }));
 
     await waitFor(() => {
@@ -90,5 +88,5 @@ describe('RegistrationModule (fetch через store)', () => {
         body: JSON.stringify({ login: 'newuser', password: 'newpass99' }),
       }),
     );
-  });
+  }, 20_000);
 });

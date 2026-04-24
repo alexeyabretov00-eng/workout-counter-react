@@ -2,20 +2,24 @@
 
 exports[`Button > matches snapshot 1`] = `
 <button
-  class="ButtonRoot-sc-113iyrz-0 eyWjFH"
+  class="ant-btn css-dev-only-do-not-override-xogyor css-var-_r_2_ ant-btn-default ant-btn-color-default ant-btn-variant-outlined"
   type="button"
 >
-  Click
+  <span>
+    Click
+  </span>
 </button>
 `;
 
 exports[`Button > matches snapshot disabled 1`] = `
 <button
   aria-label="x"
-  class="ButtonRoot-sc-113iyrz-0 eyWjFH"
+  class="ant-btn css-dev-only-do-not-override-xogyor css-var-_r_3_ ant-btn-default ant-btn-color-default ant-btn-variant-outlined"
   disabled=""
   type="button"
 >
-  Click
+  <span>
+    Click
+  </span>
 </button>
 `;

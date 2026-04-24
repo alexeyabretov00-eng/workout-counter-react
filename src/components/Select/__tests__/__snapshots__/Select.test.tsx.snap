@@ -1,27 +1,75 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Select > matches snapshot 1`] = `
+.c0 {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.c1 {
+  font-weight: 600;
+}
+
+.c2 {
+  min-width: 160px;
+}
+
 <div>
-  <label
-    class="SelectLabel-sc-13w9l2w-0 dsnSxm"
-    for="sel"
+  <span
+    class="c0"
   >
-    Pick
-  </label>
-  <select
-    class="SelectField-sc-13w9l2w-1 eQpTXU"
-    id="sel"
-  >
-    <option
-      value="a"
+    <label
+      class="c1"
+      for="sel"
     >
-      A
-    </option>
-    <option
-      value="b"
+      Pick
+    </label>
+    <div
+      class="ant-select ant-select-outlined c2 css-var-_r_7_ ant-select-css-var css-dev-only-do-not-override-xogyor ant-select-single ant-select-show-arrow"
     >
-      B
-    </option>
-  </select>
+      <div
+        class="ant-select-content ant-select-content-has-value"
+        title="A"
+      >
+        A
+        <input
+          aria-autocomplete="list"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          autocomplete="off"
+          class="ant-select-input"
+          id="sel"
+          readonly=""
+          role="combobox"
+          type="search"
+          value=""
+        />
+      </div>
+      <div
+        class="ant-select-suffix"
+      >
+        <span
+          aria-label="down"
+          class="anticon anticon-down"
+          role="img"
+        >
+          <svg
+            aria-hidden="true"
+            data-icon="down"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+  </span>
 </div>
 `;

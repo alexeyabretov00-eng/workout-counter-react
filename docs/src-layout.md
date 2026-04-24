@@ -32,10 +32,10 @@
 ## `modules/HomeModule/contexts`
 
 - Назначение: **`React.createContext`**, типы значения контекста и при необходимости хук **`use…Context`** с проверкой провайдера (throw, если `null`).
-- **Каждый контекст — своя подпапка** в PascalCase. Сейчас публично экспортируется **`WorkoutSessionStage`** (сцена: ссылка на canvas, `isCameraInitializing`, `isPaused`). Данные панели и строки статуса (модель, камера, голос, `exerciseId`, отдых и т.д.) лежат в **Redux** — срез **`workoutSessionControls`**, а команды сессии доставляются через **`eventBus`** (см. раздел **«Срез controls и команды сессии»** в [architecture.md](architecture.md)).
+- **Каждый контекст — своя подпапка** в PascalCase. Сейчас публично экспортируется **`WorkoutSessionStage`** (сцена: ссылка на canvas, `isCameraInitializing`, `isPaused`). Данные панели и строки статуса (модель, камера, голос, `exerciseId`, отдых и т.д.) лежат в **Redux** — срез **`home`**, а команды сессии доставляются через **`eventBus`** (см. раздел **«Срез controls и команды сессии»** в [architecture.md](architecture.md)).
 - Внутри подпапки контекста — файлы провайдера, типов, хука потребления, **`index.ts`** с явными реэкспортами.
 - Баррель: **`modules/HomeModule/contexts/index.ts`** — точка импорта для кода вне подпапок контекста (например из `WorkoutLogicLayout` — **`../../contexts`** относительно файла в `logic/WorkoutLogicLayout/`).
-- Имя среза **`workoutSessionControls`** — про панель и статусы вокруг сцены, не про браузер Chrome; подробнее — [architecture.md](architecture.md), раздел **«Именование: workoutSessionControls»**.
+- Имя среза **`home`** — про панель и статусы вокруг сцены, не про браузер Chrome; подробнее — [architecture.md](architecture.md), раздел **«Именование: home»**.
 
 ---
 

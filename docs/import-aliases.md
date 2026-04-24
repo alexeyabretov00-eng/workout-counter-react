@@ -16,7 +16,7 @@
 | `@app`      | `src/App`              |
 | `@components` | `src/components`     |
 | `@pages`    | `src/pages`            |
-| `@store`    | `src/store` (Redux store, селекторы срезов `auth`, `workoutSessionControls`, хуки, thunk'и) |
+| `@store`    | `src/store` (Redux store, селекторы срезов `auth`, `home`, хуки, thunk'и) |
 | `@routes`   | `src/routes`           |
 | `@test-helpers` | `src/test` (хелперы для тестов) |
 | `@theme`    | `src/theme`            |

@@ -1,9 +1,19 @@
+import { Layout } from 'antd';
 import styled from 'styled-components';
 
-export const AppRootLayoutRoot = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+export const AppPageLayoutRoot = styled(Layout)`
+  && {
+    min-height: 100vh;
+  }
+`;
+
+export const AppPageContent = styled(Layout.Content)`
+  && {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 export const RouteOutletFallbackRoot = styled.div`

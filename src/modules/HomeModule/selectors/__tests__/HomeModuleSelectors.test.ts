@@ -12,7 +12,7 @@ import {
 describe('getHomeModuleProps', () => {
   test('maps exerciseId, rest duration, and camera initializing flag from workout controls', () => {
     const store = setupStore({
-      workoutSessionControls: {
+      home: {
         ...initialHomeModuleState,
         exerciseId: 'biceps-curl',
         restDurationMinutes: 2,
@@ -29,7 +29,7 @@ describe('getHomeModuleProps', () => {
 
   test('isCameraInitializing is false when camera is not initializing', () => {
     const store = setupStore({
-      workoutSessionControls: {
+      home: {
         ...initialHomeModuleState,
         cameraStatus: 'ready',
       },
@@ -42,7 +42,7 @@ describe('getHomeModuleProps', () => {
 describe('getStatusBarContainerProps', () => {
   test('maps workout controls to status bar model with labels', () => {
     const store = setupStore({
-      workoutSessionControls: {
+      home: {
         ...initialHomeModuleState,
         modelStatus: 'ready',
         cameraStatus: 'ready',
@@ -65,7 +65,7 @@ describe('getStatusBarContainerProps', () => {
 
   test('isCameraReady is false when camera is not ready', () => {
     const store = setupStore({
-      workoutSessionControls: {
+      home: {
         ...initialHomeModuleState,
         cameraStatus: 'initializing',
       },
@@ -78,7 +78,7 @@ describe('getStatusBarContainerProps', () => {
 describe('getExerciseControlBarContainerProps', () => {
   test('maps workout controls to exercise control bar model with rest options', () => {
     const store = setupStore({
-      workoutSessionControls: {
+      home: {
         ...initialHomeModuleState,
         exerciseId: 'biceps-curl',
         restDurationMinutes: 2,
@@ -107,7 +107,7 @@ describe('getExerciseControlBarContainerProps', () => {
 
   test('isCameraInitializing follows cameraStatus', () => {
     const store = setupStore({
-      workoutSessionControls: {
+      home: {
         ...initialHomeModuleState,
         cameraStatus: 'initializing',
       },

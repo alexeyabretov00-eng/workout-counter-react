@@ -1,28 +1,77 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AppNavContainer > matches snapshot (authenticated) 1`] = `
+.c0 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #ffffff;
+  border-bottom: 1px solid #d1d5db;
+  max-width: 1100px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.c1 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  flex: 1 1 auto;
+}
+
+.c3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.c4 {
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.c2 {
+  color: #111827;
+  text-decoration: none;
+  font-size: 14px;
+  font-family: Inter,system-ui,Arial,sans-serif;
+}
+
+.c2[aria-current='page'] {
+  font-weight: 600;
+}
+
+.c5.c5 {
+  padding: 0;
+  height: auto;
+}
+
 <nav
-  class="AppNavRoot-sc-49dfo2-0 jUpyVm"
+  class="c0"
 >
   <div
-    class="AppNavMain-sc-49dfo2-1 cZgbMa"
+    class="c1"
   >
     <a
-      class="AppNavLink-sc-49dfo2-5 gwSzsL"
+      class="c2"
       data-discover="true"
       href="/home"
     >
       Главная
     </a>
     <a
-      class="AppNavLink-sc-49dfo2-5 gwSzsL"
+      class="c2"
       data-discover="true"
       href="/admin"
     >
       Админка
     </a>
     <a
-      class="AppNavLink-sc-49dfo2-5 gwSzsL"
+      class="c2"
       data-discover="true"
       href="/history"
     >
@@ -30,42 +79,83 @@ exports[`AppNavContainer > matches snapshot (authenticated) 1`] = `
     </a>
   </div>
   <div
-    class="AppNavAuth-sc-49dfo2-2 hDFGYZ"
+    class="c3"
   >
     <span
-      class="AppNavUserLabel-sc-49dfo2-3 ihQXTR"
+      class="c4"
     >
       alex
     </span>
     <button
-      class="AppNavTextButton-sc-49dfo2-4 leQhio"
+      class="ant-btn css-dev-only-do-not-override-xogyor css-var-_r_1_ ant-btn-link ant-btn-color-link ant-btn-variant-link c5"
       type="button"
     >
-      Выйти
+      <span>
+        Выйти
+      </span>
     </button>
   </div>
 </nav>
 `;
 
 exports[`AppNavContainer > matches snapshot (guest) 1`] = `
+.c0 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #ffffff;
+  border-bottom: 1px solid #d1d5db;
+  max-width: 1100px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.c1 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  flex: 1 1 auto;
+}
+
+.c2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.c3 {
+  color: #111827;
+  text-decoration: none;
+  font-size: 14px;
+  font-family: Inter,system-ui,Arial,sans-serif;
+}
+
+.c3[aria-current='page'] {
+  font-weight: 600;
+}
+
 <nav
-  class="AppNavRoot-sc-49dfo2-0 jUpyVm"
+  class="c0"
 >
   <div
-    class="AppNavMain-sc-49dfo2-1 cZgbMa"
+    class="c1"
   />
   <div
-    class="AppNavAuth-sc-49dfo2-2 hDFGYZ"
+    class="c2"
   >
     <a
-      class="AppNavLink-sc-49dfo2-5 gwSzsL"
+      class="c3"
       data-discover="true"
       href="/login"
     >
       Вход
     </a>
     <a
-      class="AppNavLink-sc-49dfo2-5 gwSzsL"
+      class="c3"
       data-discover="true"
       href="/register"
     >
@@ -76,14 +166,42 @@ exports[`AppNavContainer > matches snapshot (guest) 1`] = `
 `;
 
 exports[`AppNavContainer > matches snapshot (loading hides auth actions) 1`] = `
+.c0 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #ffffff;
+  border-bottom: 1px solid #d1d5db;
+  max-width: 1100px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.c1 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  flex: 1 1 auto;
+}
+
+.c2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
 <nav
-  class="AppNavRoot-sc-49dfo2-0 jUpyVm"
+  class="c0"
 >
   <div
-    class="AppNavMain-sc-49dfo2-1 cZgbMa"
+    class="c1"
   />
   <div
-    class="AppNavAuth-sc-49dfo2-2 hDFGYZ"
+    class="c2"
   />
 </nav>
 `;

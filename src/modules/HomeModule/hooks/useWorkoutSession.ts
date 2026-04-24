@@ -49,7 +49,7 @@ export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: nu
     error => {
       dispatch(
         updateHomeModuleState({
-          status: 'error',
+          cameraStatus: 'error',
           cameraError: error,
         }),
       );

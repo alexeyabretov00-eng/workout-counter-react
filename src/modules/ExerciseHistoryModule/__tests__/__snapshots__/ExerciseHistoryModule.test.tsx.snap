@@ -1,18 +1,38 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`ExerciseHistoryModule > matches snapshot 1`] = `
-<main
-  class="ExerciseHistoryPageRoot-sc-1sp7lev-0 iXayGU"
+.c0 {
+  box-sizing: border-box;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+  color: #111827;
+  font-family: Inter,system-ui,Arial,sans-serif;
+  line-height: 1.4;
+}
+
+.c1.c1 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+<div
+  class="ant-layout css-dev-only-do-not-override-xogyor css-var-_r_0_"
 >
-  <h1
-    class="ExerciseHistoryPageTitle-sc-1sp7lev-1 jrScfT"
+  <main
+    class="ant-layout-content c0 css-dev-only-do-not-override-xogyor"
   >
-    История упражнений
-  </h1>
-  <p
-    class="ExerciseHistoryPageLead-sc-1t3zm83-0 btoPYx"
-  >
-    Заглушка: раздел в разработке.
-  </p>
-</main>
+    <h1
+      class="ant-typography c1 css-dev-only-do-not-override-xogyor css-var-_r_0_"
+    >
+      История упражнений
+    </h1>
+    <span
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-xogyor css-var-_r_0_"
+      style="display: block;"
+    >
+      Заглушка: раздел в разработке.
+    </span>
+  </main>
+</div>
 `;

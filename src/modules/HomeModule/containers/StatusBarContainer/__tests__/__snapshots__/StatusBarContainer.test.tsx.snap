@@ -1,23 +1,31 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`StatusBarContainer > matches snapshot 1`] = `
+.c0 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  font-size: 14px;
+}
+
 <div
-  class="WorkoutStatusBarRoot-sc-12c3i7q-0 diIruA"
+  class="c0"
 >
   <span
-    class="BadgeRoot-sc-1ky7gew-0 jPgDoj"
+    class="ant-tag ant-tag-filled ant-tag-success css-dev-only-do-not-override-xogyor css-var-_r_0_"
   >
     Модель: 
     загружена
   </span>
   <span
-    class="BadgeRoot-sc-1ky7gew-0 jPgDoj"
+    class="ant-tag ant-tag-filled ant-tag-success css-dev-only-do-not-override-xogyor css-var-_r_0_"
   >
     Camera: 
     ready
   </span>
   <span
-    class="BadgeRoot-sc-1ky7gew-0 jPyCrP"
+    class="ant-tag ant-tag-filled ant-tag-blue css-dev-only-do-not-override-xogyor css-var-_r_0_"
   >
     Голос: слушаю
   </span>

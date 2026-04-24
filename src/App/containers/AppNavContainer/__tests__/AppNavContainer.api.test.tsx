@@ -2,12 +2,11 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ThemeProvider } from 'styled-components';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { AuthSessionInitializer } from '@app';
 import { setupStore } from '@store';
-import { theme } from '@theme';
+import { AppStyleProviders } from '@test-helpers';
 
 import { AppNavContainer } from '../AppNavContainer';
 
@@ -46,10 +45,10 @@ describe('AppNavContainer (fetch через store)', () => {
     render(
       <Provider store={testStore}>
         <MemoryRouter>
-          <ThemeProvider theme={theme}>
+          <AppStyleProviders>
             <AuthSessionInitializer />
             <AppNavContainer />
-          </ThemeProvider>
+          </AppStyleProviders>
         </MemoryRouter>
       </Provider>,
     );

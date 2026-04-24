@@ -1,1 +1,1 @@
-export { LoginFormContainer, type LoginFormContainerProps } from './LoginFormContainer';
+export { LoginFormContainer } from './LoginFormContainer';

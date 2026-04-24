@@ -1,33 +1,49 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`WorkoutStatusBar > matches snapshot (full state) 1`] = `
+.c1.c1 {
+  color: #374151;
+}
+
+.c0 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.c2 {
+  color: #b91c1c;
+}
+
 <div
-  class="WorkoutStatusBarRoot-sc-12c3i7q-0 diIruA"
+  class="c0"
 >
   <span
-    class="BadgeRoot-sc-1ky7gew-0 jPgDoj"
+    class="ant-tag ant-tag-filled ant-tag-success css-dev-only-do-not-override-xogyor css-var-_r_0_"
   >
     Модель: 
     ok
   </span>
   <span
-    class="BadgeRoot-sc-1ky7gew-0 jPgDoj"
+    class="ant-tag ant-tag-filled ant-tag-success css-dev-only-do-not-override-xogyor css-var-_r_0_"
   >
     Camera: 
     ready
   </span>
   <span
-    class="BadgeRoot-sc-1ky7gew-0 jPyCrP"
+    class="ant-tag ant-tag-filled ant-tag-blue css-dev-only-do-not-override-xogyor css-var-_r_0_"
   >
     Voice
   </span>
   <span
-    class="BadgeRoot-sc-1ky7gew-0 dcTerc"
+    class="ant-tag ant-tag-filled c1 css-dev-only-do-not-override-xogyor css-var-_r_0_"
   >
     Упражнение приостановлено
   </span>
   <span
-    class="WorkoutStatusBarCameraError-sc-12c3i7q-1 kLBfEa"
+    class="c2"
   >
     Ошибка камеры: 
     boom
@@ -36,23 +52,35 @@ exports[`WorkoutStatusBar > matches snapshot (full state) 1`] = `
 `;
 
 exports[`WorkoutStatusBar > matches snapshot (minimal) 1`] = `
+.c1.c1 {
+  color: #6b7280;
+}
+
+.c0 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  font-size: 14px;
+}
+
 <div
-  class="WorkoutStatusBarRoot-sc-12c3i7q-0 diIruA"
+  class="c0"
 >
   <span
-    class="BadgeRoot-sc-1ky7gew-0 jPyCrP"
+    class="ant-tag ant-tag-filled ant-tag-blue css-dev-only-do-not-override-xogyor css-var-_r_1_"
   >
     Модель: 
     wait
   </span>
   <span
-    class="BadgeRoot-sc-1ky7gew-0 eWxdxU"
+    class="ant-tag ant-tag-filled c1 css-dev-only-do-not-override-xogyor css-var-_r_1_"
   >
     Camera: 
     off
   </span>
   <span
-    class="BadgeRoot-sc-1ky7gew-0 eWxdxU"
+    class="ant-tag ant-tag-filled c1 css-dev-only-do-not-override-xogyor css-var-_r_1_"
   >
     V
   </span>

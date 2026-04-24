@@ -1,6 +1,6 @@
 # План: единый стиль объявления — именованный `const` и `displayName` при необходимости
 
-> **Сейчас:** вместо контекстов `WorkoutSessionChrome*` из таблицы §3 — **`WorkoutSessionStage`** и Redux **`workoutSessionControls`**; пути **`src/modules/HomeModule/...`**.
+> **Сейчас:** вместо контекстов `WorkoutSessionChrome*` из таблицы §3 — **`WorkoutSessionStage`** и Redux **`home`**; пути **`src/modules/HomeModule/...`**.
 
 ## 1. Контекст
 

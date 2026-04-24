@@ -1,4 +1,4 @@
-import { within } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 
@@ -75,7 +75,7 @@ describe('ExerciseControlBar', () => {
     const user = userEvent.setup();
     const onExerciseChange = vi.fn();
     const onRestDurationChange = vi.fn();
-    const { container } = renderWithTheme(
+    renderWithTheme(
       <ExerciseControlBar
         exerciseId="a"
         exerciseOptions={exerciseOptions}
@@ -92,10 +92,10 @@ describe('ExerciseControlBar', () => {
         onRestDurationChange={onRestDurationChange}
       />,
     );
-    const region = within(container);
-    const comboboxes = region.getAllByRole('combobox');
-    await user.selectOptions(comboboxes[0], 'b');
-    await user.selectOptions(comboboxes[1], '2');
+    await user.click(screen.getByRole('combobox', { name: 'Упражнение' }));
+    await user.click(await screen.findByText('B'));
+    await user.click(screen.getByRole('combobox', { name: 'Отдых' }));
+    await user.click(await screen.findByText('2m'));
     expect(onExerciseChange).toHaveBeenCalledWith('b');
     expect(onRestDurationChange).toHaveBeenCalledWith(2);
   });

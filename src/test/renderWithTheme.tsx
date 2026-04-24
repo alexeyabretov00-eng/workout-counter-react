@@ -1,12 +1,13 @@
 import type { ReactElement, ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';
-import { ThemeProvider } from 'styled-components';
 
-import { theme } from '@theme';
+import { AppStyleProviders } from './appStyleProviders';
+
+const wrap = (ui: ReactElement) => <AppStyleProviders>{ui}</AppStyleProviders>;
 
 export const renderWithTheme = (ui: ReactElement) => {
-  return render(<ThemeProvider theme={theme}>{ui}</ThemeProvider>);
+  return render(wrap(ui));
 };
 
 export const renderWithRouterTheme = (
@@ -14,9 +15,5 @@ export const renderWithRouterTheme = (
   options: { initialEntries?: string[] } = {},
 ) => {
   const { initialEntries = ['/'] } = options;
-  return render(
-    <MemoryRouter initialEntries={initialEntries}>
-      <ThemeProvider theme={theme}>{ui}</ThemeProvider>
-    </MemoryRouter>,
-  );
+  return render(<MemoryRouter initialEntries={initialEntries}>{wrap(<>{ui}</>)}</MemoryRouter>);
 };

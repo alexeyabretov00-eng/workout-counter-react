@@ -1,9 +1,6 @@
 import type { ReactNode } from 'react';
 
-import {
-  ExerciseHistoryPageRoot,
-  ExerciseHistoryPageTitle,
-} from './ExerciseHistoryPageShell.styled';
+import { ModuleScaffold } from '@components';
 
 export type ExerciseHistoryPageShellProps = {
   title: string;
@@ -11,10 +8,5 @@ export type ExerciseHistoryPageShellProps = {
 };
 
 export const ExerciseHistoryPageShell = ({ title, children }: ExerciseHistoryPageShellProps) => {
-  return (
-    <ExerciseHistoryPageRoot>
-      <ExerciseHistoryPageTitle>{title}</ExerciseHistoryPageTitle>
-      {children}
-    </ExerciseHistoryPageRoot>
-  );
+  return <ModuleScaffold title={title}>{children}</ModuleScaffold>;
 };

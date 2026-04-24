@@ -1,11 +1,10 @@
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';
-import { ThemeProvider } from 'styled-components';
 import { describe, expect, test } from 'vitest';
 
 import { setupStore } from '@store';
-import { theme } from '@theme';
+import { AppStyleProviders } from '@test-helpers';
 
 import { AppNavContainer } from '../AppNavContainer';
 
@@ -18,9 +17,9 @@ describe('AppNavContainer', () => {
     const { container } = render(
       <Provider store={testStore}>
         <MemoryRouter>
-          <ThemeProvider theme={theme}>
+          <AppStyleProviders>
             <AppNavContainer />
-          </ThemeProvider>
+          </AppStyleProviders>
         </MemoryRouter>
       </Provider>,
     );
@@ -35,9 +34,9 @@ describe('AppNavContainer', () => {
     const { container } = render(
       <Provider store={testStore}>
         <MemoryRouter>
-          <ThemeProvider theme={theme}>
+          <AppStyleProviders>
             <AppNavContainer />
-          </ThemeProvider>
+          </AppStyleProviders>
         </MemoryRouter>
       </Provider>,
     );
@@ -52,9 +51,9 @@ describe('AppNavContainer', () => {
     const { container } = render(
       <Provider store={testStore}>
         <MemoryRouter>
-          <ThemeProvider theme={theme}>
+          <AppStyleProviders>
             <AppNavContainer />
-          </ThemeProvider>
+          </AppStyleProviders>
         </MemoryRouter>
       </Provider>,
     );

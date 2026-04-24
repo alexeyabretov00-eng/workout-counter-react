@@ -1,18 +1,38 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AdminModule > matches snapshot 1`] = `
-<main
-  class="AdminPageRoot-sc-1af308t-0 eMnQco"
+.c0 {
+  box-sizing: border-box;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+  color: #111827;
+  font-family: Inter,system-ui,Arial,sans-serif;
+  line-height: 1.4;
+}
+
+.c1.c1 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+<div
+  class="ant-layout css-dev-only-do-not-override-xogyor css-var-_r_0_"
 >
-  <h1
-    class="AdminPageTitle-sc-1af308t-1 jflPyz"
+  <main
+    class="ant-layout-content c0 css-dev-only-do-not-override-xogyor"
   >
-    Админка
-  </h1>
-  <p
-    class="AdminPageLead-sc-16nvmxg-0 dyYkUB"
-  >
-    Заглушка: раздел в разработке.
-  </p>
-</main>
+    <h1
+      class="ant-typography c1 css-dev-only-do-not-override-xogyor css-var-_r_0_"
+    >
+      Админка
+    </h1>
+    <span
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-xogyor css-var-_r_0_"
+      style="display: block;"
+    >
+      Заглушка: раздел в разработке.
+    </span>
+  </main>
+</div>
 `;

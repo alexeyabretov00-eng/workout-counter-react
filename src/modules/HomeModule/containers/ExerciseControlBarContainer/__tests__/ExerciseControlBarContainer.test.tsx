@@ -3,11 +3,12 @@ import { within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, type Mock, test, vi } from 'vitest';
 
-import { initialHomeModuleState, setupStore } from '@store';
+import { setupStore } from '@store';
 import { renderWithTheme } from '@test-helpers';
 import { eventBus } from '@utils';
 
 import { EVENT_WORKOUT_SESSION_CONTROLS_COMMAND } from '../../../constants';
+import { initialHomeModuleState } from '../../../store';
 import { ExerciseControlBarContainer } from '../ExerciseControlBarContainer';
 
 const createControlsFixture = () => ({
@@ -29,7 +30,7 @@ describe('ExerciseControlBarContainer', () => {
   beforeEach(() => {
     controlsFixture = createControlsFixture();
     testStore = setupStore({
-      workoutSessionControls: controlsFixture,
+      home: controlsFixture,
     });
     emitSpy = vi.spyOn(eventBus, 'emit') as Mock<(type: string, detail?: unknown) => void>;
     emitSpy.mockClear();
@@ -53,7 +54,7 @@ describe('ExerciseControlBarContainer', () => {
   test('emits pause when Пауза is clicked while running', async () => {
     const user = userEvent.setup();
     controlsFixture = { ...createControlsFixture(), isRunning: true };
-    testStore = setupStore({ workoutSessionControls: controlsFixture });
+    testStore = setupStore({ home: controlsFixture });
     emitSpy = vi.spyOn(eventBus, 'emit') as Mock<(type: string, detail?: unknown) => void>;
     emitSpy.mockClear();
     const { container } = renderBar();
@@ -69,7 +70,7 @@ describe('ExerciseControlBarContainer', () => {
       isRunning: true,
       resetStopEnabled: true,
     };
-    testStore = setupStore({ workoutSessionControls: controlsFixture });
+    testStore = setupStore({ home: controlsFixture });
     emitSpy = vi.spyOn(eventBus, 'emit') as Mock<(type: string, detail?: unknown) => void>;
     emitSpy.mockClear();
     const { container } = renderBar();

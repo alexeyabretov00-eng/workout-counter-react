@@ -6,7 +6,7 @@ import { authReducer } from './auth';
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  workoutSessionControls: HomeModuleReducer,
+  home: HomeModuleReducer,
 });
 
 const devToolsOptions = import.meta.env.DEV ? { name: 'workout-counter' } : false;

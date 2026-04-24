@@ -1,5 +1,5 @@
 import { Stage } from '../../components';
-import { useStageContainerSelector } from '../../selectors';
+import { useStageContainerSelector } from '../../hooks';
 
 export const StageContainer = () => {
   const { canvasRef, isCameraInitializing, isPaused } = useStageContainerSelector();
