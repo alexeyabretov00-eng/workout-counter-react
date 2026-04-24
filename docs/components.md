@@ -49,7 +49,7 @@
 
 ### Отладка в DevTools
 
-В **`npm run dev`** (только dev-сервер, не `vite build`) для **`*.styled.tsx`** подключён **`babel-plugin-styled-components`** с `displayName` и `fileName`: в инспекторе DOM классы и стили проще сопоставить с именем styled-компонента и именем файла. В production-сборке плагин не запускается — классы остаются короткими, как у styled-components по умолчанию.
+В **`npm run dev`** (только dev-сервер, не `vite build`) для **`*.styled.tsx`** подключён **`babel-plugin-styled-components`** с **`displayName`**: **`true`**, **`fileName`**: **`false`** (см. `vite.config.ts`, плагин `babel-styled-components-dev`) — в инспекторе DOM проще сопоставить классы с именем styled-компонента. В production-сборке плагин не запускается — классы остаются короткими, как у styled-components по умолчанию.
 
 ## Типы и пропсы
 

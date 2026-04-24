@@ -18,6 +18,7 @@
 | `@pages`    | `src/pages`            |
 | `@store`    | `src/store` (Redux store, селекторы срезов `auth`, `home`, хуки, thunk'и) |
 | `@routes`   | `src/routes`           |
+| `@hooks`    | `src/hooks` (например `useCameraStream` для сессии тренировки) |
 | `@test-helpers` | `src/test` (хелперы для тестов) |
 | `@theme`    | `src/theme`            |
 | `@types`    | `src/types`            |

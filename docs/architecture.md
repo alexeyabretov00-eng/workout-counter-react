@@ -12,35 +12,38 @@
   - Точка входа в DOM: `createRoot`, рендер публичного `<App />` из `./App` (баррель `src/App/index.ts`).
 
 - `src/App/*`
-  - **`App.tsx`:** `ThemeProvider`, `GlobalStyle`, `RouterProvider` с `createBrowserRouter` — родительский маршрут с `element: <AppPageLayout />`, дочерние маршруты из массива `routes` (`src/routes`). Без хуков сессии и голоса.
-  - **`AppPageLayout.tsx`:** оболочка вложенных маршрутов: `AppNav` (пункты из `navItems`) и `<Outlet />`.
+  - **`App.tsx`:** обёртка **`Provider`** из `react-redux` (store), **`ConfigProvider`** Ant Design (тема из `getAntdThemeConfig` + `theme` styled-components), **`ThemeProvider`**, **`GlobalStyle`**, **`AuthSessionInitializer`** (диспатч `initializeAuth` при монтировании), **`RouterProvider`**. Дочерний `createBrowserRouter`: общий layout **`AppPageLayout header={<AppNavContainer />}`**; **публичные** маршруты из `publicAuthRoutes` (страницы с `handle.auth === 'public'`, сейчас **«Вход»** и **«Регистрация»**); остальные — под **`RequireAuth`**, внутри — `protectedAppRoutes` (тренировка, админка, история и catch-all). Без хуков сессии тренировки.
+  - **`AppPageLayout`:** `Outlet` в оболочке; слот `header` — контейнер навигации.
+  - **`AppNavContainer`:** `AppNav` с пунктами `navItems` **только если** пользователь вошёл; иначе в области авторизации — ссылки **«Вход»** / **«Регистрация»**; при `isLoading` сессия блока авторизации не показана. См. `getAppNavContainerProps` в `App/selectors`.
+  - **`RequireAuth`:** при отсутствии пользователя — редирект на `/login` с `state.from`; при загрузке сессии — «Загрузка…».
   - Публичный API папки: `src/App/index.ts`.
 
 - `src/routes/routes.ts`
-  - Сборка списка маршрутов: `import.meta.glob` по `../pages/*/index.tsx`, объединение экспортов `routes`; функция `buildNavItems` читает `route.handle.nav` для навигации.
+  - Сборка списка маршрутов: `import.meta.glob` по `../pages/*/index.tsx`, объединение экспортов `routes`; **`buildNavItems`** читает `route.handle.nav` (маршруты **без** `nav` в `handle` в список «основных» пунктов не попадают); экспорты **`publicAuthRoutes`**, **`protectedAppRoutes`**, **`navItems`**.
 
 - `src/pages/*`
-  - Страницы приложения. Каждая подпапка страницы может экспортировать массив **`routes`** (`RouteObject[]`) из своего `index.tsx` — он попадает в общий роутер.
-  - **`HomePage` / `HomeModule`:** маршрут главной — `HomePage` рендерит **`HomeModule`** из `src/modules/HomeModule`. Это единственный экран с полной оркестрацией тренировки — внутри `WorkoutLogicLayout` и **`HomeLayout`** (слоты `header`, `controls`, `statusBar`, `stage`); в слоты передаются контейнеры из `modules/HomeModule/containers`.
-  - Прочие страницы (например админка, история) — презентационный контент без `WorkoutLogicLayout` (часто через свои модули в `src/modules`).
+  - Страницы приложения. Каждая подпапка страницы может экспортировать массив **`routes`** (`RouteObject[]`) из `index.tsx` — он попадает в общий роутер.
+  - **Главная тренировки** (`/home` в `HomePage`): рендерит **`HomeModule`**. Внутри: **`HomeLayout`** (слоты `header`, `controls`, `statusBar`, `stage`); полная оркестрация — в **`HomeModule.tsx`**, а не в отдельном `WorkoutLogicLayout`.
+  - **Вход/регистрация** (`/login`, `/register`, константы в `src/pages/authPaths.ts`): публичные маршруты, подключают **`LoginModule`**, **`RegistrationModule`**.
+  - **Прочие** (админка, история) — модули в `src/modules` без `HomeLayout` / тренировочной сессии.
 
-- `src/modules/HomeModule/logic/*`
-  - Оркестрация экрана тренировки: `WorkoutLogicLayout` (`useWorkoutSession`, `useSpeechRecognition`, подписка на `eventBus` для команд сессии, провайдер `WorkoutSessionStageContext`, синхронизация полей панели и статусов в Redux через `updateHomeModuleState`). Один публичный модуль — подпапка PascalCase + `modules/HomeModule/logic/index.ts`. Соглашения — в [docs/src-layout.md](src-layout.md).
+- `src/modules/HomeModule/HomeModule.tsx`
+  - Оркестрация: `useWorkoutSession`, `useSpeechRecognition`, подписка на **`eventBus`**, провайдер **`WorkoutSessionStageContext`**, **`updateHomeModuleState`**. Соглашения — в [docs/src-layout.md](src-layout.md).
 
 - `src/modules/HomeModule/contexts/*`
-  - React-контекст сцены (`WorkoutSessionStage`: `canvasRef`, флаги паузы/инициализации камеры). Состояние панели и статусов (модель, камера, голос, `exerciseId`, длительность отдыха и т.д.) — в **Redux** (`home`), не в контексте. Подпапка на контекст, баррель `modules/HomeModule/contexts/index.ts`.
+  - React-контекст сцены (`WorkoutSessionStage`: `canvasRef`, флаги паузы/инициализации камеры). Состояние панели и статусов (модель, камера, голос, `exerciseId`, длительность отдыха и т.д.) — в **Redux** (`home`), не в контексте. Подпапка `WorkoutSessionStage/`, баррель `modules/HomeModule/contexts/index.ts`.
 
 - `src/modules/HomeModule/selectors/*`
-  - Селекторы для контейнеров: для данных из стора — мемоизированные селекторы **`get…ContainerProps`** (`@reduxjs/toolkit` `createSelector`) + `useAppSelector` в контейнере; для сцены — хук **`useStageContainerSelector`** (читает `WorkoutSessionStageContext`). Подпапка на селектор, баррель `modules/HomeModule/selectors/index.ts`; часть API реэкспортируется из `modules/HomeModule/logic/index.ts`.
+  - Файл **`HomeModuleSelectors.ts`**: **`getHomeModuleProps`**, **`getExerciseControlBarContainerProps`**, **`getStatusBarContainerProps`**; для сцены — хук **`useStageContainerSelector`** в `modules/HomeModule/hooks/`. Баррель `modules/HomeModule/selectors/index.ts`.
 
 - `src/modules/HomeModule/containers/*`
-  - Компоненты слотов layout главной страницы (`HomeLayout`: `header`, `controls`, `statusBar`, `stage`) без пропсов данных сессии; данные из Redux- и контекст-селекторов, команды сессии — `eventBus` и/или `updateHomeModuleState` (см. раздел **Срез controls и команды сессии**). Одна папка на контейнер, баррель `modules/HomeModule/containers/index.ts`. Соглашения — в [docs/src-layout.md](src-layout.md).
+  - Слоты `HomeLayout` без пропсов данных сессии; данные из селекторов, команды сессии — `eventBus` и/или `updateHomeModuleState`. Соглашения — в [docs/src-layout.md](src-layout.md).
 
-- `src/store/*`
-  - Redux store приложения. Срез **`home`** хранит поля панели и статусов сессии (`exerciseId`, `restDurationMinutes`, `isRunning`, статусы модели/камеры/голоса и т.д.); **`WorkoutSessionControlsAction`** (union команд сессии для `eventBus`) задаётся в `src/store/home/controlActionTypes.ts` и реэкспортируется из `src/store/index.ts`.
+- `src/modules/HomeModule/store` и `src/store/*`
+  - Корневой store: **`src/store/store.ts`**, редьюсеры **`auth`**, **`home`**. Срез **`home`** (редьюсер и типы) живёт в **`src/modules/HomeModule/store/`** (`HomeModuleSlice.ts`, **`controlActionTypes.ts`** с **`WorkoutSessionControlsAction`**). Срез **`auth`** — **`src/store/auth/`**; из **`@store`** реэкспортируются thunks и селекторы входа, без дублирования `WorkoutSessionControlsAction` (он импортируется в `HomeModule` из **`./store`** модуля).
 
 - `src/utils/eventBus` и `src/modules/HomeModule/constants`
-  - Команды **`start` / `pause` / `reset` / `shutdown`** доставляются в **`WorkoutLogicLayout`** через **`eventBus`** с именем события **`EVENT_WORKOUT_SESSION_CONTROLS_COMMAND`** (`HomeModuleConstants` / `HomeModule/constants`).
+  - Команды **`start` / `pause` / `reset` / `shutdown`** обрабатываются в **`HomeModule`** (подписка на **`eventBus`**, `EVENT_WORKOUT_SESSION_CONTROLS_COMMAND`).
 
 - `src/components/*`
   - Переиспользуемые UI-блоки (например выбор значения, кнопки панели управления): одна папка на компонент, оформление через **`<Имя>.styled.tsx`** и токены из темы (`src/theme`), импорт из барреля `./components`. Соглашения — в [docs/components.md](components.md).
@@ -57,8 +60,8 @@
   - Запускает цикл `requestAnimationFrame`, считает `repDelta`, озвучивает повторы.
   - Запускает и рендерит таймер отдыха после остановки.
 
-- `src/modules/HomeModule/hooks/useCameraStream.ts`
-  - Работа с `getUserMedia`: старт/стоп потока и диагностика ошибок камеры.
+- `src/hooks/useCameraStream.ts` (импорт **`@hooks`**)
+  - Работа с `getUserMedia`: старт/стоп потока и диагностика ошибок камеры. Используется в **`useWorkoutSession`**.
 
 - `src/modules/HomeModule/services/*`
   - `PoseLandmarkerService`: инициализация MediaPipe Tasks Vision (модель heavy, при сбое — lite на CPU), `detectForVideo`, нормализация landmarks в типы из `src/utils/pose.ts`.
@@ -80,20 +83,16 @@
 
 ```mermaid
 flowchart TB
-  Main[main.tsx] --> AppMod[App/App.tsx]
-  AppMod --> Theme[ThemeProvider + GlobalStyle]
-  AppMod --> R[RouterProvider]
-  R --> APL[AppPageLayout]
-  APL --> Nav[AppNav]
-  APL --> Out[Outlet]
-  Out --> Home[HomePage → HomeModule]
-  Home --> WLL[WorkoutLogicLayout]
-  WLL --> Session[useWorkoutSession]
-  WLL --> Speech[useSpeechRecognition]
-  WLL --> StageCtx[WorkoutSessionStageContext]
-  WLL --> Patch[updateHomeModuleState]
-  WLL --> EBSub[subscribe: EVENT_WORKOUT_SESSION_CONTROLS_COMMAND]
-  Store[(Redux: home)]
+  Main[main.tsx] --> AppMod[App: Provider, ConfigProvider, Theme, AuthSessionInitializer, Router]
+  AppMod --> APL[AppPageLayout + AppNavContainer / Outlet]
+  APL --> Home[HomePage → HomeModule]
+  Home --> HM[HomeModule.tsx]
+  HM --> Session[useWorkoutSession]
+  HM --> Speech[useSpeechRecognition]
+  HM --> StageCtx[WorkoutSessionStageContext]
+  HM --> Patch[updateHomeModuleState]
+  HM --> EBSub[subscribe: EVENT_WORKOUT_SESSION_CONTROLS_COMMAND]
+  Store[(Redux: auth + home)]
   Patch --> Store
   Cont[Containers] --> Store
   Cont --> EBEmit[eventBus.emit control]
@@ -102,7 +101,7 @@ flowchart TB
   EBEmit --> EBSub
   StageCtx --> Cont
   Speech --> Session
-  Session --> Camera[Camera stream]
+  Session --> Camera[useCameraStream @hooks]
   Camera --> Video[In-memory video]
   Video --> Pose[PoseLandmarkerService.detect]
   Pose --> Detector[ExerciseDetector.update]
@@ -111,13 +110,13 @@ flowchart TB
   Draw --> Canvas[Canvas output]
 ```
 
-Ключевой цикл тренировки: кадр с камеры → landmarks → детектор упражнения → обновление runtime → рендер в canvas. Состояние панели и статус-бара читается контейнерами из **Redux** через мемо-селекторы; контекст **`WorkoutSessionStageContext`** отдаёт ссылку на canvas и флаги для сцены. Команды сессии (`start` и т.д.) **не** хранятся в сторе: панель и голос **эмитят** событие в **`eventBus`**, а **`WorkoutLogicLayout`** подписан и вызывает методы **`useWorkoutSession`**. Корневой `App` и `AppPageLayout` к этому циклу не подключены — они задают тему, роутинг и оболочку страниц.
+Ключевой цикл тренировки: кадр с камеры → landmarks → детектор упражнения → обновление runtime → рендер в canvas. Состояние панели и статус-бара читается контейнерами из **Redux** через мемо-селекторы; контекст **`WorkoutSessionStageContext`** отдаёт ссылку на canvas и флаги для сцены. Команды сессии (`start` и т.д.) **не** хранятся в сторе: панель и голос **эмитят** событие в **`eventBus`**, а **`HomeModule`** подписан и вызывает методы **`useWorkoutSession`**. Корневой **`App`** и навигация к этой логике не подключают тренировку сами — только store, Ant Design, тема и маршруты.
 
 ### Срез controls и команды сессии: Redux, `eventBus` и `WorkoutSessionControlsAction`
 
-- **Чтение UI:** срез **`home`** в **Redux** (`src/store/home/`) — `exerciseId`, `restDurationMinutes`, `isRunning`, флаги готовности, статусы модели, камеры, голоса и т.д. Контейнеры подключают данные через **`getExerciseControlBarContainerProps`** / **`getStatusBarContainerProps`** + **`useAppSelector`**.
+- **Чтение UI:** срез **`home`** в **Redux** (определение в **`src/modules/HomeModule/store/`**) — `exerciseId`, `restDurationMinutes`, `isRunning`, флаги готовности, статусы модели, камеры, голоса и т.д. Контейнеры подключают данные через **`getExerciseControlBarContainerProps`** / **`getStatusBarContainerProps`** + **`useAppSelector`**; корневой `HomeModule` — **`getHomeModuleProps`**.
 - **Изменение упражнения и длительности отдыха (без перезапуска сессии):** прямой **`dispatch(updateHomeModuleState({ exerciseId | restDurationMinutes }))`** — в **`ExerciseControlBarContainer`** и в **`useSpeechRecognition`** (выбор упражнения голосом, смена минут отдыха).
-- **Команды сессии** (`start`, `pause`, `reset`, `shutdown`) — дискриминирующий union **`WorkoutSessionControlsAction`** в **`src/store/home/controlActionTypes.ts`**, реэкспортируется из **`src/store/index.ts`**. Потребители **эмитят** payload через **`eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, action)`**; в **`WorkoutLogicLayout`** обработчик по **`action.type`** вызывает **`start`**, **`pause`**, **`reset`**, **`shutdown`** из **`useWorkoutSession`** (для `shutdown` — опционально **`restDurationOverrideMs`**).
+- **Команды сессии** (`start`, `pause`, `reset`, `shutdown`) — дискриминирующий union **`WorkoutSessionControlsAction`** в **`src/modules/HomeModule/store/controlActionTypes.ts`**. Потребители **эмитят** payload через **`eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, action)`**; в **`HomeModule`** обработчик по **`action.type`** вызывает **`start`**, **`pause`**, **`reset`**, **`shutdown`** из **`useWorkoutSession`** (для `shutdown` — опционально **`restDurationOverrideMs`**).
 
 | `action.type` | Назначение |
 |----------------|------------|
@@ -142,7 +141,7 @@ flowchart TB
 
 ## Голосовое управление в архитектуре
 
-- Слой распознавания инкапсулирован в `useSpeechRecognition`; вызывается из `WorkoutLogicLayout` с флагами готовности (`isRunning`, `isRestCountdownActive`, камера, модель). Хук использует **`useAppDispatch`** для **`updateHomeModuleState`** и **`eventBus`** для команд сессии — тот же контракт, что у UI панели.
+- Слой распознавания инкапсулирован в `useSpeechRecognition`; вызывается из `HomeModule` с флагами готовности (`isRunning`, `isRestCountdownActive`, камера, модель). Хук использует **`useAppDispatch`** для **`updateHomeModuleState`** и **`eventBus`** для команд сессии — тот же контракт, что у UI панели.
 - Распознанные команды сессии эмитят **`WorkoutSessionControlsAction`**; связка «отдых N минут» — **`updateHomeModuleState({ restDurationMinutes })`** и затем **`shutdown`** с соответствующим **`restDurationOverrideMs`**.
 - Для предотвращения ложных многократных срабатываний применяется cooldown по ключу команды.
 

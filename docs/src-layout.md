@@ -1,84 +1,77 @@
-# Структура папок в `src`: логика экрана, контексты, селекторы, контейнеры
-
-Соглашения для **экрана тренировки** на главной: каталоги **`modules/HomeModule/logic`**, **`modules/HomeModule/contexts`**, **`modules/HomeModule/selectors`**, **`modules/HomeModule/containers`** — оркестрация, React-контексты, хуки-селекторы для слотов layout и компоненты-слоты без пропсов данных сессии. Слои живут в **`src/modules/HomeModule/`**; тонкая страница маршрута — **`src/pages/HomePage/HomePage.tsx`** (рендерит `HomeModule`). Для агента ИИ краткие обязательные пункты продублированы в [.cursor/rules/src-layout.mdc](../.cursor/rules/src-layout.mdc) (как у UI — `components.mdc`).
-
-Общее правило импортов: **между папками верхнего уровня `src/*`** — только из **барреля** (`index.ts`) соответствующей папки, **без** `export *`, только явные `export { … }` и `export type { … }`; при переходе между такими папками используйте **алиасы** (`@utils`, `@types`, …), см. [docs/import-aliases.md](import-aliases.md). Внутри **`HomeModule`** импорты между подсистемами (`logic`, `contexts`, …) — тоже из баррелей подпапок модуля (часто через относительные пути с `..`, см. тот же документ). См. также раздел **«Соглашение по импортам»** в [README.md](../README.md).
-
-Презентационные атомарные виджеты UI — по соглашению **`src/components`** (общие примитивы) и **`modules/HomeModule/components`** (виджеты главной): [docs/components.md](components.md).
-
-## Стиль объявления функций
-
-Функциональные компоненты в **`logic`** и **`containers`**, хуки в **`contexts`** и **`selectors`** оформляйте как **именованный** `const` со стрелочной функцией (`export const Name = … => { … }`); **`React.FC`** здесь **не требуется**. Презентационные виджеты в **`modules/HomeModule/components`** (и аналогично в `src/components`, `src/App/components`) — с **`React.FC<Props>`**, как в [docs/components.md](components.md), раздел **«Объявление компонента (функция)»**. Свойство **`displayName`** задавайте **только** если имя в React DevTools теряется из‑за обёртки (`memo`, `forwardRef`, HOC и т.п.).
-
----
-
-## `modules/HomeModule/logic`
-
-- Назначение: компоненты и модули **оркестрации** экрана тренировки (хуки сессии, голоса, провайдеры контекста), **без** презентационных слотов в духе кнопок из `components`.
-- Публичная точка входа: **`modules/HomeModule/logic/index.ts`** — реэкспорт оркестрации (`WorkoutLogicLayout`), типов из `@store` при необходимости, селектора сцены **`useStageContainerSelector`** и типов **`WorkoutSessionStageValue`**; остальные селекторы контейнеров импортируют из **`../selectors`**.
-- **Один публичный компонент логики — одна подпапка в PascalCase** (как у UI-компонентов):
-
-| Файл | Назначение |
-|------|------------|
-| `<Name>/<Name>.tsx` | Реализация (хуки, провайдеры) |
-| `<Name>/index.ts` | Явный реэкспорт публичного API папки |
-
-Пример: `modules/HomeModule/logic/WorkoutLogicLayout/`.
-
-- Снаружи папки `logic` модуля импорт только из **`./logic`** (относительно корня `HomeModule`), не из **`./logic/WorkoutLogicLayout/…`**.
-
----
-
-## `modules/HomeModule/contexts`
-
-- Назначение: **`React.createContext`**, типы значения контекста и при необходимости хук **`use…Context`** с проверкой провайдера (throw, если `null`).
-- **Каждый контекст — своя подпапка** в PascalCase. Сейчас публично экспортируется **`WorkoutSessionStage`** (сцена: ссылка на canvas, `isCameraInitializing`, `isPaused`). Данные панели и строки статуса (модель, камера, голос, `exerciseId`, отдых и т.д.) лежат в **Redux** — срез **`home`**, а команды сессии доставляются через **`eventBus`** (см. раздел **«Срез controls и команды сессии»** в [architecture.md](architecture.md)).
-- Внутри подпапки контекста — файлы провайдера, типов, хука потребления, **`index.ts`** с явными реэкспортами.
-- Баррель: **`modules/HomeModule/contexts/index.ts`** — точка импорта для кода вне подпапок контекста (например из `WorkoutLogicLayout` — **`../../contexts`** относительно файла в `logic/WorkoutLogicLayout/`).
-- Имя среза **`home`** — про панель и статусы вокруг сцены, не про браузер Chrome; подробнее — [architecture.md](architecture.md), раздел **«Именование: home»**.
-
----
-
-## `modules/HomeModule/selectors`
-
-- Назначение: подготовка пропсов для контейнеров слотов.
-  - Для данных **Redux** — мемоизированный селектор **`get<ИмяКонтейнера>Props`** (файл **`ExerciseControlBarContainerSelector.ts`** / **`StatusBarContainerSelector.ts`**, **`createSelector`** из **`@reduxjs/toolkit`**), в контейнере — **`useAppSelector(get…Props)`**.
-  - Для **сцены** — хук **`useStageContainerSelector`** (читает **`WorkoutSessionStageContext`**, внутри **`useMemo`**).
-- **Каждый селектор — своя подпапка** в PascalCase с суффиксом **`Selector`** (например `ExerciseControlBarContainerSelector`, `StatusBarContainerSelector`, `StageContainerSelector`).
-
-| Файл | Назначение |
-|------|------------|
-| `<Name>/<Name>ContainerSelector.ts` или аналог | Селектор(ы) для стора (`get…Props`) или хук для контекста |
-| `<Name>/index.ts` | Явный реэкспорт публичного API подпапки |
-
-- Баррель: **`modules/HomeModule/selectors/index.ts`**.
-- **`useStageContainerSelector`** реэкспортируется из **`modules/HomeModule/logic/index.ts`**; **`getExerciseControlBarContainerProps`** и **`getStatusBarContainerProps`** импортируют из **`../selectors`** или из барреля **`../../selectors`** (как договорено в конкретном контейнере).
-
----
-
-## `modules/HomeModule/containers`
-
-- Назначение: компоненты **слотов** `HomeLayout` (`header`, `controls`, `statusBar`, `stage` и т.д.): подключаются к данным через селекторы (**`useAppSelector(get…ContainerProps)`** для Redux, **`useStageContainerSelector`** для сцены), **без пропсов** состояния сессии извне. Команды **`start` / pause / reset / shutdown`** инициируют через **`eventBus`**, смена упражнения и минут отдыха — **`updateHomeModuleState`** (см. [architecture.md](architecture.md)).
-- Структура **как у `src/components`**: одна папка на контейнер в PascalCase, **`ContainerName/ContainerName.tsx`**, **`ContainerName/index.ts`**, баррель **`modules/HomeModule/containers/index.ts`**.
-- Разметка слота: контейнер рендерит **один** презентационный компонент — из **`src/components`** (примитивы) или из барреля **`modules/HomeModule/components`** для виджетов главной (панель управления, статус-бар, сцена); стили виджета — **`<Имя>.styled.tsx`**, токены из **`src/theme`**. Глобальные правила — в **`GlobalStyle`** (`src/theme/globalStyle.tsx`).
-- Импорт в `HomeModule.tsx`: только из **`./containers`** (путь к баррелю — относительно файла модуля).
-
----
-
-## Сводная таблица «куда класть новое»
-
-| Что добавляете | Каталог | Подпапка |
-|----------------|---------|----------|
-| Новый контекст сессии главной | `modules/HomeModule/contexts` | `<ContextName>/` |
-| Новый селектор под контейнер слота главной | `modules/HomeModule/selectors` | `<ContainerName>Selector/` |
-| Новый слот с доступом к сессии главной | `modules/HomeModule/containers` | `<ContainerName>/` |
-| Новый оркестратор с хуками для главной | `modules/HomeModule/logic` | `<LogicName>/` |
-| Переиспользуемый примитив / нейтральный виджет | `src/components` | см. [components.md](components.md) |
-| Виджет экрана тренировки (главная) | `src/modules/HomeModule/components/` | тот же стиль папок, что у `components` |
-| Хуки сессии / камеры / речи главной | `src/modules/HomeModule/hooks/` | баррель `hooks/index.ts` |
-| Детекторы и реестр упражнений главной | `src/modules/HomeModule/exercises/` | баррель `exercises/index.ts` |
-| Сервис pose landmarker главной | `src/modules/HomeModule/services/` | баррель `services/index.ts` |
-
-После добавления публичной сущности обновляйте соответствующий **`index.ts`** барреля в **той же задаче**.
-
-Код вне **`HomeModule`** при необходимости может импортировать **типы** контекста сцены из **`src/modules/HomeModule/contexts`**, типы «хрома» сессии — из **`@store`**; хуки сессии и речь живут в **`src/modules/HomeModule/hooks`**.
+# Структура папок в `src`: оркестрация главной, контексты, селекторы, контейнеры, store
+
+Соглашения для **экрана тренировки** на главной: в **`src/modules/HomeModule/`** — оркестрация в **`HomeModule.tsx`**, React-контекст сцены, селекторы для панели и слотов, контейнеры без пропсов данных сессии снаружи, Redux-срез `home` в **`store/`**. Тонкая страница маршрута — **`src/pages/HomePage/HomePage.tsx`**, рендерит **`HomeModule`**. Для агента ИИ краткие обязательные пункты: [.cursor/rules/src-layout.mdc](../.cursor/rules/src-layout.mdc) (как у UI — `components.mdc`).
+
+Общее правило импортов: **между папками верхнего уровня `src/*`** — только из **барреля** (`index.ts`) соответствующей папки, **без** `export *`, только явные `export { … }` и `export type { … }`; при переходе используйте **алиасы** (`@utils`, `@hooks`, …), см. [docs/import-aliases.md](import-aliases.md). Внутри **`HomeModule`** импорты между подсистемами — из баррелей (`./hooks`, `../contexts` и т.д.).
+
+Презентационные атомарные виджеты — **`src/components`** (общие примитивы) и **`modules/HomeModule/components`** (виджеты главной): [docs/components.md](components.md).
+
+## Стиль объявления функций
+
+Функциональные компоненты в **`HomeModule`**, **`containers`**, хуки в **`hooks`** и **`contexts`** — как **именованный** `const` со стрелочной функцией; **`React.FC`** не требуется, кроме презентации в [docs/components.md](components.md), раздел **«Объявление компонента (функция)»**. **`displayName`** — только при потере имени в DevTools (`memo`, `forwardRef`, HOC).
+
+---
+
+## `HomeModule.tsx` (оркестрация)
+
+- **Назначение:** единая точка оркестрации экрана тренировки: **`useWorkoutSession`**, **`useSpeechRecognition`**, подписка на **`eventBus`** с **`EVENT_WORKOUT_SESSION_CONTROLS_COMMAND`** (payload — **`WorkoutSessionControlsAction`** из `store`), провайдер **`WorkoutSessionStageContext`**, **`updateHomeModuleState` / `resetHomeModuleState`**. Отдельной папки **`logic/`** в репозитории нет.
+- **Разметка:** контейнеры слотов передаются в **`HomeLayout`** (`controls`, `statusBar`, `stage`); заголовок сейчас задан в **`HomeModule`** инлайн (`<h1>Счетчик повторений</h1>`).
+
+---
+
+## `modules/HomeModule/store`
+
+- **Назначение:** Redux-срез в корневом `combineReducers` зарегистрирован как **`home: HomeModuleReducer`** (см. `src/store/store.ts`).
+- **Содержимое:** `HomeModuleSlice.ts`, **`controlActionTypes.ts`** (union **`WorkoutSessionControlsAction`**), `types.ts`, баррель **`index.ts`**. Команды сессии **`start` / `pause` / `reset` / `shutdown`** в стор **не** кладутся: UI и голос эмитят их через **`eventBus`**, а обработчик в **`HomeModule`** вызывает методы **`useWorkoutSession`**. См. [architecture.md](architecture.md), раздел про **`eventBus`**.
+- **Имя `home`:** про панель и статусы вокруг сцены, не про браузер Chrome; подробнее — [architecture.md](architecture.md).
+
+---
+
+## `modules/HomeModule/contexts`
+
+- Назначение: значение контекста сцены (**`WorkoutSessionStage`**: `canvasRef`, `isCameraInitializing`, `isPaused`). Данные панели и строки состояния (модель, камера, голос, `exerciseId`, отдых) — в **Redux** (`home`).
+- Сейчас: подпапка **`WorkoutSessionStage/`** с баррелем, общий импорт — **`contexts/index.ts`**.
+
+---
+
+## `modules/HomeModule/selectors`
+
+- **Назначение:** в **`HomeModuleSelectors.ts`** — мемоизированные селекторы **`getHomeModuleProps`**, **`getExerciseControlBarContainerProps`**, **`getStatusBarContainerProps`** (база **`getWorkoutControlsState`**) + **`useAppSelector`** в контейнерах. Для сцены отдельного селектора-файла нет: хук **`useStageContainerSelector`** в **`modules/HomeModule/hooks/`** читает контекст сцены (внутри **`useMemo`**).
+- Баррель: **`selectors/index.ts`**.
+
+---
+
+## `modules/HomeModule/hooks`
+
+- **`useWorkoutSession`**, **`useSpeechRecognition`**, **`useStageContainerSelector`**; баррель **`hooks/index.ts`**.
+- Камера: **`useCameraStream`** реализован в **`src/hooks/useCameraStream.ts`** и импортируется из **`@hooks`** (не дублируется в `HomeModule/hooks/`).
+
+---
+
+## `modules/HomeModule/containers`
+
+- **Назначение:** слоты **`HomeLayout`**: `ExerciseControlBarContainer`, `StatusBarContainer`, `StageContainer` — данные из селекторов и **`useStageContainerSelector`**, **без** пропсов сессии извне. Команды сессии — **`eventBus`**, смена упражнения/отдыха — **`updateHomeModuleState`**. Структура: **`ContainerName/ContainerName.tsx`**, **`index.ts`**, баррель **`containers/index.ts`**. Стили читают токены из **`src/theme`**.
+- Импорт в `HomeModule.tsx` — только из **`./containers`** (баррель).
+
+---
+
+## Сводная таблица «куда класть новое»
+
+| Что добавляете | Каталог | Подпапка / файл |
+|----------------|---------|-----------------|
+| Оркестрация главной, новые эффекты вокруг сессии | `modules/HomeModule` | правки в **`HomeModule.tsx`** (или вынесение в хуки `hooks/`) |
+| Новый контекст сцены/сессии главной | `modules/HomeModule/contexts` | `<ContextName>/` |
+| Поля/редьюсер панели главной | `modules/HomeModule/store` | срез `home` + типы |
+| Селекторы под панель/контейнеры | `modules/HomeModule/selectors` | в первую очередь **`HomeModuleSelectors.ts`**, реэкспорт в `index.ts` |
+| Слот с данными сессии | `modules/HomeModule/containers` | `<ContainerName>/` |
+| Хук сессии, речи, сцены | `modules/HomeModule/hooks/` | + баррель `hooks/index.ts` |
+| Общий хук, не привязанный только к главной (камера) | `src/hooks` | + алиас `@hooks` |
+| Переиспользуемый примитив | `src/components` | см. [components.md](components.md) |
+| Виджет экрана тренировки | `modules/HomeModule/components/` | тот же стиль папок, что у `components` |
+| Детекторы и реестр | `modules/HomeModule/exercises/` | `registry.ts`, `*Detector.ts` |
+| Сервис pose landmarker | `modules/HomeModule/services/` | `PoseLandmarkerService` |
+
+После добавления публичной сущности обновляйте соответствующий **`index.ts`** в **той же задаче**.
+
+Код вне **`HomeModule`** при необходимости читает **`@store`** (в т.ч. `home`); типы контролов сессии — из **`./store`** внутри `HomeModule`.
+

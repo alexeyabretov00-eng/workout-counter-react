@@ -1,6 +1,6 @@
 # Модули приложения (`src/modules`)
 
-**Модуль** — переиспользуемый доменный срез приложения: всё необходимое для его работы живёт внутри `src/modules/<ИмяModule>/`, где имя в **PascalCase** и с суффиксом **`Module`** (например `LoginModule`, `RegistrationModule`).
+**Модуль** — переиспользуемый доменный срез приложения: всё необходимое для его работы живёт внутри `src/modules/<ИмяModule>/`, где имя в **PascalCase** и с суффиксом **`Module`** (например `LoginModule`, `RegistrationModule` — страница маршрута при этом может называться `RegisterPage`, см. `src/pages/RegisterPage/`).
 
 - **Публичное API** — только из `src/modules/<ИмяModule>/index.ts` (явные реэкспорты, без `export *`); на границе модуля обычно экспортируется **одна** корневая сущность с тем же именем, что и модуль (например `export { LoginModule } from './LoginModule'`).
 - **Импорт снаружи** — через алиас **`@modules/<ИмяModule>`** (см. [docs/import-aliases.md](import-aliases.md), настройки в `tsconfig.app.json` и `vite.config.ts`).

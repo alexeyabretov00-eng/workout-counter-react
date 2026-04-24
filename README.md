@@ -21,7 +21,7 @@
 - **Пауза и продолжение:** при паузе обработка кадров останавливается, в сцене показывается состояние «Упражнение приостановлено», затем снова `Старт` на той же кнопке продолжает ту же сессию.
 - **Остановка сессии:** кнопка `Стоп` завершает сессию, отключает камеру и запускает таймер отдыха на выбранное время.
 - **Строка состояния:** показывает готовность модели, состояние камеры, статус голосового распознавания, паузу и ошибки камеры.
-- **Несколько страниц:** переключение через навигацию в шапке (React Router). Полная логика тренировки (камера, сессия, голос) монтируется только на главной (`HomePage`); остальные маршруты — отдельные экраны без `WorkoutLogicLayout`.
+- **Несколько страниц (React Router):** публичные маршруты **«Вход»** (`/login`) и **«Регистрация»** (`/register`); после входа — защищённые маршруты под **`RequireAuth`**. В шапке слева пункты **«Главная»**, **«Админка»**, **«История»** (`navItems`) видны **только вошедшему** пользователю; справа в блоке авторизации — **«Вход»** и **«Регистрация»**, если пользователь не авторизован (пока сессия не загружена, блок скрыт). Главная тренировки — путь **`/home`**; полная логика (камера, сессия, голос) только в **`HomeModule`** на этой странице. Остальные экраны — без сетки тренировки.
 
 ## Запуск
 
@@ -48,7 +48,7 @@ npm run dev
    npm run dev:api
    ```
 
-3. В первом терминале как обычно: `npm run dev` — откройте приложение, страницы **«Вход»** и **«Регистрация»** в шапке.
+3. В первом терминале как обычно: `npm run dev` — откройте приложение; без входа в шапке будут ссылки **«Вход»** и **«Регистрация»**, после входа — пункты разделов и кнопка **«Выйти»**.
 
 Переменные окружения API (опционально):
 
@@ -72,7 +72,7 @@ docker compose up --build
 ```
 
 - Сервис **`web`** (nginx + собранный фронт) публикует порт **8080** на хост.
-- Сервис **`api`** (Node, каталог `server/`) обрабатывает префикс **`/api`**; **не** публикует порт наружу; данные SQLite лежат в именованном томе **`workout_sqlite`** (путь в контейнере задаётся через `DATABASE_PATH=/data/app.sqlite`).
+- Сервис **`api`** (Node, каталог `server/`) слушает в контейнере порт **3000** (`PORT` в `docker-compose.yml`), обрабатывает префикс **`/api`**; **не** публикует порт наружу; данные SQLite лежат в именованном томе **`workout_sqlite`** (путь в контейнере задаётся через `DATABASE_PATH=/data/app.sqlite`). Nginx (`web`) проксирует `/api` на `api:3000` (см. `docker/nginx/default.conf`).
 - Перед первым запуском задайте надёжный **`JWT_SECRET`** в окружении (например файл `.env` рядом с `docker-compose.yml` или переменная в оболочке). Значение по умолчанию в compose небезопасно и только для локальной проверки.
 
 Только фронтенд (без API в контейнере):
@@ -186,27 +186,27 @@ React 19, TypeScript, Vite 8, styled-components, MediaPipe Tasks Vision (pose la
 
 ## Архитектура
 
-- `src/main.tsx` — монтирование в `#root`: рендер `<App />` из `./App` (баррель `src/App/`).
-- `src/App/App.tsx` — `ThemeProvider`, `GlobalStyle` и `RouterProvider` с `createBrowserRouter`: общий родительский маршрут с `AppPageLayout` (навигация и вложенные страницы через `<Outlet />`), дочерние маршруты — из `src/routes`.
-- `src/routes/routes.ts` — собирает `RouteObject[]` из экспорта `routes` в каждом `src/pages/*/index.tsx` (`import.meta.glob`), строит `navItems` для `AppNav` из `route.handle.nav` (метка, порядок, `end`).
-- `src/pages/HomePage/HomePage.tsx` — тонкая обёртка над `HomeModule` из `@modules/HomeModule`. Экран тренировки: `WorkoutLogicLayout` оборачивает `HomeLayout`; слоты (`header`, `controls`, `statusBar`, `stage`) заполняются контейнерами из `modules/HomeModule/containers`. Остальные страницы (`AdminPage`, `ExerciseHistoryPage` и т.д.) рендерятся тем же роутером без `WorkoutLogicLayout`. Подробнее о папках: [docs/src-layout.md](docs/src-layout.md).
-- `src/store` — Redux store; срез `home` — поля панели и статусов главной (название не связано с браузером Chrome; см. [docs/architecture.md](docs/architecture.md)), тип `WorkoutSessionControlsAction` для команд сессии через `eventBus`.
-- `src/theme` — объект темы (палитра, отступы, радиусы, типографика); `ThemeProvider` и `GlobalStyle` подключаются в `src/App/App.tsx`.
-- `src/modules/HomeModule/logic` — оркестрация экрана тренировки (`WorkoutLogicLayout`: `useWorkoutSession`, `useSpeechRecognition`, подписка на `eventBus` для команд сессии, провайдер `WorkoutSessionStageContext`, синхронизация полей панели в Redux через `updateHomeModuleState`). Баррель `modules/HomeModule/logic/index.ts` — в т.ч. `useStageContainerSelector` и типы сцены.
-- `src/modules/HomeModule/contexts` — React-контекст сцены (`WorkoutSessionStage`); отображаемое состояние панели/статуса — в `src/store` (срез `home`). Баррель `modules/HomeModule/contexts/index.ts`.
-- `src/modules/HomeModule/selectors` — мемо-селекторы `get…ContainerProps` для Redux + `useStageContainerSelector` для сцены; баррель `modules/HomeModule/selectors/index.ts`.
+- `src/main.tsx` — монтирование в `#root`: рендер `<App />` из `@app` (баррель `src/App/`).
+- `src/App/App.tsx` — `Provider` (Redux), `ConfigProvider` (Ant Design), `ThemeProvider`, `GlobalStyle`, `AuthSessionInitializer`, `RouterProvider` с `createBrowserRouter`: layout `AppPageLayout` с `header={<AppNavContainer />}`; публичные маршруты (`/login`, `/register`) и дети с `RequireAuth` для остального. Подробнее: [docs/architecture.md](docs/architecture.md).
+- `src/routes/routes.ts` — собирает `RouteObject[]` из экспорта `routes` в каждом `src/pages/*/index.tsx` (`import.meta.glob`), строит `navItems` для `AppNav` из `route.handle.nav` (маршруты без `nav` в шапку слева не попадают), отдельно — `publicAuthRoutes` и `protectedAppRoutes`.
+- `src/pages/HomePage/HomePage.tsx` — тонкая обёртка над `HomeModule` из `@modules/HomeModule`. Экран тренировки: **`HomeModule.tsx`** оборачивает `HomeLayout`; слоты (`header`, `controls`, `statusBar`, `stage`) заполняются контейнерами из `modules/HomeModule/containers`. Остальные страницы (`AdminPage`, `ExerciseHistoryPage`, вход, регистрация) рендерятся тем же роутером без тренировочной сетки. Подробнее о папках: [docs/src-layout.md](docs/src-layout.md).
+- `src/store` — Redux store; срезы **`auth`** и **`home`**. Срез **`home`** (редьюсер и экшены) лежит в **`src/modules/HomeModule/store/`** — поля панели и статусов главной; тип **`WorkoutSessionControlsAction`** для команд сессии через `eventBus` (импорт в `HomeModule` из `./store` модуля). Название среза не связано с браузером Chrome; см. [docs/architecture.md](docs/architecture.md).
+- `src/theme` — объект темы (палитра, отступы, радиусы, типографика) и конфиг Ant Design; `ThemeProvider` и `GlobalStyle` подключаются в `src/App/App.tsx`.
+- `src/modules/HomeModule/HomeModule.tsx` — оркестрация экрана тренировки: `useWorkoutSession`, `useSpeechRecognition`, подписка на `eventBus` для команд сессии, провайдер `WorkoutSessionStageContext`, синхронизация полей панели в Redux через `updateHomeModuleState`. Отдельной папки `logic/` нет.
+- `src/modules/HomeModule/contexts` — React-контекст сцены (`WorkoutSessionStage`); отображаемое состояние панели/статуса — в срезе `home`. Баррель `modules/HomeModule/contexts/index.ts`.
+- `src/modules/HomeModule/selectors` — мемо-селекторы в `HomeModuleSelectors.ts` (`getHomeModuleProps`, `get…ContainerProps`) + хук **`useStageContainerSelector`** в `modules/HomeModule/hooks/` для сцены; баррель `modules/HomeModule/selectors/index.ts`.
 - `src/modules/HomeModule/containers` — слоты `HomeLayout` без пропсов данных сессии; данные через селекторы. Баррель `modules/HomeModule/containers/index.ts`.
-- `src/modules/HomeModule/hooks/useCameraStream.ts` — запуск и остановка потока с камеры.
+- `src/hooks/useCameraStream.ts` — запуск и остановка потока с камеры (алиас `@hooks`, используется в `useWorkoutSession`).
 - `src/modules/HomeModule/services` — MediaPipe Pose landmarker (`PoseLandmarkerService`): загрузка модели, `detect` / нормализация landmarks в общие типы из `src/utils/pose.ts`.
 - `src/modules/HomeModule/exercises` — детекторы упражнений (`ExerciseDetector`), реестр `registry.ts`, типы.
-- `src/utils` — утилиты: в частности `pose.ts` (типы позы, индексы точек, углы, `drawFrame` — видео, скелет, HUD на canvas), `canvas.ts` (`resizeCanvas`, экран отдыха `drawRestCountdown`), `speech.ts` (синтез и нормализация текста для команд).
-- `src/modules/HomeModule/hooks/useSpeechRecognition.ts` — непрерывное распознавание речи: команды сессии через `eventBus`, смена упражнения/отдыха через `updateHomeModuleState` (вызывается из `WorkoutLogicLayout`, не из корневого `App`).
+- `src/utils` — утилиты: в частности `pose.ts` (типы позы, индексы точек, углы, `drawFrame` — видео, скелет, HUD на canvas), `canvas.ts` (`resizeCanvas`, экран отдыха `drawRestCountdown`), `speech.ts` (синтез и нормализация текста для команд), `eventBus`.
+- `src/modules/HomeModule/hooks/useSpeechRecognition.ts` — непрерывное распознавание речи: команды сессии через `eventBus`, смена упражнения/отдыха через `updateHomeModuleState` (из `HomeModule`, не из корневого `App`).
 - `src/types` — общие типы приложения (в том числе единый тип статусов `EntityStatus`, снимок рантайма детектора `ExerciseRuntimeState` для HUD и `utils/pose`).
-- `src/modules/HomeModule/hooks/useWorkoutSession.ts` — **ядро сессии**: связывает камеру, landmarker, выбранный детектор и отрисовку; управляет циклом `requestAnimationFrame`, паузой, сбросом, остановкой с таймером отдыха и озвучкой повторений.
+- `src/modules/HomeModule/hooks/useWorkoutSession.ts` — **ядро сессии**: связывает камеру (`@hooks`), landmarker, выбранный детектор и отрисовку; управляет циклом `requestAnimationFrame`, паузой, сбросом, остановкой с таймером отдыха и озвучкой повторений.
 
 ## Соглашение по импортам
 
-- Между **верхнеуровневыми** папками `src/*` используйте префиксы-алиасы (`@api`, `@utils`, `@types`, `@store`, …) и импорт **из папки (барреля)**, а не из конкретного файла, если сущность уже в барреле. Комбинированные селекторы под **App** и **модули** живут рядом с кодом: `src/App/selectors/`, `src/modules/<ИмяModule>/selectors/`. Таблица алиасов и путей внутри `HomeModule`: [docs/import-aliases.md](docs/import-aliases.md).
+- Между **верхнеуровневыми** папками `src/*` используйте префиксы-алиасы (`@api`, `@hooks`, `@utils`, `@types`, `@store`, …) и импорт **из папки (барреля)**, а не из конкретного файла, если сущность уже в барреле. Комбинированные селекторы под **App** и **модули** живут рядом с кодом: `src/App/selectors/`, `src/modules/<ИмяModule>/selectors/`. Таблица алиасов и путей внутри `HomeModule`: [docs/import-aliases.md](docs/import-aliases.md).
 - Публичные точки входа модулей определяются через `index.ts` в соответствующей папке.
 - Если сущность должна использоваться извне папки, добавляйте её явный именованный реэкспорт в `index.ts` этой папки.
 - В `index.ts` не используйте `export *`; перечисляйте публичный API явно (`export { ... }`, `export type { ... }`).
@@ -217,7 +217,7 @@ React 19, TypeScript, Vite 8, styled-components, MediaPipe Tasks Vision (pose la
 
 ### Логика экрана, контексты, селекторы, контейнеры (главная)
 
-Каталоги **`modules/HomeModule/logic`**, **`modules/HomeModule/contexts`**, **`modules/HomeModule/selectors`**, **`modules/HomeModule/containers`**, а также **`modules/HomeModule/hooks`**, **`modules/HomeModule/exercises`**, **`modules/HomeModule/services`**: подпапки в PascalCase, в каждой подсистеме свой баррель `index.ts` (где применимо), импорты между верхнеуровневыми папками `src/*` — только из баррелей, без `export *`. Подробности и таблица «куда класть новое»: [docs/src-layout.md](docs/src-layout.md).
+Оркестрация в **`HomeModule.tsx`**; каталоги **`modules/HomeModule/store`**, **`modules/HomeModule/contexts`**, **`modules/HomeModule/selectors`**, **`modules/HomeModule/containers`**, а также **`modules/HomeModule/hooks`**, **`modules/HomeModule/exercises`**, **`modules/HomeModule/services`**: в каждой подсистеме свой баррель `index.ts` (где применимо), селекторы панели сосредоточены в **`HomeModuleSelectors.ts`**, импорты между верхнеуровневыми папками `src/*` — только из баррелей, без `export *`. Камера — **`@hooks`**. Подробности: [docs/src-layout.md](docs/src-layout.md).
 
 ### Поток данных
 
