@@ -54,4 +54,4 @@
 - Вход приложения: `src/App/App.tsx`
 - Тестовый рендер: `src/test/renderWithTheme.tsx`
 
-После завершения реализации — перенос каталога в `specs/refactor/_archive/antd-migration/` (третий коммит цикла, см. `specs/README.md`).
+Каталог плана и чеклиста в архиве: `specs/refactor/_archive/antd-migration/` (см. `specs/README.md`).

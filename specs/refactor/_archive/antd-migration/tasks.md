@@ -63,7 +63,7 @@
 
 ### Архив
 
-- [ ] Третий коммит цикла: перенос `specs/refactor/antd-migration/` в `specs/refactor/_archive/antd-migration/`.
+- [x] Каталог перенесён в `specs/refactor/_archive/antd-migration/`.
 
 ---
 
