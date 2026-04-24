@@ -3,10 +3,9 @@ import type { EntityStatus, VoiceStatus } from '@types';
 
 import type { HomeModuleState } from '../store/types';
 
-type HomeModuleSliceState = { workoutSessionControls: HomeModuleState };
+type HomeModuleSliceState = { home: HomeModuleState };
 
-export const getWorkoutControlsState = (state: HomeModuleSliceState) =>
-  state.workoutSessionControls;
+export const getWorkoutControlsState = (state: HomeModuleSliceState) => state.home;
 
 export const getHomeModuleProps = createSelector([getWorkoutControlsState], controls => ({
   exerciseId: controls.exerciseId,

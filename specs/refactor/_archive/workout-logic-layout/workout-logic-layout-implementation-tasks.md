@@ -1,6 +1,6 @@
 # Задачи: вынести умную логику в `WorkoutLogicLayout` (контексты и контейнеры)
 
-> **Сейчас:** см. **`src/modules/HomeModule/`** и срез **`workoutSessionControls`**.
+> **Сейчас:** см. **`src/modules/HomeModule/`** и срез **`home`**.
 
 План: [./workout-logic-layout-plan.md](./workout-logic-layout-plan.md)
 

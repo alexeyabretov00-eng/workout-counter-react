@@ -30,7 +30,7 @@ describe('ExerciseControlBarContainer', () => {
   beforeEach(() => {
     controlsFixture = createControlsFixture();
     testStore = setupStore({
-      workoutSessionControls: controlsFixture,
+      home: controlsFixture,
     });
     emitSpy = vi.spyOn(eventBus, 'emit') as Mock<(type: string, detail?: unknown) => void>;
     emitSpy.mockClear();
@@ -54,7 +54,7 @@ describe('ExerciseControlBarContainer', () => {
   test('emits pause when Пауза is clicked while running', async () => {
     const user = userEvent.setup();
     controlsFixture = { ...createControlsFixture(), isRunning: true };
-    testStore = setupStore({ workoutSessionControls: controlsFixture });
+    testStore = setupStore({ home: controlsFixture });
     emitSpy = vi.spyOn(eventBus, 'emit') as Mock<(type: string, detail?: unknown) => void>;
     emitSpy.mockClear();
     const { container } = renderBar();
@@ -70,7 +70,7 @@ describe('ExerciseControlBarContainer', () => {
       isRunning: true,
       resetStopEnabled: true,
     };
-    testStore = setupStore({ workoutSessionControls: controlsFixture });
+    testStore = setupStore({ home: controlsFixture });
     emitSpy = vi.spyOn(eventBus, 'emit') as Mock<(type: string, detail?: unknown) => void>;
     emitSpy.mockClear();
     const { container } = renderBar();

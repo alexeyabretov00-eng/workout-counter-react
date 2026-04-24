@@ -28,7 +28,7 @@
   - Оркестрация экрана тренировки: `WorkoutLogicLayout` (`useWorkoutSession`, `useSpeechRecognition`, подписка на `eventBus` для команд сессии, провайдер `WorkoutSessionStageContext`, синхронизация полей панели и статусов в Redux через `updateHomeModuleState`). Один публичный модуль — подпапка PascalCase + `modules/HomeModule/logic/index.ts`. Соглашения — в [docs/src-layout.md](src-layout.md).
 
 - `src/modules/HomeModule/contexts/*`
-  - React-контекст сцены (`WorkoutSessionStage`: `canvasRef`, флаги паузы/инициализации камеры). Состояние панели и статусов (модель, камера, голос, `exerciseId`, длительность отдыха и т.д.) — в **Redux** (`workoutSessionControls`), не в контексте. Подпапка на контекст, баррель `modules/HomeModule/contexts/index.ts`.
+  - React-контекст сцены (`WorkoutSessionStage`: `canvasRef`, флаги паузы/инициализации камеры). Состояние панели и статусов (модель, камера, голос, `exerciseId`, длительность отдыха и т.д.) — в **Redux** (`home`), не в контексте. Подпапка на контекст, баррель `modules/HomeModule/contexts/index.ts`.
 
 - `src/modules/HomeModule/selectors/*`
   - Селекторы для контейнеров: для данных из стора — мемоизированные селекторы **`get…ContainerProps`** (`@reduxjs/toolkit` `createSelector`) + `useAppSelector` в контейнере; для сцены — хук **`useStageContainerSelector`** (читает `WorkoutSessionStageContext`). Подпапка на селектор, баррель `modules/HomeModule/selectors/index.ts`; часть API реэкспортируется из `modules/HomeModule/logic/index.ts`.
@@ -37,7 +37,7 @@
   - Компоненты слотов layout главной страницы (`HomeLayout`: `header`, `controls`, `statusBar`, `stage`) без пропсов данных сессии; данные из Redux- и контекст-селекторов, команды сессии — `eventBus` и/или `updateHomeModuleState` (см. раздел **Срез controls и команды сессии**). Одна папка на контейнер, баррель `modules/HomeModule/containers/index.ts`. Соглашения — в [docs/src-layout.md](src-layout.md).
 
 - `src/store/*`
-  - Redux store приложения. Срез **`workoutSessionControls`** хранит поля панели и статусов сессии (`exerciseId`, `restDurationMinutes`, `isRunning`, статусы модели/камеры/голоса и т.д.); **`WorkoutSessionControlsAction`** (union команд сессии для `eventBus`) задаётся в `src/store/workoutSessionControls/controlActionTypes.ts` и реэкспортируется из `src/store/index.ts`.
+  - Redux store приложения. Срез **`home`** хранит поля панели и статусов сессии (`exerciseId`, `restDurationMinutes`, `isRunning`, статусы модели/камеры/голоса и т.д.); **`WorkoutSessionControlsAction`** (union команд сессии для `eventBus`) задаётся в `src/store/home/controlActionTypes.ts` и реэкспортируется из `src/store/index.ts`.
 
 - `src/utils/eventBus` и `src/modules/HomeModule/constants`
   - Команды **`start` / `pause` / `reset` / `shutdown`** доставляются в **`WorkoutLogicLayout`** через **`eventBus`** с именем события **`EVENT_WORKOUT_SESSION_CONTROLS_COMMAND`** (`HomeModuleConstants` / `HomeModule/constants`).
@@ -93,7 +93,7 @@ flowchart TB
   WLL --> StageCtx[WorkoutSessionStageContext]
   WLL --> Patch[updateHomeModuleState]
   WLL --> EBSub[subscribe: EVENT_WORKOUT_SESSION_CONTROLS_COMMAND]
-  Store[(Redux: workoutSessionControls)]
+  Store[(Redux: home)]
   Patch --> Store
   Cont[Containers] --> Store
   Cont --> EBEmit[eventBus.emit control]
@@ -115,9 +115,9 @@ flowchart TB
 
 ### Срез controls и команды сессии: Redux, `eventBus` и `WorkoutSessionControlsAction`
 
-- **Чтение UI:** срез **`workoutSessionControls`** в **Redux** (`src/store/workoutSessionControls/`) — `exerciseId`, `restDurationMinutes`, `isRunning`, флаги готовности, статусы модели, камеры, голоса и т.д. Контейнеры подключают данные через **`getExerciseControlBarContainerProps`** / **`getStatusBarContainerProps`** + **`useAppSelector`**.
+- **Чтение UI:** срез **`home`** в **Redux** (`src/store/home/`) — `exerciseId`, `restDurationMinutes`, `isRunning`, флаги готовности, статусы модели, камеры, голоса и т.д. Контейнеры подключают данные через **`getExerciseControlBarContainerProps`** / **`getStatusBarContainerProps`** + **`useAppSelector`**.
 - **Изменение упражнения и длительности отдыха (без перезапуска сессии):** прямой **`dispatch(updateHomeModuleState({ exerciseId | restDurationMinutes }))`** — в **`ExerciseControlBarContainer`** и в **`useSpeechRecognition`** (выбор упражнения голосом, смена минут отдыха).
-- **Команды сессии** (`start`, `pause`, `reset`, `shutdown`) — дискриминирующий union **`WorkoutSessionControlsAction`** в **`src/store/workoutSessionControls/controlActionTypes.ts`**, реэкспортируется из **`src/store/index.ts`**. Потребители **эмитят** payload через **`eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, action)`**; в **`WorkoutLogicLayout`** обработчик по **`action.type`** вызывает **`start`**, **`pause`**, **`reset`**, **`shutdown`** из **`useWorkoutSession`** (для `shutdown` — опционально **`restDurationOverrideMs`**).
+- **Команды сессии** (`start`, `pause`, `reset`, `shutdown`) — дискриминирующий union **`WorkoutSessionControlsAction`** в **`src/store/home/controlActionTypes.ts`**, реэкспортируется из **`src/store/index.ts`**. Потребители **эмитят** payload через **`eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, action)`**; в **`WorkoutLogicLayout`** обработчик по **`action.type`** вызывает **`start`**, **`pause`**, **`reset`**, **`shutdown`** из **`useWorkoutSession`** (для `shutdown` — опционально **`restDurationOverrideMs`**).
 
 | `action.type` | Назначение |
 |----------------|------------|
@@ -155,9 +155,9 @@ flowchart TB
 - Для голосового выбора упражнения поддерживается `voiceAliases`.
 - Для временного скрытия упражнения из UI/голоса используйте `isActive: false`.
 
-## Именование: `workoutSessionControls`
+## Именование: `home`
 
-Срез **`workoutSessionControls`** и префикс **Controls** в типах относятся к **панели управления и строке статусов** вокруг сцены тренировки (см. слоты `HomeLayout`: `controls`, `statusBar`). Это **не** браузер Google Chrome и не «chrome» в смысле оформления окна; термин выбран как короткое имя для этого слоя UI. Команды **`start` / `pause` / `reset` / `shutdown`** в стор **не** кладутся: их несёт **`eventBus`** (`EVENT_WORKOUT_SESSION_CONTROLS_COMMAND`, payload — **`WorkoutSessionControlsAction`**).
+Срез **`home`** и префикс **Controls** в типах относятся к **панели управления и строке статусов** вокруг сцены тренировки (см. слоты `HomeLayout`: `controls`, `statusBar`). Это **не** браузер Google Chrome и не «chrome» в смысле оформления окна; термин выбран как короткое имя для этого слоя UI. Команды **`start` / `pause` / `reset` / `shutdown`** в стор **не** кладутся: их несёт **`eventBus`** (`EVENT_WORKOUT_SESSION_CONTROLS_COMMAND`, payload — **`WorkoutSessionControlsAction`**).
 
 ## Нефункциональные ограничения
 

@@ -8,7 +8,7 @@ import { initialHomeModuleState } from '../../../store';
 import { StatusBarContainer } from '../StatusBarContainer';
 
 const testStore = setupStore({
-  workoutSessionControls: {
+  home: {
     ...initialHomeModuleState,
     modelStatus: 'ready',
     cameraStatus: 'ready',

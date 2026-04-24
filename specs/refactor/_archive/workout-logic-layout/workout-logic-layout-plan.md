@@ -1,6 +1,6 @@
 # План: вынести умную логику в `WorkoutLogicLayout` (контексты и контейнеры)
 
-> **Сейчас:** оркестрация — **`src/modules/HomeModule/logic/WorkoutLogicLayout/`**; низкочастотные поля панели и статусов — в **`workoutSessionControls`** (Redux), высокочастотное для сцены — **`WorkoutSessionStageContext`**. В §4 — структура каталогов из этого плана (`src/logic`, `src/contexts` в корне).
+> **Сейчас:** оркестрация — **`src/modules/HomeModule/logic/WorkoutLogicLayout/`**; низкочастотные поля панели и статусов — в **`home`** (Redux), высокочастотное для сцены — **`WorkoutSessionStageContext`**. В §4 — структура каталогов из этого плана (`src/logic`, `src/contexts` в корне).
 
 ## 1. Контекст
 
