@@ -77,10 +77,8 @@ export const HomeModule = () => {
   const stageValue = useMemo(
     () => ({
       canvasRef,
-      isCameraInitializing,
-      isPaused: sessionStatus === 'paused',
     }),
-    [canvasRef, isCameraInitializing, sessionStatus],
+    [canvasRef],
   );
 
   return (

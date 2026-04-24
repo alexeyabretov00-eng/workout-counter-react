@@ -194,7 +194,7 @@ React 19, TypeScript, Vite 8, styled-components, MediaPipe Tasks Vision (pose la
 - `src/theme` — объект темы (палитра, отступы, радиусы, типографика) и конфиг Ant Design; `ThemeProvider` и `GlobalStyle` подключаются в `src/App/App.tsx`.
 - `src/modules/HomeModule/HomeModule.tsx` — оркестрация экрана тренировки: `useWorkoutSession`, `useSpeechRecognition`, подписка на `eventBus` для команд сессии, провайдер `WorkoutSessionStageContext`, синхронизация полей панели в Redux через `updateHomeModuleState`. Отдельной папки `logic/` нет.
 - `src/modules/HomeModule/contexts` — React-контекст сцены (`WorkoutSessionStage`); отображаемое состояние панели/статуса — в срезе `home`. Баррель `modules/HomeModule/contexts/index.ts`.
-- `src/modules/HomeModule/selectors` — мемо-селекторы в `HomeModuleSelectors.ts` (`getHomeModuleProps`, `get…ContainerProps`) + хук **`useStageContainerSelector`** в `modules/HomeModule/hooks/` для сцены; баррель `modules/HomeModule/selectors/index.ts`.
+- `src/modules/HomeModule/selectors` — мемо-селекторы в `HomeModuleSelectors.ts` (`getHomeModuleProps`, `get…ContainerProps`, `getStageContainerProps`), баррель `modules/HomeModule/selectors/index.ts`.
 - `src/modules/HomeModule/containers` — слоты `HomeLayout` без пропсов данных сессии; данные через селекторы. Баррель `modules/HomeModule/containers/index.ts`.
 - `src/hooks/useCameraStream.ts` — запуск и остановка потока с камеры (алиас `@hooks`, используется в `useWorkoutSession`).
 - `src/modules/HomeModule/services` — MediaPipe Pose landmarker (`PoseLandmarkerService`): загрузка модели, `detect` / нормализация landmarks в общие типы из `src/utils/pose.ts`.

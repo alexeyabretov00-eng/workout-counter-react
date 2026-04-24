@@ -31,10 +31,10 @@
   - Оркестрация: `useWorkoutSession`, `useSpeechRecognition`, подписка на **`eventBus`**, провайдер **`WorkoutSessionStageContext`**, **`updateHomeModuleState`**. Соглашения — в [docs/src-layout.md](src-layout.md).
 
 - `src/modules/HomeModule/contexts/*`
-  - React-контекст сцены (`WorkoutSessionStage`: `canvasRef`, флаги паузы/инициализации камеры). Состояние панели и статусов (модель, камера, голос, `exerciseId`, длительность отдыха и т.д.) — в **Redux** (`home`), не в контексте. Подпапка `WorkoutSessionStage/`, баррель `modules/HomeModule/contexts/index.ts`.
+  - React-контекст сцены (`WorkoutSessionStage`: только `canvasRef`). Флаги сцены и состояние панели/статусов (модель, камера, голос, `exerciseId`, длительность отдыха и т.д.) — в **Redux** (`home`), не в контексте. Подпапка `WorkoutSessionStage/`, баррель `modules/HomeModule/contexts/index.ts`.
 
 - `src/modules/HomeModule/selectors/*`
-  - Файл **`HomeModuleSelectors.ts`**: **`getHomeModuleProps`**, **`getExerciseControlBarContainerProps`**, **`getStatusBarContainerProps`**; для сцены — хук **`useStageContainerSelector`** в `modules/HomeModule/hooks/`. Баррель `modules/HomeModule/selectors/index.ts`.
+  - Файл **`HomeModuleSelectors.ts`**: **`getHomeModuleProps`**, **`getExerciseControlBarContainerProps`**, **`getWorkoutStatusBarContainerProps`**, **`getStageContainerProps`**. Баррель `modules/HomeModule/selectors/index.ts`.
 
 - `src/modules/HomeModule/containers/*`
   - Слоты `HomeLayout` без пропсов данных сессии; данные из селекторов, команды сессии — `eventBus` и/или `updateHomeModuleState`. Соглашения — в [docs/src-layout.md](src-layout.md).
@@ -110,11 +110,11 @@ flowchart TB
   Draw --> Canvas[Canvas output]
 ```
 
-Ключевой цикл тренировки: кадр с камеры → landmarks → детектор упражнения → обновление runtime → рендер в canvas. Состояние панели и статус-бара читается контейнерами из **Redux** через мемо-селекторы; контекст **`WorkoutSessionStageContext`** отдаёт ссылку на canvas и флаги для сцены. Команды сессии (`start` и т.д.) **не** хранятся в сторе: панель и голос **эмитят** событие в **`eventBus`**, а **`HomeModule`** подписан и вызывает методы **`useWorkoutSession`**. Корневой **`App`** и навигация к этой логике не подключают тренировку сами — только store, Ant Design, тема и маршруты.
+Ключевой цикл тренировки: кадр с камеры → landmarks → детектор упражнения → обновление runtime → рендер в canvas. Состояние панели, статус-бара и флаги сцены читаются контейнерами из **Redux** через мемо-селекторы; контекст **`WorkoutSessionStageContext`** отдаёт только ссылку на canvas. Команды сессии (`start` и т.д.) **не** хранятся в сторе: панель и голос **эмитят** событие в **`eventBus`**, а **`HomeModule`** подписан и вызывает методы **`useWorkoutSession`**. Корневой **`App`** и навигация к этой логике не подключают тренировку сами — только store, Ant Design, тема и маршруты.
 
 ### Срез controls и команды сессии: Redux, `eventBus` и `WorkoutSessionControlsAction`
 
-- **Чтение UI:** срез **`home`** в **Redux** (определение в **`src/modules/HomeModule/store/`**) — `exerciseId`, `restDurationMinutes`, `isRunning`, флаги готовности, статусы модели, камеры, голоса и т.д. Контейнеры подключают данные через **`getExerciseControlBarContainerProps`** / **`getStatusBarContainerProps`** + **`useAppSelector`**; корневой `HomeModule` — **`getHomeModuleProps`**.
+- **Чтение UI:** срез **`home`** в **Redux** (определение в **`src/modules/HomeModule/store/`**) — `exerciseId`, `restDurationMinutes`, `isRunning`, флаги готовности, статусы модели, камеры, голоса и т.д. Контейнеры подключают данные через **`getExerciseControlBarContainerProps`** / **`getWorkoutStatusBarContainerProps`** / **`getStageContainerProps`** + **`useAppSelector`**; корневой `HomeModule` — **`getHomeModuleProps`**.
 - **Изменение упражнения и длительности отдыха (без перезапуска сессии):** прямой **`dispatch(updateHomeModuleState({ exerciseId | restDurationMinutes }))`** — в **`ExerciseControlBarContainer`** и в **`useSpeechRecognition`** (выбор упражнения голосом, смена минут отдыха).
 - **Команды сессии** (`start`, `pause`, `reset`, `shutdown`) — дискриминирующий union **`WorkoutSessionControlsAction`** в **`src/modules/HomeModule/store/controlActionTypes.ts`**. Потребители **эмитят** payload через **`eventBus.emit(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, action)`**; в **`HomeModule`** обработчик по **`action.type`** вызывает **`start`**, **`pause`**, **`reset`**, **`shutdown`** из **`useWorkoutSession`** (для `shutdown` — опционально **`restDurationOverrideMs`**).
 

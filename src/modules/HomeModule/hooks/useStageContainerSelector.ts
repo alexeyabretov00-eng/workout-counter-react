@@ -10,9 +10,7 @@ export const useStageContainerSelector = () => {
   return useMemo(
     () => ({
       canvasRef: ctx.canvasRef,
-      isCameraInitializing: ctx.isCameraInitializing,
-      isPaused: ctx.isPaused,
     }),
-    [ctx.canvasRef, ctx.isCameraInitializing, ctx.isPaused],
+    [ctx.canvasRef],
   );
 };

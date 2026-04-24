@@ -68,3 +68,8 @@ export const getExerciseControlBarContainerProps = createSelector(
     resetStopEnabled: controls.resetStopEnabled,
   }),
 );
+
+export const getStageContainerProps = createSelector([getWorkoutControlsState], controls => ({
+  isCameraInitializing: controls.cameraStatus === 'initializing',
+  isPaused: controls.sessionStatus === 'paused',
+}));
