@@ -47,7 +47,7 @@
 
 Типичные случаи:
 
-1. **Модуль `HomeModule`** (экран тренировки) — подсистемы `logic`, `contexts`, `selectors`, `containers`, `hooks`, `components`, `exercises`, `services` лежат под **`src/modules/HomeModule/`**. Импорты между ними часто выглядят как **`../../contexts`**, **`../exercises`**, **`../../components`** и т.п. — это путь к **`modules/HomeModule/contexts`**, **`modules/HomeModule/exercises`**, **`modules/HomeModule/components`**, а **не** к **`src/store`** / **`src/components`**.
+1. **Модуль `HomeModule`** (экран тренировки) — оркестрация находится в **`HomeModule.tsx`**, а подсистемы `contexts`, `selectors`, `containers`, `hooks`, `components`, `exercises`, `services` лежат под **`src/modules/HomeModule/`**. Импорты между ними часто выглядят как **`../../contexts`**, **`../exercises`**, **`../../components`** и т.п. — это путь к **`modules/HomeModule/contexts`**, **`modules/HomeModule/exercises`**, **`modules/HomeModule/components`**, а **не** к **`src/store`** / **`src/components`**.
 
 2. **Контексты и хуки главной (HomeModule)** — импорт через относительный путь к баррелю **`modules/HomeModule/contexts/index.ts`** (например `../../contexts` из файла внутри модуля). Селекторы Redux для экрана — из **`modules/HomeModule/selectors/...`** (локальные хуки/селекторы модуля), не из **`@store`** напрямую в контейнерах, если принято склеивать через слой селекторов модуля.
 
