@@ -11,6 +11,7 @@ export const getHomeModuleProps = createSelector([getWorkoutControlsState], cont
   exerciseId: controls.exerciseId,
   restDurationMinutes: controls.restDurationMinutes,
   isCameraInitializing: controls.cameraStatus === 'initializing',
+  isModelReady: controls.modelStatus === 'ready',
 }));
 
 const VOICE_STATUS_LABEL: Record<VoiceStatus, string> = {

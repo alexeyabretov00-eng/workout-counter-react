@@ -18,10 +18,12 @@ import {
 
 export const HomeModule = () => {
   const dispatch = useAppDispatch();
-  const { exerciseId, restDurationMinutes, isCameraInitializing } =
+  const { exerciseId, restDurationMinutes, isCameraInitializing, isModelReady } =
     useAppSelector(getHomeModuleProps);
-  const { canvasRef, sessionStatus, modelStatus, start, pause, reset, shutdown } =
-    useWorkoutSession(exerciseId, restDurationMinutes * 60_000);
+  const { canvasRef, sessionStatus, start, pause, reset, shutdown } = useWorkoutSession(
+    exerciseId,
+    restDurationMinutes * 60_000,
+  );
 
   useEffect(() => {
     return eventBus.on(EVENT_WORKOUT_SESSION_CONTROLS_COMMAND, detail => {
@@ -47,7 +49,7 @@ export const HomeModule = () => {
     exercises: exerciseRegistry,
     isRunning: sessionStatus === 'running',
     isRestCountdownActive: sessionStatus === 'rest',
-    isStartVoiceCommandEnabled: !isCameraInitializing && modelStatus === 'ready',
+    isStartVoiceCommandEnabled: !isCameraInitializing && isModelReady,
   });
 
   const resetStopEnabled = sessionStatus === 'running';
@@ -55,13 +57,12 @@ export const HomeModule = () => {
   useEffect(() => {
     dispatch(
       updateHomeModuleState({
-        modelStatus,
         voiceStatus,
         sessionStatus,
         resetStopEnabled,
       }),
     );
-  }, [dispatch, sessionStatus, modelStatus, resetStopEnabled, voiceStatus]);
+  }, [dispatch, sessionStatus, resetStopEnabled, voiceStatus]);
 
   useEffect(() => {
     return () => {

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useCameraStream } from '@hooks';
-import type { EntityStatus, SessionStatus } from '@types';
+import type { SessionStatus } from '@types';
 
 import { useAppDispatch } from '@store';
 import {
@@ -41,7 +41,6 @@ export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: nu
   const runtimeRef = useRef<ExerciseRuntimeState>(WorkoutSessionRuntimeDefaultState);
   const restDurationMsRef = useRef(restDurationMs);
 
-  const [modelStatus, setModelStatus] = useState<EntityStatus>('loading');
   const [sessionStatus, setSessionStatus] = useState<SessionStatus>('idle');
   const { startCamera, stopCamera } = useCameraStream(
     error => {
@@ -91,12 +90,20 @@ export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: nu
       try {
         await poseService.init();
         if (isMounted) {
-          setModelStatus('ready');
+          dispatch(
+            updateHomeModuleState({
+              modelStatus: 'ready',
+            }),
+          );
         }
       } catch (error) {
         console.error('Failed to initialize pose model', error);
         if (isMounted) {
-          setModelStatus('error');
+          dispatch(
+            updateHomeModuleState({
+              modelStatus: 'error',
+            }),
+          );
         }
       }
     };
@@ -107,7 +114,7 @@ export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: nu
       isMounted = false;
       poseService.dispose();
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (!isRunning) {
@@ -275,7 +282,6 @@ export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: nu
   return {
     canvasRef,
     sessionStatus,
-    modelStatus,
     start,
     pause,
     reset,

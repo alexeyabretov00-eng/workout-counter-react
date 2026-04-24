@@ -24,6 +24,7 @@ describe('getHomeModuleProps', () => {
       exerciseId: 'biceps-curl',
       restDurationMinutes: 2,
       isCameraInitializing: true,
+      isModelReady: false,
     });
   });
 
