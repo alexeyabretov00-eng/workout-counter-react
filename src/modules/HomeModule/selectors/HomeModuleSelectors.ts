@@ -36,7 +36,7 @@ export const getStatusBarContainerProps = createSelector([getWorkoutControlsStat
   isCameraReady: controls.cameraStatus === 'ready',
   voiceStatus: controls.voiceStatus,
   voiceStatusLabel: VOICE_STATUS_LABEL[controls.voiceStatus],
-  isPaused: controls.isPaused,
+  isPaused: controls.sessionStatus === 'paused',
   cameraError: controls.cameraError,
 }));
 
@@ -53,7 +53,7 @@ export const getExerciseControlBarContainerProps = createSelector(
     exerciseId: controls.exerciseId,
     restDurationMinutes: controls.restDurationMinutes,
     restDurationOptions: REST_DURATION_OPTIONS,
-    isRunning: controls.isRunning,
+    isRunning: controls.sessionStatus === 'running',
     isModelReady: controls.modelStatus === 'ready',
     isCameraInitializing: controls.cameraStatus === 'initializing',
     resetStopEnabled: controls.resetStopEnabled,

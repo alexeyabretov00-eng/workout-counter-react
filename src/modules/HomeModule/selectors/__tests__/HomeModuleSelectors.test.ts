@@ -47,7 +47,7 @@ describe('getStatusBarContainerProps', () => {
         modelStatus: 'ready',
         cameraStatus: 'ready',
         voiceStatus: 'listening',
-        isPaused: false,
+        sessionStatus: 'idle',
         cameraError: null,
       },
     });
@@ -82,7 +82,7 @@ describe('getExerciseControlBarContainerProps', () => {
         ...initialHomeModuleState,
         exerciseId: 'biceps-curl',
         restDurationMinutes: 2,
-        isRunning: true,
+        sessionStatus: 'running',
         resetStopEnabled: true,
         cameraStatus: 'idle',
         modelStatus: 'ready' as const,

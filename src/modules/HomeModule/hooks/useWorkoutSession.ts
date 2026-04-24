@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useCameraStream } from '@hooks';
-import type { EntityStatus } from '@types';
+import type { EntityStatus, SessionStatus } from '@types';
 
 import { useAppDispatch } from '@store';
 import {
@@ -27,8 +27,6 @@ const WorkoutSessionRuntimeDefaultState: ExerciseRuntimeState = {
   metrics: {},
   isBodyDetected: false,
 };
-
-type SessionStatus = 'idle' | 'running' | 'paused' | 'rest';
 
 export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: number) => {
   const dispatch = useAppDispatch();
@@ -65,8 +63,6 @@ export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: nu
   );
 
   const isRunning = sessionStatus === 'running';
-  const isPaused = sessionStatus === 'paused';
-  const isRestCountdownActive = sessionStatus === 'rest';
 
   const detector = useMemo(
     () => getExerciseDetectorByIdOrDefault(selectedExerciseId),
@@ -278,9 +274,7 @@ export const useWorkoutSession = (selectedExerciseId: string, restDurationMs: nu
 
   return {
     canvasRef,
-    isRunning,
-    isPaused,
-    isRestCountdownActive,
+    sessionStatus,
     modelStatus,
     start,
     pause,

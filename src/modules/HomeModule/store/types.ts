@@ -1,13 +1,12 @@
-import type { EntityStatus, VoiceStatus } from '@types';
+import type { EntityStatus, SessionStatus, VoiceStatus } from '@types';
 
 export type HomeModuleState = {
   modelStatus: EntityStatus;
+  sessionStatus: SessionStatus;
   cameraStatus: EntityStatus;
   voiceStatus: VoiceStatus;
-  isPaused: boolean;
   cameraError: string | null;
   exerciseId: string;
   restDurationMinutes: number;
-  isRunning: boolean;
   resetStopEnabled: boolean;
 };

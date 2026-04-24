@@ -5,3 +5,5 @@
 export type LoadingReadyStatus = 'loading' | 'ready';
 
 export type EntityStatus = 'idle' | 'initializing' | LoadingReadyStatus | 'error';
+
+export type SessionStatus = 'idle' | 'running' | 'paused' | 'rest';

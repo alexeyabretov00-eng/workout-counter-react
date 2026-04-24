@@ -5,12 +5,11 @@ import { type HomeModuleState } from './types';
 export const initialHomeModuleState: HomeModuleState = {
   modelStatus: 'idle',
   cameraStatus: 'idle',
+  sessionStatus: 'idle',
   cameraError: null,
   voiceStatus: 'unsupported',
-  isPaused: false,
   exerciseId: 'army-press',
   restDurationMinutes: 3,
-  isRunning: false,
   resetStopEnabled: false,
 };
 

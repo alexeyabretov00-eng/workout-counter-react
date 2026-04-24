@@ -8,16 +8,15 @@ import { renderWithTheme } from '@test-helpers';
 import { eventBus } from '@utils';
 
 import { EVENT_WORKOUT_SESSION_CONTROLS_COMMAND } from '../../../constants';
-import { initialHomeModuleState } from '../../../store';
+import { type HomeModuleState, initialHomeModuleState } from '../../../store';
 import { ExerciseControlBarContainer } from '../ExerciseControlBarContainer';
 
-const createControlsFixture = () => ({
+const createControlsFixture = (): HomeModuleState => ({
   ...initialHomeModuleState,
   exerciseId: 'biceps-curl' as const,
   restDurationMinutes: 1,
-  isRunning: false,
+  sessionStatus: 'idle' as const,
   modelStatus: 'ready' as const,
-  isCameraInitializing: false,
   resetStopEnabled: false,
 });
 
@@ -53,7 +52,7 @@ describe('ExerciseControlBarContainer', () => {
 
   test('emits pause when Пауза is clicked while running', async () => {
     const user = userEvent.setup();
-    controlsFixture = { ...createControlsFixture(), isRunning: true };
+    controlsFixture = { ...createControlsFixture(), sessionStatus: 'running' as const };
     testStore = setupStore({ home: controlsFixture });
     emitSpy = vi.spyOn(eventBus, 'emit') as Mock<(type: string, detail?: unknown) => void>;
     emitSpy.mockClear();
@@ -67,7 +66,7 @@ describe('ExerciseControlBarContainer', () => {
     const user = userEvent.setup();
     controlsFixture = {
       ...createControlsFixture(),
-      isRunning: true,
+      sessionStatus: 'running' as const,
       resetStopEnabled: true,
     };
     testStore = setupStore({ home: controlsFixture });
