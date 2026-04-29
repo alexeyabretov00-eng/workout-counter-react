@@ -1,6 +1,6 @@
 # Задачи: декомпозиция крупных файлов в `server/src`
 
-План: `specs/refactor/server-src-modularization/plan.md`
+План: `specs/refactor/_archive/server-src-modularization/plan.md`
 
 ## Чеклист
 
