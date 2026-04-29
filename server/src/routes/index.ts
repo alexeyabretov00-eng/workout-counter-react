@@ -3,9 +3,9 @@ import type { DatabaseSync } from 'node:sqlite'
 import express from 'express'
 import rateLimit from 'express-rate-limit'
 
-import { createAdminExerciseRouter } from './adminExerciseRoutes.js'
-import { createAdminUserRouter } from './adminUserRoutes.js'
-import { createAuthRouter } from './authRoutes.js'
+import { createAdminExerciseRouter } from './admin/exercises/index.js'
+import { createAdminUserRouter } from './admin/users/index.js'
+import { createAuthRouter } from './auth/index.js'
 import { createProtectedRouter } from './protectedRoutes.js'
 import { createPublicRouter } from './publicRoutes.js'
 
