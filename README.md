@@ -173,7 +173,7 @@ npm install
 
 Пути к файлам в markdown в планах и архиве: без цепочек `../` — см. [docs/markdown-paths.md](docs/markdown-paths.md).
 
-**GitHub:** при желании вести эпик как **Milestone** с набором **Issues** и при необходимости **Wiki** — см. [docs/github-planning.md](docs/github-planning.md) и шаблоны в `.github/ISSUE_TEMPLATE/`. Спеки в `specs/…` остаются обязательным шагом до кода; Issues на GitHub их дополняют.
+**GitHub:** для задач по циклу (`specs/features`, `specs/fixes`, `specs/refactor`) трекинг обязателен: на этапе 1 создаются **Milestone** и связанные **Issues**, на этапе 3 они закрываются; при необходимости добавляется **Wiki**. См. [docs/github-planning.md](docs/github-planning.md) и шаблоны в `.github/ISSUE_TEMPLATE/`.
 
 **Коммиты по задаче (три штуки):** (1) только план и чеклист в каталоге задачи; (2) реализация (код, тесты, документация по чеклисту), без архивации; (3) только перенос каталога задачи в соответствующий `_archive` и правка относительных путей в её markdown. Не объединяйте эти этапы в одном коммите.
 

@@ -9,7 +9,7 @@ alwaysApply: true
 
 Репозиторий: [README.md](../../README.md) (раздел **«Планирование фич и исправлений»**), [specs/README.md](../../specs/README.md), [specs/features/README.md](../../specs/features/README.md), [specs/fixes/README.md](../../specs/fixes/README.md), [specs/refactor/README.md](../../specs/refactor/README.md).
 
-**GitHub (Milestone, Issues, Wiki):** по запросу пользователя на трекинг на GitHub — см. [.cursor/rules/github-planning-artifacts.mdc](./github-planning-artifacts.mdc) и [docs/github-planning.md](../../docs/github-planning.md).
+**GitHub (Milestone, Issues, Wiki):** обязательная часть цикла: на этапе 1 создаются Milestone/Issues, на этапе 3 они закрываются — см. [.cursor/rules/github-planning-artifacts.mdc](./github-planning-artifacts.mdc) и [docs/github-planning.md](../../docs/github-planning.md).
 
 **Ветка git:** фичи, исправления и рефакторинг со спеком ведутся в **отдельной ветке** (префиксы `feature/`, `fix/`, `refactor/` и т.д.) — см. [.cursor/rules/work-in-branch.mdc](./work-in-branch.mdc).
 
@@ -39,7 +39,7 @@ alwaysApply: true
 
 1. **План** — только каталог задачи (`specs/features/<имя>/`, `specs/fixes/<имя>/` или `specs/refactor/<имя>/`) с планом и чеклистом (без кода продукта).
 2. **Реализация** — код, тесты, правки документации по чеклисту; без переноса в `_archive`. Отмечайте пункты чеклиста задач как выполненные именно на этом шаге (во втором коммите), когда соответствующие изменения уже внесены.
-3. **Архивирование** — только перенос каталога задачи в соответствующий `_archive` (`specs/features/_archive/`, `specs/fixes/_archive/` или `specs/refactor/_archive/`) и правки относительных путей в markdown.
+3. **Архивирование** — перенос каталога задачи в соответствующий `_archive` (`specs/features/_archive/`, `specs/fixes/_archive/` или `specs/refactor/_archive/`), правки относительных путей в markdown и закрытие связанных GitHub Issues/Milestone (по правилу `github-planning-artifacts`).
 
 Не смешивайте эти этапы в одном коммите.
 
@@ -55,5 +55,7 @@ alwaysApply: true
 4. **Переход на основную ветку** — локально переключитесь на `main`/`master` (или принятую в репозитории целевую ветку).
 
 Этап 4 не отменяет и не заменяет правило про три отдельных коммита: это пост-коммитный шаг интеграции.
+
+Связанные GitHub-артефакты обязательны: на этапе 1 создаются Milestone/Issues, на этапе 3 — закрываются.
 
 Исключений по «мелкой правке» нет: любая фича проходит `specs/features/`-цикл, а любое исправление, не являющееся фичей, проходит `specs/fixes/`-цикл. Рефакторинг с отдельным каталогом — через `specs/refactor/`-цикл. Точечные правки без изменения поведения продукта (например, опечатка в несвязанном абзаце) и совсем локальный рефакторинг без отдельного каталога (см. раздел про `specs/refactor/`) можно вносить без каталога задачи.
