@@ -1,2 +1,7 @@
-export type { AppPageRouteHandle } from './routes';
-export { navItems, protectedAppRoutes, publicAuthRoutes } from './routes';
+export type { AppPageRouteHandle, UserRole } from './routes';
+export {
+  buildNavItemsByRole,
+  canAccessRouteForRole,
+  protectedAppRoutes,
+  publicAuthRoutes,
+} from './routes';

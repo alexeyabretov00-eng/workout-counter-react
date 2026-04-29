@@ -1,0 +1,1 @@
+export { UserManagementTableContainer } from './UserManagementTableContainer';

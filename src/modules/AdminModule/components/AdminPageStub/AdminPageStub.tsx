@@ -4,6 +4,6 @@ export type AdminPageStubProps = {
   lead: string;
 };
 
-export const AdminPageStub = ({ lead }: AdminPageStubProps) => (
+export const AdminPageStub: React.FC<AdminPageStubProps> = ({ lead }) => (
   <StubText type="secondary">{lead}</StubText>
 );

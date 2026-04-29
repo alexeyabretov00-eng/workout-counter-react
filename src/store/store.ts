@@ -1,3 +1,5 @@
+import { configureStore } from '@reduxjs/toolkit';
+
 import { authReducer, logout } from './auth';
 import { ReducerRegistry } from './reducerRegistry';
 
@@ -27,7 +29,7 @@ const createConfiguredStore = (preloadedState?: unknown) => {
     return appReducer(state, action);
   };
 
-  return reducerRegistry.createStore({
+  return configureStore({
     devTools: devToolsOptions,
     preloadedState,
     reducer: rootReducer,

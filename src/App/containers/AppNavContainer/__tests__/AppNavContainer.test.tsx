@@ -28,7 +28,10 @@ describe('AppNavContainer', () => {
 
   test('matches snapshot (authenticated)', () => {
     const testStore = setupStore({
-      auth: { user: { id: 1, login: 'alex' }, status: 'ready' },
+      auth: {
+        user: { id: 1, login: 'alex', role: 'admin', mustChangePassword: false },
+        status: 'ready',
+      },
     });
 
     const { container } = render(

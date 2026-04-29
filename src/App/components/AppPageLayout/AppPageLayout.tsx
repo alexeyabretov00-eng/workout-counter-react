@@ -1,5 +1,4 @@
 import { type ReactNode, Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
 
 import { AppPageContent, AppPageLayoutRoot, RouteOutletFallbackRoot } from './AppPageLayout.styled';
 
@@ -8,7 +7,10 @@ export type AppPageLayoutProps = {
   header: ReactNode;
 };
 
-export const AppPageLayout = ({ header }: AppPageLayoutProps) => {
+export const AppPageLayout: React.FC<React.PropsWithChildren<AppPageLayoutProps>> = ({
+  header,
+  children,
+}) => {
   return (
     <AppPageLayoutRoot>
       {header}
@@ -19,7 +21,7 @@ export const AppPageLayout = ({ header }: AppPageLayoutProps) => {
               Загрузка…
             </RouteOutletFallbackRoot>
           }>
-          <Outlet />
+          {children}
         </Suspense>
       </AppPageContent>
     </AppPageLayoutRoot>

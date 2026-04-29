@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { exerciseClient } from '@api';
-
+import { exerciseClient } from '../api';
 import { exerciseRegistry } from '../exercises';
 
 import type { HomeModuleExerciseCatalogEntry } from './types';

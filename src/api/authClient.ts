@@ -3,6 +3,8 @@ import { ApiJsonClient, ApiRequestError } from '@utils';
 export type AuthUserDto = {
   id: number;
   login: string;
+  role: 'user' | 'admin' | 'superadmin';
+  mustChangePassword: boolean;
 };
 
 class AuthClient extends ApiJsonClient {
@@ -36,6 +38,13 @@ class AuthClient extends ApiJsonClient {
       }
       throw error;
     }
+  }
+
+  async changePassword(password: string): Promise<{ user: AuthUserDto }> {
+    return this.request('/change-password', {
+      method: 'POST',
+      jsonBody: { password },
+    });
   }
 }
 

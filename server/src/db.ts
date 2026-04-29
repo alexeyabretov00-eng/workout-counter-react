@@ -6,8 +6,12 @@ export type UserRow = {
   id: number
   login: string
   password_hash: string
+  role: UserRole
+  must_change_password: number
   created_at: string
 }
+
+export type UserRole = 'user' | 'admin' | 'superadmin'
 
 export type ExerciseRow = {
   id: number
@@ -87,9 +91,27 @@ export const openDatabase = (filePath: string): DatabaseSync => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       login TEXT NOT NULL UNIQUE COLLATE NOCASE,
       password_hash TEXT NOT NULL,
+      role TEXT NOT NULL DEFAULT 'user',
+      must_change_password INTEGER NOT NULL DEFAULT 0,
       created_at TEXT NOT NULL
     );
   `)
+  const userColumns = db
+    .prepare('PRAGMA table_info(users)')
+    .all() as Array<{ name: string }>
+  const hasRoleColumn = userColumns.some((column) => column.name === 'role')
+  const hasMustChangeColumn = userColumns.some((column) => column.name === 'must_change_password')
+
+  if (!hasRoleColumn) {
+    db.exec(`ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'user';`)
+  }
+  if (!hasMustChangeColumn) {
+    db.exec(`ALTER TABLE users ADD COLUMN must_change_password INTEGER NOT NULL DEFAULT 0;`)
+  }
+  db.exec(
+    `UPDATE users SET role = 'user' WHERE role IS NULL OR role NOT IN ('user', 'admin', 'superadmin');`,
+  )
+  db.exec(`UPDATE users SET must_change_password = 0 WHERE must_change_password IS NULL;`)
   db.exec(`
     CREATE TABLE IF NOT EXISTS exercises (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -140,22 +162,96 @@ export const openDatabase = (filePath: string): DatabaseSync => {
 
 export const findUserByLogin = (db: DatabaseSync, login: string): UserRow | undefined => {
   const stmt = db.prepare(
-    'SELECT id, login, password_hash, created_at FROM users WHERE login = ? COLLATE NOCASE',
+    `
+      SELECT id, login, password_hash, role, must_change_password, created_at
+      FROM users
+      WHERE login = ? COLLATE NOCASE
+    `,
   )
   const row = stmt.get(login.trim()) as UserRow | undefined
   return row
 }
 
 export const findUserById = (db: DatabaseSync, id: number): UserRow | undefined => {
-  const stmt = db.prepare('SELECT id, login, password_hash, created_at FROM users WHERE id = ?')
+  const stmt = db.prepare(
+    `
+      SELECT id, login, password_hash, role, must_change_password, created_at
+      FROM users
+      WHERE id = ?
+    `,
+  )
   const row = stmt.get(id) as UserRow | undefined
   return row
 }
 
 export const insertUser = (db: DatabaseSync, login: string, passwordHash: string): number => {
   const createdAt = new Date().toISOString()
-  const stmt = db.prepare('INSERT INTO users (login, password_hash, created_at) VALUES (?, ?, ?)')
-  const result = stmt.run(login.trim(), passwordHash, createdAt)
+  const stmt = db.prepare(
+    `
+      INSERT INTO users (login, password_hash, role, must_change_password, created_at)
+      VALUES (?, ?, ?, ?, ?)
+    `,
+  )
+  const result = stmt.run(login.trim(), passwordHash, 'user', 0, createdAt)
+  return Number(result.lastInsertRowid)
+}
+
+export type ListUserRow = {
+  id: number
+  login: string
+  role: UserRole
+  must_change_password: number
+  created_at: string
+}
+
+export const listUsers = (db: DatabaseSync): ListUserRow[] => {
+  const stmt = db.prepare(`
+    SELECT id, login, role, must_change_password, created_at
+    FROM users
+    ORDER BY created_at ASC, id ASC
+  `)
+  return stmt.all() as ListUserRow[]
+}
+
+export const updateUserRole = (db: DatabaseSync, id: number, role: UserRole): boolean => {
+  const stmt = db.prepare('UPDATE users SET role = ? WHERE id = ?')
+  const result = stmt.run(role, id)
+  return Number(result.changes) > 0
+}
+
+export const updateUserPassword = (
+  db: DatabaseSync,
+  id: number,
+  passwordHash: string,
+  mustChangePassword: boolean,
+): boolean => {
+  const stmt = db.prepare(
+    'UPDATE users SET password_hash = ?, must_change_password = ? WHERE id = ?',
+  )
+  const result = stmt.run(passwordHash, mustChangePassword ? 1 : 0, id)
+  return Number(result.changes) > 0
+}
+
+export const upsertSeededUser = (
+  db: DatabaseSync,
+  login: string,
+  passwordHash: string,
+  role: UserRole,
+  mustChangePassword: boolean,
+): number => {
+  const existing = findUserByLogin(db, login)
+  if (existing) {
+    return existing.id
+  }
+
+  const createdAt = new Date().toISOString()
+  const insertStmt = db.prepare(
+    `
+      INSERT INTO users (login, password_hash, role, must_change_password, created_at)
+      VALUES (?, ?, ?, ?, ?)
+    `,
+  )
+  const result = insertStmt.run(login.trim(), passwordHash, role, mustChangePassword ? 1 : 0, createdAt)
   return Number(result.lastInsertRowid)
 }
 

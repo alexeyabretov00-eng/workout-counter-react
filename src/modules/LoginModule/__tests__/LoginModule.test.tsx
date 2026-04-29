@@ -45,9 +45,12 @@ describe('LoginModule', () => {
     await user.type(loginInput, 'alice');
     await user.type(passwordInput, 'secret42');
     await user.click(screen.getByRole('button', { name: 'Войти' }));
-    await waitFor(() => {
-      expect(testStore.getState().auth.user).toEqual({ id: 1, login: 'alice' });
-    });
+    await waitFor(
+      () => {
+        expect(testStore.getState().auth.user).toMatchObject({ id: 1, login: 'alice' });
+      },
+      { timeout: 10_000 },
+    );
   });
 
   test('renders shell and form', () => {

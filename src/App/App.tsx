@@ -1,5 +1,5 @@
 import { Provider } from 'react-redux';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import { ThemeProvider } from 'styled-components';
 
@@ -22,7 +22,11 @@ export const App = () => {
           <RouterProvider
             router={createBrowserRouter([
               {
-                element: <AppPageLayout header={<AppNavContainer />} />,
+                element: (
+                  <AppPageLayout header={<AppNavContainer />}>
+                    <Outlet />
+                  </AppPageLayout>
+                ),
                 children: [
                   ...publicAuthRoutes,
                   {

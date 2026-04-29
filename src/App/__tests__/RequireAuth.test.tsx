@@ -1,10 +1,19 @@
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { setupStore } from '@store';
 import { AppStyleProviders } from '@test-helpers';
+
+vi.mock('@routes', async importOriginal => {
+  const actual = await importOriginal<typeof import('@routes')>();
+  return {
+    ...actual,
+    protectedAppRoutes: [],
+    canAccessRouteForRole: () => true,
+  };
+});
 
 import { RequireAuth } from '../RequireAuth';
 
@@ -32,7 +41,10 @@ describe('RequireAuth', () => {
 
   test('renders child route when user is present', () => {
     const testStore = setupStore({
-      auth: { user: { id: 1, login: 'u' }, status: 'ready' },
+      auth: {
+        user: { id: 1, login: 'u', role: 'superadmin', mustChangePassword: false },
+        status: 'ready',
+      },
     });
 
     render(

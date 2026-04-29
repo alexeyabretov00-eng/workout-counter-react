@@ -1,12 +1,11 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
-import {
-  EVENT_AUTH_NAVIGATE_AFTER_LOGIN,
-  EVENT_AUTH_NAVIGATE_AFTER_REGISTRATION,
-  EVENT_NAV_GO_TO_LOGIN,
-  EVENT_NAV_GO_TO_REGISTER,
-  eventBus,
-} from './index';
+import { eventBus } from '../index';
+
+const EVENT_AUTH_NAVIGATE_AFTER_LOGIN = 'auth:navigate-after-login';
+const EVENT_AUTH_NAVIGATE_AFTER_REGISTRATION = 'auth:navigate-after-registration';
+const EVENT_NAV_GO_TO_LOGIN = 'nav:go-to-login';
+const EVENT_NAV_GO_TO_REGISTER = 'nav:go-to-register';
 
 describe('eventBus', () => {
   const cleanups: Array<() => void> = [];

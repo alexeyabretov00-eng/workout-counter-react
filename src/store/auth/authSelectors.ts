@@ -6,3 +6,8 @@ type AuthSliceState = { auth: AuthState };
 export const selectAuthUser = (state: AuthSliceState) => state.auth.user;
 
 export const selectAuthStatus = (state: AuthSliceState) => state.auth.status;
+
+export const selectAuthRole = (state: AuthSliceState) => state.auth.user?.role ?? null;
+
+export const selectAuthMustChangePassword = (state: AuthSliceState) =>
+  state.auth.user?.mustChangePassword ?? false;

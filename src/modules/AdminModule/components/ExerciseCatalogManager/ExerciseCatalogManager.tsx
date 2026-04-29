@@ -25,14 +25,14 @@ export type ExerciseCatalogManagerProps = {
   onArchive: (id: number) => Promise<void>;
 };
 
-export const ExerciseCatalogManager = ({
+export const ExerciseCatalogManager: React.FC<ExerciseCatalogManagerProps> = ({
   exercises,
   isLoading,
   isSubmitting,
   onCreate,
   onUpdate,
   onArchive,
-}: ExerciseCatalogManagerProps) => {
+}) => {
   const [isCreateDrawerOpen, setIsCreateDrawerOpen] = useState(false);
   const [createForm] = Form.useForm<ExerciseCatalogManagerValues>();
   const [editForm] = Form.useForm<ExerciseCatalogManagerValues>();

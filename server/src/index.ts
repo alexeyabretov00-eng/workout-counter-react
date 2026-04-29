@@ -10,17 +10,25 @@ import {
   archiveExercise,
   createExercise,
   findExerciseById,
+  findUserById,
   findUserByLogin,
   insertUser,
   listExercises,
+  listUsers,
   openDatabase,
   updateExercise,
+  updateUserPassword,
+  updateUserRole,
+  upsertSeededUser,
+  type UserRole,
 } from './db.js'
 import { sendError } from './httpErrors.js'
 import {
   validateCreateExerciseInput,
   validateCredentials,
+  validatePassword,
   validateUpdateExerciseInput,
+  validateUserRole,
 } from './validation.js'
 
 const DEFAULT_PORT = 3001
@@ -41,12 +49,40 @@ const resolveDatabasePath = (): string => {
   return process.env.DATABASE_PATH ?? './data/app.sqlite'
 }
 
-const buildUserResponse = (id: number, login: string) => ({
+const buildUserResponse = (
+  id: number,
+  login: string,
+  role: UserRole,
+  mustChangePassword: boolean,
+) => ({
   user: {
     id,
     login,
+    role,
+    mustChangePassword,
   },
 })
+
+const buildAdminUserResponse = (row: ReturnType<typeof listUsers>[number]) => ({
+  id: row.id,
+  login: row.login,
+  role: row.role,
+  mustChangePassword: row.must_change_password === 1,
+  createdAt: row.created_at,
+})
+
+const requireRole = (
+  user: ReturnType<typeof requireUser>,
+  roles: UserRole[],
+): user is NonNullable<ReturnType<typeof requireUser>> => {
+  return Boolean(user && roles.includes(user.role))
+}
+
+const seedDefaultAdmins = (db: DatabaseSync) => {
+  const defaultPasswordHash = bcrypt.hashSync('12345678', BCRYPT_ROUNDS)
+  upsertSeededUser(db, 'admin', defaultPasswordHash, 'admin', true)
+  upsertSeededUser(db, 'superadmin', defaultPasswordHash, 'superadmin', true)
+}
 
 const parseVoiceAliases = (raw: string): string[] => {
   try {
@@ -128,7 +164,7 @@ const createApp = (db: DatabaseSync, jwtSecret: string) => {
       const id = insertUser(db, parsed.login, passwordHash)
       const token = signToken(jwtSecret, { sub: id, login: parsed.login })
       res.cookie(AUTH_COOKIE_NAME, token, getCookieOptions())
-      res.status(201).json(buildUserResponse(id, parsed.login))
+      res.status(201).json(buildUserResponse(id, parsed.login, 'user', false))
     } catch (error: unknown) {
       const errcode = typeof error === 'object' && error !== null && 'errcode' in error ? (error as { errcode?: number }).errcode : undefined
       const message = error instanceof Error ? error.message : ''
@@ -162,7 +198,9 @@ const createApp = (db: DatabaseSync, jwtSecret: string) => {
 
     const token = signToken(jwtSecret, { sub: row.id, login: row.login })
     res.cookie(AUTH_COOKIE_NAME, token, getCookieOptions())
-    res.status(200).json(buildUserResponse(row.id, row.login))
+    res
+      .status(200)
+      .json(buildUserResponse(row.id, row.login, row.role, row.must_change_password === 1))
   })
 
   api.post('/logout', (req, res) => {
@@ -182,22 +220,31 @@ const createApp = (db: DatabaseSync, jwtSecret: string) => {
       sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
       return
     }
-    res.status(200).json(buildUserResponse(user.id, user.login))
+    res.status(200).json(buildUserResponse(user.id, user.login, user.role, user.mustChangePassword))
   })
 
   api.get('/ping-protected', (req, res) => {
     const user = requireUser(db, jwtSecret, req)
-    if (!user) {
-      sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+    if (!requireRole(user, ['admin', 'superadmin'])) {
+      if (!user) {
+        sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+        return
+      }
+      sendError(res, 403, 'FORBIDDEN', 'Недостаточно прав.')
       return
     }
+
     res.status(200).json({ ok: true, login: user.login })
   })
 
   api.post('/admin/exercises', (req, res) => {
     const user = requireUser(db, jwtSecret, req)
-    if (!user) {
-      sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+    if (!requireRole(user, ['admin', 'superadmin'])) {
+      if (!user) {
+        sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+        return
+      }
+      sendError(res, 403, 'FORBIDDEN', 'Недостаточно прав.')
       return
     }
 
@@ -240,8 +287,12 @@ const createApp = (db: DatabaseSync, jwtSecret: string) => {
 
   api.get('/admin/exercises', (req, res) => {
     const user = requireUser(db, jwtSecret, req)
-    if (!user) {
-      sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+    if (!requireRole(user, ['admin', 'superadmin'])) {
+      if (!user) {
+        sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+        return
+      }
+      sendError(res, 403, 'FORBIDDEN', 'Недостаточно прав.')
       return
     }
 
@@ -251,8 +302,12 @@ const createApp = (db: DatabaseSync, jwtSecret: string) => {
 
   api.patch('/admin/exercises/:id', (req, res) => {
     const user = requireUser(db, jwtSecret, req)
-    if (!user) {
-      sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+    if (!requireRole(user, ['admin', 'superadmin'])) {
+      if (!user) {
+        sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+        return
+      }
+      sendError(res, 403, 'FORBIDDEN', 'Недостаточно прав.')
       return
     }
 
@@ -306,8 +361,12 @@ const createApp = (db: DatabaseSync, jwtSecret: string) => {
 
   api.delete('/admin/exercises/:id', (req, res) => {
     const user = requireUser(db, jwtSecret, req)
-    if (!user) {
-      sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+    if (!requireRole(user, ['admin', 'superadmin'])) {
+      if (!user) {
+        sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+        return
+      }
+      sendError(res, 403, 'FORBIDDEN', 'Недостаточно прав.')
       return
     }
 
@@ -325,6 +384,89 @@ const createApp = (db: DatabaseSync, jwtSecret: string) => {
     res.status(200).json({ ok: true })
   })
 
+  api.post('/change-password', async (req, res) => {
+    const user = requireUser(db, jwtSecret, req)
+    if (!user) {
+      sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+      return
+    }
+
+    const parsedPassword = validatePassword(req.body?.password)
+    if (Array.isArray(parsedPassword)) {
+      const message = parsedPassword.map((issue) => issue.message).join(' ')
+      sendError(res, 400, 'VALIDATION_ERROR', message)
+      return
+    }
+
+    const passwordHash = await bcrypt.hash(parsedPassword, BCRYPT_ROUNDS)
+    updateUserPassword(db, user.id, passwordHash, false)
+
+    const fresh = findUserById(db, user.id)
+    if (!fresh) {
+      sendError(res, 500, 'INTERNAL', 'Не удалось обновить пользователя.')
+      return
+    }
+    res.status(200).json(buildUserResponse(fresh.id, fresh.login, fresh.role, false))
+  })
+
+  api.get('/admin/users', (req, res) => {
+    const user = requireUser(db, jwtSecret, req)
+    if (!requireRole(user, ['superadmin'])) {
+      if (!user) {
+        sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+        return
+      }
+      sendError(res, 403, 'FORBIDDEN', 'Недостаточно прав.')
+      return
+    }
+
+    const users = listUsers(db).map(buildAdminUserResponse)
+    res.status(200).json({ users })
+  })
+
+  api.patch('/admin/users/:id', (req, res) => {
+    const actor = requireUser(db, jwtSecret, req)
+    if (!requireRole(actor, ['superadmin'])) {
+      if (!actor) {
+        sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+        return
+      }
+      sendError(res, 403, 'FORBIDDEN', 'Недостаточно прав.')
+      return
+    }
+
+    const id = Number.parseInt(req.params.id, 10)
+    if (!Number.isInteger(id) || id <= 0) {
+      sendError(res, 400, 'VALIDATION_ERROR', 'Некорректный id пользователя.')
+      return
+    }
+
+    const parsedRole = validateUserRole(req.body?.role)
+    if (Array.isArray(parsedRole)) {
+      const message = parsedRole.map((issue) => issue.message).join(' ')
+      sendError(res, 400, 'VALIDATION_ERROR', message)
+      return
+    }
+
+    if (actor.id === id && parsedRole !== 'superadmin') {
+      sendError(res, 400, 'VALIDATION_ERROR', 'Нельзя понизить свою роль superadmin.')
+      return
+    }
+
+    const updated = updateUserRole(db, id, parsedRole)
+    if (!updated) {
+      sendError(res, 404, 'NOT_FOUND', 'Пользователь не найден.')
+      return
+    }
+
+    const fresh = findUserById(db, id)
+    if (!fresh) {
+      sendError(res, 404, 'NOT_FOUND', 'Пользователь не найден.')
+      return
+    }
+    res.status(200).json({ user: buildAdminUserResponse(fresh) })
+  })
+
   app.use('/api', api)
 
   return app
@@ -334,6 +476,7 @@ const port = Number.parseInt(process.env.PORT ?? String(DEFAULT_PORT), 10)
 const databasePath = resolveDatabasePath()
 const jwtSecret = resolveJwtSecret()
 const db = openDatabase(databasePath)
+seedDefaultAdmins(db)
 const app = createApp(db, jwtSecret)
 
 app.listen(port, () => {
