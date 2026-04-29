@@ -77,4 +77,30 @@ describe('userManagementClient', () => {
       message: 'oops',
     });
   });
+
+  test('resetUserPassword calls fetch with POST and reset endpoint', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(
+      jsonResponse({
+        user: {
+          id: 5,
+          login: 'alex',
+          role: 'user',
+          mustChangePassword: true,
+          createdAt: '2026-01-01T00:00:00.000Z',
+        },
+      }),
+    );
+
+    await userManagementClient.resetUserPassword(5);
+
+    expect(fetch).toHaveBeenCalledWith(
+      '/api/admin/users/5/reset-password',
+      expect.objectContaining({
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      }),
+    );
+  });
 });

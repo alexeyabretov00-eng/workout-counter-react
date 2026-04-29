@@ -38,3 +38,16 @@ export const updateManagedUserRole = createAsyncThunk<
     return rejectWithValue(getErrorMessage(error, 'Не удалось изменить роль пользователя.'));
   }
 });
+
+export const resetManagedUserPassword = createAsyncThunk<
+  ManagedUser,
+  { id: number },
+  { rejectValue: string }
+>('userManagement/resetManagedUserPassword', async ({ id }, { rejectWithValue }) => {
+  try {
+    const result = await userManagementClient.resetUserPassword(id);
+    return result.user;
+  } catch (error: unknown) {
+    return rejectWithValue(getErrorMessage(error, 'Не удалось сбросить пароль пользователя.'));
+  }
+});

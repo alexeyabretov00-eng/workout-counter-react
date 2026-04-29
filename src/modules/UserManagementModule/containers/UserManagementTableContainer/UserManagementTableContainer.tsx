@@ -5,7 +5,12 @@ import { useAppDispatch, useAppSelector } from '@store';
 
 import { UserManagementTable } from '../../components';
 import { getUserManagementTableContainerProps } from '../../selectors';
-import { type ManagedUser, updateManagedUserRole, type UserRole } from '../../store';
+import {
+  type ManagedUser,
+  resetManagedUserPassword,
+  updateManagedUserRole,
+  type UserRole,
+} from '../../store';
 
 export const UserManagementTableContainer = () => {
   const dispatch = useAppDispatch();
@@ -30,6 +35,22 @@ export const UserManagementTableContainer = () => {
     [dispatch, messageApi],
   );
 
+  const handleResetPassword = useCallback(
+    async (targetUser: ManagedUser) => {
+      try {
+        await dispatch(resetManagedUserPassword({ id: targetUser.id })).unwrap();
+        messageApi.success(`Пароль пользователя ${targetUser.login} сброшен.`);
+      } catch (errorMessage: unknown) {
+        const text =
+          typeof errorMessage === 'string'
+            ? errorMessage
+            : 'Не удалось сбросить пароль пользователя.';
+        messageApi.error(text);
+      }
+    },
+    [dispatch, messageApi],
+  );
+
   return (
     <>
       {contextHolder}
@@ -39,6 +60,7 @@ export const UserManagementTableContainer = () => {
         currentUserId={currentUserId}
         isUpdatingByUserId={isUpdatingByUserId}
         onRoleChange={handleRoleChange}
+        onResetPassword={handleResetPassword}
       />
     </>
   );

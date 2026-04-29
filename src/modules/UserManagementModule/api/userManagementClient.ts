@@ -21,6 +21,13 @@ class UserManagementClient extends ApiJsonClient {
       jsonBody: { role },
     });
   }
+
+  async resetUserPassword(id: number): Promise<{ user: ManagedUserDto }> {
+    return this.request(`/admin/users/${id}/reset-password`, {
+      method: 'POST',
+      jsonBody: {},
+    });
+  }
 }
 
 export const userManagementClient = new UserManagementClient();

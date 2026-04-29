@@ -1,7 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import type { UserManagementModuleState } from './types';
-import { fetchManagedUsers, updateManagedUserRole } from './UserManagementModuleThunks';
+import {
+  fetchManagedUsers,
+  resetManagedUserPassword,
+  updateManagedUserRole,
+} from './UserManagementModuleThunks';
 
 export const initialUserManagementModuleState: UserManagementModuleState = {
   users: [],
@@ -37,6 +41,18 @@ export const UserManagementModuleSlice = createSlice({
         state.isUpdatingByUserId[updatedUser.id] = false;
       })
       .addCase(updateManagedUserRole.rejected, (state, action) => {
+        state.isUpdatingByUserId[action.meta.arg.id] = false;
+        state.error = action.payload ?? state.error;
+      })
+      .addCase(resetManagedUserPassword.pending, (state, action) => {
+        state.isUpdatingByUserId[action.meta.arg.id] = true;
+      })
+      .addCase(resetManagedUserPassword.fulfilled, (state, action) => {
+        const updatedUser = action.payload;
+        state.users = state.users.map(user => (user.id === updatedUser.id ? updatedUser : user));
+        state.isUpdatingByUserId[updatedUser.id] = false;
+      })
+      .addCase(resetManagedUserPassword.rejected, (state, action) => {
         state.isUpdatingByUserId[action.meta.arg.id] = false;
         state.error = action.payload ?? state.error;
       });

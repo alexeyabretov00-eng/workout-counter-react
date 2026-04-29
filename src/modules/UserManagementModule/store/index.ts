@@ -3,4 +3,8 @@ export {
   initialUserManagementModuleState,
   UserManagementModuleReducer,
 } from './UserManagementModuleSlice';
-export { fetchManagedUsers, updateManagedUserRole } from './UserManagementModuleThunks';
+export {
+  fetchManagedUsers,
+  resetManagedUserPassword,
+  updateManagedUserRole,
+} from './UserManagementModuleThunks';
