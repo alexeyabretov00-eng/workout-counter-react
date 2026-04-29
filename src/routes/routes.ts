@@ -1,9 +1,12 @@
 import { type RouteObject } from 'react-router';
 
 /** Настройки маршрута страницы (поле `handle` у `RouteObject`). */
+export type UserRole = 'user' | 'admin' | 'superadmin';
+
 export type AppPageRouteHandle = {
   /** `public` — доступ без входа (логин, регистрация и т.п.). Иначе маршрут защищён `RequireAuth`. */
   auth?: 'public';
+  roles?: UserRole[];
   nav?: {
     label: string;
     end?: boolean;
@@ -55,6 +58,12 @@ const buildNavItems = (routes: RouteObject[]) => {
   return items.map(({ path, label, end }) => ({ path, label, end }));
 };
 
+const hasRouteAccess = (route: RouteObject, role: UserRole | null): boolean => {
+  const allowedRoles = (route.handle as AppPageRouteHandle | undefined)?.roles;
+
+  return role && allowedRoles?.length ? allowedRoles.includes(role) : false;
+};
+
 export const routes = collectPageRouteObjects();
 
 const isPublicAuthRoute = (route: RouteObject): boolean => {
@@ -67,4 +76,8 @@ export const protectedAppRoutes = routes.filter(route => {
   return !isPublicAuthRoute(route);
 });
 
-export const navItems = buildNavItems(routes);
+export const buildNavItemsByRole = (role: UserRole | null) =>
+  buildNavItems(routes.filter(route => hasRouteAccess(route, role)));
+
+export const canAccessRouteForRole = (route: RouteObject, role: UserRole | null) =>
+  hasRouteAccess(route, role);

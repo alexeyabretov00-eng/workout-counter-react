@@ -36,14 +36,10 @@ export const logout = createAsyncThunk('auth/logout', async () => {
   await authClient.logout();
 });
 
-export const refreshSession = createAsyncThunk<{ user: AuthUser | null }, void>(
-  'auth/refresh',
-  async () => {
-    try {
-      const result = await authClient.me();
-      return { user: result?.user ?? null };
-    } catch {
-      return { user: null };
-    }
+export const changePassword = createAsyncThunk(
+  'auth/changePassword',
+  async ({ password }: { password: string }) => {
+    const result = await authClient.changePassword(password);
+    return { user: result.user };
   },
 );

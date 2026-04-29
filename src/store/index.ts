@@ -1,10 +1,12 @@
 export type { AuthState, AuthUser } from './auth';
 export {
+  changePassword,
   initializeAuth,
   loginWithPassword,
   logout,
-  refreshSession,
   registerWithPassword,
+  selectAuthMustChangePassword,
+  selectAuthRole,
   selectAuthStatus,
   selectAuthUser,
 } from './auth';

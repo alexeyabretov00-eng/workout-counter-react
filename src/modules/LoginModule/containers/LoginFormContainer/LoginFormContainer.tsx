@@ -1,12 +1,8 @@
 import { useState } from 'react';
 
+import { EVENT_AUTH_NAVIGATE_AFTER_LOGIN, EVENT_NAV_GO_TO_REGISTER } from '@modules/LoginModule';
 import { loginWithPassword, useAppDispatch, useAppSelector } from '@store';
-import {
-  ApiRequestError,
-  EVENT_AUTH_NAVIGATE_AFTER_LOGIN,
-  EVENT_NAV_GO_TO_REGISTER,
-  eventBus,
-} from '@utils';
+import { ApiRequestError, eventBus } from '@utils';
 
 import { LoginForm } from '../../components';
 import { getLoginFormContainerProps } from '../../selectors';

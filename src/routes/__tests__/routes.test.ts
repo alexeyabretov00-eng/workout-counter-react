@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { navItems, protectedAppRoutes, publicAuthRoutes, routes } from '../routes';
+import { buildNavItemsByRole, protectedAppRoutes, publicAuthRoutes, routes } from '../routes';
 
 describe('routes', () => {
   test('collects routes from page modules', () => {
@@ -16,7 +16,8 @@ describe('routes', () => {
     expect(protectedAppRoutes.length).toBeGreaterThan(0);
   });
 
-  test('navItems is sorted and stripped of sort field', () => {
+  test('buildNavItemsByRole is sorted and stripped of sort field', () => {
+    const navItems = buildNavItemsByRole('superadmin');
     expect(navItems.length).toBeGreaterThan(0);
     expect(navItems[0]).toEqual(
       expect.objectContaining({

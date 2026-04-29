@@ -1,16 +1,10 @@
 import { describe, expect, test } from 'vitest';
 
 import { authReducer } from '../authSlice';
-import {
-  initializeAuth,
-  loginWithPassword,
-  logout,
-  refreshSession,
-  registerWithPassword,
-} from '../authThunks';
+import { initializeAuth, loginWithPassword, logout, registerWithPassword } from '../authThunks';
 import type { AuthState } from '../types';
 
-const user = { id: 1, login: 'alice' };
+const user = { id: 1, login: 'alice', role: 'user' as const, mustChangePassword: false };
 
 const readyWithUser = (): AuthState => ({
   user,
@@ -41,12 +35,16 @@ describe('authReducer', () => {
   test('loginWithPassword.fulfilled updates user', () => {
     const next = authReducer(
       { user: null, status: 'ready' },
-      loginWithPassword.fulfilled({ user: { id: 2, login: 'bob' } }, 'req-3', {
-        login: 'bob',
-        password: 'x',
-      }),
+      loginWithPassword.fulfilled(
+        { user: { id: 2, login: 'bob', role: 'admin', mustChangePassword: true } },
+        'req-3',
+        {
+          login: 'bob',
+          password: 'x',
+        },
+      ),
     );
-    expect(next.user).toEqual({ id: 2, login: 'bob' });
+    expect(next.user).toEqual({ id: 2, login: 'bob', role: 'admin', mustChangePassword: true });
     expect(next.status).toBe('ready');
   });
 
@@ -61,22 +59,5 @@ describe('authReducer', () => {
   test('logout.fulfilled clears user', () => {
     const next = authReducer(readyWithUser(), logout.fulfilled(undefined, 'req-5', undefined));
     expect(next).toEqual({ user: null, status: 'ready' });
-  });
-
-  test('refreshSession.fulfilled updates user', () => {
-    const next = authReducer(
-      readyWithUser(),
-      refreshSession.fulfilled({ user: { id: 3, login: 'carol' } }, 'req-6', undefined),
-    );
-    expect(next.user).toEqual({ id: 3, login: 'carol' });
-  });
-
-  test('refreshSession.fulfilled can set user to null', () => {
-    const next = authReducer(
-      readyWithUser(),
-      refreshSession.fulfilled({ user: null }, 'req-7', undefined),
-    );
-    expect(next.user).toBeNull();
-    expect(next.status).toBe('ready');
   });
 });

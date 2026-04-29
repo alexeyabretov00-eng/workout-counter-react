@@ -10,6 +10,8 @@ export type ValidationIssue = {
   message: string
 }
 
+export type UserRoleInput = 'user' | 'admin' | 'superadmin'
+
 type ExerciseInput = {
   slug: string
   name: string
@@ -82,6 +84,28 @@ export const validateCredentials = (
   }
 
   return { login: trimmedLogin, password }
+}
+
+export const validatePassword = (password: unknown): string | ValidationIssue[] => {
+  if (typeof password !== 'string') {
+    return [{ field: 'password', message: 'Пароль обязателен.' }]
+  }
+  if (password.length < PASSWORD_MIN || password.length > PASSWORD_MAX) {
+    return [
+      {
+        field: 'password',
+        message: `Пароль: от ${PASSWORD_MIN} до ${PASSWORD_MAX} символов.`,
+      },
+    ]
+  }
+  return password
+}
+
+export const validateUserRole = (role: unknown): UserRoleInput | ValidationIssue[] => {
+  if (role === 'user' || role === 'admin' || role === 'superadmin') {
+    return role
+  }
+  return [{ field: 'login', message: 'Роль должна быть user, admin или superadmin.' }]
 }
 
 const parseVoiceAliases = (

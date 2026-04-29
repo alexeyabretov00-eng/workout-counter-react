@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import {
+  changePassword,
   initializeAuth,
   loginWithPassword,
   logout,
-  refreshSession,
   registerWithPassword,
 } from './authThunks';
 import type { AuthState } from './types';
@@ -33,7 +33,7 @@ export const authSlice = createSlice({
       .addCase(logout.fulfilled, state => {
         state.user = null;
       })
-      .addCase(refreshSession.fulfilled, (state, action) => {
+      .addCase(changePassword.fulfilled, (state, action) => {
         state.user = action.payload.user;
       });
   },

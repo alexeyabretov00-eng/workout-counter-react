@@ -1,15 +1,14 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { LoginModule } from '@modules/LoginModule';
 import {
   EVENT_AUTH_NAVIGATE_AFTER_LOGIN,
   EVENT_NAV_GO_TO_REGISTER,
-  eventBus,
-  resolveAfterAuthPath,
-} from '@utils';
+  LoginModule,
+} from '@modules/LoginModule';
+import { eventBus } from '@utils';
 
-import { REGISTER_PAGE_PATH } from '../authPaths';
+import { REGISTER_PAGE_PATH, resolveAfterAuthPath } from '../authPaths';
 
 export const LoginPage = () => {
   const navigate = useNavigate();

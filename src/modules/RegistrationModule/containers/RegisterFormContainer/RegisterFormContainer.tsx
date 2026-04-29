@@ -1,12 +1,11 @@
 import { useState } from 'react';
 
-import { registerWithPassword, useAppDispatch, useAppSelector } from '@store';
 import {
-  ApiRequestError,
   EVENT_AUTH_NAVIGATE_AFTER_REGISTRATION,
   EVENT_NAV_GO_TO_LOGIN,
-  eventBus,
-} from '@utils';
+} from '@modules/RegistrationModule';
+import { registerWithPassword, useAppDispatch, useAppSelector } from '@store';
+import { ApiRequestError, eventBus } from '@utils';
 
 import { RegisterForm } from '../../components';
 import { selectRegistrationModuleAuth } from '../../selectors';

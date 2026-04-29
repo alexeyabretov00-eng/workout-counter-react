@@ -3,6 +3,8 @@ import type { LoadingReadyStatus } from '@types';
 export type AuthUser = {
   id: number;
   login: string;
+  role: 'user' | 'admin' | 'superadmin';
+  mustChangePassword: boolean;
 };
 
 export type AuthState = {

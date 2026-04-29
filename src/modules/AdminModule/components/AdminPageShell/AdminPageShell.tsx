@@ -1,12 +1,12 @@
-import type { ReactNode } from 'react';
-
 import { ModuleScaffold } from '@components';
 
 export type AdminPageShellProps = {
   title: string;
-  children: ReactNode;
 };
 
-export const AdminPageShell = ({ title, children }: AdminPageShellProps) => {
+export const AdminPageShell: React.FC<React.PropsWithChildren<AdminPageShellProps>> = ({
+  title,
+  children,
+}) => {
   return <ModuleScaffold title={title}>{children}</ModuleScaffold>;
 };

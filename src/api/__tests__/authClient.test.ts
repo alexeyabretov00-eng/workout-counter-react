@@ -68,6 +68,27 @@ describe('authClient', () => {
     );
   });
 
+  test('changePassword calls fetch with POST, credentials, JSON body and /api/change-password', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(
+      jsonResponse({
+        user: { id: 1, login: 'a', role: 'user', mustChangePassword: false },
+      }),
+    );
+
+    await authClient.changePassword('new-secret');
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(
+      '/api/change-password',
+      expect.objectContaining({
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: 'new-secret' }),
+      }),
+    );
+  });
+
   test('authMe calls fetch with GET, credentials, no body and /api/me', async () => {
     vi.mocked(fetch).mockResolvedValueOnce(jsonResponse({ user: { id: 2, login: 'b' } }));
     await authClient.me();

@@ -8,6 +8,7 @@ export const routes: RouteObject[] = [
     path: '/home',
     element: <HomePageLazy />,
     handle: {
+      roles: ['user', 'admin', 'superadmin'],
       nav: { label: 'Главная', end: true, sort: 0 },
     },
   },

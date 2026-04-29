@@ -4,6 +4,7 @@ import type { CookieOptions } from 'express'
 import type { Request } from 'express'
 import jwt from 'jsonwebtoken'
 
+import type { UserRole } from './db.js'
 import { findUserById } from './db.js'
 
 export const AUTH_COOKIE_NAME = 'auth_token'
@@ -58,7 +59,7 @@ export const requireUser = (
   db: DatabaseSync,
   jwtSecret: string,
   req: Request,
-): { id: number; login: string } | null => {
+): { id: number; login: string; role: UserRole; mustChangePassword: boolean } | null => {
   const payload = readAuthFromRequest(req, jwtSecret)
   if (!payload) {
     return null
@@ -67,5 +68,10 @@ export const requireUser = (
   if (!row || row.login.toLowerCase() !== payload.login.toLowerCase()) {
     return null
   }
-  return { id: row.id, login: row.login }
+  return {
+    id: row.id,
+    login: row.login,
+    role: row.role,
+    mustChangePassword: row.must_change_password === 1,
+  }
 }

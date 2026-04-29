@@ -6,7 +6,7 @@
 
 - [x] Добавить зависимости **`@reduxjs/toolkit`** и **`react-redux`**; зафиксировать версии.
 - [x] Создать **`src/store/`**: **`configureStore`**, **`RootState`**, **`AppDispatch`**, типизированные **`useAppDispatch`** / **`useAppSelector`** (`hooks.ts`); ключ редьюсера **`auth`**.
-- [x] Реализовать **`authSlice`** (state: **`user`**, **`status`**) и thunk’и без RTK Query: инициализация (**`authMe`**), **`loginWithPassword`**, **`registerWithPassword`**, **`logout`**, **`refreshSession`** — поведение как в **`AuthSessionProvider`**.
+- [x] Реализовать **`authSlice`** (state: **`user`**, **`status`**) и thunk’и без RTK Query: инициализация (**`authMe`**), **`loginWithPassword`**, **`registerWithPassword`**, **`logout`** — поведение как в **`AuthSessionProvider`**.
 - [x] Добавить на уровне **`src/`** каталог **`src/selectors/`** с файлами вида **`*Selectors.ts`** (например **`authSelectors.ts`**); баррель **`src/selectors/index.ts`** (без **`export *`**). Не размещать селекторы в **`authSlice.ts`**.
 - [x] Перенести типы **`AuthUser`** и статусы сессии в store; обновить импорты в App и модулях.
 - [x] Добавить алиас **`@store`** в **`tsconfig.app.json`** и **`vite.config.ts`**; комбинированные селекторы — рядом с **`App`** и модулями; обновить **`docs/import-aliases.md`**.

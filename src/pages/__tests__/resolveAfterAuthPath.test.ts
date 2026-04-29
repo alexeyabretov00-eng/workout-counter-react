@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { resolveAfterAuthPath } from '../resolveAfterAuthPath';
+import { resolveAfterAuthPath } from '../authPaths';
 
 describe('resolveAfterAuthPath', () => {
   test('returns /home for non-object', () => {
