@@ -33,6 +33,7 @@ import {
 
 const DEFAULT_PORT = 3001
 const BCRYPT_ROUNDS = 10
+const ADMIN_RESET_PASSWORD = '12345678'
 
 const resolveJwtSecret = (): string => {
   const fromEnv = process.env.JWT_SECRET
@@ -464,6 +465,41 @@ const createApp = (db: DatabaseSync, jwtSecret: string) => {
       sendError(res, 404, 'NOT_FOUND', 'Пользователь не найден.')
       return
     }
+    res.status(200).json({ user: buildAdminUserResponse(fresh) })
+  })
+
+  api.post('/admin/users/:id/reset-password', async (req, res) => {
+    const actor = requireUser(db, jwtSecret, req)
+    if (!requireRole(actor, ['superadmin'])) {
+      if (!actor) {
+        sendError(res, 401, 'UNAUTHORIZED', 'Требуется вход.')
+        return
+      }
+      sendError(res, 403, 'FORBIDDEN', 'Недостаточно прав.')
+      return
+    }
+
+    const id = Number.parseInt(req.params.id, 10)
+    if (!Number.isInteger(id) || id <= 0) {
+      sendError(res, 400, 'VALIDATION_ERROR', 'Некорректный id пользователя.')
+      return
+    }
+
+    const target = findUserById(db, id)
+    if (!target) {
+      sendError(res, 404, 'NOT_FOUND', 'Пользователь не найден.')
+      return
+    }
+
+    const passwordHash = await bcrypt.hash(ADMIN_RESET_PASSWORD, BCRYPT_ROUNDS)
+    updateUserPassword(db, id, passwordHash, true)
+
+    const fresh = findUserById(db, id)
+    if (!fresh) {
+      sendError(res, 404, 'NOT_FOUND', 'Пользователь не найден.')
+      return
+    }
+
     res.status(200).json({ user: buildAdminUserResponse(fresh) })
   })
 

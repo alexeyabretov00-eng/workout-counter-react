@@ -6,11 +6,12 @@ vi.mock('../../api', () => ({
   userManagementClient: {
     listUsers: vi.fn(),
     updateUserRole: vi.fn(),
+    resetUserPassword: vi.fn(),
   },
 }));
 
 import { userManagementClient } from '../../api';
-import { fetchManagedUsers, updateManagedUserRole } from '../index';
+import { fetchManagedUsers, resetManagedUserPassword, updateManagedUserRole } from '../index';
 import type { ManagedUser } from '../types';
 
 const USER_FIXTURE: ManagedUser = {
@@ -25,6 +26,7 @@ describe('user management thunks (store + mocked module api)', () => {
   beforeEach(() => {
     vi.mocked(userManagementClient.listUsers).mockReset();
     vi.mocked(userManagementClient.updateUserRole).mockReset();
+    vi.mocked(userManagementClient.resetUserPassword).mockReset();
   });
 
   test('fetchManagedUsers loads users to userManagement state', async () => {
@@ -72,6 +74,26 @@ describe('user management thunks (store + mocked module api)', () => {
     await store.dispatch(updateManagedUserRole({ id: USER_FIXTURE.id, role: 'superadmin' }));
 
     expect(store.getState().userManagement.error).toBe('Не удалось изменить роль пользователя.');
+    expect(store.getState().userManagement.isUpdatingByUserId[USER_FIXTURE.id]).toBe(false);
+  });
+
+  test('resetManagedUserPassword sets mustChangePassword flag and clears updating state', async () => {
+    vi.mocked(userManagementClient.resetUserPassword).mockResolvedValue({
+      user: { ...USER_FIXTURE, mustChangePassword: true },
+    });
+    const store = setupStore({
+      userManagement: {
+        users: [USER_FIXTURE],
+        isLoading: false,
+        error: null,
+        isUpdatingByUserId: {},
+      },
+    });
+
+    await store.dispatch(resetManagedUserPassword({ id: USER_FIXTURE.id }));
+
+    expect(userManagementClient.resetUserPassword).toHaveBeenCalledWith(USER_FIXTURE.id);
+    expect(store.getState().userManagement.users[0]?.mustChangePassword).toBe(true);
     expect(store.getState().userManagement.isUpdatingByUserId[USER_FIXTURE.id]).toBe(false);
   });
 });

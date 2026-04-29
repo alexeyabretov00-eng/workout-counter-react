@@ -39,6 +39,7 @@ const meta = {
     currentUserId: 1,
     isUpdatingByUserId: {},
     onRoleChange: () => {},
+    onResetPassword: () => {},
   },
 } satisfies Meta<typeof UserManagementTable>;
 
