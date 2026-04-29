@@ -2,23 +2,32 @@ import '@testing-library/jest-dom/vitest';
 import 'jest-styled-components/vitest';
 
 import { cleanup } from '@testing-library/react';
-import { afterEach, vi } from 'vitest';
+import { afterEach, beforeEach, vi } from 'vitest';
 
-// antd `useBreakpoint` / layout hooks expect `matchMedia` (jsdom has none by default)
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  configurable: true,
-  value: vi.fn().mockImplementation((query: string) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
-});
+const ensureMatchMedia = () => {
+  // antd `useBreakpoint` / layout hooks expect `matchMedia` (jsdom has none by default)
+  if (typeof window.matchMedia === 'function') {
+    return;
+  }
+
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    configurable: true,
+    value: vi.fn().mockImplementation((query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  });
+};
+
+ensureMatchMedia();
+beforeEach(ensureMatchMedia);
 
 // `antd` Select / dropdown uses `@rc-component/resize-observer` (jsdom has none)
 const ResizeObserverMock: typeof globalThis.ResizeObserver = class {
