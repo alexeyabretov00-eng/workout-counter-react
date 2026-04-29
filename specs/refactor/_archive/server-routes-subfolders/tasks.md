@@ -1,6 +1,6 @@
 # Задачи: декомпозиция роутов сервера по подпапкам
 
-План: `specs/refactor/server-routes-subfolders/plan.md`
+План: `specs/refactor/_archive/server-routes-subfolders/plan.md`
 
 ## Чеклист
 
