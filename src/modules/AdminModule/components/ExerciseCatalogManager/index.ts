@@ -1,5 +1,2 @@
-export {
-  ExerciseCatalogManager,
-  type ExerciseCatalogManagerProps,
-  type ExerciseCatalogManagerValues,
-} from './ExerciseCatalogManager';
+export { ExerciseCatalogManager } from './ExerciseCatalogManager';
+export type { ExerciseCatalogManagerProps, ExerciseCatalogManagerValues } from './types';
