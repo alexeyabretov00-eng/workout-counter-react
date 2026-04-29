@@ -1,3 +1,5 @@
+export { archiveExercise, createExercise, findExerciseById, listExercises, updateExercise } from './exercises.js'
+export { openDatabase } from './schema.js'
 export type {
   CreateExerciseInput,
   ExerciseRow,
@@ -5,19 +7,13 @@ export type {
   UpdateExerciseInput,
   UserRole,
   UserRow,
-} from './db/index.js'
+} from './types.js'
 export {
-  archiveExercise,
-  createExercise,
-  findExerciseById,
   findUserById,
   findUserByLogin,
   insertUser,
-  listExercises,
   listUsers,
-  openDatabase,
-  updateExercise,
   updateUserPassword,
   updateUserRole,
   upsertSeededUser,
-} from './db/index.js'
+} from './users.js'
