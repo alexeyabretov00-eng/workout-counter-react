@@ -1,6 +1,6 @@
 # Задачи реализации: редактирование упражнения в Drawer
 
-Связанный план: `specs/features/admin-exercise-edit-drawer/admin-exercise-edit-drawer-plan.md`
+Связанный план: `specs/features/_archive/admin-exercise-edit-drawer/admin-exercise-edit-drawer-plan.md`
 
 ## Чеклист
 
