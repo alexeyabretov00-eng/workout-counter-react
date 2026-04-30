@@ -34,7 +34,7 @@ const exercises: ExerciseDto[] = [
 ];
 
 describe('ExerciseCatalogManager', () => {
-  test('shows values of selected expanded exercise row', async () => {
+  test('shows values of selected exercise in edit drawer', async () => {
     renderWithTheme(
       <ExerciseCatalogManager
         exercises={exercises}
@@ -46,8 +46,8 @@ describe('ExerciseCatalogManager', () => {
       />,
     );
 
-    const expandButtons = screen.getAllByLabelText('Expand row');
-    fireEvent.click(expandButtons[1]);
+    const editButtons = screen.getAllByRole('button', { name: 'Редактировать' });
+    fireEvent.click(editButtons[1]);
 
     const slugAndDetectorInputs = await screen.findAllByDisplayValue('squat');
     expect(slugAndDetectorInputs).toHaveLength(2);
