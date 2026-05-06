@@ -1,6 +1,6 @@
 # Refactor: убрать неиспользуемые exports из index.ts — задачи
 
-См. план: `specs/refactor/unused-index-exports/plan.md`.
+См. план: `plan.md`.
 
 ## Чеклист
 
