@@ -27,6 +27,7 @@ import {
   fetchAdminExercises,
   updateAdminExercise,
 } from '../index';
+import type { AdminModuleState } from '../types';
 
 const EXERCISE_FIXTURE: ExerciseDto = {
   id: 1,
@@ -55,8 +56,9 @@ describe('admin thunks (store + mocked module api)', () => {
 
     await store.dispatch(fetchAdminExercises());
 
-    expect(store.getState().admin.exercises).toEqual([EXERCISE_FIXTURE]);
-    expect(store.getState().admin.isLoading).toBe(false);
+    const adminState = (store.getState() as unknown as { admin: AdminModuleState }).admin;
+    expect(adminState.exercises).toEqual([EXERCISE_FIXTURE]);
+    expect(adminState.isLoading).toBe(false);
   });
 
   test('createAdminExercise creates and refreshes list', async () => {
@@ -78,8 +80,9 @@ describe('admin thunks (store + mocked module api)', () => {
 
     expect(adminExerciseClient.create).toHaveBeenCalledTimes(1);
     expect(adminExerciseClient.list).toHaveBeenCalledTimes(1);
-    expect(store.getState().admin.exercises).toEqual([EXERCISE_FIXTURE]);
-    expect(store.getState().admin.isSubmitting).toBe(false);
+    const adminState = (store.getState() as unknown as { admin: AdminModuleState }).admin;
+    expect(adminState.exercises).toEqual([EXERCISE_FIXTURE]);
+    expect(adminState.isSubmitting).toBe(false);
   });
 
   test('updateAdminExercise updates and refreshes list', async () => {
@@ -104,13 +107,18 @@ describe('admin thunks (store + mocked module api)', () => {
 
     expect(adminExerciseClient.update).toHaveBeenCalledTimes(1);
     expect(adminExerciseClient.list).toHaveBeenCalledTimes(1);
-    expect(store.getState().admin.exercises).toEqual([EXERCISE_FIXTURE]);
+    const adminState = (store.getState() as unknown as { admin: AdminModuleState }).admin;
+    expect(adminState.exercises).toEqual([EXERCISE_FIXTURE]);
   });
 
   test('archiveAdminExercise archives and refreshes list', async () => {
     vi.mocked(adminExerciseClient.archive).mockResolvedValue(undefined);
     vi.mocked(adminExerciseClient.list).mockResolvedValue({ exercises: [] });
     const store = setupStore({
+      auth: {
+        user: null,
+        status: 'ready',
+      },
       admin: {
         exercises: [EXERCISE_FIXTURE],
         isLoading: false,
@@ -122,6 +130,7 @@ describe('admin thunks (store + mocked module api)', () => {
 
     expect(adminExerciseClient.archive).toHaveBeenCalledWith(1);
     expect(adminExerciseClient.list).toHaveBeenCalledTimes(1);
-    expect(store.getState().admin.exercises).toEqual([]);
+    const adminState = (store.getState() as unknown as { admin: AdminModuleState }).admin;
+    expect(adminState.exercises).toEqual([]);
   });
 });

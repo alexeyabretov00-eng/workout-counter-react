@@ -9,14 +9,14 @@ import {
 } from './authThunks';
 import type { AuthState } from './types';
 
-const initialState: AuthState = {
+export const initialAuthState: AuthState = {
   user: null,
   status: 'loading',
 };
 
 export const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: initialAuthState,
   reducers: {},
   extraReducers: builder => {
     builder

@@ -5,7 +5,7 @@ import { ReducerRegistry } from './reducerRegistry';
 
 const devToolsOptions = import.meta.env.DEV ? { name: 'workout-counter' } : false;
 
-const createConfiguredStore = (preloadedState?: unknown) => {
+const createConfiguredStore = (preloadedState?: Partial<Record<string, unknown>>) => {
   const reducerRegistry = new ReducerRegistry({
     auth: authReducer,
   });

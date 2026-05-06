@@ -1,7 +1,5 @@
-export { AdminPageShell, type AdminPageShellProps } from './AdminPageShell';
-export { AdminPageStub, type AdminPageStubProps } from './AdminPageStub';
+export { AdminPageShell } from './AdminPageShell';
 export {
   ExerciseCatalogManager,
-  type ExerciseCatalogManagerProps,
   type ExerciseCatalogManagerValues,
 } from './ExerciseCatalogManager';

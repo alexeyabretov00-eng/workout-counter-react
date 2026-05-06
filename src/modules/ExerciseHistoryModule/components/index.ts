@@ -1,8 +1,2 @@
-export {
-  ExerciseHistoryPageShell,
-  type ExerciseHistoryPageShellProps,
-} from './ExerciseHistoryPageShell';
-export {
-  ExerciseHistoryPageStub,
-  type ExerciseHistoryPageStubProps,
-} from './ExerciseHistoryPageStub';
+export { ExerciseHistoryPageShell } from './ExerciseHistoryPageShell';
+export { ExerciseHistoryPageStub } from './ExerciseHistoryPageStub';

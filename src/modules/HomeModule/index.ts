@@ -1,8 +1,7 @@
 import { HomeModule } from './HomeModule';
-import { HomeModuleReducer, type HomeModuleState } from './store';
+import { HomeModuleReducer } from './store';
 
 export { HomeModule };
-export type { HomeModuleState };
 
 export const reducer = {
   name: 'home',

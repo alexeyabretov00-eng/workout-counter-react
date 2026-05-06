@@ -5,4 +5,4 @@ export {
   fetchAdminExercises,
   updateAdminExercise,
 } from './AdminModuleThunks';
-export type { AdminExerciseFormValues, AdminModuleState } from './types';
+export type { AdminModuleState } from './types';

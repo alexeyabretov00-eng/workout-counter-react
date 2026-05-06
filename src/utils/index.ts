@@ -1,7 +1,7 @@
-export type { ApiErrorBody, ApiErrorConstructor, ApiJsonRequestOptions } from './api';
-export { ApiJsonClient, ApiRequestError, joinApiPath } from './api';
-export { clearCanvas, computeCoverLayout, drawRestCountdown, resizeCanvas } from './canvas';
-export { EventBus, eventBus, type EventHandler } from './eventBus';
+export type { ApiErrorBody } from './api';
+export { ApiJsonClient, ApiRequestError } from './api';
+export { clearCanvas, drawRestCountdown } from './canvas';
+export { eventBus } from './eventBus';
 export {
   calculateAngle,
   drawFrame,
