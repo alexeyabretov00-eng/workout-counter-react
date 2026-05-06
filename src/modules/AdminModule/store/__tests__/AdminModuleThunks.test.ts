@@ -21,13 +21,13 @@ vi.mock('@api', async importOriginal => {
 import type { ExerciseDto } from '@api';
 
 import { adminExerciseClient } from '../../api';
+import type { AdminModuleState } from '../types';
 import {
   archiveAdminExercise,
   createAdminExercise,
   fetchAdminExercises,
   updateAdminExercise,
-} from '../index';
-import type { AdminModuleState } from '../types';
+} from '..';
 
 const EXERCISE_FIXTURE: ExerciseDto = {
   id: 1,

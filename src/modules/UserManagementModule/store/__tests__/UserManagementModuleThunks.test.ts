@@ -11,9 +11,9 @@ vi.mock('../../api', () => ({
 }));
 
 import { userManagementClient } from '../../api';
-import { fetchManagedUsers, resetManagedUserPassword, updateManagedUserRole } from '../index';
 import type { ManagedUser } from '../types';
 import type { UserManagementModuleState } from '../types';
+import { fetchManagedUsers, resetManagedUserPassword, updateManagedUserRole } from '..';
 
 const USER_FIXTURE: ManagedUser = {
   id: 1,

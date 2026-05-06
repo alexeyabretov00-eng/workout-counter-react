@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
-import { eventBus } from '../index';
+import { eventBus } from '..';
 
 const EVENT_AUTH_NAVIGATE_AFTER_LOGIN = 'auth:navigate-after-login';
 const EVENT_AUTH_NAVIGATE_AFTER_REGISTRATION = 'auth:navigate-after-registration';
