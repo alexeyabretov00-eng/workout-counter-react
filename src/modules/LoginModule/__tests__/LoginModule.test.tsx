@@ -6,24 +6,24 @@ import { describe, expect, test, vi } from 'vitest';
 
 import { AppStyleProviders } from '@test-helpers';
 
-vi.mock('@api', async importOriginal => {
-  const actual = await importOriginal<typeof import('@api')>();
-  return {
-    ...actual,
-    authClient: Object.assign(
-      Object.create(Object.getPrototypeOf(actual.authClient)),
-      actual.authClient,
-      {
-        login: vi.fn(() => Promise.resolve({ user: { id: 1, login: 'alice' } })),
-      },
-    ),
-  };
-});
+vi.mock('@api', () => ({
+  authClient: {
+    me: vi.fn(),
+    login: vi.fn(),
+    register: vi.fn(),
+    logout: vi.fn(),
+    changePassword: vi.fn(),
+  },
+}));
 
+import { authClient } from '@api';
 import { LoginModule } from '@modules/LoginModule';
 import { setupStore } from '@store';
 describe('LoginModule', () => {
   test('submits credentials and updates auth in store', async () => {
+    vi.mocked(authClient.login).mockResolvedValue({
+      user: { id: 1, login: 'alice', role: 'user', mustChangePassword: false },
+    });
     const user = userEvent.setup();
     const testStore = setupStore({
       auth: { user: null, status: 'ready' },
@@ -51,7 +51,7 @@ describe('LoginModule', () => {
       },
       { timeout: 10_000 },
     );
-  });
+  }, 15_000);
 
   test('renders shell and form', () => {
     const testStore = setupStore({

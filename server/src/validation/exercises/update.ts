@@ -5,7 +5,7 @@ import {
   MAX_NAME_LENGTH,
   MAX_SLUG_LENGTH,
   SLUG_PATTERN,
-} from './exerciseValidation.constants.js'
+} from './constants.js'
 import {
   normalizeBooleanField,
   normalizeKebabCaseField,
@@ -13,24 +13,20 @@ import {
   normalizeStringField,
   parseVoiceAliases,
   pushIssue,
-} from './exerciseValidation.helpers.js'
+} from './helpers.js'
 import type { ExerciseInput, ExerciseValidationIssue } from './types.js'
 
 export const validateUpdateExerciseInput = (
   payload: unknown,
 ): Partial<ExerciseInput> | ExerciseValidationIssue[] => {
   if (!payload || typeof payload !== 'object') {
-    return [
-      { field: 'slug', message: EXERCISE_VALIDATION_MESSAGES.payloadMustBeObject },
-    ]
+    return [{ field: 'slug', message: EXERCISE_VALIDATION_MESSAGES.payloadMustBeObject }]
   }
 
   const data = payload as Record<string, unknown>
   const keys = Object.keys(data)
   if (keys.length === 0) {
-    return [
-      { field: 'slug', message: EXERCISE_VALIDATION_MESSAGES.updateAtLeastOneField },
-    ]
+    return [{ field: 'slug', message: EXERCISE_VALIDATION_MESSAGES.updateAtLeastOneField }]
   }
 
   const normalized: Partial<ExerciseInput> = {}
@@ -64,17 +60,9 @@ export const validateUpdateExerciseInput = (
   }
 
   if ('detectorKey' in data) {
-    const value = normalizeKebabCaseField(
-      data.detectorKey,
-      MAX_SLUG_LENGTH,
-      DETECTOR_KEY_PATTERN,
-    )
+    const value = normalizeKebabCaseField(data.detectorKey, MAX_SLUG_LENGTH, DETECTOR_KEY_PATTERN)
     if (!value) {
-      pushIssue(
-        issues,
-        'detectorKey',
-        EXERCISE_VALIDATION_MESSAGES.detectorKeyInvalid,
-      )
+      pushIssue(issues, 'detectorKey', EXERCISE_VALIDATION_MESSAGES.detectorKeyInvalid)
     } else {
       normalized.detectorKey = value
     }
@@ -110,9 +98,7 @@ export const validateUpdateExerciseInput = (
   }
 
   if (Object.keys(normalized).length === 0) {
-    return [
-      { field: 'slug', message: EXERCISE_VALIDATION_MESSAGES.noValidFieldsToUpdate },
-    ]
+    return [{ field: 'slug', message: EXERCISE_VALIDATION_MESSAGES.noValidFieldsToUpdate }]
   }
 
   return normalized

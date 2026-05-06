@@ -1,0 +1,1 @@
+export { ExerciseCatalogManagerContainer } from './ExerciseCatalogManagerContainer';

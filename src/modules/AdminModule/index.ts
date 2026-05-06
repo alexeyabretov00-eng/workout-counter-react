@@ -1,21 +1,7 @@
 import { AdminModule } from './AdminModule';
-import {
-  AdminModuleReducer,
-  type AdminModuleState,
-  archiveAdminExercise,
-  createAdminExercise,
-  fetchAdminExercises,
-  updateAdminExercise,
-} from './store';
+import { AdminModuleReducer } from './store';
 
-export {
-  AdminModule,
-  archiveAdminExercise,
-  createAdminExercise,
-  fetchAdminExercises,
-  updateAdminExercise,
-};
-export type { AdminModuleState };
+export { AdminModule };
 
 export const reducer = {
   name: 'admin',

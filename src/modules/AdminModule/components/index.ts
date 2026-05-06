@@ -5,3 +5,8 @@ export {
   type ExerciseCatalogManagerProps,
   type ExerciseCatalogManagerValues,
 } from './ExerciseCatalogManager';
+export {
+  ExerciseSetManager,
+  type ExerciseSetManagerProps,
+  type ExerciseSetManagerValues,
+} from './ExerciseSetManager';

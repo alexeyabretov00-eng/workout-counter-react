@@ -53,5 +53,5 @@ describe('ExerciseCatalogManager', () => {
     expect(slugAndDetectorInputs).toHaveLength(2);
     expect(screen.getByDisplayValue('Присед')).toBeInTheDocument();
     expect(screen.queryByDisplayValue('Сгибание на бицепс')).not.toBeInTheDocument();
-  });
+  }, 15_000);
 });

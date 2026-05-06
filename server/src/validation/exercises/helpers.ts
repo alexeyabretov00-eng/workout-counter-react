@@ -5,7 +5,7 @@ import {
   MAX_VOICE_ALIASES,
   MIN_SORT_ORDER,
   MIN_TEXT_LENGTH,
-} from './exerciseValidation.constants.js'
+} from './constants.js'
 import type { ExerciseInput, ExerciseValidationIssue } from './types.js'
 
 export const pushIssue = (
@@ -16,10 +16,7 @@ export const pushIssue = (
   issues.push({ field, message })
 }
 
-export const normalizeStringField = (
-  value: unknown,
-  maxLength: number,
-): string | null => {
+export const normalizeStringField = (value: unknown, maxLength: number): string | null => {
   if (typeof value !== 'string') {
     return null
   }
@@ -66,45 +63,26 @@ export const normalizeBooleanField = (value: unknown): boolean | null => {
   return value
 }
 
-export const parseVoiceAliases = (
-  value: unknown,
-  issues: ExerciseValidationIssue[],
-): string[] | null => {
+export const parseVoiceAliases = (value: unknown, issues: ExerciseValidationIssue[]): string[] | null => {
   if (!Array.isArray(value)) {
-    pushIssue(
-      issues,
-      'voiceAliases',
-      EXERCISE_VALIDATION_MESSAGES.voiceAliasesMustBeArray,
-    )
+    pushIssue(issues, 'voiceAliases', EXERCISE_VALIDATION_MESSAGES.voiceAliasesMustBeArray)
     return null
   }
 
   if (value.length > MAX_VOICE_ALIASES) {
-    pushIssue(
-      issues,
-      'voiceAliases',
-      EXERCISE_VALIDATION_MESSAGES.voiceAliasesTooMany,
-    )
+    pushIssue(issues, 'voiceAliases', EXERCISE_VALIDATION_MESSAGES.voiceAliasesTooMany)
   }
 
   const normalized: string[] = []
   for (const item of value) {
     if (typeof item !== 'string') {
-      pushIssue(
-        issues,
-        'voiceAliases',
-        EXERCISE_VALIDATION_MESSAGES.voiceAliasMustBeString,
-      )
+      pushIssue(issues, 'voiceAliases', EXERCISE_VALIDATION_MESSAGES.voiceAliasMustBeString)
       continue
     }
 
     const trimmed = item.trim()
     if (trimmed.length === 0 || trimmed.length > MAX_ALIAS_LENGTH) {
-      pushIssue(
-        issues,
-        'voiceAliases',
-        EXERCISE_VALIDATION_MESSAGES.voiceAliasLengthInvalid,
-      )
+      pushIssue(issues, 'voiceAliases', EXERCISE_VALIDATION_MESSAGES.voiceAliasLengthInvalid)
       continue
     }
 

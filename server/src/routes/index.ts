@@ -3,6 +3,7 @@ import type { DatabaseSync } from 'node:sqlite'
 import express from 'express'
 import rateLimit from 'express-rate-limit'
 
+import { createAdminExerciseSetRouter } from './admin/exercise-sets/index.js'
 import { createAdminExerciseRouter } from './admin/exercises/index.js'
 import { createAdminUserRouter } from './admin/users/index.js'
 import { createAuthRouter } from './auth/index.js'
@@ -27,6 +28,7 @@ export const createApiRouter = (db: DatabaseSync, jwtSecret: string): express.Ro
   router.use(createProtectedRouter(db, jwtSecret))
   router.use(createAdminExerciseRouter(db, jwtSecret))
   router.use(createAdminUserRouter(db, jwtSecret))
+  router.use(createAdminExerciseSetRouter(db, jwtSecret))
 
   return router
 }

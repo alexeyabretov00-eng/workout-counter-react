@@ -7,7 +7,7 @@ export const routes: RouteObject[] = [
     path: '/admin',
     element: <AdminPageLazy />,
     handle: {
-      roles: ['admin', 'superadmin'],
+      roles: ['user', 'admin', 'superadmin'],
       nav: { label: 'Админка', sort: 1 },
     },
   },

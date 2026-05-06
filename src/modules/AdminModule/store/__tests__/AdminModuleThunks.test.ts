@@ -9,6 +9,11 @@ vi.mock('../../api', () => ({
     update: vi.fn(),
     archive: vi.fn(),
   },
+  adminExerciseSetClient: {
+    list: vi.fn(),
+    create: vi.fn(),
+    listAssignableUsers: vi.fn(),
+  },
 }));
 
 vi.mock('@api', async importOriginal => {
@@ -113,8 +118,12 @@ describe('admin thunks (store + mocked module api)', () => {
     const store = setupStore({
       admin: {
         exercises: [EXERCISE_FIXTURE],
+        exerciseSets: [],
+        assignableUsers: [],
         isLoading: false,
+        isSetsLoading: false,
         isSubmitting: false,
+        isSetSubmitting: false,
       },
     });
 

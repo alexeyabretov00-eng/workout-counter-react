@@ -50,6 +50,32 @@ const ensureExercisesSchema = (db: DatabaseSync): void => {
   `)
 }
 
+const ensureExerciseSetsSchema = (db: DatabaseSync): void => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS workout_sets (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      day_of_week INTEGER NOT NULL CHECK(day_of_week BETWEEN 0 AND 6),
+      user_id INTEGER NOT NULL,
+      created_by_user_id INTEGER NOT NULL,
+      created_at TEXT NOT NULL,
+      FOREIGN KEY(user_id) REFERENCES users(id),
+      FOREIGN KEY(created_by_user_id) REFERENCES users(id)
+    );
+  `)
+
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS workout_set_exercises (
+      workout_set_id INTEGER NOT NULL,
+      exercise_id INTEGER NOT NULL,
+      sort_order INTEGER NOT NULL,
+      PRIMARY KEY (workout_set_id, exercise_id),
+      FOREIGN KEY(workout_set_id) REFERENCES workout_sets(id) ON DELETE CASCADE,
+      FOREIGN KEY(exercise_id) REFERENCES exercises(id)
+    );
+  `)
+}
+
 const seedExercises = (db: DatabaseSync): void => {
   const seedStmt = db.prepare(`
     INSERT OR IGNORE INTO exercises (
@@ -91,6 +117,7 @@ export const openDatabase = (filePath: string): DatabaseSync => {
   const db = new DatabaseSync(filePath)
   ensureUsersSchema(db)
   ensureExercisesSchema(db)
+  ensureExerciseSetsSchema(db)
   seedExercises(db)
   db.exec('PRAGMA journal_mode = WAL;')
   return db

@@ -5,7 +5,7 @@ import {
   MAX_NAME_LENGTH,
   MAX_SLUG_LENGTH,
   SLUG_PATTERN,
-} from './exerciseValidation.constants.js'
+} from './constants.js'
 import {
   normalizeBooleanField,
   normalizeKebabCaseField,
@@ -13,7 +13,7 @@ import {
   normalizeStringField,
   parseVoiceAliases,
   pushIssue,
-} from './exerciseValidation.helpers.js'
+} from './helpers.js'
 import type { ExerciseInput, ExerciseValidationIssue } from './types.js'
 
 export const validateCreateExerciseInput = (
@@ -21,9 +21,7 @@ export const validateCreateExerciseInput = (
 ): ExerciseInput | ExerciseValidationIssue[] => {
   const issues: ExerciseValidationIssue[] = []
   if (!payload || typeof payload !== 'object') {
-    return [
-      { field: 'slug', message: EXERCISE_VALIDATION_MESSAGES.payloadMustBeObject },
-    ]
+    return [{ field: 'slug', message: EXERCISE_VALIDATION_MESSAGES.payloadMustBeObject }]
   }
 
   const data = payload as Record<string, unknown>
@@ -51,17 +49,9 @@ export const validateCreateExerciseInput = (
     pushIssue(issues, 'description', EXERCISE_VALIDATION_MESSAGES.descriptionInvalid)
   }
 
-  const detectorKey = normalizeKebabCaseField(
-    detectorKeyRaw,
-    MAX_SLUG_LENGTH,
-    DETECTOR_KEY_PATTERN,
-  )
+  const detectorKey = normalizeKebabCaseField(detectorKeyRaw, MAX_SLUG_LENGTH, DETECTOR_KEY_PATTERN)
   if (!detectorKey) {
-    pushIssue(
-      issues,
-      'detectorKey',
-      EXERCISE_VALIDATION_MESSAGES.detectorKeyInvalid,
-    )
+    pushIssue(issues, 'detectorKey', EXERCISE_VALIDATION_MESSAGES.detectorKeyInvalid)
   }
 
   const voiceAliases = parseVoiceAliases(voiceAliasesRaw, issues)

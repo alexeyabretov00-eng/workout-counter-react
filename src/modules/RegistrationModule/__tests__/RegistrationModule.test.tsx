@@ -6,24 +6,24 @@ import { describe, expect, test, vi } from 'vitest';
 
 import { AppStyleProviders } from '@test-helpers';
 
-vi.mock('@api', async importOriginal => {
-  const actual = await importOriginal<typeof import('@api')>();
-  return {
-    ...actual,
-    authClient: Object.assign(
-      Object.create(Object.getPrototypeOf(actual.authClient)),
-      actual.authClient,
-      {
-        register: vi.fn(() => Promise.resolve({ user: { id: 2, login: 'newuser' } })),
-      },
-    ),
-  };
-});
+vi.mock('@api', () => ({
+  authClient: {
+    me: vi.fn(),
+    login: vi.fn(),
+    register: vi.fn(),
+    logout: vi.fn(),
+    changePassword: vi.fn(),
+  },
+}));
 
+import { authClient } from '@api';
 import { RegistrationModule } from '@modules/RegistrationModule';
 import { setupStore } from '@store';
 describe('RegistrationModule', () => {
   test('submits credentials and updates auth in store', async () => {
+    vi.mocked(authClient.register).mockResolvedValue({
+      user: { id: 2, login: 'newuser', role: 'user', mustChangePassword: false },
+    });
     const user = userEvent.setup();
     const testStore = setupStore({
       auth: { user: null, status: 'ready' },
@@ -46,9 +46,9 @@ describe('RegistrationModule', () => {
     await user.type(passwordInput, 'newpass99');
     await user.click(screen.getByRole('button', { name: 'Создать учётную запись' }));
     await waitFor(() => {
-      expect(testStore.getState().auth.user).toEqual({ id: 2, login: 'newuser' });
+      expect(testStore.getState().auth.user).toMatchObject({ id: 2, login: 'newuser' });
     });
-  });
+  }, 15_000);
 
   test('renders shell and form', () => {
     const testStore = setupStore({

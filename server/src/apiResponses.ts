@@ -1,3 +1,4 @@
+import type { ExerciseSetListRow } from './db/exerciseSets.js'
 import type { listExercises, listUsers, UserRole } from './db.js'
 
 const parseVoiceAliases = (raw: string): string[] => {
@@ -61,3 +62,27 @@ export const buildExerciseResponse = (
     updatedAt: exercise.updated_at,
   }
 }
+
+const parseExerciseIds = (raw: string): number[] => {
+  try {
+    const parsed = JSON.parse(raw) as unknown
+    if (!Array.isArray(parsed)) {
+      return []
+    }
+    return parsed.filter((item): item is number => Number.isInteger(item) && item > 0)
+  } catch {
+    return []
+  }
+}
+
+export const buildExerciseSetResponse = (row: ExerciseSetListRow) => ({
+  id: row.id,
+  name: row.name,
+  dayOfWeek: row.day_of_week,
+  userId: row.user_id,
+  userLogin: row.user_login,
+  createdByUserId: row.created_by_user_id,
+  createdByUserLogin: row.created_by_login,
+  exerciseIds: parseExerciseIds(row.exercise_ids),
+  createdAt: row.created_at,
+})

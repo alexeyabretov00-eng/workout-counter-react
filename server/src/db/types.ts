@@ -44,6 +44,31 @@ export type CreateExerciseInput = {
 
 export type UpdateExerciseInput = Partial<CreateExerciseInput>
 
+export type ExerciseDayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6
+
+export type ExerciseSetRow = {
+  id: number
+  name: string
+  day_of_week: ExerciseDayOfWeek
+  user_id: number
+  created_by_user_id: number
+  created_at: string
+}
+
+export type ExerciseSetExerciseRow = {
+  workout_set_id: number
+  exercise_id: number
+  sort_order: number
+}
+
+export type CreateExerciseSetInput = {
+  name: string
+  dayOfWeek: ExerciseDayOfWeek
+  userId: number
+  createdByUserId: number
+  exerciseIds: number[]
+}
+
 export const EXERCISE_SEEDS: ExerciseSeed[] = [
   {
     slug: 'biceps-curl',
