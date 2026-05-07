@@ -6,4 +6,4 @@ export {
   updateHomeModuleState,
 } from './HomeModuleSlice';
 export { fetchExerciseCatalog } from './HomeModuleThunks';
-export type { HomeModuleExerciseCatalogEntry, HomeModuleState } from './types';
+export type { HomeModuleState } from './types';

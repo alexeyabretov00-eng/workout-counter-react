@@ -2,11 +2,13 @@ import type { SelectOption } from '@components';
 import { createSelector } from '@reduxjs/toolkit';
 import type { EntityStatus, VoiceStatus } from '@types';
 
+import { initialHomeModuleState } from '../store';
 import type { HomeModuleState } from '../store/types';
 
-type HomeModuleSliceState = { home: HomeModuleState };
+type HomeModuleSliceState = { home?: HomeModuleState };
 
-export const getWorkoutControlsState = (state: HomeModuleSliceState) => state.home;
+export const getWorkoutControlsState = (state: HomeModuleSliceState) =>
+  state.home ?? initialHomeModuleState;
 
 export const getHomeModuleProps = createSelector([getWorkoutControlsState], controls => ({
   exerciseId: controls.exerciseId,

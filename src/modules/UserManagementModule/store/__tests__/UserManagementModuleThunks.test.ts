@@ -11,8 +11,9 @@ vi.mock('../../api', () => ({
 }));
 
 import { userManagementClient } from '../../api';
-import { fetchManagedUsers, resetManagedUserPassword, updateManagedUserRole } from '../index';
 import type { ManagedUser } from '../types';
+import type { UserManagementModuleState } from '../types';
+import { fetchManagedUsers, resetManagedUserPassword, updateManagedUserRole } from '..';
 
 const USER_FIXTURE: ManagedUser = {
   id: 1,
@@ -35,9 +36,14 @@ describe('user management thunks (store + mocked module api)', () => {
 
     await store.dispatch(fetchManagedUsers());
 
-    expect(store.getState().userManagement.users).toEqual([USER_FIXTURE]);
-    expect(store.getState().userManagement.isLoading).toBe(false);
-    expect(store.getState().userManagement.error).toBeNull();
+    const userManagementState = (
+      store.getState() as unknown as {
+        userManagement: UserManagementModuleState;
+      }
+    ).userManagement;
+    expect(userManagementState.users).toEqual([USER_FIXTURE]);
+    expect(userManagementState.isLoading).toBe(false);
+    expect(userManagementState.error).toBeNull();
   });
 
   test('updateManagedUserRole updates user and clears updating flag', async () => {
@@ -45,6 +51,10 @@ describe('user management thunks (store + mocked module api)', () => {
       user: { ...USER_FIXTURE, role: 'admin' },
     });
     const store = setupStore({
+      auth: {
+        user: null,
+        status: 'ready',
+      },
       userManagement: {
         users: [USER_FIXTURE],
         isLoading: false,
@@ -56,13 +66,22 @@ describe('user management thunks (store + mocked module api)', () => {
     await store.dispatch(updateManagedUserRole({ id: USER_FIXTURE.id, role: 'admin' }));
 
     expect(userManagementClient.updateUserRole).toHaveBeenCalledWith(USER_FIXTURE.id, 'admin');
-    expect(store.getState().userManagement.users[0]?.role).toBe('admin');
-    expect(store.getState().userManagement.isUpdatingByUserId[USER_FIXTURE.id]).toBe(false);
+    const userManagementState = (
+      store.getState() as unknown as {
+        userManagement: UserManagementModuleState;
+      }
+    ).userManagement;
+    expect(userManagementState.users[0]?.role).toBe('admin');
+    expect(userManagementState.isUpdatingByUserId[USER_FIXTURE.id]).toBe(false);
   });
 
   test('updateManagedUserRole stores error text when request fails', async () => {
     vi.mocked(userManagementClient.updateUserRole).mockRejectedValue(new Error('network'));
     const store = setupStore({
+      auth: {
+        user: null,
+        status: 'ready',
+      },
       userManagement: {
         users: [USER_FIXTURE],
         isLoading: false,
@@ -73,8 +92,13 @@ describe('user management thunks (store + mocked module api)', () => {
 
     await store.dispatch(updateManagedUserRole({ id: USER_FIXTURE.id, role: 'superadmin' }));
 
-    expect(store.getState().userManagement.error).toBe('Не удалось изменить роль пользователя.');
-    expect(store.getState().userManagement.isUpdatingByUserId[USER_FIXTURE.id]).toBe(false);
+    const userManagementState = (
+      store.getState() as unknown as {
+        userManagement: UserManagementModuleState;
+      }
+    ).userManagement;
+    expect(userManagementState.error).toBe('Не удалось изменить роль пользователя.');
+    expect(userManagementState.isUpdatingByUserId[USER_FIXTURE.id]).toBe(false);
   });
 
   test('resetManagedUserPassword sets mustChangePassword flag and clears updating state', async () => {
@@ -82,6 +106,10 @@ describe('user management thunks (store + mocked module api)', () => {
       user: { ...USER_FIXTURE, mustChangePassword: true },
     });
     const store = setupStore({
+      auth: {
+        user: null,
+        status: 'ready',
+      },
       userManagement: {
         users: [USER_FIXTURE],
         isLoading: false,
@@ -93,7 +121,12 @@ describe('user management thunks (store + mocked module api)', () => {
     await store.dispatch(resetManagedUserPassword({ id: USER_FIXTURE.id }));
 
     expect(userManagementClient.resetUserPassword).toHaveBeenCalledWith(USER_FIXTURE.id);
-    expect(store.getState().userManagement.users[0]?.mustChangePassword).toBe(true);
-    expect(store.getState().userManagement.isUpdatingByUserId[USER_FIXTURE.id]).toBe(false);
+    const userManagementState = (
+      store.getState() as unknown as {
+        userManagement: UserManagementModuleState;
+      }
+    ).userManagement;
+    expect(userManagementState.users[0]?.mustChangePassword).toBe(true);
+    expect(userManagementState.isUpdatingByUserId[USER_FIXTURE.id]).toBe(false);
   });
 });

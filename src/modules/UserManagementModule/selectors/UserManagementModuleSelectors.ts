@@ -1,12 +1,10 @@
 import { createSelector } from '@reduxjs/toolkit';
-import type { AuthState } from '@store';
+
+import { selectAuthUser } from '@store';
 
 import { initialUserManagementModuleState, type UserManagementModuleState } from '../store';
 
-type AuthSliceState = { auth?: AuthState };
 type UserManagementModuleSliceState = { userManagement?: UserManagementModuleState };
-
-const selectAuthUser = (state: AuthSliceState) => state.auth?.user ?? null;
 
 export const getUserManagementModuleState = (state: UserManagementModuleSliceState) =>
   state.userManagement ?? initialUserManagementModuleState;

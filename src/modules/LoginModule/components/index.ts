@@ -1,2 +1,2 @@
-export { LoginForm, type LoginFormProps } from './LoginForm';
-export { LoginPageShell, type LoginPageShellProps } from './LoginPageShell';
+export { LoginForm } from './LoginForm';
+export { LoginPageShell } from './LoginPageShell';

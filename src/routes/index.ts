@@ -1,4 +1,3 @@
-export type { AppPageRouteHandle, UserRole } from './routes';
 export {
   buildNavItemsByRole,
   canAccessRouteForRole,

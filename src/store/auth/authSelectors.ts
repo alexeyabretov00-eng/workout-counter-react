@@ -1,13 +1,16 @@
+import { createSelector } from '@reduxjs/toolkit';
+
+import { initialAuthState } from './authSlice';
 import type { AuthState } from './types';
 
-type AuthSliceState = { auth: AuthState };
+type AuthSliceState = { auth?: AuthState };
 
-/** Поля среза `auth` — для общего использования и внутри комбинированных селекторов. */
-export const selectAuthUser = (state: AuthSliceState) => state.auth.user;
+export const getAuthState = (state: AuthSliceState) => state.auth ?? initialAuthState;
 
-export const selectAuthStatus = (state: AuthSliceState) => state.auth.status;
-
-export const selectAuthRole = (state: AuthSliceState) => state.auth.user?.role ?? null;
-
-export const selectAuthMustChangePassword = (state: AuthSliceState) =>
-  state.auth.user?.mustChangePassword ?? false;
+export const selectAuthUser = createSelector([getAuthState], state => state.user);
+export const selectAuthStatus = createSelector([getAuthState], state => state.status);
+export const selectAuthRole = createSelector([getAuthState], state => state.user?.role ?? null);
+export const selectAuthMustChangePassword = createSelector(
+  [getAuthState],
+  state => state.user?.mustChangePassword ?? false,
+);

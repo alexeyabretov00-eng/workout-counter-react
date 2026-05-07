@@ -1,1 +1,1 @@
-export { type ManagedUserDto, userManagementClient } from './userManagementClient';
+export { userManagementClient } from './userManagementClient';

@@ -41,7 +41,8 @@
 
 Публичный API в **`src/test/index.ts`** (алиас `@test-helpers` — см. [import-aliases.md](./import-aliases.md)):
 
-- `renderWithTheme` — обёртка в `ThemeProvider` + `render` из RTL.
+- `AppStyleProviders` — тестовая композиция провайдеров интерфейса как в приложении: `ConfigProvider` (antd-тема из `getAntdThemeConfig(theme)`) + `ThemeProvider` (styled-components).
+- `renderWithTheme` — `render` из RTL с обёрткой `AppStyleProviders`.
 - `renderWithRouterTheme` — то же + `MemoryRouter` для сценариев с роутингом.
 
 Импорты между верхнеуровневыми папками `src` — по баррелям, не из глубоких путей.

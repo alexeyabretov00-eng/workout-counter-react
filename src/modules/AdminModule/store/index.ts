@@ -11,8 +11,4 @@ export {
   updateAdminExercise,
   updateAdminExerciseSet,
 } from './AdminModuleThunks';
-export type {
-  AdminExerciseFormValues,
-  AdminExerciseSetFormValues,
-  AdminModuleState,
-} from './types';
+export type { AdminModuleState } from './types';

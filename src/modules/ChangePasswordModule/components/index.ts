@@ -1,1 +1,1 @@
-export { ChangePasswordForm, type ChangePasswordFormProps } from './ChangePasswordForm';
+export { ChangePasswordForm } from './ChangePasswordForm';
